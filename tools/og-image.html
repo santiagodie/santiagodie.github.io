@@ -3,31 +3,44 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Mona+Sans:wdth,wght@100..125,400..700&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wdth,wght@100..125,500..800&family=JetBrains+Mono:wght@400;500&display=block">
 <style>
-  html, body { margin: 0; width: 1200px; height: 630px; background: #0B1F3A; overflow: hidden; }
-  body { position: relative; font-family: "Mona Sans", sans-serif; color: #F5F0E1; }
-  .frame { position: absolute; inset: 40px; border: 2px solid rgb(201 162 39 / 0.9); border-radius: 8px; }
-  .frame::before { content: ""; position: absolute; inset: 10px; border: 1px solid rgb(201 162 39 / 0.4); border-radius: 4px; }
-  .text { position: absolute; left: 120px; top: 50%; transform: translateY(-50%); width: 640px; }
-  h1 { margin: 0; font-size: 84px; font-weight: 600; font-stretch: 108%; line-height: 1; letter-spacing: -0.03em; }
-  .rule { width: 56px; height: 2px; margin: 40px 0 30px; background: #C9A227; opacity: 0.8; }
-  p { margin: 0; color: #C9A227; font-size: 32px; font-weight: 450; }
-  .url { position: absolute; left: 120px; bottom: 92px; color: rgb(245 240 225 / 0.6); font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: 0.02em; }
-  .divider { position: absolute; left: 852px; top: 130px; bottom: 130px; width: 1px; background: rgb(201 162 39 / 0.45); }
-  .mark { position: absolute; left: 852px; right: 40px; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; }
-  .mark img { width: 190px; height: auto; }
+  html, body { margin: 0; width: 1200px; height: 630px; background: #FFFFFF; overflow: hidden; }
+  body { position: relative; color: #0B1F3A; font-family: "Hubot Sans", sans-serif; }
+  .frame { position: absolute; inset: 28px; border: 1.5px solid rgb(201 162 39 / 0.75); border-radius: 18px; }
+  .text { position: absolute; left: 92px; top: 92px; width: 740px; }
+  h1 { margin: 0; font-size: 104px; font-weight: 750; font-stretch: 112%; line-height: 0.9; letter-spacing: -0.035em; }
+  .label { margin: 44px 0 14px; color: rgb(11 31 58 / 0.66); font: 400 18px "JetBrains Mono", monospace; }
+  .tokens { display: flex; flex-wrap: wrap; gap: 10px 8px; }
+  .word { display: flex; gap: 2px; }
+  .tok { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .tok b { display: block; padding: 5px 9px; font: 500 20px "JetBrains Mono", monospace; border: 1.5px solid rgb(201 162 39 / 0.6); border-radius: 7px; white-space: pre; }
+  .tok:first-child b.first { border-color: #C9A227; }
+  .tok i { color: rgb(11 31 58 / 0.66); font: normal 400 14px "JetBrains Mono", monospace; }
+  .url { position: absolute; left: 92px; bottom: 70px; color: rgb(11 31 58 / 0.66); font: 400 20px "JetBrains Mono", monospace; }
+  .divider { position: absolute; left: 860px; top: 92px; bottom: 92px; width: 1.5px; background: rgb(201 162 39 / 0.55); }
+  .mark { position: absolute; left: 862px; right: 28px; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; }
+  .mark img { width: 210px; height: auto; }
 </style>
 </head>
 <body>
   <div class="frame"></div>
   <div class="text">
     <h1>Santiago<br>Die Morejón</h1>
-    <div class="rule"></div>
-    <p>Computer Engineer · AI &amp; ML · MLOps</p>
+    <p class="label">tokenize()</p>
+    <div class="tokens">
+      <span class="word"><span class="tok"><b class="first">Computer</b><i>38432</i></span></span>
+      <span class="word"><span class="tok"><b>Engineer</b><i>29483</i></span></span>
+      <span class="word"><span class="tok"><b>·</b><i>9787</i></span></span>
+      <span class="word"><span class="tok"><b>AI</b><i>15592</i></span></span>
+      <span class="word"><span class="tok"><b>&amp;</b><i>612</i></span></span>
+      <span class="word"><span class="tok"><b>ML</b><i>20187</i></span></span>
+      <span class="word"><span class="tok"><b>·</b><i>9787</i></span></span>
+      <span class="word"><span class="tok"><b>M</b><i>386</i></span><span class="tok"><b>LO</b><i>1623</i></span><span class="tok"><b>ps</b><i>1725</i></span></span>
+    </div>
   </div>
   <div class="url">santiagodie.com</div>
   <div class="divider"></div>
-  <div class="mark"><img src="../img/sd-gold.svg" alt=""></div>
+  <div class="mark"><img src="../img/sd-navy.svg" alt=""></div>
 </body>
 </html>
