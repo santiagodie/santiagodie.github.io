@@ -1,9 +1,9 @@
 <p align="center"><img src="assets/banner.svg" width="100%" alt="santiagodie.com · Personal portfolio website" /></p>
 
-<p align="center">The source of <a href="https://santiagodie.com">santiagodie.com</a>: a one-page, trilingual (English, Spanish, French) portfolio written in plain HTML, CSS and JavaScript, with no framework, no dependencies and no build step.</p>
+<p align="center">The source of <a href="https://santiagodie.com">santiagodie.com</a>: a one-page portfolio in English, Spanish and French, generated as static HTML (one page per language) from JSON content by a small Python script. No framework, no runtime dependencies.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/language-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-C9A227?style=flat-square&labelColor=0B1F3A" alt="Language: HTML, CSS, JavaScript" />
+  <img src="https://img.shields.io/badge/language-HTML%20%C2%B7%20CSS%20%C2%B7%20JS%20%C2%B7%20Python-C9A227?style=flat-square&labelColor=0B1F3A" alt="Language: HTML, CSS, JavaScript, Python" />
   <a href="https://santiagodie.com"><img src="https://img.shields.io/badge/live-santiagodie.com-C9A227?style=flat-square&labelColor=0B1F3A" alt="Live site" /></a>
 </p>
 
@@ -20,48 +20,48 @@
 
 ## About the Project
 
-A single page with a fixed header and the sections About, Projects, Experience, Education, Skills and Contact.
+- **One static page per language**, for search engines: English at `/`, Spanish at `/es/`, French at `/fr/`. Every word is in the generated HTML; JavaScript only adds behaviour (header state, menus, a dismissible language suggestion) and never injects content.
+- **SEO per language**: translated `title`, description and Open Graph, `<link rel="canonical">`, `hreflang` alternates (with `x-default` to English), a Person JSON-LD block, `sitemap.xml` and `robots.txt`. There is no automatic redirect by browser language.
+- **Content lives in JSON**: interface text in `i18n/<lang>.json`, projects (with their three languages) in `data/projects.json`, shared data in `data/site.json`. The build fails with a clear message if any language misses a key, so a page with gaps is never published.
+- **Visible placeholders**: any string that starts with `TODO:` is rendered with a dashed `TODO` marker.
+- **The hero** reuses the LinkedIn banner idea: the headline split into tokens with their real `cl100k_base` ids, and a `predict_next()` panel.
 
-- **Content lives in JSON.** Interface text is in `i18n/<lang>.json`; projects are in `data/projects.json`. The HTML holds structure only.
-- **Three languages.** English by default. On the first visit the site follows the browser language when it is Spanish or French; after that it remembers the visitor's choice (`localStorage`). `?lang=es` or `?lang=fr` in the URL forces a language, which is useful for sharing a link.
-- **Visible placeholders.** Any string that starts with `TODO:` is shown with a dashed `TODO` marker, so missing content is easy to spot before publishing.
-- **Accessible and light.** Semantic HTML, keyboard navigation, visible focus, AA contrast, `prefers-reduced-motion` support, and one small script.
-
-The visual rules (palette, logo use, typography, motion) are in [DESIGN.md](DESIGN.md); product context is in [PRODUCT.md](PRODUCT.md).
+The visual rules (palette, logo, typography, motion) are in [DESIGN.md](DESIGN.md); product context is in [PRODUCT.md](PRODUCT.md).
 
 ## Built With
 
 - HTML, CSS and vanilla JavaScript
-- [Mona Sans](https://fonts.google.com/specimen/Mona+Sans) and [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) from Google Fonts
+- Python 3 (standard library only) for the generator
+- [Hubot Sans](https://fonts.google.com/specimen/Hubot+Sans), [Mona Sans](https://fonts.google.com/specimen/Mona+Sans) and [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) from Google Fonts
 - GitHub Actions and GitHub Pages
 
 ## Getting Started
 
-The page loads its JSON with `fetch`, so it needs a local web server (opening `index.html` from the file system will not work):
+Build the three pages into `dist/` and serve them locally:
 
 ```bash
-python -m http.server 8000
+python tools/build.py --serve
 ```
 
-Then open <http://localhost:8000>.
+Then open <http://localhost:8000> (and `/es/`, `/fr/`). Use `python tools/build.py` to build without serving, or `--port 8080` to change the port. `dist/` is generated, ignored by git and rebuilt by the deployment workflow.
 
 ## Project Structure
 
 ```
-index.html                 # Page structure; text comes from i18n/
+src/index.html             # Page template ({{ key }} placeholders, see tools/build.py)
+i18n/en.json, es.json, fr.json   # All copy, per language
+data/projects.json         # Projects: titles, courses, descriptions, metrics, links (3 languages)
+data/site.json             # Site URL, profiles, languages, hero prediction
 css/styles.css             # All styles: tokens, layout, components, motion
-js/main.js                 # i18n, project cards, mobile menu, section reveals
-data/projects.json         # Project cards
-i18n/en.json, es.json, fr.json
-img/sd-gold.svg            # SD logo (unmodified)
-favicon.svg, favicon.ico, apple-touch-icon.png
-og-image.png               # Link preview image (1200x630)
-CNAME                      # Custom domain
-.github/workflows/pages.yml  # Deploys only the files above
+js/main.js                 # Behaviour only: header, menus, language suggestion
+img/                       # SD logos (unmodified) and project screenshots (img/projects/*.webp)
+favicon.svg, favicon.ico, apple-touch-icon.png, og-image.png, CNAME
+tools/build.py             # Generator: renders dist/, sitemap.xml and robots.txt
+tools/og-image.html        # Source of og-image.png
+.github/workflows/pages.yml  # Builds and deploys dist/ on every push to main
 
 assets/banner.svg          # README banner (not published)
-tools/og-image.html        # Source of og-image.png (not published)
-PRODUCT.md, DESIGN.md      # Product and design context for the design skills (not published)
+PRODUCT.md, DESIGN.md      # Product and design context (not published)
 ```
 
 ## Adding a Project
@@ -72,12 +72,9 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 {
   "id": "my-project",
   "title": "My Project",
-  "course": "Artificial Intelligence",
-  "description": {
-    "en": "One or two sentences, ideally the same as the repository's About.",
-    "es": "…",
-    "fr": "…"
-  },
+  "course": { "en": "Artificial Intelligence", "es": "Inteligencia Artificial", "fr": "Intelligence artificielle" },
+  "featured": false,
+  "description": { "en": "One or two sentences.", "es": "…", "fr": "…" },
   "todo": [],
   "tech": ["Python", "PyTorch"],
   "repo": "https://github.com/santiagodie/my-project",
@@ -85,30 +82,29 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 }
 ```
 
-- `course` is optional; when present the card reads "Course · University of La Rioja" (translated).
-- `demo` is optional. Use `"type": "web"` for a live site and `"type": "colab"` for a notebook.
-- `"featured": true` (optional) makes the card span the full row with the double gold frame of the hero. Use it for one or two projects at most.
-- `todo` lists fields still to be done. While `description.es` or `description.fr` is in it, the card shows a "translate description" marker in that language. Remove the entry once the translation is in.
+- `demo` is optional; use `"type": "colab"` for a notebook.
+- `todo` lists what is still pending. While it contains `description.es` or `description.fr`, that page shows a "translate description" marker and marks the English text with `lang="en"`.
+- **Featured projects** (`"featured": true`) get a large card and also need:
+  - `metrics`: one or two `{ "value": {en, es, fr}, "label": {en, es, fr} }` taken from the README (format numbers per language: `4,122` / `4.122` / `4 122`);
+  - `image`: `{ "src": "img/projects/my-project.webp", "width": 1200, "height": 750, "alt": {en, es, fr} }`. Capture the live demo at 1440×900 and save it as WebP at 1200×750. Without the file, the build warns and shows a placeholder.
 
 ## Editing or Adding a Translation
 
-- To change text, edit the same key in `i18n/en.json`, `i18n/es.json` and `i18n/fr.json`.
-- Experience, Education and Skills are lists inside each language file (`experience.items`, `education.items`, `skills.groups`). An empty list shows a short "nothing yet" message; an empty `about.paragraphs` hides the About section.
-- To add the CV, put the PDF in a `cv/` folder and set `contact.cvFile` (for example `"cv/santiago-die-morejon-cv.pdf"`) in each language file. A different PDF per language works too.
-- To add a language, copy `i18n/en.json` to `i18n/<code>.json`, translate it, add the code to `LANGS` in `js/main.js` and add a button with `data-lang="<code>"` to the language switcher in `index.html`.
+- Edit the same key in the three files in `i18n/`. Lists (`experience.items`, `education.items`, `skills.groups`) must have the same entries in every language; an empty list shows a short "nothing yet" message, and an empty `about.paragraphs` removes the About section and its menu link.
+- The hero tokens (`hero.tokens`) are the headline encoded with the `cl100k_base` tokenizer. If you change a headline, re-encode it, for example with `tiktoken`: `[{"t": enc.decode([i]), "id": i} for i in enc.encode(text)]`.
+- To add the CV, put the PDF in a `cv/` folder (it is copied into `dist/`) and set `contact.cvFile`, for example `"cv/santiago-die-morejon-cv.pdf"`, in each language file.
+- To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, and add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`. The menu, hreflang links, sitemap and suggestion appear automatically.
 
-The title and description in the `<head>` of `index.html` stay in English on purpose: link previews (LinkedIn, Slack) read the HTML without running JavaScript.
-
-To regenerate `og-image.png` after a change to `tools/og-image.html`, serve the repository locally and run:
+To regenerate `og-image.png` after editing `tools/og-image.html`:
 
 ```bash
 chrome --headless=new --hide-scrollbars --window-size=1200,630 --virtual-time-budget=8000 \
-  --screenshot=og-image.png http://localhost:8000/tools/og-image.html
+  --allow-file-access-from-files --screenshot=og-image.png "file:///$PWD/tools/og-image.html"
 ```
 
 ## Deployment
 
-Every push to `main` (or a manual run) triggers `.github/workflows/pages.yml`, which copies only the website files into an artifact and deploys it to GitHub Pages. In the repository settings, **Pages → Build and deployment → Source** must be set to **GitHub Actions**; the custom domain stays configured through `CNAME`.
+Every push to `main` (or a manual run) triggers `.github/workflows/pages.yml`: it runs `python tools/build.py` and deploys only `dist/` to GitHub Pages. In the repository settings, **Pages → Build and deployment → Source** must be **GitHub Actions**; the custom domain stays configured through `CNAME`.
 
 ## Contact
 
