@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="{{ @lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{= meta.title }}</title>
+  <meta name="description" content="{{= meta.description }}">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="canonical" href="{{ @canonical }}">
+{{ !alternates }}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Santiago Die Morejón">
+  <meta property="og:title" content="{{= meta.title }}">
+  <meta property="og:description" content="{{= meta.description }}">
+  <meta property="og:url" content="{{ @canonical }}">
+  <meta property="og:image" content="{{ @siteUrl }}og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{= meta.title }}">
+  <meta property="og:locale" content="{{= meta.ogLocale }}">
+{{ !ogAlternates }}
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{{ @root }}favicon.ico" sizes="48x48">
+  <link rel="icon" href="{{ @root }}favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ @root }}apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wdth,wght@100..125,500..800&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wght@400..600&display=swap">
+  <link rel="stylesheet" href="{{ @root }}css/styles.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="{{ @root }}js/main.js" defer></script>
+  <script type="application/ld+json">{{ !jsonld }}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">{{ a11y.skip }}</a>
+
+{{ !langSuggest }}
+
+  <header class="site-header" data-header>
+    <div class="site-header__inner wrap">
+      <a class="brand" href="#top" aria-label="{{= a11y.home }}">
+        <img class="brand__logo brand__logo--light" src="{{ @root }}img/sd-navy.svg" alt="" width="290" height="208">
+        <img class="brand__logo brand__logo--dark" src="{{ @root }}img/sd-gold.svg" alt="" width="290" height="208">
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+        <span class="menu-toggle__icon" aria-hidden="true"></span>
+        <span class="menu-toggle__label" data-label-open="{{= nav.menu }}" data-label-close="{{= nav.close }}">{{ nav.menu }}</span>
+      </button>
+
+      <div class="site-menu" id="site-menu" data-menu>
+        <nav class="nav" aria-label="{{= a11y.nav }}">
+          <ul class="nav__list">
+            <li><a href="#about" data-nav-link>{{ nav.about }}</a></li>
+            <li><a href="#projects" data-nav-link>{{ nav.projects }}</a></li>
+            <li><a href="#experience" data-nav-link>{{ nav.experience }}</a></li>
+            <li><a href="#education" data-nav-link>{{ nav.education }}</a></li>
+            <li><a href="#skills" data-nav-link>{{ nav.skills }}</a></li>
+            <li><a href="#contact" data-nav-link>{{ nav.contact }}</a></li>
+          </ul>
+        </nav>
+
+        <div class="site-menu__tools">
+          <ul class="social" role="list">
+            <li>
+              <a class="social__link" href="{{ @github }}" target="_blank" rel="noopener me" aria-label="{{= a11y.github }} ({{= a11y.newTab }})" data-tooltip="GitHub">
+                <svg class="social__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              </a>
+            </li>
+            <li>
+              <a class="social__link" href="{{ @linkedin }}" target="_blank" rel="noopener me" aria-label="{{= a11y.linkedin }} ({{= a11y.newTab }})" data-tooltip="LinkedIn">
+                <svg class="social__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+            </li>
+          </ul>
+
+          <div class="lang" data-lang-switch>
+            <button class="lang__button" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="{{= a11y.currentLanguage }}">
+              <span class="lang__code" aria-hidden="true">{{ @langCode }}</span>
+              <svg class="lang__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+            </button>
+            <ul class="lang__menu" id="lang-menu" role="menu" aria-label="{{= a11y.language }}">
+{{ !langMenu }}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <div class="hero__inner wrap">
+        <div class="hero__mark" aria-hidden="true">
+          <svg class="hero__logo" viewBox="10 24 290 208" width="290" height="208"><path pathLength="1" d="M190 38 H66 A36.0 36.0 0 0 0 66 110 H160 A54.0 54.0 0 0 1 160 218 M24 218 H190 A90.0 90.0 0 0 0 190 38 M120 38 V80 M120 140 V218" fill="none" stroke="#0B1F3A" stroke-width="20" stroke-linecap="butt" stroke-linejoin="round"/></svg>
+        </div>
+
+        <h1 class="hero__name" id="hero-name">Santiago <span class="hero__surname">Die Morejón</span></h1>
+        <p class="hero__role">{{ hero.role }}</p>
+
+        <figure class="tokenizer" role="img" aria-label="{{= a11y.tokensCaption }}">
+          <figcaption class="code-label">{{ hero.tokenizeLabel }}</figcaption>
+{{ !tokens }}
+        </figure>
+
+        <div class="hero__actions">
+          <a class="button button--primary" href="#projects">{{ hero.ctaProjects }}</a>
+          <a class="button button--quiet" href="#contact">{{ hero.ctaContact }}</a>
+        </div>
+
+        <figure class="predict" lang="en" aria-label="{{= a11y.predictCaption }}">
+          <figcaption class="code-label">{{ hero.predictLabel }}</figcaption>
+{{ !prediction }}
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section--white" id="about" aria-labelledby="about-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true">01 /</span> {{ sections.about }}</h2>
+        <div class="section__body prose">
+{{ !about }}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--bone" id="projects" aria-labelledby="projects-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="projects-title"><span class="section__num" aria-hidden="true">02 /</span> {{ sections.projects }}</h2>
+        <div class="section__body">
+          <p class="section__lead">{{ projects.intro }}</p>
+          <h3 class="visually-hidden">{{ projects.featured }}</h3>
+          <ul class="featured" role="list">
+{{ !featured }}
+          </ul>
+          <h3 class="subhead">{{ projects.more }}</h3>
+          <ul class="projects" role="list">
+{{ !projects }}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--white" id="experience" data-compact aria-labelledby="experience-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="experience-title"><span class="section__num" aria-hidden="true">03 /</span> {{ sections.experience }}</h2>
+        <div class="section__body">
+{{ !experience }}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--bone" id="education" data-compact aria-labelledby="education-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="education-title"><span class="section__num" aria-hidden="true">04 /</span> {{ sections.education }}</h2>
+        <div class="section__body">
+{{ !education }}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--white" id="skills" data-compact aria-labelledby="skills-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="skills-title"><span class="section__num" aria-hidden="true">05 /</span> {{ sections.skills }}</h2>
+        <div class="section__body">
+{{ !skills }}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--navy" id="contact" aria-labelledby="contact-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="contact-title"><span class="section__num" aria-hidden="true">06 /</span> {{ sections.contact }}</h2>
+        <div class="section__body">
+          <p class="section__lead">{{ contact.text }}</p>
+          <ul class="contact" role="list">
+            <li>
+              <a class="contact__link" href="{{ @github }}" target="_blank" rel="noopener me">
+                <span class="contact__label">{{ contact.github }}</span>
+                <span class="contact__value">github.com/santiagodie</span>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>
+                <span class="visually-hidden">({{ a11y.newTab }})</span>
+              </a>
+            </li>
+            <li>
+              <a class="contact__link" href="{{ @linkedin }}" target="_blank" rel="noopener me">
+                <span class="contact__label">{{ contact.linkedin }}</span>
+                <span class="contact__value">linkedin.com/in/santiago-die-morejon</span>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>
+                <span class="visually-hidden">({{ a11y.newTab }})</span>
+              </a>
+            </li>
+            <li>
+{{ !cv }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner wrap">
+      <img src="{{ @root }}img/sd-gold.svg" alt="" width="290" height="208">
+      <p>© {{ @year }} {{ footer.rights }}</p>
+      <a class="site-footer__top" href="#top">{{ footer.top }}</a>
+    </div>
+  </footer>
+</body>
+</html>

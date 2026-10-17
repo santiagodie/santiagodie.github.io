@@ -1,14 +1,22 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Computer Engineer · AI & ML · MLOps",
-    "description": "Portfolio of Santiago Die Morejón, computer engineer specialising in AI, machine learning and MLOps. Projects, experience and contact."
+    "description": "Portfolio of Santiago Die Morejón, computer engineer specialising in AI, machine learning and MLOps. Projects with code and live demos, experience and contact.",
+    "ogLocale": "en_GB",
+    "langName": "English",
+    "jobTitle": "Computer Engineer"
   },
   "a11y": {
     "skip": "Skip to content",
     "home": "Santiago Die Morejón, home",
     "nav": "Main",
+    "newTab": "opens in a new tab",
     "language": "Language",
-    "newTab": "opens in a new tab"
+    "currentLanguage": "Language: English",
+    "github": "GitHub profile of Santiago Die Morejón",
+    "linkedin": "LinkedIn profile of Santiago Die Morejón",
+    "tokensCaption": "The headline split into tokens by the cl100k_base tokenizer, with each token id.",
+    "predictCaption": "Next-word prediction after “Computer”: engineer 0.86, science 0.09, vision 0.03, programmer 0.02."
   },
   "nav": {
     "about": "About",
@@ -20,31 +28,56 @@
     "menu": "Menu",
     "close": "Close"
   },
+  "langSuggest": {
+    "text": "This page is also available in English.",
+    "action": "Read in English",
+    "dismiss": "Dismiss"
+  },
   "hero": {
     "role": "Computer Engineer · AI & ML · MLOps",
+    "tokenizeLabel": "tokenize()",
+    "tokens": [
+      { "t": "Computer", "id": 38432 },
+      { "t": " Engineer", "id": 29483 },
+      { "t": " ·", "id": 9787 },
+      { "t": " AI", "id": 15592 },
+      { "t": " &", "id": 612 },
+      { "t": " ML", "id": 20187 },
+      { "t": " ·", "id": 9787 },
+      { "t": " M", "id": 386 },
+      { "t": "LO", "id": 1623 },
+      { "t": "ps", "id": 1725 }
+    ],
+    "predictLabel": "predict_next()",
     "ctaProjects": "View projects",
     "ctaContact": "Get in touch"
   },
+  "sections": {
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "contact": "Contact"
+  },
   "about": {
-    "title": "About",
     "paragraphs": [
       "TODO: Two or three sentences about who you are, what you work on and what you are looking for."
     ]
   },
   "projects": {
-    "title": "Projects",
+    "intro": "Coursework from the University of La Rioja, each with its code and, where there is one, a live demo.",
+    "featured": "Featured",
+    "more": "More projects",
     "university": "University of La Rioja",
     "code": "Code",
     "demo": "Live demo",
     "colab": "Open in Colab",
     "stack": "Built with",
-    "translationPending": "TODO: translate description",
-    "loading": "Loading projects…",
-    "empty": "No projects to show yet.",
-    "error": "The projects could not be loaded. They are all on GitHub in the meantime."
+    "metrics": "Results",
+    "translationPending": "TODO: translate description"
   },
   "experience": {
-    "title": "Experience",
     "empty": "No entries yet.",
     "items": [
       {
@@ -56,7 +89,6 @@
     ]
   },
   "education": {
-    "title": "Education",
     "empty": "No entries yet.",
     "items": [
       {
@@ -68,7 +100,6 @@
     ]
   },
   "skills": {
-    "title": "Skills",
     "empty": "No skills listed yet.",
     "groups": [
       {
@@ -78,7 +109,6 @@
     ]
   },
   "contact": {
-    "title": "Contact",
     "text": "TODO: One line on how you prefer to be contacted.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
@@ -87,6 +117,7 @@
     "cvPending": "TODO: add the PDF"
   },
   "footer": {
-    "rights": "Santiago Die Morejón"
+    "rights": "Santiago Die Morejón",
+    "top": "Back to top"
   }
 }

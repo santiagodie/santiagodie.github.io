@@ -1,14 +1,22 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Ingeniero informático · IA y ML · MLOps",
-    "description": "Portfolio de Santiago Die Morejón, ingeniero informático especializado en IA, machine learning y MLOps. Proyectos, experiencia y contacto."
+    "description": "Portfolio de Santiago Die Morejón, ingeniero informático especializado en IA, machine learning y MLOps. Proyectos con código y demos en vivo, experiencia y contacto.",
+    "ogLocale": "es_ES",
+    "langName": "Español",
+    "jobTitle": "Ingeniero informático"
   },
   "a11y": {
     "skip": "Saltar al contenido",
     "home": "Santiago Die Morejón, inicio",
     "nav": "Principal",
+    "newTab": "se abre en una pestaña nueva",
     "language": "Idioma",
-    "newTab": "se abre en una pestaña nueva"
+    "currentLanguage": "Idioma: español",
+    "github": "Perfil de GitHub de Santiago Die Morejón",
+    "linkedin": "Perfil de LinkedIn de Santiago Die Morejón",
+    "tokensCaption": "El titular dividido en tokens por el tokenizador cl100k_base, con el id de cada token.",
+    "predictCaption": "Predicción de la siguiente palabra tras “Computer”: engineer 0,86, science 0,09, vision 0,03, programmer 0,02."
   },
   "nav": {
     "about": "Sobre mí",
@@ -20,31 +28,59 @@
     "menu": "Menú",
     "close": "Cerrar"
   },
+  "langSuggest": {
+    "text": "Esta página también está disponible en español.",
+    "action": "Ver en español",
+    "dismiss": "Cerrar aviso"
+  },
   "hero": {
     "role": "Ingeniero informático · IA y ML · MLOps",
+    "tokenizeLabel": "tokenize()",
+    "tokens": [
+      { "t": "In", "id": 644 },
+      { "t": "gen", "id": 4469 },
+      { "t": "iero", "id": 44688 },
+      { "t": " inform", "id": 6179 },
+      { "t": "ático", "id": 67649 },
+      { "t": " ·", "id": 9787 },
+      { "t": " IA", "id": 44190 },
+      { "t": " y", "id": 379 },
+      { "t": " ML", "id": 20187 },
+      { "t": " ·", "id": 9787 },
+      { "t": " M", "id": 386 },
+      { "t": "LO", "id": 1623 },
+      { "t": "ps", "id": 1725 }
+    ],
+    "predictLabel": "predict_next()",
     "ctaProjects": "Ver proyectos",
     "ctaContact": "Contactar"
   },
+  "sections": {
+    "about": "Sobre mí",
+    "projects": "Proyectos",
+    "experience": "Experiencia",
+    "education": "Formación",
+    "skills": "Habilidades",
+    "contact": "Contacto"
+  },
   "about": {
-    "title": "Sobre mí",
     "paragraphs": [
       "TODO: Dos o tres frases sobre quién eres, en qué trabajas y qué buscas."
     ]
   },
   "projects": {
-    "title": "Proyectos",
+    "intro": "Trabajos de asignatura de la Universidad de La Rioja, cada uno con su código y, cuando la tiene, una demo en vivo.",
+    "featured": "Destacados",
+    "more": "Más proyectos",
     "university": "Universidad de La Rioja",
     "code": "Código",
     "demo": "Demo en vivo",
     "colab": "Abrir en Colab",
     "stack": "Tecnologías",
-    "translationPending": "TODO: traducir la descripción",
-    "loading": "Cargando proyectos…",
-    "empty": "Todavía no hay proyectos que mostrar.",
-    "error": "No se han podido cargar los proyectos. Mientras tanto, están todos en GitHub."
+    "metrics": "Resultados",
+    "translationPending": "TODO: traducir la descripción"
   },
   "experience": {
-    "title": "Experiencia",
     "empty": "Todavía no hay entradas.",
     "items": [
       {
@@ -56,7 +92,6 @@
     ]
   },
   "education": {
-    "title": "Formación",
     "empty": "Todavía no hay entradas.",
     "items": [
       {
@@ -68,7 +103,6 @@
     ]
   },
   "skills": {
-    "title": "Habilidades",
     "empty": "Todavía no hay habilidades.",
     "groups": [
       {
@@ -78,7 +112,6 @@
     ]
   },
   "contact": {
-    "title": "Contacto",
     "text": "TODO: Una línea sobre cómo prefieres que te contacten.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
@@ -87,6 +120,7 @@
     "cvPending": "TODO: añadir el PDF"
   },
   "footer": {
-    "rights": "Santiago Die Morejón"
+    "rights": "Santiago Die Morejón",
+    "top": "Volver arriba"
   }
 }

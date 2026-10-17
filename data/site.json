@@ -1,0 +1,22 @@
+{
+  "url": "https://santiagodie.com/",
+  "person": {
+    "name": "Santiago Die Morejón",
+    "github": "https://github.com/santiagodie",
+    "linkedin": "https://www.linkedin.com/in/santiago-die-morejon"
+  },
+  "languages": [
+    { "code": "en", "path": "", "default": true },
+    { "code": "es", "path": "es/" },
+    { "code": "fr", "path": "fr/" }
+  ],
+  "prediction": {
+    "context": "Computer",
+    "options": [
+      { "word": "engineer", "p": 0.86 },
+      { "word": "science", "p": 0.09 },
+      { "word": "vision", "p": 0.03 },
+      { "word": "programmer", "p": 0.02 }
+    ]
+  }
+}

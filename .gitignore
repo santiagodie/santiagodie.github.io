@@ -1,3 +1,6 @@
+# Generated site (tools/build.py); GitHub Actions builds and deploys it
+dist/
+
 # Locally installed agent skills (reinstall from skills-lock.json)
 .agents/
 .claude/
@@ -6,6 +9,7 @@
 .impeccable/hook.cache.json
 .impeccable/live/
 .impeccable/critique/
+.impeccable/config.local.json
 
 # OS and editor files
 .DS_Store

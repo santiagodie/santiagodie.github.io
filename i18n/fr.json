@@ -1,14 +1,22 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Ingénieur informaticien · IA et ML · MLOps",
-    "description": "Portfolio de Santiago Die Morejón, ingénieur informaticien spécialisé en IA, machine learning et MLOps. Projets, expérience et contact."
+    "description": "Portfolio de Santiago Die Morejón, ingénieur informaticien spécialisé en IA, machine learning et MLOps. Projets avec code et démos en ligne, expérience et contact.",
+    "ogLocale": "fr_FR",
+    "langName": "Français",
+    "jobTitle": "Ingénieur informaticien"
   },
   "a11y": {
     "skip": "Aller au contenu",
     "home": "Santiago Die Morejón, accueil",
     "nav": "Principale",
+    "newTab": "s’ouvre dans un nouvel onglet",
     "language": "Langue",
-    "newTab": "s’ouvre dans un nouvel onglet"
+    "currentLanguage": "Langue : français",
+    "github": "Profil GitHub de Santiago Die Morejón",
+    "linkedin": "Profil LinkedIn de Santiago Die Morejón",
+    "tokensCaption": "Le titre découpé en tokens par le tokenizer cl100k_base, avec l’identifiant de chaque token.",
+    "predictCaption": "Prédiction du mot suivant après « Computer » : engineer 0,86, science 0,09, vision 0,03, programmer 0,02."
   },
   "nav": {
     "about": "À propos",
@@ -20,31 +28,60 @@
     "menu": "Menu",
     "close": "Fermer"
   },
+  "langSuggest": {
+    "text": "Cette page est aussi disponible en français.",
+    "action": "Lire en français",
+    "dismiss": "Fermer l’avis"
+  },
   "hero": {
     "role": "Ingénieur informaticien · IA et ML · MLOps",
+    "tokenizeLabel": "tokenize()",
+    "tokens": [
+      { "t": "Ing", "id": 26489 },
+      { "t": "én", "id": 10610 },
+      { "t": "ieur", "id": 62005 },
+      { "t": " inform", "id": 6179 },
+      { "t": "atic", "id": 780 },
+      { "t": "ien", "id": 3675 },
+      { "t": " ·", "id": 9787 },
+      { "t": " IA", "id": 44190 },
+      { "t": " et", "id": 1880 },
+      { "t": " ML", "id": 20187 },
+      { "t": " ·", "id": 9787 },
+      { "t": " M", "id": 386 },
+      { "t": "LO", "id": 1623 },
+      { "t": "ps", "id": 1725 }
+    ],
+    "predictLabel": "predict_next()",
     "ctaProjects": "Voir les projets",
     "ctaContact": "Me contacter"
   },
+  "sections": {
+    "about": "À propos",
+    "projects": "Projets",
+    "experience": "Expérience",
+    "education": "Formation",
+    "skills": "Compétences",
+    "contact": "Contact"
+  },
   "about": {
-    "title": "À propos",
     "paragraphs": [
       "TODO : Deux ou trois phrases sur qui vous êtes, sur quoi vous travaillez et ce que vous recherchez."
     ]
   },
   "projects": {
-    "title": "Projets",
+    "intro": "Projets de cours de l’Université de La Rioja, chacun avec son code et, quand elle existe, une démo en ligne.",
+    "featured": "À la une",
+    "more": "Autres projets",
     "university": "Université de La Rioja",
     "code": "Code",
     "demo": "Démo en ligne",
     "colab": "Ouvrir dans Colab",
     "stack": "Technologies",
-    "translationPending": "TODO : traduire la description",
-    "loading": "Chargement des projets…",
-    "empty": "Aucun projet à afficher pour l’instant.",
-    "error": "Impossible de charger les projets. En attendant, ils sont tous sur GitHub."
+    "metrics": "Résultats",
+    "translationPending": "TODO : traduire la description"
   },
   "experience": {
-    "title": "Expérience",
     "empty": "Aucune entrée pour l’instant.",
     "items": [
       {
@@ -56,7 +93,6 @@
     ]
   },
   "education": {
-    "title": "Formation",
     "empty": "Aucune entrée pour l’instant.",
     "items": [
       {
@@ -68,7 +104,6 @@
     ]
   },
   "skills": {
-    "title": "Compétences",
     "empty": "Aucune compétence pour l’instant.",
     "groups": [
       {
@@ -78,7 +113,6 @@
     ]
   },
   "contact": {
-    "title": "Contact",
     "text": "TODO : Une ligne sur la façon dont vous préférez être contacté.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
@@ -87,6 +121,7 @@
     "cvPending": "TODO : ajouter le PDF"
   },
   "footer": {
-    "rights": "Santiago Die Morejón"
+    "rights": "Santiago Die Morejón",
+    "top": "Retour en haut"
   }
 }
