@@ -1,80 +1,86 @@
 # Design
 
-Visual system of santiagodie.com. Product context lives in PRODUCT.md.
+Visual system of santiagodie.com (v2, 2026-10-17). Product context lives in PRODUCT.md.
 
 ## Non-negotiable rules
 
-These rules were set by the owner and win over any recommendation from any design skill. They are copied verbatim from the brief (Spanish original).
+Set by the owner; they win over any recommendation from any design skill. Copied verbatim from the v2 brief (Spanish original). They replace the v1 rules (navy page background).
 
-> 1. Paleta, exactamente estos colores:
->    - Navy #0B1F3A: fondo principal.
->    - Gold #C9A227: acentos. Regla: el dorado solo va sobre el azul marino.
->    - Bone #F5F0E1: texto principal.
->    - White #FFFFFF.
->    Puedes derivar matices (más claros u oscuros, con transparencia) de estos cuatro, pero no añadas colores nuevos.
-> 2. Logo: sd-logo\sd-gold.svg, sin modificarlo (ni proporciones, ni trazo, ni color salvo las versiones existentes en sd-logo\). Va en la cabecera, en el footer y como favicon.
-> 3. Coherencia con mi perfil de GitHub: revisa assets/ del repo de perfil (santiagodie\santiagodie): header.svg, footer.svg y tools/make_banner.py (marco fino dorado, esquinas redondeadas, sobriedad).
-> 4. Nada de efectos llamativos: sin glassmorphism, sin neones, sin degradados de colores, sin partículas, sin redes neuronales de fondo, sin cursores personalizados, sin scroll-jacking.
-> 5. Animaciones discretas, cortas y con propósito (aparición de secciones, hover, cambio de idioma), respetando prefers-reduced-motion.
-> 6. Contenido: no inventes nada sobre mí. Donde falte información, pon un marcador claro (TODO).
+> - Fondo principal blanco #FFFFFF. Bone #F5F0E1 como fondo secundario para alternar secciones. Navy #0B1F3A para textos, titulares y bloques destacados.
+> - Gold #C9A227: solo sobre azul marino, o como detalle decorativo fino (líneas, marcos, iconos) sobre claro. Nunca como color de texto sobre blanco o hueso, porque no tiene contraste suficiente.
+> - No se pueden añadir colores nuevos. Logo sin modificar: sd-navy.svg sobre fondos claros y sd-gold.svg sobre azul marino (las versiones de sd-logo\).
+> - Prohibido: glassmorphism, neones, degradados de colores, partículas, redes neuronales de fondo, cursores personalizados, scroll-jacking. Respeta prefers-reduced-motion en todo.
 
-Design direction from the same brief: minimal, sober and editorial; quality comes from typography, spacing, hierarchy and detail, not effects. Plenty of white space, a clear grid, few elements per screen, each with a reason.
+Still binding from v1: derived tints (lighter, darker, transparent) of the four colours are allowed, new hues are not; content about the owner is never invented, missing content shows a visible TODO marker; motion is short, purposeful and respects `prefers-reduced-motion`.
+
+Design direction: a professional 2026 portfolio people remember, still sober. Character comes from the owner's own material (the SD stroke, the tokenizer banner, real project evidence), typography and rhythm, never from generic effects.
 
 ## Color
 
-Dark only, by brand: the navy is the page. All tokens are in `css/styles.css` `:root`.
+Light page. All tokens live in `css/styles.css` `:root`.
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--navy` | `#0B1F3A` | Page and header background |
-| `--gold` | `#C9A227` | Hero role line, short rules, frames, focus ring, active language and nav state, "·" separators, link hover, TODO markers |
-| `--bone` / `--text` | `#F5F0E1` | Primary text |
-| `--white` | `#FFFFFF` | Hover text on links and the primary button; text selection |
-| `--text-2` | bone 76 % | Secondary text (descriptions, values) |
-| `--text-3` | bone 60 % | Tertiary text (mono labels, periods); ~5:1 on navy |
-| `--line` / `--line-strong` | bone 12 % / 22 % | Hairlines, card borders |
-| `--gold-frame` / `--gold-frame-inner` | gold 90 % / 38 % | Double hero frame (outer / inner) |
-| `--gold-line`, `--gold-hover`, `--gold-soft` | gold 35 % / 55 % / 12 % | Header hairline on scroll, card hover border, primary button hover fill |
-| `--surface` | bone 2.5 % | Card fill |
-
-Gold never sits on anything but navy (or a navy-derived surface). Text on gold is never used.
+| `--white` | `#FFFFFF` | Page background |
+| `--bone` | `#F5F0E1` | Alternating section background, text on navy |
+| `--navy` | `#0B1F3A` | Text, headings, buttons, featured blocks, scrolled header, footer |
+| `--gold` | `#C9A227` | On navy: accents, active states, text. On white/bone: only thin lines, frames, icons, bars (never text) |
+| `--navy-2`, `--navy-3` | navy 72 % / 58 % | Secondary and tertiary text on light (both ≥ 4.5:1 on white and bone) |
+| `--bone-2` | bone 76 % | Secondary text on navy |
+| `--line` | navy 12 % | Hairlines on light |
 
 ## Typography
 
-- **Mona Sans** (Google Fonts, variable weight and width): all reading and display text. It is GitHub's own typeface, which ties the site to the GitHub profile. The name uses width 108 % for a slightly expanded display voice.
-- **JetBrains Mono**: data only: technologies, course labels, periods, language codes, URLs in Contact, TODO markers, footer.
-- Scale (fluid, ratio ≈ 1.25): `--step-4` name `clamp(2.75rem → 5.5rem)`, `--step-3` section titles `clamp(1.75rem → 2.5rem)`, `--step-2` card and contact labels, `--step-1` lead text, `--step-0` body 17px, `--step--1` mono 13px.
-- Body line-height 1.6, reading measure ≤ 62ch, `text-wrap: balance` on headings and `pretty` on paragraphs.
+- **Hubot Sans** (display: name, section titles, card titles), GitHub's display typeface, used wide and heavy for an editorial voice.
+- **Mona Sans** (text), its companion text face, for reading.
+- **JetBrains Mono** for data only: token ids, section numbers, metrics, technologies, periods, language codes.
 
-## Layout
+## Signature elements
 
-- Content max width 72rem; side margins `clamp(1.25rem, 5vw, 4rem)` plus safe-area insets.
-- From 60em: 12-column section grid. Section title spans 3 columns and stays sticky; content spans 9.
-- Section spacing `clamp(4.5rem, 14vw, 10rem)`; 4-pt spacing scale `--space-1` … `--space-10`.
-- Breakpoints: 22.5em (very narrow phones: icon-only menu button), 48em (two-column cards, two-column entries, hero monogram), 60em (inline navigation, section grid).
+1. **Drawn monogram**: the hero SD (`sd-navy.svg` path, unchanged) draws itself once as one continuous stroke (`stroke-dashoffset`). Reduced motion: shown drawn.
+2. **Tokenized headline**: the role line rendered as `tokenize()` chips with thin borders and real cl100k_base ids, plus a `predict_next()` panel with the banner's probabilities. All of it is text in the generated HTML.
+3. **Pipeline thread**: a thin gold line in the logo's stroke language that runs through the section numbers as you scroll (CSS scroll-driven animation where supported, static line elsewhere). Decorative, never blocks scrolling.
+4. **Evidence-first projects**: three featured cards with a real demo screenshot and README metrics in mono; the rest in a compact grid.
+
+## Type scale
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--step-4` | `clamp(3.25rem, 1.2rem + 8vw, 8.75rem)` | Name (Hubot Sans 750, width 112 %, line-height 0.9) |
+| `--step-3` | `clamp(2.25rem, 1.4rem + 3.6vw, 4.5rem)` | Section titles (Hubot Sans 700, width 108 %) |
+| `--step-2` | `clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem)` | Sub-heads, entry titles, contact labels |
+| `--step-1` | `clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem)` | Lead text |
+| `--step-0` | `1.0625rem` | Body (Mona Sans, line-height 1.65) |
+| `--step--1` | `0.8125rem` | Mono labels: section numbers, course, ids, periods |
+
+About text is set as display copy (Hubot Sans 500, up to 2.5rem). Display headings keep tight leading (0.9–1.2) on purpose.
+
+## Layout and spacing
+
+- Content max width 76rem; side margins `clamp(1.25rem, 5vw, 4rem)` plus safe-area insets; gutter `clamp(1.25rem, 2.5vw, 2rem)`.
+- Section padding `clamp(5rem, 11vw, 9rem)`. Sections alternate white / bone; Contact and the footer are navy.
+- From 64em: 12-column section grid; titles span the full width, text bodies start at column 3, Projects uses the full width.
+- Breakpoints: 22.5em (icon-only menu button), 48em (hero model in two columns, entries and contact in columns), 64em (desktop navigation, hero name beside the monogram, featured cards side by side).
+- Radii: 6px (chips), 8px (buttons), 10–16px (menus, cards).
 
 ## Components
 
-- **Header**: fixed, solid navy; logo, section links, `EN ES FR` in mono. A gold hairline appears once the page scrolls. Below 60em, a "Menu" button opens a panel under the header (not a modal; Escape and outside click close it).
-- **Hero plate**: the GitHub-banner frame made into a page: 1px gold outer frame with 6px corners, a second frame 6px inside at lower opacity and 3px corners. Name, 44px gold rule, gold role line, two actions (bordered gold primary, underlined quiet secondary). From 48em a vertical gold hairline and the monogram on the right, as in `make_banner.py`.
-- **Project card**: hairline border, 6px corners, faint bone fill; title, course line in mono, description, technologies in mono separated by gold "·", links row (Code, Live demo / Open in Colab) with a drawn arrow icon. Hover and focus-within turn the border gold.
-- **Entry rows** (Experience, Education): period in mono on the left, title, organisation and text on the right, separated by hairlines.
-- **Contact rows**: large label, mono value, gold arrow; the CV row shows a TODO until `contact.cvFile` is set.
-- **TODO marker**: strings starting with `TODO:` render a dashed gold `TODO` chip and dim the rest.
-- **Buttons and targets**: ≥ 44px tall; focus ring 2px gold, 3px offset.
+- **Header**: sticky, transparent over the hero (navy logo and links); after 16px of scroll it fades to navy (gold logo, bone links, gold active link with a 1.5px gold rule). Below 64em a "Menu" button opens a navy panel with the links, the social buttons and the language menu.
+- **Social buttons**: 40px square, 1px border, 8px radius; on hover or focus they round to a circle, lift 2px, fill (navy on light, bone on navy) and show a mono label below. Inspired by Uiverse.io components by akshat-patel28 and EcheverriaJesus (credited in the CSS).
+- **Language menu**: menu button showing the current code; white popover with the three languages as links (`hreflang`, `lang`), the current one marked. Arrows, Home/End, Enter, Escape, click outside. Switching keeps the current section.
+- **Language suggestion**: fixed toast, white with a thin border, shown only when the browser prefers another available language; dismissal remembered.
+- **Hero**: drawn monogram, name, `tokenize()` chips (1px gold frames, sub-word tokens 2px apart, ids below in mono), `predict_next()` panel behind a gold hairline (top bar gold, others navy 22 %), primary navy button and quiet underlined link.
+- **Pipeline thread**: 1.5px gold line at the left of the content, leaving the hero with a 14px rounded turn, with a 9px gold node at each section number.
+- **Featured card**: white, 1px gold frame (30 %), 16px radius; real demo screenshot (WebP, 16:10) beside the body; title, course, description, two README metrics in mono, technologies (gold dot separators), Demo (navy) and Code (outlined) buttons. Hover: lifts 3px, soft shadow, frame to full gold.
+- **Project card**: white, hairline border, 12px radius; title, course, description, technologies, underlined links. Hover: lifts 2px, gold border.
+- **Entries, skills, contact, footer**: hairline-ruled rows; periods in mono; contact labels in display type with a gold arrow; footer with the gold monogram.
+- **TODO marker**: dashed gold frame; navy text on light, gold on navy.
 
 ## Motion
 
-- One authored moment on load: the gold rule under the name draws in (scaleX, 700 ms) while name, role and actions settle 10px upward with a short stagger. Runs once per visit.
-- Sections settle 10px with opacity (500 ms) the first time they enter the viewport; project cards stagger 50 ms.
-- Language change: text fades and blurs 2px out and back (120 ms).
-- Hover: colour changes 150 ms; arrow icons nudge 2px. Gated behind `(hover: hover) and (pointer: fine)`.
-- Easing `cubic-bezier(0.23, 1, 0.32, 1)`. Menu opens in 220 ms and closes in 150 ms.
-- `prefers-reduced-motion: reduce`: no movement at all (no entrance, reveal, nudge, press scale or menu slide); opacity fades remain because they explain changes.
-
-## Assets
-
-- `img/sd-gold.svg` and `favicon.svg`: byte-identical copies of `sd-logo/sd-gold.svg`.
-- `favicon.ico` (16/32/48) and `apple-touch-icon.png` (180): from the existing `sd-avatar-gold-on-navy-1024.png`.
-- `og-image.png` (1200×630): rendered from `tools/og-image.html` with headless Chrome.
-- `assets/banner.svg`: README banner from `santiagodie/tools/make_banner.py`.
+- Easing: `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` for UI, `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` for the drawn stroke. Durations: 150 ms (colour), 220 ms (UI), 260 ms (header state, card lift).
+- Once per visit: monogram draw (1.6 s), then name, tokens (45 ms stagger), prediction bars and actions settle in (10px, 500–800 ms); the caret blinks four times and stops.
+- Scroll-driven (CSS `animation-timeline: view()`): the thread draws through each section and its node fills; static where unsupported.
+- Menus open slower than they close (220/150 ms; language menu 150–220/120 ms) and grow from their trigger.
+- Hover motion only under `(hover: hover) and (pointer: fine)`; presses scale to 0.97.
+- `prefers-reduced-motion: reduce`: no movement at all; the logo is shown drawn, content is visible at once, opacity fades remain.
