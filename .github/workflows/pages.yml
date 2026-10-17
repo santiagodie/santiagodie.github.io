@@ -24,15 +24,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Only the website is published. Design docs, skill files, tools and the
-      # README banner stay in the repository.
-      - name: Collect site files
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Renders /, /es/ and /fr/ from src/, i18n/ and data/ into dist/. Fails if a
+      # translation is missing, so a page with gaps is never deployed.
+      - name: Build site
         run: |
-          mkdir _site
-          cp -r index.html favicon.ico favicon.svg apple-touch-icon.png og-image.png CNAME css js img data i18n _site/
-          if [ -d cv ]; then cp -r cv _site/; fi
-          touch _site/.nojekyll
-          find _site -type f | sort
+          python tools/build.py
+          find dist -type f | sort
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -40,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
       - name: Deploy
         id: deployment
