@@ -1,0 +1,116 @@
+{
+  "projects": [
+    {
+      "id": "face-similarity-search-pipeline",
+      "title": "Face Similarity Search Pipeline",
+      "course": "Artificial Intelligence",
+      "description": {
+        "en": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis.",
+        "es": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis.",
+        "fr": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Python", "OpenCV", "dlib", "DeepFace", "TensorFlow", "vptree", "scikit-learn", "Gradio"],
+      "repo": "https://github.com/santiagodie/face-similarity-search-pipeline",
+      "demo": { "url": "https://santiagodie.com/face-similarity-search-pipeline/", "type": "web" }
+    },
+    {
+      "id": "satellite-image-classifier",
+      "title": "Satellite Image Classifier",
+      "course": "Artificial Intelligence",
+      "description": {
+        "en": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment.",
+        "es": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment.",
+        "fr": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Python", "fastai", "PyTorch", "timm", "scikit-learn", "Hugging Face Hub", "Gradio"],
+      "repo": "https://github.com/santiagodie/satellite-image-classifier",
+      "demo": null
+    },
+    {
+      "id": "prompt-topic-classifier",
+      "title": "Prompt Topic Classifier",
+      "course": "Artificial Intelligence",
+      "description": {
+        "en": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble.",
+        "es": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble.",
+        "fr": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Python", "fastai", "Transformers", "Datasets", "scikit-learn", "Gradio"],
+      "repo": "https://github.com/santiagodie/prompt-topic-classifier",
+      "demo": null
+    },
+    {
+      "id": "human-activity-classification",
+      "title": "Human Activity Classification",
+      "course": "Artificial Intelligence",
+      "description": {
+        "en": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction.",
+        "es": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction.",
+        "fr": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Python", "pandas", "NumPy", "scikit-learn", "SciPy", "seaborn", "umap-learn"],
+      "repo": "https://github.com/santiagodie/human-activity-classification",
+      "demo": null
+    },
+    {
+      "id": "sudoku-vision-solver",
+      "title": "Sudoku Vision Solver",
+      "course": "Artificial Intelligence",
+      "description": {
+        "en": "Reads a printed Sudoku from an image and solves it: OpenCV contour filtering to find the 81 cells, Tesseract OCR to read the clues, and Peter Norvig's constraint-propagation solver, with the solution drawn back onto the image.",
+        "es": "Reads a printed Sudoku from an image and solves it: OpenCV contour filtering to find the 81 cells, Tesseract OCR to read the clues, and Peter Norvig's constraint-propagation solver, with the solution drawn back onto the image.",
+        "fr": "Reads a printed Sudoku from an image and solves it: OpenCV contour filtering to find the 81 cells, Tesseract OCR to read the clues, and Peter Norvig's constraint-propagation solver, with the solution drawn back onto the image."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Python", "OpenCV", "Tesseract", "scikit-learn", "NumPy"],
+      "repo": "https://github.com/santiagodie/sudoku-vision-solver",
+      "demo": { "url": "https://colab.research.google.com/github/santiagodie/sudoku-vision-solver/blob/main/02_digit_recognition_and_solving.ipynb", "type": "colab" }
+    },
+    {
+      "id": "graduate-salary-predictor",
+      "title": "Graduate Salary Predictor",
+      "course": "Professional Practice in Computer Engineering",
+      "description": {
+        "en": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API.",
+        "es": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API.",
+        "fr": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Python", "Flask", "Pydantic", "scikit-learn", "ONNX Runtime Web", "Chart.js"],
+      "repo": "https://github.com/santiagodie/graduate-salary-predictor",
+      "demo": { "url": "https://santiagodie.com/graduate-salary-predictor/", "type": "web" }
+    },
+    {
+      "id": "wordhive-socket-server",
+      "title": "WordHive",
+      "course": "Distributed Systems",
+      "description": {
+        "en": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server.",
+        "es": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server.",
+        "fr": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Java", "Sockets", "java.util.concurrent", "JAXB", "JavaScript"],
+      "repo": "https://github.com/santiagodie/wordhive-socket-server",
+      "demo": { "url": "https://santiagodie.com/wordhive-socket-server/", "type": "web" }
+    },
+    {
+      "id": "electrosa-fullstack-ecommerce",
+      "title": "Electrosa",
+      "course": "Web Application Programming",
+      "description": {
+        "en": "A two-part web application for a fictional home-appliance retailer: a Spring MVC + JPA storefront for customers and a Servlet/JSP back office for staff, both running on Tomcat over a shared MySQL database.",
+        "es": "A two-part web application for a fictional home-appliance retailer: a Spring MVC + JPA storefront for customers and a Servlet/JSP back office for staff, both running on Tomcat over a shared MySQL database.",
+        "fr": "A two-part web application for a fictional home-appliance retailer: a Spring MVC + JPA storefront for customers and a Servlet/JSP back office for staff, both running on Tomcat over a shared MySQL database."
+      },
+      "todo": ["description.es", "description.fr"],
+      "tech": ["Java 17", "Spring MVC", "Spring Data JPA", "Hibernate", "Thymeleaf", "JSP", "MySQL", "Tomcat"],
+      "repo": "https://github.com/santiagodie/electrosa-fullstack-ecommerce",
+      "demo": { "url": "https://santiagodie.com/electrosa-fullstack-ecommerce/", "type": "web" }
+    }
+  ]
+}

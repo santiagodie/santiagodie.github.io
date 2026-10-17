@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Santiago Die Morejón · Computer Engineer · AI & ML · MLOps",
+    "description": "Portfolio of Santiago Die Morejón, computer engineer specialising in AI, machine learning and MLOps. Projects, experience and contact."
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "home": "Santiago Die Morejón, home",
+    "nav": "Main",
+    "language": "Language",
+    "newTab": "opens in a new tab"
+  },
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "contact": "Contact",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "hero": {
+    "role": "Computer Engineer · AI & ML · MLOps",
+    "ctaProjects": "View projects",
+    "ctaContact": "Get in touch"
+  },
+  "about": {
+    "title": "About",
+    "paragraphs": [
+      "TODO: Two or three sentences about who you are, what you work on and what you are looking for."
+    ]
+  },
+  "projects": {
+    "title": "Projects",
+    "university": "University of La Rioja",
+    "code": "Code",
+    "demo": "Live demo",
+    "colab": "Open in Colab",
+    "stack": "Built with",
+    "translationPending": "TODO: translate description",
+    "loading": "Loading projects…",
+    "empty": "No projects to show yet.",
+    "error": "The projects could not be loaded. They are all on GitHub in the meantime."
+  },
+  "experience": {
+    "title": "Experience",
+    "empty": "No entries yet.",
+    "items": [
+      {
+        "period": "TODO: 2026",
+        "title": "TODO: Role",
+        "org": "TODO: Company · City",
+        "text": "TODO: One or two sentences on what you did and with which tools."
+      }
+    ]
+  },
+  "education": {
+    "title": "Education",
+    "empty": "No entries yet.",
+    "items": [
+      {
+        "period": "TODO: Years",
+        "title": "TODO: Degree",
+        "org": "TODO: University",
+        "text": "TODO: Focus, relevant courses or final project."
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "empty": "No skills listed yet.",
+    "groups": [
+      {
+        "name": "TODO: Area",
+        "items": ["TODO: Skill", "TODO: Skill", "TODO: Skill"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact",
+    "text": "TODO: One line on how you prefer to be contacted.",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "CV (PDF)",
+    "cvFile": "",
+    "cvPending": "TODO: add the PDF"
+  },
+  "footer": {
+    "rights": "Santiago Die Morejón"
+  }
+}

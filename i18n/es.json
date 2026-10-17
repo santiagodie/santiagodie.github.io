@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Santiago Die Morejón · Ingeniero informático · IA y ML · MLOps",
+    "description": "Portfolio de Santiago Die Morejón, ingeniero informático especializado en IA, machine learning y MLOps. Proyectos, experiencia y contacto."
+  },
+  "a11y": {
+    "skip": "Saltar al contenido",
+    "home": "Santiago Die Morejón, inicio",
+    "nav": "Principal",
+    "language": "Idioma",
+    "newTab": "se abre en una pestaña nueva"
+  },
+  "nav": {
+    "about": "Sobre mí",
+    "projects": "Proyectos",
+    "experience": "Experiencia",
+    "education": "Formación",
+    "skills": "Habilidades",
+    "contact": "Contacto",
+    "menu": "Menú",
+    "close": "Cerrar"
+  },
+  "hero": {
+    "role": "Ingeniero informático · IA y ML · MLOps",
+    "ctaProjects": "Ver proyectos",
+    "ctaContact": "Contactar"
+  },
+  "about": {
+    "title": "Sobre mí",
+    "paragraphs": [
+      "TODO: Dos o tres frases sobre quién eres, en qué trabajas y qué buscas."
+    ]
+  },
+  "projects": {
+    "title": "Proyectos",
+    "university": "Universidad de La Rioja",
+    "code": "Código",
+    "demo": "Demo en vivo",
+    "colab": "Abrir en Colab",
+    "stack": "Tecnologías",
+    "translationPending": "TODO: traducir la descripción",
+    "loading": "Cargando proyectos…",
+    "empty": "Todavía no hay proyectos que mostrar.",
+    "error": "No se han podido cargar los proyectos. Mientras tanto, están todos en GitHub."
+  },
+  "experience": {
+    "title": "Experiencia",
+    "empty": "Todavía no hay entradas.",
+    "items": [
+      {
+        "period": "TODO: 2026",
+        "title": "TODO: Puesto",
+        "org": "TODO: Empresa · Ciudad",
+        "text": "TODO: Una o dos frases sobre lo que hiciste y con qué herramientas."
+      }
+    ]
+  },
+  "education": {
+    "title": "Formación",
+    "empty": "Todavía no hay entradas.",
+    "items": [
+      {
+        "period": "TODO: Años",
+        "title": "TODO: Titulación",
+        "org": "TODO: Universidad",
+        "text": "TODO: Especialidad, asignaturas destacadas o trabajo de fin de grado."
+      }
+    ]
+  },
+  "skills": {
+    "title": "Habilidades",
+    "empty": "Todavía no hay habilidades.",
+    "groups": [
+      {
+        "name": "TODO: Área",
+        "items": ["TODO: Habilidad", "TODO: Habilidad", "TODO: Habilidad"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contacto",
+    "text": "TODO: Una línea sobre cómo prefieres que te contacten.",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "CV (PDF)",
+    "cvFile": "",
+    "cvPending": "TODO: añadir el PDF"
+  },
+  "footer": {
+    "rights": "Santiago Die Morejón"
+  }
+}

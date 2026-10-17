@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Santiago Die Morejón · Ingénieur informaticien · IA et ML · MLOps",
+    "description": "Portfolio de Santiago Die Morejón, ingénieur informaticien spécialisé en IA, machine learning et MLOps. Projets, expérience et contact."
+  },
+  "a11y": {
+    "skip": "Aller au contenu",
+    "home": "Santiago Die Morejón, accueil",
+    "nav": "Principale",
+    "language": "Langue",
+    "newTab": "s’ouvre dans un nouvel onglet"
+  },
+  "nav": {
+    "about": "À propos",
+    "projects": "Projets",
+    "experience": "Expérience",
+    "education": "Formation",
+    "skills": "Compétences",
+    "contact": "Contact",
+    "menu": "Menu",
+    "close": "Fermer"
+  },
+  "hero": {
+    "role": "Ingénieur informaticien · IA et ML · MLOps",
+    "ctaProjects": "Voir les projets",
+    "ctaContact": "Me contacter"
+  },
+  "about": {
+    "title": "À propos",
+    "paragraphs": [
+      "TODO : Deux ou trois phrases sur qui vous êtes, sur quoi vous travaillez et ce que vous recherchez."
+    ]
+  },
+  "projects": {
+    "title": "Projets",
+    "university": "Université de La Rioja",
+    "code": "Code",
+    "demo": "Démo en ligne",
+    "colab": "Ouvrir dans Colab",
+    "stack": "Technologies",
+    "translationPending": "TODO : traduire la description",
+    "loading": "Chargement des projets…",
+    "empty": "Aucun projet à afficher pour l’instant.",
+    "error": "Impossible de charger les projets. En attendant, ils sont tous sur GitHub."
+  },
+  "experience": {
+    "title": "Expérience",
+    "empty": "Aucune entrée pour l’instant.",
+    "items": [
+      {
+        "period": "TODO : 2026",
+        "title": "TODO : Poste",
+        "org": "TODO : Entreprise · Ville",
+        "text": "TODO : Une ou deux phrases sur ce que vous avez fait et avec quels outils."
+      }
+    ]
+  },
+  "education": {
+    "title": "Formation",
+    "empty": "Aucune entrée pour l’instant.",
+    "items": [
+      {
+        "period": "TODO : Années",
+        "title": "TODO : Diplôme",
+        "org": "TODO : Université",
+        "text": "TODO : Spécialité, cours marquants ou projet de fin d’études."
+      }
+    ]
+  },
+  "skills": {
+    "title": "Compétences",
+    "empty": "Aucune compétence pour l’instant.",
+    "groups": [
+      {
+        "name": "TODO : Domaine",
+        "items": ["TODO : Compétence", "TODO : Compétence", "TODO : Compétence"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact",
+    "text": "TODO : Une ligne sur la façon dont vous préférez être contacté.",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "CV (PDF)",
+    "cvFile": "",
+    "cvPending": "TODO : ajouter le PDF"
+  },
+  "footer": {
+    "rights": "Santiago Die Morejón"
+  }
+}
