@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "mona sans",
+        "createdAt": "2026-10-17T19:18:36.848Z",
+        "reason": "user approved the design proposal naming Mona Sans (GitHub's typeface, chosen for profile coherence)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-17T19:18:36.996Z",
+        "reason": "verified false positive: hero plate has clamp(2rem,7vw,6rem) padding; contact rows inset via .contact__link padding-block and 72px min-height (critique B)"
+      }
+    ]
+  }
+}
