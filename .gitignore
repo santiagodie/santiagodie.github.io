@@ -1,0 +1,13 @@
+# Locally installed agent skills (reinstall from skills-lock.json)
+.agents/
+.claude/
+
+# Machine-local caches of the impeccable design skill
+.impeccable/hook.cache.json
+.impeccable/live/
+.impeccable/critique/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
