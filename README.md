@@ -61,6 +61,7 @@ img/                       # SD logos (unmodified) and project screenshots (img/
 favicon.svg, favicon.ico, apple-touch-icon.png, CNAME
 og-image.png, og-image-es.png, og-image-fr.png   # Link previews, one per language
 tools/build.py             # Generator: renders dist/, sitemap.xml and robots.txt
+tools/tokenize.py          # Local only (pip install tiktoken): regenerates data/tokens.json; not used by the workflow
 .github/workflows/pages.yml  # Builds and deploys dist/ on every push to main
 
 assets/banner.svg          # README banner (not published)
@@ -94,7 +95,7 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 ## Editing or Adding a Translation
 
 - Edit the same key in the three files in `i18n/`. Lists (`experience.items`, `education.items`, `skills.groups`) must have the same entries in every language; an empty list shows a short "nothing yet" message, and an empty `about.paragraphs` removes the About section and its menu link.
-- The hero chat's question and answer are `chat.prompt` and `chat.answer`. After editing them, re-encode both with the `cl100k_base` tokenizer (for example with `tiktoken`) and update `data/tokens.json`; the build refuses ids that no longer spell the text. In `data/llm.json`, keep one attention weight per question token and start `next` with the first answer token (the other candidates and the probabilities are illustrative).
+- The hero chat's question and answer are `chat.prompt` and `chat.answer`. After editing them, run `python tools/tokenize.py` to re-encode both with the `cl100k_base` tokenizer into `data/tokens.json` (it needs `pip install tiktoken` and only runs locally; the GitHub workflow does not use it); the build refuses ids that no longer spell the text. In `data/llm.json`, keep one attention weight per question token and start `next` with the first answer token (the other candidates and the probabilities are illustrative).
 - To add the CV, put the PDF in a `cv/` folder (it is copied into `dist/`) and set `contact.cvFile`, for example `"cv/santiago-die-morejon-cv.pdf"`, in each language file.
 - To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`, add its tokens to `data/tokens.json` and its attention weights and candidates to `data/llm.json`. The menu, hreflang links and sitemap appear automatically; for the language suggestion bar add the `html[data-suggest="<code>"]` line in `css/styles.css`, and for its link preview add an `og-image-<code>.png` (1200×630).
 
