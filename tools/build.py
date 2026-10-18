@@ -388,7 +388,7 @@ def render_llm(s, tokens, model, lang):
     return f'''        <figure class="llm" data-llm style="--slots:{count}" aria-labelledby="llm-title">
           <figcaption class="llm__head">
             <span class="code-label">{esc(llm["label"])}</span>
-            <span class="llm__title" id="llm-title">{esc(llm["title"])}</span>
+            <span class="llm__title visually-hidden" id="llm-title">{esc(llm["title"])}</span>
           </figcaption>
           <div class="llm__nav">
             <ol class="llm__steps" aria-label="{esc(llm["stagesLabel"])}">
@@ -417,7 +417,7 @@ def render_llm(s, tokens, model, lang):
             </div>
             <svg class="llm__loop" aria-hidden="true"><path pathLength="1"/></svg>
           </div>
-          <p class="llm__note">{esc(llm["note"])}</p>
+          <p class="llm__note visually-hidden">{esc(llm["note"])}</p>
           <p class="visually-hidden" id="llm-desc">{esc(llm["description"])}</p>
           <p class="visually-hidden" aria-live="polite" data-llm-live><span data-llm-final hidden>{esc(llm["answerLabel"])}: {esc(llm["answer"])}</span></p>
         </figure>'''
