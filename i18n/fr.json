@@ -1,22 +1,20 @@
 {
   "meta": {
-    "title": "Santiago Die Morejón · Ingénieur informaticien · IA et ML · MLOps",
-    "description": "Portfolio de Santiago Die Morejón, ingénieur informaticien spécialisé en IA, machine learning et MLOps. Projets avec code et démos en ligne, expérience et contact.",
+    "title": "Santiago Die Morejón · Ingénieur informatique · IA et ML · MLOps",
+    "description": "Portfolio de Santiago Die Morejón, ingénieur informatique spécialisé en IA, en machine learning et en MLOps. Projets avec leur code source et des démos en ligne, parcours et contact.",
     "ogLocale": "fr_FR",
     "langName": "Français",
-    "jobTitle": "Ingénieur informaticien"
+    "jobTitle": "Ingénieur informatique"
   },
   "a11y": {
     "skip": "Aller au contenu",
     "home": "Santiago Die Morejón, accueil",
-    "nav": "Principale",
+    "nav": "Navigation principale",
     "newTab": "s’ouvre dans un nouvel onglet",
     "language": "Langue",
-    "currentLanguage": "Langue : français",
+    "currentLanguage": "Langue : français",
     "github": "Profil GitHub de Santiago Die Morejón",
-    "linkedin": "Profil LinkedIn de Santiago Die Morejón",
-    "tokensCaption": "Le titre découpé en tokens par le tokenizer cl100k_base, avec l’identifiant de chaque token.",
-    "predictCaption": "Prédiction du mot suivant après « Computer » : engineer 0,86, science 0,09, vision 0,03, programmer 0,02."
+    "linkedin": "Profil LinkedIn de Santiago Die Morejón"
   },
   "nav": {
     "about": "À propos",
@@ -31,30 +29,62 @@
   "langSuggest": {
     "text": "Cette page est aussi disponible en français.",
     "action": "Lire en français",
-    "dismiss": "Fermer l’avis"
+    "dismiss": "Masquer ce message"
   },
   "hero": {
-    "role": "Ingénieur informaticien · IA et ML · MLOps",
-    "tokenizeLabel": "tokenize()",
-    "tokens": [
-      { "t": "Ing", "id": 26489 },
-      { "t": "én", "id": 10610 },
-      { "t": "ieur", "id": 62005 },
-      { "t": " inform", "id": 6179 },
-      { "t": "atic", "id": 780 },
-      { "t": "ien", "id": 3675 },
-      { "t": " ·", "id": 9787 },
-      { "t": " IA", "id": 44190 },
-      { "t": " et", "id": 1880 },
-      { "t": " ML", "id": 20187 },
-      { "t": " ·", "id": 9787 },
-      { "t": " M", "id": 386 },
-      { "t": "LO", "id": 1623 },
-      { "t": "ps", "id": 1725 }
-    ],
-    "predictLabel": "predict_next()",
+    "role": "Ingénieur informatique · IA et ML · MLOps",
     "ctaProjects": "Voir les projets",
     "ctaContact": "Me contacter"
+  },
+  "llm": {
+    "label": "generate()",
+    "title": "Comment un modèle de langage transforme un prompt en réponse",
+    "prompt": "Qui est Santiago Die ?",
+    "answer": "Un ingénieur informatique spécialisé en IA et en MLOps.",
+    "description": "Schéma de la façon dont un modèle de langage rédige une réponse. Il reçoit le prompt « Qui est Santiago Die ? », le découpe en tokens avec leurs identifiants, transforme chaque token en vecteur avec sa position, fait passer les vecteurs par des couches d’attention empilées, attribue un score à chaque token suivant possible, en tire un, le reconvertit en texte et le renvoie en entrée. Token après token, il écrit : « Un ingénieur informatique spécialisé en IA et en MLOps. »",
+    "answerLabel": "Réponse",
+    "note": "Valeurs illustratives ; les identifiants des tokens sont réels (tokeniseur cl100k_base).",
+    "stagesLabel": "Étapes",
+    "controlsLabel": "Commandes de l’animation",
+    "pause": "Mettre l’animation en pause",
+    "play": "Lancer l’animation",
+    "prev": "Étape précédente",
+    "next": "Étape suivante",
+    "replay": "Rejouer depuis le début",
+    "stages": [
+      {
+        "label": "prompt",
+        "text": "La question arrive sous forme de texte brut."
+      },
+      {
+        "label": "tokens",
+        "text": "Un tokeniseur la découpe en tokens et associe à chacun un identifiant fixe."
+      },
+      {
+        "label": "embeddings",
+        "text": "Chaque identifiant devient un vecteur de nombres, combiné à sa position."
+      },
+      {
+        "label": "attention",
+        "text": "Les couches d’attention pèsent l’importance de chaque token pour les autres, bloc après bloc."
+      },
+      {
+        "label": "softmax",
+        "text": "La dernière couche attribue un score à chaque token suivant possible ; softmax transforme ces scores en probabilités."
+      },
+      {
+        "label": "tirage",
+        "text": "Un token est tiré selon ces probabilités ; la température règle la part de hasard."
+      },
+      {
+        "label": "sortie",
+        "text": "L’identifiant choisi redevient du texte et rejoint la réponse."
+      },
+      {
+        "label": "boucle",
+        "text": "Le nouveau token revient en entrée et le cycle recommence jusqu’au token de fin."
+      }
+    ]
   },
   "sections": {
     "about": "À propos",
@@ -70,7 +100,7 @@
     ]
   },
   "projects": {
-    "intro": "Projets de cours de l’Université de La Rioja, chacun avec son code et, quand elle existe, une démo en ligne.",
+    "intro": "Projets universitaires réalisés à l’Université de La Rioja, chacun avec son code source et, le cas échéant, une démo en ligne.",
     "featured": "À la une",
     "more": "Autres projets",
     "university": "Université de La Rioja",
@@ -82,7 +112,7 @@
     "translationPending": "TODO : traduire la description"
   },
   "experience": {
-    "empty": "Aucune entrée pour l’instant.",
+    "empty": "Aucune expérience renseignée pour l’instant.",
     "items": [
       {
         "period": "TODO : 2026",
@@ -93,7 +123,7 @@
     ]
   },
   "education": {
-    "empty": "Aucune entrée pour l’instant.",
+    "empty": "Aucune formation renseignée pour l’instant.",
     "items": [
       {
         "period": "TODO : Années",
@@ -104,11 +134,15 @@
     ]
   },
   "skills": {
-    "empty": "Aucune compétence pour l’instant.",
+    "empty": "Aucune compétence renseignée pour l’instant.",
     "groups": [
       {
         "name": "TODO : Domaine",
-        "items": ["TODO : Compétence", "TODO : Compétence", "TODO : Compétence"]
+        "items": [
+          "TODO : Compétence",
+          "TODO : Compétence",
+          "TODO : Compétence"
+        ]
       }
     ]
   },

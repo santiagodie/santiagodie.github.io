@@ -6,8 +6,9 @@ Usage:
     python tools/build.py --serve --port 8080
 
 Inputs: src/index.html (template), i18n/<lang>.json (all copy), data/projects.json
-(projects, with their three languages) and data/site.json (URL, profiles, languages,
-hero prediction). Python standard library only.
+(projects, with their three languages), data/site.json (URL, profiles, languages),
+data/tokens.json (real token ids, written by tools/tokenize.py) and data/llm.json
+(the illustrative values of the hero diagram). Python standard library only.
 
 Template syntax:
     {{ key.path }}    text from i18n, escaped; a leading "TODO:" becomes a visible marker
@@ -23,6 +24,7 @@ import functools
 import html
 import http.server
 import json
+import math
 import re
 import shutil
 import sys
@@ -31,12 +33,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
-STATIC = ["css", "js", "img", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "CNAME", "cv"]
+STATIC = ["css", "js", "img", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv"]
 ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>'
+FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
 TODO = re.compile(r"^TODO\s*:?\s*")
-# Lists whose length legitimately differs per language (the tokenizer splits each
-# language's headline into a different number of tokens).
-VARIABLE_LENGTH = {"hero.tokens"}
+# Lists whose length legitimately differs per language.
+VARIABLE_LENGTH = set()
 
 
 class BuildError(Exception):
@@ -83,6 +85,34 @@ def compare_keys(reference, other, lang, path=""):
     return problems
 
 
+def validate_model(strings, tokens, model, langs):
+    """The token ids must spell the current prompt and answer of every language, and the
+    illustrative data must have one step per answer token plus the end token."""
+    problems = []
+    for lang in langs:
+        llm, data = strings[lang]["llm"], model.get(lang)
+        if lang not in tokens:
+            problems.append(f"data/tokens.json has no '{lang}'")
+            continue
+        for field in ("prompt", "answer"):
+            spelled = "".join(token["t"] for token in tokens[lang][field])
+            if spelled != llm[field]:
+                problems.append(f"{lang}: data/tokens.json spells {spelled!r}, i18n llm.{field} is {llm[field]!r}")
+        if not data:
+            problems.append(f"data/llm.json has no '{lang}'")
+            continue
+        if len(data["steps"]) != len(tokens[lang]["answer"]) + 1:
+            problems.append(f"{lang}: data/llm.json has {len(data['steps'])} steps, expected {len(tokens[lang]['answer']) + 1} "
+                            "(one per answer token plus the end token)")
+        if len(data["attention"]) != len(tokens[lang]["prompt"]):
+            problems.append(f"{lang}: data/llm.json attention has {len(data['attention'])} weights for {len(tokens[lang]['prompt'])} prompt tokens")
+        if len(llm["stages"]) != 8:
+            problems.append(f"{lang}: llm.stages must list the 8 stages")
+    if problems:
+        raise BuildError("the hero diagram data is out of date (run python tools/tokenize.py after editing a prompt or answer):\n  - "
+                         + "\n  - ".join(problems))
+
+
 def validate(strings, projects, langs):
     problems = []
     reference = strings["en"]
@@ -94,7 +124,8 @@ def validate(strings, projects, langs):
         for field in ("id", "title", "course", "description", "repo"):
             if field not in project:
                 problems.append(f"projects.json: '{pid}' has no '{field}'")
-        localized = [("course", project.get("course")), ("description", project.get("description"))]
+        localized = [("title", project.get("title")), ("course", project.get("course")),
+                     ("description", project.get("description"))]
         for index, metric in enumerate(project.get("metrics", [])):
             localized += [(f"metrics[{index}].value", metric.get("value")), (f"metrics[{index}].label", metric.get("label"))]
         if project.get("image"):
@@ -203,32 +234,193 @@ def render_lang_suggest(site, strings, current, root):
     return "\n".join(blocks)
 
 
-def render_tokens(tokens):
-    """Chips grouped by word, so a word split into sub-word tokens never wraps apart."""
-    words = []
-    for index, token in enumerate(tokens):
-        raw = token["t"]
-        chip = (f'<span class="token" style="--i:{index}"><span class="token__text">{esc(raw.strip())}</span>'
-                f'<span class="token__id">{token["id"]}</span></span>')
-        if index == 0 or raw.startswith(" "):
-            words.append([chip])
+# The hero's generate() diagram -------------------------------------------
+# Token texts and ids are real (data/tokens.json, from tools/tokenize.py); the
+# probabilities, embeddings and attention weights are illustrative (data/llm.json)
+# and the panel says so. Every word and number is written here, into the HTML; the
+# script js/hero-model.js only decides what is visible when.
+
+ALT_SHARES = [0.5, 0.26, 0.15, 0.09]  # how a step's remaining probability is split
+VECTOR = 6  # cells per embedding column
+ICONS = {
+    "prev": '<path d="M10 4 6 8l4 4"/>',
+    "next": '<path d="m6 4 4 4-4 4"/>',
+    "pause": '<path d="M5.5 3.5v9M10.5 3.5v9"/>',
+    "play": '<path d="M5 3.5v9l7-4.5z"/>',
+    "replay": '<path d="M3.5 8a4.5 4.5 0 1 0 1.4-3.3"/><path d="M3.5 2.5v2.6h2.6"/>',
+}
+
+
+def number(value, lang, digits=2):
+    out = f"{value:.{digits}f}"
+    return out.replace(".", ",") if lang in ("es", "fr") else out
+
+
+def token_ids(token):
+    return " ".join(str(i) for i in token["id"]) if isinstance(token["id"], list) else str(token["id"])
+
+
+def chip_text(text):
+    """What a chip shows: the token without its leading space; line breaks spelled out."""
+    shown = text.strip() if text.strip() else text
+    return shown.replace("\n", "\\n")
+
+
+def vector(token_id, position):
+    """Six illustrative embedding values, stable per token id, nudged by position."""
+    seed = token_id[0] if isinstance(token_id, list) else token_id
+    values = []
+    for j in range(VECTOR):
+        x = math.sin(seed * 12.9898 + j * 78.233 + position * 0.37) * 43758.5453
+        values.append(0.12 + 0.78 * (x - math.floor(x)))
+    return values
+
+
+def distribution(step, temperature):
+    """Five candidates, most likely first, with a logit derived from each probability
+    (softmax(logit / T) gives the probability back)."""
+    rest = 1 - step["p"]
+    alts = [(None, step["p"])]
+    for index, alt in enumerate(step["alts"]):
+        word, p = (alt[0], alt[1]) if isinstance(alt, list) else (alt, rest * ALT_SHARES[index])
+        alts.append((word, p))
+    cands = sorted(alts, key=lambda c: -c[1])
+    return [(temperature * math.log(p) + 9, p, word) for word, p in cands]
+
+
+def arc_paths(count, query, weights, vertical):
+    """Arcs from the query slot to every earlier slot; width and opacity follow the weight."""
+    paths = []
+    top = max(weights[:query] or [1])
+    for i in range(query):
+        reach = 6 + 30 * (query - i) / count
+        if vertical:
+            yq, yi = (query + 0.5) * 20, (i + 0.5) * 20
+            d = f"M40 {yq:g}C{40 - reach:g} {yq:g} {40 - reach:g} {yi:g} 40 {yi:g}"
         else:
-            words[-1].append(chip)
-    rows = "\n".join(f'              <span class="tokens__word">{"".join(chips)}</span>' for chips in words)
-    return '            <div class="tokens">\n' + rows + "\n            </div>"
+            xq, xi = (query + 0.5) * 20, (i + 0.5) * 20
+            d = f"M{xq:g} 40C{xq:g} {40 - reach:g} {xi:g} {40 - reach:g} {xi:g} 40"
+        paths.append(f'<path d="{d}" pathLength="1" style="--w:{weights[i] / top:.2f}"/>')
+    return "".join(paths)
 
 
-def render_prediction(prediction):
-    rows = []
-    for index, option in enumerate(prediction["options"]):
-        top = " predict__row--top" if index == 0 else ""
-        rows.append(f'              <li class="predict__row{top}" style="--p:{option["p"]}">'
-                    f'<span class="predict__word">{esc(option["word"])}</span>'
-                    f'<span class="predict__bar" aria-hidden="true"></span>'
-                    f'<span class="predict__p">{option["p"]:.2f}</span></li>')
-    return (f'            <p class="predict__context">{esc(prediction["context"])}<span class="predict__caret" aria-hidden="true"></span>'
-            f'<span class="predict__arrow" aria-hidden="true">→</span></p>\n'
-            '            <ol class="predict__list">\n' + "\n".join(rows) + "\n            </ol>")
+def render_llm(s, tokens, model, lang):
+    llm = s["llm"]
+    prompt, answer, eos = tokens[lang]["prompt"], tokens[lang]["answer"], tokens["eos"]
+    data = model[lang]
+    temperature = model["temperature"]
+    count = len(prompt) + 1  # prompt slots plus the slot a generated token is fed back into
+    static = data["static"]
+
+    steps = []
+    for index, stage in enumerate(llm["stages"], 1):
+        steps.append(
+            f'<li class="llm__step" data-step="{index}"><span class="llm__step-head" data-step-head>'
+            f'<span class="llm__step-num">{index:02d}</span> <span class="llm__step-label">{esc(stage["label"])}</span></span>'
+            f'<span class="llm__step-text"><span class="llm__step-tag" aria-hidden="true">{esc(stage["label"])}</span> {esc(stage["text"])}</span></li>')
+
+    def control(name, label, extra=""):
+        icon = f'<svg viewBox="0 0 16 16" aria-hidden="true">{ICONS[name]}</svg>'
+        if name == "pause":
+            icon += f'<svg class="llm__icon-play" viewBox="0 0 16 16" aria-hidden="true">{ICONS["play"]}</svg>'
+        return f'<button class="llm__ctl" type="button" data-llm-{name} aria-label="{esc(label)}"{extra}>{icon}</button>'
+
+    controls = (control("prev", llm["prev"])
+                + control("pause", llm["pause"], f' data-label-pause="{esc(llm["pause"])}" data-label-play="{esc(llm["play"])}"')
+                + control("next", llm["next"]) + control("replay", llm["replay"]))
+
+    chars = "".join(f'<span style="--c:{i}">{esc(ch)}</span>' for i, ch in enumerate(llm["prompt"]))
+
+    def slot(token, position, extra_class="", attrs=""):
+        cells = "".join(f'<i style="--v:{v:.2f}"></i>' for v in vector(token["id"], position))
+        return (f'<li class="llm__slot{extra_class}" style="--n:{min(position, count - 1) + 2}"{attrs}>'
+                f'<span class="llm__chip">{esc(chip_text(token["t"]))}</span>'
+                f'<span class="llm__id">{token_ids(token)}</span>'
+                f'<span class="llm__vec">{cells}</span>'
+                f'<span class="llm__pos">p{position}</span></li>')
+
+    legend = (f'<li class="llm__slot llm__legend" style="--n:1">'
+              f'<span class="llm__region" data-region="2"><span class="llm__region-num">02</span> {esc(llm["stages"][1]["label"])}</span>'
+              f'<span class="llm__region llm__region--sub" data-region="2">id</span>'
+              f'<span class="llm__region" data-region="3"><span class="llm__region-num">03</span> {esc(llm["stages"][2]["label"])}</span>'
+              f'<span class="llm__region llm__region--sub" data-region="3">pos</span></li>')
+    slots = [legend] + [slot(token, i) for i, token in enumerate(prompt)]
+    for k, token in enumerate(answer):
+        state = " is-static" if k == static - 1 else ""
+        slots.append(slot(token, len(prompt) + k, f" llm__slot--fed{state}", f' data-fed="{k}"'))
+
+    weights = data["attention"]
+    fed_weights = [w * 0.9 for w in weights] + [0.0]
+    arcs = "".join(
+        f'<svg class="llm__arcs llm__arcs--{kind}" viewBox="{box}" preserveAspectRatio="none" aria-hidden="true">'
+        f'<g class="llm__arcset" data-arcs="prompt">{arc_paths(count, len(prompt) - 1, weights, kind == "v")}</g>'
+        f'<g class="llm__arcset" data-arcs="fed">{arc_paths(count, len(prompt), fed_weights, kind == "v")}</g></svg>'
+        for kind, box in (("h", f"0 0 {count * 20} 40"), ("v", f"0 0 40 {count * 20}")))
+
+    dists = []
+    targets = answer + [eos]
+    for k, (step, target) in enumerate(zip(data["steps"], targets)):
+        rows = []
+        for logit, p, word in distribution(step, temperature):
+            chosen = word is None
+            word = chip_text(target["t"]) if chosen else word
+            shown = number(p, lang) if p >= 0.005 else "<" + number(0.01, lang)
+            rows.append(f'<li class="llm__cand{" llm__cand--chosen" if chosen else ""}" style="--l:{logit / 10:.3f};--p:{p:.3f}">'
+                        f'<span class="llm__word">{esc(word)}</span><span class="llm__bar"></span>'
+                        f'<span class="llm__val"><span class="llm__logit">{number(logit, lang)}</span>'
+                        f'<span class="llm__prob">{shown}</span></span></li>')
+        state = " is-static" if k == static else ""
+        dists.append(f'<ol class="llm__dist{state}" data-dist="{k}">{"".join(rows)}</ol>')
+
+    detok = "".join(
+        f'<span class="llm__detok{" is-static" if k == static else ""}" data-detok="{k}"><span class="llm__detok-id">{token_ids(target)}</span>'
+        f' → <span class="llm__detok-text">{esc(chip_text(target["t"]))}</span></span>' for k, target in enumerate(targets))
+    out = "".join(f'<span class="llm__out" data-out="{k}">{esc(token["t"])}</span>' for k, token in enumerate(answer))
+    out += f'<span class="llm__out llm__eos" data-out="{len(answer)}">{esc(eos["t"])}</span>'
+
+    blocks = "".join('<span class="llm__block"><span>attention</span><span>MLP</span></span>' for _ in range(3))
+
+    def region(n, label):
+        return f'<p class="llm__region" data-region="{n}"><span class="llm__region-num">{n:02d}</span> {label}</p>'
+
+    st = [esc(stage["label"]) for stage in llm["stages"]]
+
+    return f'''        <figure class="llm" data-llm style="--slots:{count}" aria-labelledby="llm-title">
+          <figcaption class="llm__head">
+            <span class="code-label">{esc(llm["label"])}</span>
+            <span class="llm__title" id="llm-title">{esc(llm["title"])}</span>
+          </figcaption>
+          <div class="llm__nav">
+            <ol class="llm__steps" aria-label="{esc(llm["stagesLabel"])}">
+              {"".join(steps)}
+            </ol>
+            <div class="llm__controls" role="group" aria-label="{esc(llm["controlsLabel"])}" data-llm-controls>{controls}</div>
+          </div>
+          <div class="llm__canvas" role="img" aria-label="{esc(llm["title"])}" aria-describedby="llm-desc">
+            <div class="llm__input">
+              {region(1, st[0])}
+              <p class="llm__prompt"><span class="llm__chars">{chars}</span><span class="llm__caret"></span></p>
+              <div class="llm__table">{arcs}<ol class="llm__slots">{"".join(slots)}</ol></div>
+            </div>
+            <div class="llm__stack">
+              {region(4, "Transformer × N")}
+              <div class="llm__blocks">{blocks}<span class="llm__more">⋮</span><span class="llm__pulse"></span></div>
+            </div>
+            <div class="llm__scores">
+              <div class="llm__labels">{region(5, "logits → softmax")}{region(6, f"T = {number(temperature, lang, 1)}")}</div>
+              <div class="llm__dists">{"".join(dists)}</div>
+            </div>
+            <div class="llm__output">
+              <div class="llm__labels">{region(7, st[6])}{region(8, st[7])}</div>
+              <p class="llm__detoks">{detok}</p>
+              <p class="llm__answer">{out}</p>
+            </div>
+            <svg class="llm__loop" aria-hidden="true"><path pathLength="1"/></svg>
+          </div>
+          <p class="llm__note">{esc(llm["note"])}</p>
+          <p class="visually-hidden" id="llm-desc">{esc(llm["description"])}</p>
+          <p class="visually-hidden" aria-live="polite" data-llm-live><span data-llm-final hidden>{esc(llm["answerLabel"])}: {esc(llm["answer"])}</span></p>
+        </figure>'''
 
 
 def render_about(s):
@@ -242,13 +434,16 @@ def project_text(project, lang, s):
     return f'<p class="card__text"{attr}>{text(project["description"][lang])}</p>{note}'
 
 
-def project_links(project, s):
-    links = [external(project["repo"], s["projects"]["code"], project["title"], s)]
+def project_links(project, lang, s):
+    title = project["title"][lang]
+    links = [external(project["repo"], s["projects"]["code"], title, s)]
     demo = project.get("demo")
     if demo and demo.get("url"):
         label = s["projects"]["colab"] if demo.get("type") == "colab" else s["projects"]["demo"]
-        links.insert(0, external(demo["url"], label, project["title"], s))
-    return "".join(links)
+        links.insert(0, external(demo["url"], label, title, s))
+    # The repository keeps its own name in every language.
+    repo = "/".join(project["repo"].rstrip("/").split("/")[-2:])
+    return "".join(links) + f'<span class="card__repo" translate="no">{esc(repo)}</span>'
 
 
 def course_line(project, lang, s):
@@ -271,21 +466,21 @@ def render_featured(projects, lang, s, root, warnings):
                      f'height="{image["height"]}" loading="lazy" decoding="async">')
         else:
             warnings.add(f"no screenshot for {project['id']} (expected {image['src'] if image else 'image'}), using a placeholder")
-            media = (f'<div class="feature__placeholder" role="img" aria-label="{esc(project["title"])}">'
+            media = (f'<div class="feature__placeholder" role="img" aria-label="{esc(project["title"][lang])}">'
                      f'<img src="{root}img/sd-navy.svg" alt="" width="290" height="208"></div>')
         metrics = "".join(
             f'<div class="metric"><dt>{esc(m["label"][lang])}</dt><dd>{esc(m["value"][lang])}</dd></div>'
             for m in project.get("metrics", []))
         cards.append(f'''            <li class="feature">
-              <article class="feature__card" aria-labelledby="p-{project["id"]}">
+              <article class="feature__card" aria-labelledby="p-{project["id"]}">{FRAME}
                 <div class="feature__media">{media}</div>
                 <div class="feature__body">
-                  <h4 class="feature__title" id="p-{project["id"]}">{esc(project["title"])}</h4>
+                  <h4 class="feature__title" id="p-{project["id"]}">{esc(project["title"][lang])}</h4>
                   <p class="card__course">{course_line(project, lang, s)}</p>
                   {project_text(project, lang, s)}
                   <dl class="metrics" aria-label="{esc(s["projects"]["metrics"])}">{metrics}</dl>
                   {tags(project, s)}
-                  <div class="card__links">{project_links(project, s)}</div>
+                  <div class="card__links">{project_links(project, lang, s)}</div>
                 </div>
               </article>
             </li>''')
@@ -297,12 +492,12 @@ def render_projects(projects, lang, s):
     for project in projects:
         if project.get("featured"):
             continue
-        cards.append(f'''            <li class="card">
-              <h4 class="card__title">{esc(project["title"])}</h4>
+        cards.append(f'''            <li class="card">{FRAME}
+              <h4 class="card__title">{esc(project["title"][lang])}</h4>
               <p class="card__course">{course_line(project, lang, s)}</p>
               {project_text(project, lang, s)}
               {tags(project, s)}
-              <div class="card__links">{project_links(project, s)}</div>
+              <div class="card__links">{project_links(project, lang, s)}</div>
             </li>''')
     return "\n".join(cards)
 
@@ -351,13 +546,16 @@ def render_cv(s, root):
 PLACEHOLDER = re.compile(r"\{\{\s*([=@!]?)\s*([\w.]+)\s*\}\}")
 
 
-def render_page(template, site, strings, projects, language, warnings):
+def render_page(template, site, strings, projects, tokens, model, language, warnings):
     lang = language["code"]
     s = strings[lang]
     root = "../" * language["path"].count("/")
     values = {
         "lang": lang, "langCode": lang.upper(), "root": root, "year": date.today().year,
+        "langs": ",".join(l["code"] for l in site["languages"]),
         "canonical": page_url(site, language), "siteUrl": site["url"],
+        # Each language has its own link preview (tools/og-image.html), English as fallback.
+        "ogImage": site["url"] + (f"og-image-{lang}.png" if (ROOT / f"og-image-{lang}.png").exists() else "og-image.png"),
         "github": site["person"]["github"], "linkedin": site["person"]["linkedin"],
     }
     fragments = {
@@ -366,8 +564,7 @@ def render_page(template, site, strings, projects, language, warnings):
         "jsonld": lambda: render_jsonld(site, s),
         "langMenu": lambda: render_lang_menu(site, strings, lang, root),
         "langSuggest": lambda: render_lang_suggest(site, strings, lang, root),
-        "tokens": lambda: render_tokens(s["hero"]["tokens"]),
-        "prediction": lambda: render_prediction(site["prediction"]),
+        "llm": lambda: render_llm(s, tokens, model, lang),
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s, root, warnings),
         "projects": lambda: render_projects(projects, lang, s),
@@ -417,7 +614,10 @@ def build():
     langs = [language["code"] for language in site["languages"]]
     strings = {lang: load_json(f"i18n/{lang}.json") for lang in langs}
     projects = load_json("data/projects.json")["projects"]
+    tokens = load_json("data/tokens.json")
+    model = load_json("data/llm.json")
     validate(strings, projects, langs)
+    validate_model(strings, tokens, model, langs)
     template = (ROOT / "src" / "index.html").read_text(encoding="utf-8")
 
     if DIST.exists():
@@ -427,7 +627,7 @@ def build():
     for language in site["languages"]:
         out = DIST / language["path"] / "index.html"
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(render_page(template, site, strings, projects, language, warnings), encoding="utf-8", newline="\n")
+        out.write_text(render_page(template, site, strings, projects, tokens, model, language, warnings), encoding="utf-8", newline="\n")
 
     for name in STATIC:
         source = ROOT / name

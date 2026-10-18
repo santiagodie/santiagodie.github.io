@@ -13,7 +13,7 @@
   <meta property="og:title" content="{{= meta.title }}">
   <meta property="og:description" content="{{= meta.description }}">
   <meta property="og:url" content="{{ @canonical }}">
-  <meta property="og:image" content="{{ @siteUrl }}og-image.png">
+  <meta property="og:image" content="{{ @ogImage }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="{{= meta.title }}">
@@ -29,8 +29,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wdth,wght@100..125,500..800&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wght@400..600&display=swap">
   <link rel="stylesheet" href="{{ @root }}css/styles.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    // Before the first paint, so nothing moves when the scripts start: mark that
+    // JavaScript runs, whether motion is allowed, and which language to suggest.
+    (function (root) {
+      root.classList.add("js");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("motion");
+      try {
+        if (localStorage.getItem("lang-suggest-dismissed")) return;
+        var offered = "{{ @langs }}".split(",");
+        var tags = navigator.languages || [navigator.language || ""];
+        for (var i = 0; i < tags.length; i++) {
+          var code = String(tags[i]).slice(0, 2).toLowerCase();
+          if (code === root.lang) return;
+          if (offered.indexOf(code) !== -1) { root.dataset.suggest = code; return; }
+        }
+      } catch (e) { /* storage blocked: no suggestion */ }
+    })(document.documentElement);
+  </script>
   <script src="{{ @root }}js/main.js" defer></script>
+  <script src="{{ @root }}js/hero-model.js" defer></script>
+  <script src="{{ @root }}js/scroll.js" defer></script>
   <script type="application/ld+json">{{ !jsonld }}</script>
 </head>
 <body>
@@ -91,6 +110,13 @@
   </header>
 
   <main id="main" tabindex="-1">
+    <svg class="progress" aria-hidden="true" focusable="false" data-progress>
+      <path class="progress__line"/>
+      <path class="progress__trail progress__trail--1"/>
+      <path class="progress__trail progress__trail--2"/>
+      <path class="progress__trail progress__trail--3"/>
+      <g class="progress__tip"><circle class="progress__halo" r="9"/><circle r="3"/></g>
+    </svg>
     <section class="hero" id="top" aria-labelledby="hero-name">
       <div class="hero__inner wrap">
         <div class="hero__mark" aria-hidden="true">
@@ -100,26 +126,18 @@
         <h1 class="hero__name" id="hero-name">Santiago <span class="hero__surname">Die Morejón</span></h1>
         <p class="hero__role">{{ hero.role }}</p>
 
-        <figure class="tokenizer" role="img" aria-label="{{= a11y.tokensCaption }}">
-          <figcaption class="code-label">{{ hero.tokenizeLabel }}</figcaption>
-{{ !tokens }}
-        </figure>
-
         <div class="hero__actions">
           <a class="button button--primary" href="#projects">{{ hero.ctaProjects }}</a>
           <a class="button button--quiet" href="#contact">{{ hero.ctaContact }}</a>
         </div>
 
-        <figure class="predict" lang="en" aria-label="{{= a11y.predictCaption }}">
-          <figcaption class="code-label">{{ hero.predictLabel }}</figcaption>
-{{ !prediction }}
-        </figure>
+{{ !llm }}
       </div>
     </section>
 
     <section class="section section--white" id="about" aria-labelledby="about-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true">01 /</span> {{ sections.about }}</h2>
+        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>01 /</span> <span class="section__label">{{ sections.about }}</span></h2>
         <div class="section__body prose">
 {{ !about }}
         </div>
@@ -128,7 +146,7 @@
 
     <section class="section section--bone" id="projects" aria-labelledby="projects-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="projects-title"><span class="section__num" aria-hidden="true">02 /</span> {{ sections.projects }}</h2>
+        <h2 class="section__title" id="projects-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>02 /</span> <span class="section__label">{{ sections.projects }}</span></h2>
         <div class="section__body">
           <p class="section__lead">{{ projects.intro }}</p>
           <h3 class="visually-hidden">{{ projects.featured }}</h3>
@@ -145,7 +163,7 @@
 
     <section class="section section--white" id="experience" data-compact aria-labelledby="experience-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="experience-title"><span class="section__num" aria-hidden="true">03 /</span> {{ sections.experience }}</h2>
+        <h2 class="section__title" id="experience-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>03 /</span> <span class="section__label">{{ sections.experience }}</span></h2>
         <div class="section__body">
 {{ !experience }}
         </div>
@@ -154,7 +172,7 @@
 
     <section class="section section--bone" id="education" data-compact aria-labelledby="education-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="education-title"><span class="section__num" aria-hidden="true">04 /</span> {{ sections.education }}</h2>
+        <h2 class="section__title" id="education-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>04 /</span> <span class="section__label">{{ sections.education }}</span></h2>
         <div class="section__body">
 {{ !education }}
         </div>
@@ -163,7 +181,7 @@
 
     <section class="section section--white" id="skills" data-compact aria-labelledby="skills-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="skills-title"><span class="section__num" aria-hidden="true">05 /</span> {{ sections.skills }}</h2>
+        <h2 class="section__title" id="skills-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>05 /</span> <span class="section__label">{{ sections.skills }}</span></h2>
         <div class="section__body">
 {{ !skills }}
         </div>
@@ -172,7 +190,7 @@
 
     <section class="section section--navy" id="contact" aria-labelledby="contact-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="contact-title"><span class="section__num" aria-hidden="true">06 /</span> {{ sections.contact }}</h2>
+        <h2 class="section__title" id="contact-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>06 /</span> <span class="section__label">{{ sections.contact }}</span></h2>
         <div class="section__body">
           <p class="section__lead">{{ contact.text }}</p>
           <ul class="contact" role="list">

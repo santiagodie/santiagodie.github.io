@@ -9,14 +9,12 @@
   "a11y": {
     "skip": "Skip to content",
     "home": "Santiago Die Morejón, home",
-    "nav": "Main",
+    "nav": "Main navigation",
     "newTab": "opens in a new tab",
     "language": "Language",
     "currentLanguage": "Language: English",
     "github": "GitHub profile of Santiago Die Morejón",
-    "linkedin": "LinkedIn profile of Santiago Die Morejón",
-    "tokensCaption": "The headline split into tokens by the cl100k_base tokenizer, with each token id.",
-    "predictCaption": "Next-word prediction after “Computer”: engineer 0.86, science 0.09, vision 0.03, programmer 0.02."
+    "linkedin": "LinkedIn profile of Santiago Die Morejón"
   },
   "nav": {
     "about": "About",
@@ -35,22 +33,58 @@
   },
   "hero": {
     "role": "Computer Engineer · AI & ML · MLOps",
-    "tokenizeLabel": "tokenize()",
-    "tokens": [
-      { "t": "Computer", "id": 38432 },
-      { "t": " Engineer", "id": 29483 },
-      { "t": " ·", "id": 9787 },
-      { "t": " AI", "id": 15592 },
-      { "t": " &", "id": 612 },
-      { "t": " ML", "id": 20187 },
-      { "t": " ·", "id": 9787 },
-      { "t": " M", "id": 386 },
-      { "t": "LO", "id": 1623 },
-      { "t": "ps", "id": 1725 }
-    ],
-    "predictLabel": "predict_next()",
     "ctaProjects": "View projects",
     "ctaContact": "Get in touch"
+  },
+  "llm": {
+    "label": "generate()",
+    "title": "How a language model turns a prompt into an answer",
+    "prompt": "Who is Santiago Die?",
+    "answer": "A computer engineer focused on AI and MLOps.",
+    "description": "Diagram of how a language model writes an answer. It receives the prompt “Who is Santiago Die?”, splits it into tokens with their ids, turns each token into a vector with its position, passes the vectors through stacked attention layers, scores every possible next token, samples one, turns it back into text and feeds it back as input. One token at a time, it writes: “A computer engineer focused on AI and MLOps.”",
+    "answerLabel": "Answer",
+    "note": "Illustrative values; the token ids are real (cl100k_base tokenizer).",
+    "stagesLabel": "Stages",
+    "controlsLabel": "Animation controls",
+    "pause": "Pause the animation",
+    "play": "Play the animation",
+    "prev": "Previous stage",
+    "next": "Next stage",
+    "replay": "Replay from the start",
+    "stages": [
+      {
+        "label": "prompt",
+        "text": "The question arrives as plain text."
+      },
+      {
+        "label": "tokens",
+        "text": "A tokenizer cuts it into tokens and maps each one to a fixed id."
+      },
+      {
+        "label": "embeddings",
+        "text": "Each id becomes a vector of numbers, combined with its position."
+      },
+      {
+        "label": "attention",
+        "text": "Attention layers weigh how much each token matters to the others, block after block."
+      },
+      {
+        "label": "softmax",
+        "text": "The last layer scores every possible next token; softmax turns the scores into probabilities."
+      },
+      {
+        "label": "sampling",
+        "text": "One token is drawn from those probabilities; the temperature sets how adventurous the choice is."
+      },
+      {
+        "label": "output",
+        "text": "The chosen id turns back into text and joins the answer."
+      },
+      {
+        "label": "loop",
+        "text": "The new token goes back into the input and the cycle repeats until the end token."
+      }
+    ]
   },
   "sections": {
     "about": "About",
@@ -104,7 +138,11 @@
     "groups": [
       {
         "name": "TODO: Area",
-        "items": ["TODO: Skill", "TODO: Skill", "TODO: Skill"]
+        "items": [
+          "TODO: Skill",
+          "TODO: Skill",
+          "TODO: Skill"
+        ]
       }
     ]
   },
