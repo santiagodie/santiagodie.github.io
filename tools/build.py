@@ -233,13 +233,16 @@ def render_lang_suggest(site, strings, current, root):
 
 
 # The About chat -----------------------------------------------------------
-# The question and the answer are written into the HTML, so the finished chat is what
-# readers without JavaScript and search engines get. js/chat.js animates it: the
-# token ids (real, data/tokens.json) and the illustrative attention weights and
-# candidates (data/llm.json) travel as a small JSON block for it.
+# The question, the answer and the message-limit notice are written into the HTML, so
+# the finished chat is what readers without JavaScript and search engines get.
+# js/chat.js animates it: the token ids (real, data/tokens.json), the illustrative
+# attention weights and candidates (data/llm.json) and the notice's reset-time
+# sentences travel as a small JSON block for it.
 
 SEND = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15.5v-11M5 9l5-5 5 5"/></svg>'
 SKIP = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l4 4-4 4M9 4l4 4-4 4"/></svg>'
+FORWARD = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>'
+CLOCK = '<svg class="chat__limit-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 5.5V10h3.5"/></svg>'
 REPLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8a4.5 4.5 0 1 0 1.4-3.3"/><path d="M3.5 2.5v2.6h2.6"/></svg>'
 
 
@@ -251,7 +254,11 @@ def render_chat(s, tokens, model, lang):
         "attention": model[lang]["attention"],
         "next": [{"t": word, "p": p} for word, p in model[lang]["next"]],
         "stages": chat["stages"],
+        "reset": [chat["limit"]["reset"], chat["limit"]["resetOne"]],
     }
+    # The arrow stays with the last word when the link wraps.
+    *words, last = chat["limit"]["cta"].split(" ")
+    cta = esc(" ".join(words + [""])) + f'<span class="nowrap">{esc(last)}&nbsp;{FORWARD}</span>'
     # "</" cannot close the script block early: every "<" is escaped.
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     return f'''        <div class="chat" data-chat>
@@ -266,9 +273,12 @@ def render_chat(s, tokens, model, lang):
                 <p class="chat__bubble"><span>{esc(chat["prompt"])}</span></p>
                 <p class="chat__answer">{answer}</p>
               </div>
-              <div class="chat__composer">
+              <div class="chat__limit" aria-live="polite" data-chat-limit>
+                <p class="chat__limit-body">{CLOCK}<span class="chat__limit-text">{esc(chat["limit"]["text"])}<span data-chat-reset></span></span><a class="chat__limit-link" href="#contact">{cta}</a></p>
+              </div>
+              <div class="chat__composer" role="group" aria-label="{esc(chat["placeholder"])}" aria-disabled="true">
                 <span class="chat__input" aria-hidden="true"><span class="chat__typed">{esc(chat["prompt"])}</span><span class="chat__placeholder">{esc(chat["placeholder"])}</span></span>
-                <button class="chat__send" type="button" aria-label="{esc(chat["send"])}: {esc(chat["prompt"])}"><span class="chat__ring"></span>{SEND}</button>
+                <button class="chat__send" type="button" disabled aria-label="{esc(chat["send"])}: {esc(chat["prompt"])}"><span class="chat__ring"></span>{SEND}</button>
               </div>
             </div>
             <div class="chat__stage" aria-hidden="true"></div>

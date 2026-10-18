@@ -1,8 +1,10 @@
 // About chat: press send and watch the question become an answer, token by token.
-// The question and the answer are already in the HTML (tools/build.py); this script
-// only animates them, with the Web Animations API (transform, opacity and
-// stroke-dashoffset). Skip, Escape, scrolling the panel away or the end of the run
-// all lead to the same finished chat. Without it, the chat is shown finished.
+// The question, the answer and the message-limit notice are already in the HTML
+// (tools/build.py); this script only animates them, with the Web Animations API
+// (transform, opacity and stroke-dashoffset). Skip, Escape, scrolling the panel away
+// or the end of the run all lead to the same finished chat: the answer, then the
+// notice that the chat is out of messages, with the way to ask Santiago instead.
+// Without this script, the chat is shown finished.
 
 (() => {
   "use strict";
@@ -24,6 +26,10 @@
   const skip = chat.querySelector("[data-chat-skip]");
   const replay = chat.querySelector("[data-chat-replay]");
   const live = chat.querySelector("[data-chat-live]");
+  const limit = chat.querySelector("[data-chat-limit]");
+  const notice = limit.firstElementChild;
+  const link = notice.querySelector("a");
+  const resetAt = notice.querySelector("[data-chat-reset]");
   const stage = chat.querySelector(".chat__stage");
   const clock = chat.querySelector(".chat__clock");
   const data = JSON.parse(chat.querySelector("[data-chat-model]").textContent);
@@ -84,6 +90,33 @@
 
   // While the run plays, the scroll progress line keeps still (js/scroll.js).
   const signal = (on) => document.dispatchEvent(new CustomEvent("chat:motion", { detail: on }));
+
+  // The box takes messages, or it does not (done, and in the HTML as delivered).
+  function setOff(off) {
+    send.disabled = off;
+    composer.setAttribute("aria-disabled", String(off));
+  }
+
+  // When the limit resets, in the visitor's time: in five hours or so, on the hour,
+  // written the way the page's language writes the time (the visitor's own variant
+  // of it when the browser says so, e.g. en-GB for 24-hour times).
+  function resetTime() {
+    const lang = document.documentElement.lang;
+    const locale = (navigator.languages || []).find((tag) => tag.toLowerCase().startsWith(lang)) || lang;
+    const at = new Date(Date.now() + 5 * 3600e3);
+    at.setMinutes(60, 0, 0);
+    const format = new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit" });
+    const hour = format.formatToParts(at).find((part) => part.type === "hour")?.value;
+    // French sets times as "23 h"; Spanish says "a la 1" but "a las 2".
+    const shown = lang === "fr" ? `${at.getHours()}\u00a0h` : format.format(at);
+    const [many, one] = data.reset;
+    const [before, after] = (hour === "1" ? one : many).split("{time}");
+    const time = el("time", null, shown);
+    const pad = (n) => String(n).padStart(2, "0");
+    time.dateTime = `${at.getFullYear()}-${pad(at.getMonth() + 1)}-${pad(at.getDate())}T${pad(at.getHours())}:00`;
+    // The time never starts a line on its own ("a las / 23:00").
+    resetAt.replaceChildren(` ${before.replace(/ $/, "\u00a0")}`, time, after);
+  }
 
   // A tiny mono label names each stage, in the top-left corner.
   let label = null;
@@ -410,19 +443,28 @@
     stage.replaceChildren();
     chat.querySelector(".chat__ghost")?.remove();
     scene.inert = false;
-    send.disabled = true;
+    setOff(true);
     skip.hidden = true;
     replay.hidden = false;
     live.textContent = answer.textContent.trim();
-    if (refocus) replay.focus({ preventScroll: true });
+
+    // Then the notice, just after the answer: announced by its own polite live
+    // region when it is put back in, and the keyboard's next stop.
+    resetTime();
+    limit.append(notice);
+    play(notice, reduce.matches
+      ? { opacity: [0, 1] }
+      : { opacity: [0, 1], transform: ["translateY(6px)", "none"] }, { duration: 320, delay: 120, easing: OUT });
+    if (refocus) link.focus({ preventScroll: true });
     signal(false);
   }
 
   function reset() {
     anims.forEach((animation) => animation.cancel());
     anims.clear();
+    notice.remove();
     chat.dataset.state = "idle";
-    send.disabled = false;
+    setOff(false);
     live.textContent = "";
   }
 
@@ -492,5 +534,8 @@
     if (!entry.isIntersecting && running) finish();
   }, { threshold: [0, 0.35] }).observe(panel);
 
+  // Ready: the box takes the question; the notice waits for the answer.
+  notice.remove();
   chat.dataset.state = "idle";
+  setOff(false);
 })();

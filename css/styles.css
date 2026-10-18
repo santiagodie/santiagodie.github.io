@@ -921,10 +921,10 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 }
 
 /* About chat: "Who is Santiago Die?" -----------------------------------------
-   The About section's introduction. The question and the answer are in the HTML
-   (tools/build.py): without JavaScript this is the finished chat. With it, the chat
-   starts with the question typed in the box; send plays the answer token by token
-   (js/chat.js, Web Animations,
+   The About section's introduction. The question, the answer and the message-limit
+   notice are in the HTML (tools/build.py): without JavaScript this is the finished
+   chat. With it, the chat starts with the question typed in the box; send plays
+   the answer token by token (js/chat.js, Web Animations,
    transform and opacity only). The panel has a fixed height in every state, so
    nothing below it moves. The zoomed-in stages are drawn on .chat__stage at their
    real size, so they stay sharp while the camera (.chat__scene) is scaled. */
@@ -950,6 +950,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   line-height: 1.55;
   /* JetBrains Mono would join some token texts into ligatures. */
   font-variant-ligatures: none;
+  container-type: inline-size;
 }
 
 .chat__scene {
@@ -1052,7 +1053,19 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   border-radius: 50%;
 }
 
+/* Off: a slate disk (bone 22 % over navy) fades in over the gold. */
+.chat__send::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgb(62 77 95);
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
 .chat__send svg {
+  position: relative;
   width: 1.125rem;
   height: 1.125rem;
   fill: none;
@@ -1068,7 +1081,10 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 
 .chat__send:disabled {
   cursor: default;
-  opacity: 0.4;
+}
+
+.chat__send:disabled::before {
+  opacity: 1;
 }
 
 .chat__ring {
@@ -1129,6 +1145,94 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 .chat__ctl:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
+}
+
+/* The message-limit notice above the box, once the answer is written: the chat
+   cannot answer any more, Santiago can. A thin bone bar with a fine gold edge, a
+   monoline clock drawn like the monogram (round joins, square ends) and the way
+   out in gold. Under about 34rem of panel the link drops below the sentence. */
+.chat__limit {
+  width: 100%;
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.chat__limit-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.7rem;
+  margin-bottom: 0.75rem;
+  padding: 0.55rem 0.55rem 0.55rem 0.85rem;
+  border: 1px solid rgb(201 162 39 / 0.6);
+  border-radius: 14px;
+  background: rgb(245 240 225 / 0.06);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.chat__limit-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.7;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+}
+
+.chat__limit-text {
+  color: var(--bone-2);
+  text-wrap: pretty;
+}
+
+/* Inline, so a wrapped label keeps its arrow on the last line; the padding makes
+   a 44px target. */
+.chat__limit-link {
+  grid-column: 2;
+  justify-self: start;
+  margin: -0.4rem 0 -0.55rem -0.5rem;
+  padding: 0.65rem 0.5rem;
+  border-radius: 10px;
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgb(201 162 39 / 0.45);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+
+.chat__limit-link .icon {
+  display: inline-block;
+  vertical-align: -0.1em;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.chat__limit-link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chat__limit-link:hover {
+    text-decoration-color: var(--gold);
+  }
+
+  .chat__limit-link:hover .icon {
+    transform: translateX(2px);
+  }
+}
+
+@container (min-width: 34rem) {
+  .chat__limit-body {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .chat__limit-link {
+    grid-column: 3;
+    margin: 0;
+  }
 }
 
 .chat__clock {
@@ -1381,9 +1485,19 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 
 /* States. Without JavaScript: the finished chat, no controls. With it, the chat
    waits with the question in a box at mid-panel, like a new conversation. */
-html:not(.js) .chat__send,
 html:not(.js) .chat__ctl {
   display: none;
+}
+
+/* Done (and without JavaScript): the box is switched off, as when a chat will not
+   take another message. */
+.chat__composer {
+  transition: opacity 240ms ease;
+}
+
+html:not(.js) .chat__composer,
+.chat[data-state="done"] .chat__composer {
+  opacity: 0.72;
 }
 
 html:not(.js) .chat__typed,
@@ -1393,6 +1507,7 @@ html:not(.js) .chat__typed,
 
 html:not(.js) .chat__placeholder,
 .chat[data-state="done"] .chat__placeholder {
+  color: rgb(245 240 225 / 0.42);
   opacity: 1;
 }
 
@@ -1409,9 +1524,13 @@ html:not(.js) .chat__placeholder,
   opacity: 0;
 }
 
+.js .chat:not([data-state="done"]) .chat__limit-body {
+  display: none;
+}
+
 @media (max-width: 40em) {
   .chat {
-    --chat-h: 28.5rem;
+    --chat-h: 29.5rem;
   }
 }
 

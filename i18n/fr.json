@@ -43,6 +43,12 @@
     "skip": "Passer",
     "replay": "Rejouer",
     "placeholder": "Posez une question",
+    "limit": {
+      "text": "Ce chat a atteint sa limite de messages.",
+      "reset": "Réinitialisation à {time}.",
+      "resetOne": "Réinitialisation à {time}.",
+      "cta": "Demandez directement à Santiago"
+    },
     "stages": [
       "tokens",
       "embeddings",

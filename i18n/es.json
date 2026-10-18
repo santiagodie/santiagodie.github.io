@@ -43,6 +43,12 @@
     "skip": "Saltar",
     "replay": "Repetir",
     "placeholder": "Pregunta lo que quieras",
+    "limit": {
+      "text": "Este chat ha llegado a su límite de mensajes.",
+      "reset": "Se restablece a las {time}.",
+      "resetOne": "Se restablece a la {time}.",
+      "cta": "Pregúntale directamente a Santiago"
+    },
     "stages": [
       "tokens",
       "embeddings",

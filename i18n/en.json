@@ -43,6 +43,12 @@
     "skip": "Skip",
     "replay": "Replay",
     "placeholder": "Ask anything",
+    "limit": {
+      "text": "This chat has hit its message limit.",
+      "reset": "It resets at {time}.",
+      "resetOne": "It resets at {time}.",
+      "cta": "Ask Santiago directly"
+    },
     "stages": [
       "tokens",
       "embeddings",
