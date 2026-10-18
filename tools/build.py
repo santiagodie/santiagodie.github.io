@@ -292,8 +292,9 @@ def render_chat(s, tokens, model, lang):
 
 
 def render_about(s):
-    # The chat introduces the owner; any further About text follows it.
-    paragraphs = "\n".join(f"            <p>{text(p)}</p>" for p in s["about"]["paragraphs"])
+    # The chat introduces the owner; any further About text follows it. Paragraphs
+    # still marked TODO stay in i18n but are not published (owner's choice).
+    paragraphs = "\n".join(f"            <p>{text(p)}</p>" for p in s["about"]["paragraphs"] if not TODO.match(p))
     return f'          <div class="prose">\n{paragraphs}\n          </div>' if paragraphs else ""
 
 
