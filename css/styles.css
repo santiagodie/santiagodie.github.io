@@ -551,6 +551,24 @@ main:focus {
   --focus: var(--navy);
 }
 
+/* Without JavaScript the button cannot open the popover: the languages are a plain
+   row of links instead of a menu left open over the page. */
+html:not(.js) .lang__button,
+html:not(.js) .lang__item-code {
+  display: none;
+}
+
+html:not(.js) .lang__menu {
+  position: static;
+  display: flex;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
 .js .lang__menu {
   visibility: hidden;
   opacity: 0;
