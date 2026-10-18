@@ -24,7 +24,7 @@
 - **SEO per language**: translated `title`, description and Open Graph, `<link rel="canonical">`, `hreflang` alternates (with `x-default` to English), a Person JSON-LD block, `sitemap.xml` and `robots.txt`. There is no automatic redirect by browser language.
 - **Content lives in JSON**: interface text in `i18n/<lang>.json`, projects (with their three languages) in `data/projects.json`, shared data in `data/site.json`. The build fails with a clear message if any language misses a key, so a page with gaps is never published.
 - **Visible placeholders**: any string that starts with `TODO:` is rendered with a dashed `TODO` marker.
-- **The hero** shows how a language model turns a prompt ("Who is Santiago Die?", translated per page) into an answer, in eight stages: prompt, tokens, embeddings, attention, softmax, sampling, output and the autoregressive loop. Token ids are real (`cl100k_base`, the tokenizer of the LinkedIn banner); probabilities, embeddings and attention weights are illustrative (screen readers are told so). It plays once when it scrolls into view, with pause, replay and stage controls; on phones it becomes a fixed-height card with one stage at a time. Without JavaScript or with reduced motion it is a complete static diagram.
+- **The hero chat**: below the name, a chat box holds the question "Who is Santiago Die?" (translated per page). Press send and the camera zooms into the message: it splits into tokens with their real ids (`cl100k_base`), each unfolds a vector, attention arcs and a pulse run through the layers, the candidates for the next token share out the probability, and the winner flies into the answer, which then streams in. About 15 s, with Skip (or Escape) and Replay; it pauses in a hidden tab and finishes itself if scrolled away. Embeddings, attention weights and probabilities are illustrative, and a small line under the chat says so. Without JavaScript the chat is shown answered; with reduced motion the answer fades in without zoom or stages.
 - **Scroll**: sections assemble once as they arrive, and a thin gold line drawn with the scroll links the section numbers (CSS scroll timeline where supported, `requestAnimationFrame` elsewhere). Content is always visible in the HTML; nothing holds or redirects the scroll.
 
 ## Built With
@@ -51,11 +51,11 @@ src/index.html             # Page template ({{ key }} placeholders, see tools/bu
 i18n/en.json, es.json, fr.json   # All copy, per language
 data/projects.json         # Projects: titles, courses, descriptions, metrics, links (3 languages)
 data/site.json             # Site URL, profiles, languages
-data/tokens.json           # Real cl100k_base token ids of the hero prompt and answer
-data/llm.json              # Illustrative values of the hero diagram: candidates, probabilities, attention
+data/tokens.json           # Real cl100k_base token ids of the hero chat's question and answer
+data/llm.json              # Illustrative values of the hero chat: attention weights, next-token candidates
 css/styles.css             # All styles: tokens, layout, components, motion
 js/main.js                 # Behaviour only: header, menus, language suggestion
-js/hero-model.js           # Plays the hero diagram (classes and attributes only, no text)
+js/hero-chat.js            # Plays the hero chat (Web Animations; the text is already in the HTML)
 js/scroll.js               # Progress line, current section, sections assembling on scroll
 img/                       # SD logos (unmodified) and project screenshots (img/projects/*.webp)
 favicon.svg, favicon.ico, apple-touch-icon.png, CNAME
@@ -94,9 +94,9 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 ## Editing or Adding a Translation
 
 - Edit the same key in the three files in `i18n/`. Lists (`experience.items`, `education.items`, `skills.groups`) must have the same entries in every language; an empty list shows a short "nothing yet" message, and an empty `about.paragraphs` removes the About section and its menu link.
-- The hero diagram's prompt and answer are `llm.prompt` and `llm.answer`. After editing them, re-encode both with the `cl100k_base` tokenizer (for example with `tiktoken`) and update `data/tokens.json`; the build refuses ids that no longer spell the text. If the answer's length changes, give `data/llm.json` one step per answer token plus the end token (the candidate words and probabilities there are illustrative).
+- The hero chat's question and answer are `chat.prompt` and `chat.answer`. After editing them, re-encode both with the `cl100k_base` tokenizer (for example with `tiktoken`) and update `data/tokens.json`; the build refuses ids that no longer spell the text. In `data/llm.json`, keep one attention weight per question token and start `next` with the first answer token (the other candidates and the probabilities are illustrative).
 - To add the CV, put the PDF in a `cv/` folder (it is copied into `dist/`) and set `contact.cvFile`, for example `"cv/santiago-die-morejon-cv.pdf"`, in each language file.
-- To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`, add its tokens to `data/tokens.json` and its steps to `data/llm.json`. The menu, hreflang links and sitemap appear automatically; for the language suggestion bar add the `html[data-suggest="<code>"]` line in `css/styles.css`, and for its link preview add an `og-image-<code>.png` (1200×630).
+- To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`, add its tokens to `data/tokens.json` and its attention weights and candidates to `data/llm.json`. The menu, hreflang links and sitemap appear automatically; for the language suggestion bar add the `html[data-suggest="<code>"]` line in `css/styles.css`, and for its link preview add an `og-image-<code>.png` (1200×630).
 
 ## Deployment
 
