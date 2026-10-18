@@ -24,7 +24,8 @@
 - **SEO per language**: translated `title`, description and Open Graph, `<link rel="canonical">`, `hreflang` alternates (with `x-default` to English), a Person JSON-LD block, `sitemap.xml` and `robots.txt`. There is no automatic redirect by browser language.
 - **Content lives in JSON**: interface text in `i18n/<lang>.json`, projects (with their three languages) in `data/projects.json`, shared data in `data/site.json`. The build fails with a clear message if any language misses a key, so a page with gaps is never published.
 - **Visible placeholders**: any string that starts with `TODO:` is rendered with a dashed `TODO` marker.
-- **The hero** reuses the LinkedIn banner idea: the headline split into tokens with their real `cl100k_base` ids, and a `predict_next()` panel.
+- **The hero** shows how a language model turns a prompt ("Who is Santiago Die?", translated per page) into an answer, in eight stages: prompt, tokens, embeddings, attention, softmax, sampling, output and the autoregressive loop. Token ids are real (`cl100k_base`, the tokenizer of the LinkedIn banner); probabilities, embeddings and attention weights are illustrative and the page says so. It plays once when it scrolls into view, with pause, replay and stage controls; on phones it becomes a fixed-height card with one stage at a time. Without JavaScript or with reduced motion it is a complete static diagram.
+- **Scroll**: sections assemble once as they arrive, and a thin gold line drawn with the scroll links the section numbers (CSS scroll timeline where supported, `requestAnimationFrame` elsewhere). Content is always visible in the HTML; nothing holds or redirects the scroll.
 
 The visual rules (palette, logo, typography, motion) are in [DESIGN.md](DESIGN.md); product context is in [PRODUCT.md](PRODUCT.md).
 
@@ -51,13 +52,19 @@ Then open <http://localhost:8000> (and `/es/`, `/fr/`). Use `python tools/build.
 src/index.html             # Page template ({{ key }} placeholders, see tools/build.py)
 i18n/en.json, es.json, fr.json   # All copy, per language
 data/projects.json         # Projects: titles, courses, descriptions, metrics, links (3 languages)
-data/site.json             # Site URL, profiles, languages, hero prediction
+data/site.json             # Site URL, profiles, languages
+data/tokens.json           # Real token ids of the hero prompt and answer (written by tools/tokenize.py)
+data/llm.json              # Illustrative values of the hero diagram: candidates, probabilities, attention
 css/styles.css             # All styles: tokens, layout, components, motion
 js/main.js                 # Behaviour only: header, menus, language suggestion
+js/hero-model.js           # Plays the hero diagram (classes and attributes only, no text)
+js/scroll.js               # Progress line, current section, sections assembling on scroll
 img/                       # SD logos (unmodified) and project screenshots (img/projects/*.webp)
-favicon.svg, favicon.ico, apple-touch-icon.png, og-image.png, CNAME
+favicon.svg, favicon.ico, apple-touch-icon.png, CNAME
+og-image.png, og-image-es.png, og-image-fr.png   # Link previews, one per language
 tools/build.py             # Generator: renders dist/, sitemap.xml and robots.txt
-tools/og-image.html        # Source of og-image.png
+tools/tokenize.py          # Offline: real cl100k_base ids for the hero (needs tiktoken)
+tools/og-image.html        # Source of the og-image*.png files (#en, #es, #fr)
 .github/workflows/pages.yml  # Builds and deploys dist/ on every push to main
 
 assets/banner.svg          # README banner (not published)
@@ -71,7 +78,7 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 ```json
 {
   "id": "my-project",
-  "title": "My Project",
+  "title": { "en": "My Project", "es": "Mi proyecto", "fr": "Mon projet" },
   "course": { "en": "Artificial Intelligence", "es": "Inteligencia Artificial", "fr": "Intelligence artificielle" },
   "featured": false,
   "description": { "en": "One or two sentences.", "es": "…", "fr": "…" },
@@ -82,6 +89,7 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 }
 ```
 
+- `title`, `description`, `course`, the image `alt` and the metric labels are required in every language; the build stops if one is missing. The repository name is not translated: it is shown as `santiagodie/<repo>` in mono next to the links.
 - `demo` is optional; use `"type": "colab"` for a notebook.
 - `todo` lists what is still pending. While it contains `description.es` or `description.fr`, that page shows a "translate description" marker and marks the English text with `lang="en"`.
 - **Featured projects** (`"featured": true`) get a large card and also need:
@@ -91,15 +99,15 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 ## Editing or Adding a Translation
 
 - Edit the same key in the three files in `i18n/`. Lists (`experience.items`, `education.items`, `skills.groups`) must have the same entries in every language; an empty list shows a short "nothing yet" message, and an empty `about.paragraphs` removes the About section and its menu link.
-- The hero tokens (`hero.tokens`) are the headline encoded with the `cl100k_base` tokenizer. If you change a headline, re-encode it, for example with `tiktoken`: `[{"t": enc.decode([i]), "id": i} for i in enc.encode(text)]`.
+- The hero diagram's prompt and answer are `llm.prompt` and `llm.answer`. After editing them, run `pip install tiktoken` once and `python tools/tokenize.py` to rewrite `data/tokens.json` with the real ids; the build refuses stale ids. If the answer's length changes, give `data/llm.json` one step per answer token plus the end token (the candidate words and probabilities there are illustrative).
 - To add the CV, put the PDF in a `cv/` folder (it is copied into `dist/`) and set `contact.cvFile`, for example `"cv/santiago-die-morejon-cv.pdf"`, in each language file.
-- To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, and add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`. The menu, hreflang links, sitemap and suggestion appear automatically.
+- To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`, run `python tools/tokenize.py` and add the language's steps to `data/llm.json`. The menu, hreflang links and sitemap appear automatically; for the language suggestion bar add the `html[data-suggest="<code>"]` line in `css/styles.css`, and for its link preview render `og-image-<code>.png` (below).
 
-To regenerate `og-image.png` after editing `tools/og-image.html`:
+To regenerate the link previews after editing `tools/og-image.html` (English is `og-image.png` from `#en`, the others `og-image-<code>.png` from `#<code>`):
 
 ```bash
 chrome --headless=new --hide-scrollbars --window-size=1200,630 --virtual-time-budget=8000 \
-  --allow-file-access-from-files --screenshot=og-image.png "file:///$PWD/tools/og-image.html"
+  --allow-file-access-from-files --screenshot=og-image-fr.png "file:///$PWD/tools/og-image.html#fr"
 ```
 
 ## Deployment
