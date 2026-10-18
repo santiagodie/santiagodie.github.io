@@ -8,7 +8,7 @@ Usage:
 Inputs: src/index.html (template), i18n/<lang>.json (all copy), data/projects.json
 (projects, with their three languages), data/site.json (URL, profiles, languages),
 data/tokens.json (real cl100k_base token ids) and data/llm.json
-(the illustrative values of the hero chat animation). Python standard library only.
+(the illustrative values of the About chat animation). Python standard library only.
 
 Template syntax:
     {{ key.path }}    text from i18n, escaped; a leading "TODO:" becomes a visible marker
@@ -107,7 +107,7 @@ def validate_model(strings, tokens, model, langs):
         if not data["next"] or data["next"][0][0] != first:
             problems.append(f"{lang}: data/llm.json next must start with the first answer token {first!r}")
     if problems:
-        raise BuildError("the hero chat data is out of date (re-encode the question and answer into data/tokens.json "
+        raise BuildError("the About chat data is out of date (re-encode the question and answer into data/tokens.json "
                          "with tools/tokenize.py):\n  - " + "\n  - ".join(problems))
 
 
@@ -232,9 +232,9 @@ def render_lang_suggest(site, strings, current, root):
     return "\n".join(blocks)
 
 
-# The hero chat ------------------------------------------------------------
+# The About chat -----------------------------------------------------------
 # The question and the answer are written into the HTML, so the finished chat is what
-# readers without JavaScript and search engines get. js/hero-chat.js animates it: the
+# readers without JavaScript and search engines get. js/chat.js animates it: the
 # token ids (real, data/tokens.json) and the illustrative attention weights and
 # candidates (data/llm.json) travel as a small JSON block for it.
 
@@ -278,7 +278,9 @@ def render_chat(s, tokens, model, lang):
 
 
 def render_about(s):
-    return "\n".join(f"          <p>{text(p)}</p>" for p in s["about"]["paragraphs"])
+    # The chat introduces the owner; any further About text follows it.
+    paragraphs = "\n".join(f"            <p>{text(p)}</p>" for p in s["about"]["paragraphs"])
+    return f'          <div class="prose">\n{paragraphs}\n          </div>' if paragraphs else ""
 
 
 def project_text(project, lang, s):
@@ -441,12 +443,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         value = lookup(strings[lang], name, lang)
         return esc(value) if kind == "=" else text(value)
 
-    page = PLACEHOLDER.sub(replace, template)
-    if not s["about"]["paragraphs"]:
-        # No About text yet: drop the section and its menu entry instead of an empty heading.
-        page = re.sub(r'\s*<section class="section[^"]*" id="about".*?</section>', "", page, flags=re.S)
-        page = re.sub(r'\s*<li><a href="#about"[^<]*</a></li>', "", page)
-    return page
+    return PLACEHOLDER.sub(replace, template)
 
 
 def render_sitemap(site):

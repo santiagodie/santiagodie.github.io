@@ -1,4 +1,4 @@
-"""Encode the hero chat's question and answer with the real cl100k_base tokenizer.
+"""Encode the About chat's question and answer with the real cl100k_base tokenizer.
 
 Local only: needs `pip install tiktoken` and is run by hand to regenerate
 data/tokens.json. The GitHub workflow never runs or imports it; it only runs

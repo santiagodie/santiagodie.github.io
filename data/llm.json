@@ -1,5 +1,5 @@
 {
-  "_note": "Illustrative values for the hero chat animation. Token texts and ids come from data/tokens.json (real cl100k_base, see tools/tokenize.py). Here, per language: attention weights from the last question token to every question token, and the candidates for the first answer token with their probabilities. The first candidate is the chosen one and must be the first answer token; the build checks both.",
+  "_note": "Illustrative values for the About chat animation. Token texts and ids come from data/tokens.json (real cl100k_base, see tools/tokenize.py). Here, per language: attention weights from the last question token to every question token, and the candidates for the first answer token with their probabilities. The first candidate is the chosen one and must be the first answer token; the build checks both.",
   "en": {
     "attention": [0.3, 0.06, 0.28, 0.24, 0.12],
     "next": [["From", 0.46], ["He", 0.21], ["Santiago", 0.14], ["Based", 0.11], ["I", 0.08]]

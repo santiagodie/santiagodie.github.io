@@ -1,4 +1,4 @@
-// Hero chat: press send and watch the question become an answer, token by token.
+// About chat: press send and watch the question become an answer, token by token.
 // The question and the answer are already in the HTML (tools/build.py); this script
 // only animates them, with the Web Animations API (transform, opacity and
 // stroke-dashoffset). Skip, Escape, scrolling the panel away or the end of the run
@@ -83,7 +83,7 @@
   }
 
   // While the run plays, the scroll progress line keeps still (js/scroll.js).
-  const signal = (on) => document.dispatchEvent(new CustomEvent("hero:motion", { detail: on }));
+  const signal = (on) => document.dispatchEvent(new CustomEvent("chat:motion", { detail: on }));
 
   // A tiny mono label names each stage, in the top-left corner.
   let label = null;
@@ -431,12 +431,30 @@
   setLift();
   if ("ResizeObserver" in window) new ResizeObserver(setLift).observe(panel);
 
+  // The section assembles first (js/scroll.js holds back what starts off screen):
+  // number, title, then this panel. The question waits until the panel is in place.
+  function assembled() {
+    if (!chat.dataset.reveal) return Promise.resolve();
+    const reveal = chat.getAnimations().find((animation) => animation.animationName === "reveal");
+    if (reveal) return reveal.finished.catch(() => {});
+    if (chat.classList.contains("is-in")) return Promise.resolve();
+    return new Promise((resolve) => {
+      chat.addEventListener("animationend", function ended(event) {
+        if (event.target !== chat) return;
+        chat.removeEventListener("animationend", ended);
+        resolve();
+      });
+    });
+  }
+
   // When the panel comes into view (once): the question types itself, then the
   // send button pulses once.
   let entered = false;
-  function enter() {
+  async function enter() {
     entered = true;
     if (reduce.matches) return;
+    await assembled();
+    if (running || chat.dataset.state !== "idle") return;
     const text = typed.textContent;
     typed.textContent = "";
     const chars = [...text].map((ch) => {

@@ -843,8 +843,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
     "mark"
     "name"
     "role"
-    "actions"
-    "chat";
+    "actions";
   row-gap: clamp(1.75rem, 3.5vw, 2.75rem);
 }
 
@@ -901,8 +900,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
     grid-template-areas:
       "name    name"
       "role    role"
-      "actions actions"
-      "chat    chat";
+      "actions actions";
     column-gap: clamp(2rem, 4vw, 4rem);
     align-items: start;
   }
@@ -922,19 +920,22 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   }
 }
 
-/* Hero chat: "Who is Santiago Die?" ------------------------------------------
-   The question and the answer are in the HTML (tools/build.py): without JavaScript
-   this is the finished chat. With it, the chat starts with the question typed in
-   the box; send plays the answer token by token (js/hero-chat.js, Web Animations,
+/* About chat: "Who is Santiago Die?" -----------------------------------------
+   The About section's introduction. The question and the answer are in the HTML
+   (tools/build.py): without JavaScript this is the finished chat. With it, the chat
+   starts with the question typed in the box; send plays the answer token by token
+   (js/chat.js, Web Animations,
    transform and opacity only). The panel has a fixed height in every state, so
    nothing below it moves. The zoomed-in stages are drawn on .chat__stage at their
    real size, so they stay sharp while the camera (.chat__scene) is scaled. */
 
 .chat {
   --chat-h: 30rem;
-  grid-area: chat;
   min-width: 0;
-  margin-top: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.chat + .prose {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
 .chat__panel {
@@ -2248,18 +2249,16 @@ main {
     animation: draw 1600ms var(--ease-in-out) 150ms forwards;
   }
 
-  /* 2. The name, the role and the actions settle in behind it, then the chat. */
+  /* 2. The name, the role and the actions settle in behind it. */
   .js .hero__name,
   .js .hero__role,
-  .js .hero__actions,
-  .js .chat {
+  .js .hero__actions {
     animation: settle 700ms var(--ease-out) both;
   }
 
   .js .hero__name { animation-delay: 250ms; }
   .js .hero__role { animation-delay: 400ms; }
   .js .hero__actions { animation-delay: 550ms; }
-  .js .chat { animation-delay: 700ms; }
 
   /* 3. Sections assemble as they arrive (js/scroll.js marks what is still off
      screen): number and node, title, text, then cards or entries. Cards trace

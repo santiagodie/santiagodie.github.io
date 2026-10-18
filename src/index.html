@@ -46,7 +46,7 @@
     })(document.documentElement);
   </script>
   <script src="{{ @root }}js/main.js" defer></script>
-  <script src="{{ @root }}js/hero-chat.js" defer></script>
+  <script src="{{ @root }}js/chat.js" defer></script>
   <script src="{{ @root }}js/scroll.js" defer></script>
   <script type="application/ld+json">{{ !jsonld }}</script>
 </head>
@@ -128,15 +128,14 @@
           <a class="button button--primary" href="#projects">{{ hero.ctaProjects }}</a>
           <a class="button button--quiet" href="#contact">{{ hero.ctaContact }}</a>
         </div>
-
-{{ !chat }}
       </div>
     </section>
 
     <section class="section section--white" id="about" aria-labelledby="about-title">
       <div class="section__inner wrap">
         <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>01 /</span> <span class="section__label">{{ sections.about }}</span></h2>
-        <div class="section__body prose">
+        <div class="section__body">
+{{ !chat }}
 {{ !about }}
         </div>
       </div>

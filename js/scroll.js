@@ -21,8 +21,9 @@
 
   // 1. Section assembly ----------------------------------------------------------
 
-  // Number and node first, then the title, the text, and the cards or entries.
-  const ITEMS = ".feature, .card, .entry, .skills__group, .contact > li, .status";
+  // Number and node first, then the title, the text, and the cards, entries or the
+  // About chat (js/chat.js starts typing only once the chat is in place).
+  const ITEMS = ".chat, .feature, .card, .entry, .skills__group, .contact > li, .status";
   const TEXT = ".section__lead, .prose p, .subhead";
 
   function assemble() {
@@ -80,7 +81,7 @@
   let ticking = false;
   let scrollTimeline = false;
   const lit = new Set();
-  let quiet = false; // the hero animation is playing on screen: the line keeps still
+  let quiet = false; // the About chat animation is playing on screen: the line keeps still
 
   function point(el) {
     const box = el.getBoundingClientRect();
@@ -229,9 +230,9 @@
   geometry();
   assemble();
 
-  // The line never competes with the hero animation: while it plays on screen the
+  // The line never competes with the chat animation: while it plays on screen the
   // line holds its length, without trail or glow, and catches up afterwards.
-  document.addEventListener("hero:motion", (event) => {
+  document.addEventListener("chat:motion", (event) => {
     if (event.detail === quiet) return;
     quiet = event.detail;
     if (quiet) svg.style.setProperty("--len", lengthAt(window.scrollY + window.innerHeight * READ - top));
