@@ -36,55 +36,21 @@
     "ctaProjects": "View projects",
     "ctaContact": "Get in touch"
   },
-  "llm": {
-    "label": "generate()",
-    "title": "How a language model turns a prompt into an answer",
+  "chat": {
     "prompt": "Who is Santiago Die?",
-    "answer": "A computer engineer focused on AI and MLOps.",
-    "description": "Diagram of how a language model writes an answer. It receives the prompt “Who is Santiago Die?”, splits it into tokens with their ids, turns each token into a vector with its position, passes the vectors through stacked attention layers, scores every possible next token, samples one, turns it back into text and feeds it back as input. One token at a time, it writes: “A computer engineer focused on AI and MLOps.”",
-    "answerLabel": "Answer",
-    "note": "Illustrative values; the token ids are real (cl100k_base tokenizer).",
-    "stagesLabel": "Stages",
-    "controlsLabel": "Animation controls",
-    "pause": "Pause the animation",
-    "play": "Play the animation",
-    "prev": "Previous stage",
-    "next": "Next stage",
-    "replay": "Replay from the start",
+    "answer": "From what I see, he is a computer engineer focused on AI, machine learning and MLOps. His projects at the University of La Rioja range from computer vision to REST APIs.",
+    "send": "Send the question",
+    "skip": "Skip",
+    "replay": "Replay",
+    "placeholder": "Ask anything",
     "stages": [
-      {
-        "label": "prompt",
-        "text": "The question arrives as plain text."
-      },
-      {
-        "label": "tokens",
-        "text": "A tokenizer cuts it into tokens and maps each one to a fixed id."
-      },
-      {
-        "label": "embeddings",
-        "text": "Each id becomes a vector of numbers, combined with its position."
-      },
-      {
-        "label": "attention",
-        "text": "Attention layers weigh how much each token matters to the others, block after block."
-      },
-      {
-        "label": "softmax",
-        "text": "The last layer scores every possible next token; softmax turns the scores into probabilities."
-      },
-      {
-        "label": "sampling",
-        "text": "One token is drawn from those probabilities; the temperature sets how adventurous the choice is."
-      },
-      {
-        "label": "output",
-        "text": "The chosen id turns back into text and joins the answer."
-      },
-      {
-        "label": "loop",
-        "text": "The new token goes back into the input and the cycle repeats until the end token."
-      }
-    ]
+      "tokens",
+      "embeddings",
+      "attention",
+      "softmax"
+    ],
+    "note": "Illustrative visualisation · real token ids (cl100k_base)",
+    "description": "Animation: the question is sent, split into tokens with their real ids, turned into vectors, passed through attention layers and scored; the most likely next token is chosen, and the answer is written one token at a time."
   },
   "sections": {
     "about": "About",

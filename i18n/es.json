@@ -36,55 +36,21 @@
     "ctaProjects": "Ver proyectos",
     "ctaContact": "Contactar"
   },
-  "llm": {
-    "label": "generate()",
-    "title": "Cómo un modelo de lenguaje convierte un prompt en una respuesta",
+  "chat": {
     "prompt": "¿Quién es Santiago Die?",
-    "answer": "Un ingeniero informático centrado en IA y MLOps.",
-    "description": "Diagrama de cómo un modelo de lenguaje escribe una respuesta. Recibe el prompt «¿Quién es Santiago Die?», lo divide en tokens con sus ids, convierte cada token en un vector con su posición, pasa los vectores por capas de atención apiladas, puntúa cada posible siguiente token, elige uno, lo vuelve a convertir en texto y lo devuelve a la entrada. Token a token, escribe: «Un ingeniero informático centrado en IA y MLOps.»",
-    "answerLabel": "Respuesta",
-    "note": "Valores ilustrativos; los ids de los tokens son reales (tokenizador cl100k_base).",
-    "stagesLabel": "Etapas",
-    "controlsLabel": "Controles de la animación",
-    "pause": "Pausar la animación",
-    "play": "Reproducir la animación",
-    "prev": "Etapa anterior",
-    "next": "Etapa siguiente",
-    "replay": "Repetir desde el principio",
+    "answer": "Por lo que veo, es ingeniero informático y se centra en IA, machine learning y MLOps. Sus proyectos en la Universidad de La Rioja van de la visión artificial a las APIs REST.",
+    "send": "Enviar la pregunta",
+    "skip": "Saltar",
+    "replay": "Repetir",
+    "placeholder": "Pregunta lo que quieras",
     "stages": [
-      {
-        "label": "prompt",
-        "text": "La pregunta llega como texto plano."
-      },
-      {
-        "label": "tokens",
-        "text": "Un tokenizador la parte en tokens y asigna a cada uno un id fijo."
-      },
-      {
-        "label": "embeddings",
-        "text": "Cada id se convierte en un vector de números, combinado con su posición."
-      },
-      {
-        "label": "atención",
-        "text": "Las capas de atención ponderan cuánto importa cada token para los demás, bloque tras bloque."
-      },
-      {
-        "label": "softmax",
-        "text": "La última capa puntúa cada posible siguiente token; softmax convierte esas puntuaciones en probabilidades."
-      },
-      {
-        "label": "muestreo",
-        "text": "Se elige un token según esas probabilidades; la temperatura regula cuánto se arriesga la elección."
-      },
-      {
-        "label": "salida",
-        "text": "El id elegido vuelve a ser texto y se añade a la respuesta."
-      },
-      {
-        "label": "bucle",
-        "text": "El nuevo token vuelve a la entrada y el ciclo se repite hasta el token de fin."
-      }
-    ]
+      "tokens",
+      "embeddings",
+      "atención",
+      "softmax"
+    ],
+    "note": "Visualización ilustrativa · ids de token reales (cl100k_base)",
+    "description": "Animación: la pregunta se envía, se divide en tokens con sus ids reales, se convierte en vectores, pasa por capas de atención y se puntúa; se elige el siguiente token más probable y la respuesta se escribe token a token."
   },
   "sections": {
     "about": "Sobre mí",

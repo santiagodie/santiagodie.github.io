@@ -36,55 +36,21 @@
     "ctaProjects": "Voir les projets",
     "ctaContact": "Me contacter"
   },
-  "llm": {
-    "label": "generate()",
-    "title": "Comment un modèle de langage transforme un prompt en réponse",
+  "chat": {
     "prompt": "Qui est Santiago Die ?",
-    "answer": "Un ingénieur informatique spécialisé en IA et en MLOps.",
-    "description": "Schéma de la façon dont un modèle de langage rédige une réponse. Il reçoit le prompt « Qui est Santiago Die ? », le découpe en tokens avec leurs identifiants, transforme chaque token en vecteur avec sa position, fait passer les vecteurs par des couches d’attention empilées, attribue un score à chaque token suivant possible, en tire un, le reconvertit en texte et le renvoie en entrée. Token après token, il écrit : « Un ingénieur informatique spécialisé en IA et en MLOps. »",
-    "answerLabel": "Réponse",
-    "note": "Valeurs illustratives ; les identifiants des tokens sont réels (tokeniseur cl100k_base).",
-    "stagesLabel": "Étapes",
-    "controlsLabel": "Commandes de l’animation",
-    "pause": "Mettre l’animation en pause",
-    "play": "Lancer l’animation",
-    "prev": "Étape précédente",
-    "next": "Étape suivante",
-    "replay": "Rejouer depuis le début",
+    "answer": "D’après ce que je vois, il est ingénieur informatique spécialisé en IA, machine learning et MLOps. Ses projets à l’Université de La Rioja vont de la vision par ordinateur aux API REST.",
+    "send": "Envoyer la question",
+    "skip": "Passer",
+    "replay": "Rejouer",
+    "placeholder": "Posez une question",
     "stages": [
-      {
-        "label": "prompt",
-        "text": "La question arrive sous forme de texte brut."
-      },
-      {
-        "label": "tokens",
-        "text": "Un tokeniseur la découpe en tokens et associe à chacun un identifiant fixe."
-      },
-      {
-        "label": "embeddings",
-        "text": "Chaque identifiant devient un vecteur de nombres, combiné à sa position."
-      },
-      {
-        "label": "attention",
-        "text": "Les couches d’attention pèsent l’importance de chaque token pour les autres, bloc après bloc."
-      },
-      {
-        "label": "softmax",
-        "text": "La dernière couche attribue un score à chaque token suivant possible ; softmax transforme ces scores en probabilités."
-      },
-      {
-        "label": "tirage",
-        "text": "Un token est tiré selon ces probabilités ; la température règle la part de hasard."
-      },
-      {
-        "label": "sortie",
-        "text": "L’identifiant choisi redevient du texte et rejoint la réponse."
-      },
-      {
-        "label": "boucle",
-        "text": "Le nouveau token revient en entrée et le cycle recommence jusqu’au token de fin."
-      }
-    ]
+      "tokens",
+      "embeddings",
+      "attention",
+      "softmax"
+    ],
+    "note": "Visualisation illustrative · identifiants de tokens réels (cl100k_base)",
+    "description": "Animation : la question est envoyée, découpée en tokens avec leurs vrais identifiants, transformée en vecteurs, passée par des couches d’attention puis évaluée ; le token suivant le plus probable est choisi et la réponse s’écrit token après token."
   },
   "sections": {
     "about": "À propos",

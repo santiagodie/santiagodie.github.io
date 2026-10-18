@@ -48,7 +48,7 @@
     })(document.documentElement);
   </script>
   <script src="{{ @root }}js/main.js" defer></script>
-  <script src="{{ @root }}js/hero-model.js" defer></script>
+  <script src="{{ @root }}js/hero-chat.js" defer></script>
   <script src="{{ @root }}js/scroll.js" defer></script>
   <script type="application/ld+json">{{ !jsonld }}</script>
 </head>
@@ -131,7 +131,7 @@
           <a class="button button--quiet" href="#contact">{{ hero.ctaContact }}</a>
         </div>
 
-{{ !llm }}
+{{ !chat }}
       </div>
     </section>
 

@@ -1,66 +1,15 @@
 {
-  "_note": "Illustrative values for the hero's generate() diagram. Token texts and ids come from data/tokens.json (real cl100k_base, see tools/tokenize.py). Here: attention weights from the last prompt token to every prompt token, and one step per answer token plus the end token: the chosen token's probability and four alternative candidates (a bare word gets a share of the remaining probability; [word, p] fixes it). 'static' is the step drawn in the static diagram: the banner's 'computer -> engineer 0.86'.",
-  "temperature": 0.7,
+  "_note": "Illustrative values for the hero chat animation. Token texts and ids come from data/tokens.json (real cl100k_base, see tools/tokenize.py). Here, per language: attention weights from the last question token to every question token, and the candidates for the first answer token with their probabilities. The first candidate is the chosen one and must be the first answer token; the build checks both.",
   "en": {
     "attention": [0.3, 0.06, 0.28, 0.24, 0.12],
-    "static": 2,
-    "steps": [
-      { "p": 0.58, "alts": ["He", "Santiago", "The", "I"] },
-      { "p": 0.64, "alts": ["software", "Spanish", "student", "young"] },
-      { "p": 0.86, "alts": [["science", 0.09], ["vision", 0.03], ["programmer", 0.02], ["scientist", 0.004]] },
-      { "p": 0.47, "alts": ["specializing", "working", "with", "from"] },
-      { "p": 0.83, "alts": ["in", "mainly", "primarily", "around"] },
-      { "p": 0.55, "alts": ["machine", "artificial", "data", "ML"] },
-      { "p": 0.72, "alts": [",", "&", "/", "systems"] },
-      { "p": 0.44, "alts": ["ML", "machine", "data", "deep"] },
-      { "p": 0.93, "alts": ["L", "ATLAB", "Ops", "LP"] },
-      { "p": 0.97, "alts": ["p", "PS", "op", "pt"] },
-      { "p": 0.71, "alts": [",", "at", "in", "and"] },
-      { "p": 0.88, "alts": ["He", "Based", "\\n", "His"] }
-    ]
+    "next": [["From", 0.46], ["He", 0.21], ["Santiago", 0.14], ["Based", 0.11], ["I", 0.08]]
   },
   "es": {
     "attention": [0.05, 0.2, 0.1, 0.05, 0.26, 0.22, 0.12],
-    "static": 1,
-    "steps": [
-      { "p": 0.61, "alts": ["Es", "Santiago", "El", "Se"] },
-      { "p": 0.86, "alts": [["estudiante", 0.09], ["desarrollador", 0.03], ["investigador", 0.02], ["programador", 0.004]] },
-      { "p": 0.98, "alts": ["ería", "ieros", "ier", "io"] },
-      { "p": 0.66, "alts": ["de", "español", "especial", "en"] },
-      { "p": 0.97, "alts": ["ática", "ativo", "al", "e"] },
-      { "p": 0.41, "alts": ["especial", "experto", "que", "con"] },
-      { "p": 0.96, "alts": ["al", "ada", "o", "ados"] },
-      { "p": 0.9, "alts": ["sobre", "a", "y", "principalmente"] },
-      { "p": 0.53, "alts": ["inteligencia", "aprendizaje", "datos", "machine"] },
-      { "p": 0.74, "alts": [",", "/", "aplicada", "generativa"] },
-      { "p": 0.45, "alts": ["ML", "aprendizaje", "datos", "machine"] },
-      { "p": 0.93, "alts": ["L", "ATLAB", "Ops", "LP"] },
-      { "p": 0.97, "alts": ["p", "PS", "op", "pt"] },
-      { "p": 0.7, "alts": [",", "en", "de", "y"] },
-      { "p": 0.87, "alts": ["Su", "Ha", "\\n", "Actualmente"] }
-    ]
+    "next": [["Por", 0.44], ["Es", 0.22], ["Santiago", 0.15], ["Según", 0.11], ["Se", 0.08]]
   },
   "fr": {
     "attention": [0.28, 0.06, 0.28, 0.24, 0.14],
-    "static": 1,
-    "steps": [
-      { "p": 0.6, "alts": ["Il", "Santiago", "C’est", "Le"] },
-      { "p": 0.86, "alts": [["développeur", 0.09], ["étudiant", 0.03], ["chercheur", 0.02], ["programmeur", 0.004]] },
-      { "p": 0.97, "alts": ["en", "é", "ér", "e"] },
-      { "p": 0.98, "alts": ["ieurs", "ieure", "ier", "ie"] },
-      { "p": 0.63, "alts": ["en", "espagnol", "logiciel", "de"] },
-      { "p": 0.97, "alts": ["icien", "ion", "ic", "iques"] },
-      { "p": 0.44, "alts": ["passionné", "qui", "travaillant", "axé"] },
-      { "p": 0.96, "alts": ["iste", "isée", "ise", "isés"] },
-      { "p": 0.9, "alts": ["dans", "sur", "à", "aux"] },
-      { "p": 0.54, "alts": ["intelligence", "apprentissage", "données", "machine"] },
-      { "p": 0.73, "alts": [",", "/", "appliquée", "générative"] },
-      { "p": 0.58, "alts": ["le", "dans", "data", "M"] },
-      { "p": 0.47, "alts": ["ML", "apprentissage", "données", "machine"] },
-      { "p": 0.93, "alts": ["L", "ATLAB", "Ops", "LP"] },
-      { "p": 0.97, "alts": ["p", "PS", "op", "pt"] },
-      { "p": 0.7, "alts": [",", "à", "chez", "et"] },
-      { "p": 0.87, "alts": ["Il", "Son", "\\n", "Actuellement"] }
-    ]
+    "next": [["D", 0.45], ["Il", 0.22], ["Santiago", 0.14], ["Selon", 0.11], ["C", 0.08]]
   }
 }
