@@ -2,22 +2,23 @@
   "projects": [
     {
       "id": "graduate-salary-predictor",
-      "title": "Graduate Salary Predictor",
+      "title": {
+        "en": "Graduate Salary Predictor",
+        "es": "Predicción del salario de recién graduados",
+        "fr": "Prédiction du salaire des jeunes diplômés"
+      },
       "course": {
         "en": "Professional Practice in Computer Engineering",
         "es": "Profesión de Ingeniero Informático",
-        "fr": "Métier d’ingénieur informaticien"
+        "fr": "Métier d’ingénieur informatique"
       },
       "featured": true,
       "description": {
         "en": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API.",
-        "es": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API.",
-        "fr": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API."
+        "es": "Aplicación web que estima el salario esperado de un recién graduado a partir de su perfil, con un Random Forest de scikit-learn servido mediante una API REST en Flask.",
+        "fr": "Application web qui estime le salaire attendu d’un jeune diplômé à partir de son profil, avec un Random Forest scikit-learn servi par une API REST Flask."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "metrics": [
         {
           "value": {
@@ -27,8 +28,8 @@
           },
           "label": {
             "en": "200-row test set",
-            "es": "test de 200 filas",
-            "fr": "test sur 200 lignes"
+            "es": "conjunto de prueba de 200 filas",
+            "fr": "jeu de test de 200 lignes"
           }
         },
         {
@@ -49,9 +50,9 @@
         "width": 1200,
         "height": 750,
         "alt": {
-          "en": "Live demo of Graduate Salary Predictor",
-          "es": "Demo en vivo de Graduate Salary Predictor",
-          "fr": "Démo en ligne de Graduate Salary Predictor"
+          "en": "Screenshot of the live demo: Graduate Salary Predictor",
+          "es": "Captura de la demo en vivo: Predicción del salario de recién graduados",
+          "fr": "Capture de la démo en ligne : Prédiction du salaire des jeunes diplômés"
         }
       },
       "tech": [
@@ -70,7 +71,11 @@
     },
     {
       "id": "face-similarity-search-pipeline",
-      "title": "Face Similarity Search Pipeline",
+      "title": {
+        "en": "Face Similarity Search",
+        "es": "Búsqueda de caras por similitud",
+        "fr": "Recherche de visages par similarité"
+      },
       "course": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
@@ -79,13 +84,10 @@
       "featured": true,
       "description": {
         "en": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis.",
-        "es": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis.",
-        "fr": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis."
+        "es": "Búsqueda de caras de principio a fin en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree, comparada con la búsqueda exhaustiva y calibrada con análisis ROC y F1.",
+        "fr": "Recherche de visages de bout en bout dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree, comparée à la recherche exhaustive et calibrée par analyse ROC et F1."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "metrics": [
         {
           "value": {
@@ -117,9 +119,9 @@
         "width": 1200,
         "height": 750,
         "alt": {
-          "en": "Live demo of Face Similarity Search Pipeline",
-          "es": "Demo en vivo de Face Similarity Search Pipeline",
-          "fr": "Démo en ligne de Face Similarity Search Pipeline"
+          "en": "Screenshot of the live demo: Face Similarity Search",
+          "es": "Captura de la demo en vivo: Búsqueda de caras por similitud",
+          "fr": "Capture de la démo en ligne : Recherche de visages par similarité"
         }
       },
       "tech": [
@@ -140,7 +142,11 @@
     },
     {
       "id": "wordhive-socket-server",
-      "title": "WordHive",
+      "title": {
+        "en": "WordHive: word puzzles over sockets",
+        "es": "WordHive: pasatiempos de palabras por sockets",
+        "fr": "WordHive : jeux de lettres en réseau"
+      },
       "course": {
         "en": "Distributed Systems",
         "es": "Sistemas Distribuidos",
@@ -149,13 +155,10 @@
       "featured": true,
       "description": {
         "en": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server.",
-        "es": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server.",
-        "fr": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server."
+        "es": "Servidor multihilo de pasatiempos de palabras escrito en Java puro sobre sockets, al que se juega desde un cliente de consola TCP o desde el navegador a través de un servidor HTTP hecho a mano.",
+        "fr": "Serveur multithread de jeux de lettres écrit en Java pur sur des sockets bruts, jouable depuis un client console TCP ou depuis le navigateur grâce à un serveur HTTP écrit à la main."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "metrics": [
         {
           "value": {
@@ -164,9 +167,9 @@
             "fr": "TCP + HTTP"
           },
           "label": {
-            "en": "one server, two transports",
-            "es": "un servidor, dos transportes",
-            "fr": "un serveur, deux transports"
+            "en": "one server, two protocols",
+            "es": "un servidor, dos protocolos",
+            "fr": "un serveur, deux protocoles"
           }
         },
         {
@@ -178,7 +181,7 @@
           "label": {
             "en": "daily puzzles",
             "es": "puzles diarios",
-            "fr": "puzzles quotidiens"
+            "fr": "défis quotidiens"
           }
         }
       ],
@@ -187,9 +190,9 @@
         "width": 1200,
         "height": 750,
         "alt": {
-          "en": "Live demo of WordHive",
-          "es": "Demo en vivo de WordHive",
-          "fr": "Démo en ligne de WordHive"
+          "en": "Screenshot of the live demo: WordHive: word puzzles over sockets",
+          "es": "Captura de la demo en vivo: WordHive: pasatiempos de palabras por sockets",
+          "fr": "Capture de la démo en ligne : WordHive : jeux de lettres en réseau"
         }
       },
       "tech": [
@@ -207,7 +210,11 @@
     },
     {
       "id": "satellite-image-classifier",
-      "title": "Satellite Image Classifier",
+      "title": {
+        "en": "Satellite Image Classifier",
+        "es": "Clasificador de imágenes de satélite",
+        "fr": "Classification d’images satellite"
+      },
       "course": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
@@ -216,13 +223,10 @@
       "featured": false,
       "description": {
         "en": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment.",
-        "es": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment.",
-        "fr": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment."
+        "es": "Clasificación de imágenes de satélite con transfer learning en fastai (ResNet18), más una comparación de cinco arquitecturas CNN, un estudio de tiempos en CPU frente a GPU y un experimento con el buscador de learning rate.",
+        "fr": "Classification d’images satellite par transfer learning avec fastai (ResNet18), complétée par une comparaison de cinq architectures CNN, une étude des temps CPU et GPU et une expérience avec le learning rate finder."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "tech": [
         "Python",
         "fastai",
@@ -237,7 +241,11 @@
     },
     {
       "id": "prompt-topic-classifier",
-      "title": "Prompt Topic Classifier",
+      "title": {
+        "en": "Prompt Topic Classifier",
+        "es": "Clasificador de temas de prompts",
+        "fr": "Classification de prompts par thème"
+      },
       "course": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
@@ -246,13 +254,10 @@
       "featured": false,
       "description": {
         "en": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble.",
-        "es": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble.",
-        "fr": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble."
+        "es": "Clasificación de prompts para LLM en 10 temas, comparando un modelo ULMFiT (AWD-LSTM) de fastai con un transformer DistilBERT de Hugging Face, más un estudio del buscador de learning rate y un ensemble sencillo.",
+        "fr": "Classification de prompts pour LLM en 10 thèmes, en comparant un modèle ULMFiT (AWD-LSTM) de fastai à un transformer DistilBERT de Hugging Face, avec une étude du learning rate finder et un ensemble simple."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "tech": [
         "Python",
         "fastai",
@@ -266,7 +271,11 @@
     },
     {
       "id": "human-activity-classification",
-      "title": "Human Activity Classification",
+      "title": {
+        "en": "Human Activity Classification",
+        "es": "Clasificación de la actividad humana",
+        "fr": "Reconnaissance de l’activité humaine"
+      },
       "course": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
@@ -275,13 +284,10 @@
       "featured": false,
       "description": {
         "en": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction.",
-        "es": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction.",
-        "fr": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction."
+        "es": "Clasificación de la actividad que realiza una persona a partir de cinco señales fisiológicas, con análisis exploratorio, visualización, comparativa de ocho clasificadores, ajuste de hiperparámetros, comparación estadística de modelos y reducción de dimensionalidad.",
+        "fr": "Reconnaissance de l’activité d’une personne à partir de cinq signaux physiologiques, avec analyse exploratoire, visualisation, comparaison de huit classifieurs, réglage des hyperparamètres, comparaison statistique des modèles et réduction de dimension."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "tech": [
         "Python",
         "pandas",
@@ -296,7 +302,11 @@
     },
     {
       "id": "sudoku-vision-solver",
-      "title": "Sudoku Vision Solver",
+      "title": {
+        "en": "Sudoku Vision Solver",
+        "es": "Resolución de sudokus por visión artificial",
+        "fr": "Résolution de sudokus par vision par ordinateur"
+      },
       "course": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
@@ -305,13 +315,10 @@
       "featured": false,
       "description": {
         "en": "Reads a printed Sudoku from an image and solves it: OpenCV contour filtering to find the 81 cells, Tesseract OCR to read the clues, and Peter Norvig's constraint-propagation solver, with the solution drawn back onto the image.",
-        "es": "Reads a printed Sudoku from an image and solves it: OpenCV contour filtering to find the 81 cells, Tesseract OCR to read the clues, and Peter Norvig's constraint-propagation solver, with the solution drawn back onto the image.",
-        "fr": "Reads a printed Sudoku from an image and solves it: OpenCV contour filtering to find the 81 cells, Tesseract OCR to read the clues, and Peter Norvig's constraint-propagation solver, with the solution drawn back onto the image."
+        "es": "Lee un sudoku impreso a partir de una imagen y lo resuelve: filtrado de contornos con OpenCV para localizar las 81 casillas, OCR con Tesseract para leer las pistas y el solucionador por propagación de restricciones de Peter Norvig, con la solución dibujada sobre la imagen.",
+        "fr": "Lit une grille de sudoku imprimée à partir d’une image et la résout : filtrage de contours avec OpenCV pour trouver les 81 cases, OCR Tesseract pour lire les indices et solveur par propagation de contraintes de Peter Norvig, avec la solution dessinée sur l’image."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "tech": [
         "Python",
         "OpenCV",
@@ -327,7 +334,11 @@
     },
     {
       "id": "electrosa-fullstack-ecommerce",
-      "title": "Electrosa",
+      "title": {
+        "en": "Electrosa: full-stack online shop",
+        "es": "Electrosa: tienda online full stack",
+        "fr": "Electrosa : boutique en ligne full stack"
+      },
       "course": {
         "en": "Web Application Programming",
         "es": "Programación de Aplicaciones Web",
@@ -336,13 +347,10 @@
       "featured": false,
       "description": {
         "en": "A two-part web application for a fictional home-appliance retailer: a Spring MVC + JPA storefront for customers and a Servlet/JSP back office for staff, both running on Tomcat over a shared MySQL database.",
-        "es": "A two-part web application for a fictional home-appliance retailer: a Spring MVC + JPA storefront for customers and a Servlet/JSP back office for staff, both running on Tomcat over a shared MySQL database.",
-        "fr": "A two-part web application for a fictional home-appliance retailer: a Spring MVC + JPA storefront for customers and a Servlet/JSP back office for staff, both running on Tomcat over a shared MySQL database."
+        "es": "Aplicación web en dos partes para una tienda ficticia de electrodomésticos: una tienda online en Spring MVC + JPA para los clientes y un back office en Servlet/JSP para el personal, ambos en Tomcat sobre una base de datos MySQL compartida.",
+        "fr": "Application web en deux parties pour un vendeur fictif d’électroménager : une boutique Spring MVC + JPA pour les clients et un back-office Servlet/JSP pour le personnel, tous deux sur Tomcat avec une base MySQL partagée."
       },
-      "todo": [
-        "description.es",
-        "description.fr"
-      ],
+      "todo": [],
       "tech": [
         "Java 17",
         "Spring MVC",
