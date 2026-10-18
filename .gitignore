@@ -17,10 +17,8 @@ Thumbs.db
 .vscode/
 __pycache__/
 
-# Local working files, kept out of the repository: design and product context,
-# design-skill config and the link-preview source
-DESIGN.md
-PRODUCT.md
+# Local working files, kept out of the repository: design-skill config and the
+# link-preview source
 .impeccable/
 skills-lock.json
 tools/og-image.html
