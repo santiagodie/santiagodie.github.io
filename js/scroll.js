@@ -23,7 +23,7 @@
 
   // Number and node first, then the title, the text, and the cards, entries or the
   // About chat (js/chat.js starts typing only once the chat is in place).
-  const ITEMS = ".chat, .feature, .card, .entry, .skills__group, .contact > li, .status";
+  const ITEMS = ".chat, .feature, .card, .entry, .skills__group, .contact > li";
   const TEXT = ".section__lead, .prose p, .subhead";
 
   function assemble() {

@@ -83,7 +83,6 @@
     "translationPending": "TODO : traduire la description"
   },
   "experience": {
-    "empty": "Aucune expérience renseignée pour l’instant.",
     "items": [
       {
         "period": "TODO : 2026",
@@ -94,7 +93,6 @@
     ]
   },
   "education": {
-    "empty": "Aucune formation renseignée pour l’instant.",
     "items": [
       {
         "period": "TODO : Années",
@@ -105,7 +103,6 @@
     ]
   },
   "skills": {
-    "empty": "Aucune compétence renseignée pour l’instant.",
     "groups": [
       {
         "name": "TODO : Domaine",

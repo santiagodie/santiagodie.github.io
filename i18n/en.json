@@ -83,7 +83,6 @@
     "translationPending": "TODO: translate description"
   },
   "experience": {
-    "empty": "No entries yet.",
     "items": [
       {
         "period": "TODO: 2026",
@@ -94,7 +93,6 @@
     ]
   },
   "education": {
-    "empty": "No entries yet.",
     "items": [
       {
         "period": "TODO: Years",
@@ -105,7 +103,6 @@
     ]
   },
   "skills": {
-    "empty": "No skills listed yet.",
     "groups": [
       {
         "name": "TODO: Area",

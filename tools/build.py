@@ -297,16 +297,20 @@ def render_chat(s, tokens, model, lang):
 
 
 def render_about(s):
-    # The chat introduces the owner; any further About text follows it. Paragraphs
-    # still marked TODO stay in i18n but are not published (owner's choice).
-    paragraphs = "\n".join(f"            <p>{text(p)}</p>" for p in s["about"]["paragraphs"] if not TODO.match(p))
+    # The chat introduces the owner; any further About text follows it.
+    paragraphs = "\n".join(f"            <p>{text(p)}</p>" for p in s["about"]["paragraphs"] if published(p))
     return f'          <div class="prose">\n{paragraphs}\n          </div>' if paragraphs else ""
+
+
+def lead(value):
+    return f'          <p class="section__lead">{text(value)}</p>' if published(value) else ""
 
 
 def project_text(project, lang, s):
     pending = f"description.{lang}" in project.get("todo", [])
     attr = ' lang="en"' if pending and lang != "en" else ""
-    note = f'\n                <p class="card__pending">{text(s["projects"]["translationPending"])}</p>' if pending else ""
+    note = s["projects"]["translationPending"]
+    note = f'\n                <p class="card__pending">{text(note)}</p>' if pending and published(note) else ""
     return f'<p class="card__text"{attr}>{text(project["description"][lang])}</p>{note}'
 
 
@@ -378,32 +382,42 @@ def render_projects(projects, lang, s):
     return "\n".join(cards)
 
 
+def entries(s, name):
+    """The published entries: an entry whose title is still TODO is left out."""
+    return [item for item in s[name]["items"] if published(item["title"])]
+
+
 def render_entries(s, name):
-    items = s[name]["items"]
-    if not items:
-        return f'          <p class="status">{text(s[name]["empty"])}</p>'
     rows = []
-    for item in items:
-        parts = [f'<p class="entry__period">{text(item["period"])}</p><div class="entry__body">',
+    for item in entries(s, name):
+        period = item["period"] if published(item.get("period")) else ""
+        parts = [f'<p class="entry__period">{text(period)}</p><div class="entry__body">',
                  f'<h3 class="entry__title">{text(item["title"])}</h3>']
-        if item.get("org"):
+        if published(item.get("org")):
             parts.append(f'<p class="entry__org">{text(item["org"])}</p>')
-        if item.get("text"):
+        if published(item.get("text")):
             parts.append(f'<p class="entry__text">{text(item["text"])}</p>')
         rows.append("            <li class=\"entry\">" + "".join(parts) + "</div></li>")
-    return '          <ol class="entries" role="list">\n' + "\n".join(rows) + "\n          </ol>"
+    return '          <ol class="entries" role="list">\n' + "\n".join(rows) + "\n          </ol>" if rows else ""
+
+
+def skill_groups(s):
+    """The published skill groups, each with its published items; empty ones are left out."""
+    groups = []
+    for group in s["skills"]["groups"]:
+        items = [item for item in group.get("items", []) if published(item)]
+        if published(group["name"]) and items:
+            groups.append((group["name"], items))
+    return groups
 
 
 def render_skills(s):
-    groups = [g for g in s["skills"]["groups"] if g.get("items")]
-    if not groups:
-        return f'          <p class="status">{text(s["skills"]["empty"])}</p>'
     blocks = []
-    for group in groups:
-        items = "".join(f"<li>{text(item)}</li>" for item in group["items"])
-        blocks.append(f'            <div class="skills__group"><h3 class="skills__name">{text(group["name"])}</h3>'
+    for name, items in skill_groups(s):
+        items = "".join(f"<li>{text(item)}</li>" for item in items)
+        blocks.append(f'            <div class="skills__group"><h3 class="skills__name">{text(name)}</h3>'
                       f'<ul class="skills__items" role="list">{items}</ul></div>')
-    return '          <div class="skills">\n' + "\n".join(blocks) + "\n          </div>"
+    return '          <div class="skills">\n' + "\n".join(blocks) + "\n          </div>" if blocks else ""
 
 
 def render_email(s):
@@ -435,6 +449,8 @@ def render_cv(s, root, warnings):
 
 PLACEHOLDER = re.compile(r"\{\{\s*([=@!]?)\s*([\w.]+)\s*\}\}")
 FRAGMENT_LINE = re.compile(r"^[ \t]*\{\{\s*(!)\s*(\w+)\s*\}\}\n", re.M)
+# The page's sections, in order (ids in src/index.html).
+SECTIONS = ["about", "projects", "experience", "education", "skills", "contact"]
 
 
 def render_page(template, site, strings, projects, tokens, model, language, warnings):
@@ -449,6 +465,24 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "ogImage": site["url"] + (f"og-image-{lang}.png" if (ROOT / f"og-image-{lang}.png").exists() else "og-image.png"),
         "github": site["person"]["github"], "linkedin": site["person"]["linkedin"],
     }
+    # A section without published content is left out, with its menu link (and so its
+    # point on the progress line); the rest are numbered 01, 02... without gaps and
+    # alternate white and bone. Contact is always navy, and always has the profiles.
+    content = {
+        "about": True,  # the chat
+        "projects": bool(projects),
+        "experience": bool(entries(s, "experience")),
+        "education": bool(entries(s, "education")),
+        "skills": bool(skill_groups(s)),
+        "contact": True,
+    }
+    shown = [section for section in SECTIONS if content[section]]
+    for number, section in enumerate(shown, 1):
+        values[f"num_{section}"] = f"{number:02d} /"
+        values[f"bg_{section}"] = "white" if number % 2 else "bone"
+    for section in SECTIONS:
+        values.setdefault(f"num_{section}", "")
+        values.setdefault(f"bg_{section}", "")
     fragments = {
         "alternates": lambda: render_alternates(site),
         "ogAlternates": lambda: render_og_alternates(site, strings, lang),
@@ -462,6 +496,8 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),
         "skills": lambda: render_skills(s),
+        "projectsLead": lambda: lead(s["projects"]["intro"]),
+        "contactLead": lambda: lead(s["contact"]["text"]),
         "email": lambda: render_email(s),
         "cv": lambda: render_cv(s, root, warnings),
     }
@@ -485,7 +521,14 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         return rendered + "\n" if rendered else ""
 
     page = FRAGMENT_LINE.sub(line, template)
-    return PLACEHOLDER.sub(replace, page)
+    page = PLACEHOLDER.sub(replace, page)
+    for section in SECTIONS:
+        if section not in shown:
+            page, removed = re.subn(rf'\n\n *<section class="section[^"]*" id="{section}".*?</section>\n', "\n", page, flags=re.S)
+            page, unlinked = re.subn(rf'\n *<li><a href="#{section}"[^<]*</a></li>', "", page)
+            if not (removed and unlinked):
+                raise BuildError(f"src/index.html: could not leave out the empty '{section}' section")
+    return page
 
 
 def render_sitemap(site):

@@ -131,9 +131,9 @@
       </div>
     </section>
 
-    <section class="section section--white" id="about" aria-labelledby="about-title">
+    <section class="section section--{{ @bg_about }}" id="about" aria-labelledby="about-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>01 /</span> <span class="section__label">{{ sections.about }}</span></h2>
+        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_about }}</span> <span class="section__label">{{ sections.about }}</span></h2>
         <div class="section__body">
 {{ !chat }}
 {{ !about }}
@@ -141,11 +141,11 @@
       </div>
     </section>
 
-    <section class="section section--bone" id="projects" aria-labelledby="projects-title">
+    <section class="section section--{{ @bg_projects }}" id="projects" aria-labelledby="projects-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="projects-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>02 /</span> <span class="section__label">{{ sections.projects }}</span></h2>
+        <h2 class="section__title" id="projects-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_projects }}</span> <span class="section__label">{{ sections.projects }}</span></h2>
         <div class="section__body">
-          <p class="section__lead">{{ projects.intro }}</p>
+{{ !projectsLead }}
           <h3 class="visually-hidden">{{ projects.featured }}</h3>
           <ul class="featured" role="list">
 {{ !featured }}
@@ -158,27 +158,27 @@
       </div>
     </section>
 
-    <section class="section section--white" id="experience" data-compact aria-labelledby="experience-title">
+    <section class="section section--{{ @bg_experience }}" id="experience" data-compact aria-labelledby="experience-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="experience-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>03 /</span> <span class="section__label">{{ sections.experience }}</span></h2>
+        <h2 class="section__title" id="experience-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_experience }}</span> <span class="section__label">{{ sections.experience }}</span></h2>
         <div class="section__body">
 {{ !experience }}
         </div>
       </div>
     </section>
 
-    <section class="section section--bone" id="education" data-compact aria-labelledby="education-title">
+    <section class="section section--{{ @bg_education }}" id="education" data-compact aria-labelledby="education-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="education-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>04 /</span> <span class="section__label">{{ sections.education }}</span></h2>
+        <h2 class="section__title" id="education-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_education }}</span> <span class="section__label">{{ sections.education }}</span></h2>
         <div class="section__body">
 {{ !education }}
         </div>
       </div>
     </section>
 
-    <section class="section section--white" id="skills" data-compact aria-labelledby="skills-title">
+    <section class="section section--{{ @bg_skills }}" id="skills" data-compact aria-labelledby="skills-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="skills-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>05 /</span> <span class="section__label">{{ sections.skills }}</span></h2>
+        <h2 class="section__title" id="skills-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_skills }}</span> <span class="section__label">{{ sections.skills }}</span></h2>
         <div class="section__body">
 {{ !skills }}
         </div>
@@ -187,9 +187,9 @@
 
     <section class="section section--navy" id="contact" aria-labelledby="contact-title">
       <div class="section__inner wrap">
-        <h2 class="section__title" id="contact-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>06 /</span> <span class="section__label">{{ sections.contact }}</span></h2>
+        <h2 class="section__title" id="contact-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_contact }}</span> <span class="section__label">{{ sections.contact }}</span></h2>
         <div class="section__body">
-          <p class="section__lead">{{ contact.text }}</p>
+{{ !contactLead }}
           <ul class="contact" role="list">
             <li>
               <a class="contact__link" href="{{ @github }}" target="_blank" rel="noopener me">

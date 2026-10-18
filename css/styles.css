@@ -1706,12 +1706,6 @@ html:not(.js) .chat__placeholder,
   margin-top: 1.25rem;
 }
 
-.status {
-  color: var(--navy-3);
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-}
-
 /* Progress line ---------------------------------------------------------
    One gold line (js/scroll.js) drawn with the scroll through every section number,
    alternating sides from 48em. Its tip carries the site's only glow: a soft halo
