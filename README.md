@@ -23,8 +23,8 @@
 - **One static page per language**, for search engines: English at `/`, Spanish at `/es/`, French at `/fr/`. Every word is in the generated HTML; JavaScript only adds behaviour (header state, menus, a dismissible language suggestion) and never injects content.
 - **SEO per language**: translated `title`, description and Open Graph, `<link rel="canonical">`, `hreflang` alternates (with `x-default` to English), a Person JSON-LD block, `sitemap.xml` and `robots.txt`. There is no automatic redirect by browser language.
 - **Content lives in JSON**: interface text in `i18n/<lang>.json`, projects (with their three languages) in `data/projects.json`, shared data in `data/site.json`. The build fails with a clear message if any language misses a key, so a page with gaps is never published.
-- **Visible placeholders**: any string that starts with `TODO:` is rendered with a dashed `TODO` marker.
-- **The hero chat**: below the name, a chat box holds the question "Who is Santiago Die?" (translated per page). Press send and the camera zooms into the message: it splits into tokens with their real ids (`cl100k_base`), each unfolds a vector, attention arcs and a pulse run through the layers, the candidates for the next token share out the probability, and the winner flies into the answer, which then streams in. About 15 s, with Skip (or Escape) and Replay; it pauses in a hidden tab and finishes itself if scrolled away. Embeddings, attention weights and probabilities are illustrative, and a small line under the chat says so. Without JavaScript the chat is shown answered; with reduced motion the answer fades in without zoom or stages.
+- **Visible placeholders**: any string that starts with `TODO:` is rendered with a dashed `TODO` marker, except About paragraphs, which stay unpublished until they have their text.
+- **The About chat**: the About section (01) introduces Santiago through a chat. Once the section has assembled, the question "Who is Santiago Die?" (translated per page) types itself into the box. Press send and the camera zooms into the message: it splits into tokens with their real ids (`cl100k_base`), each unfolds a vector, attention arcs and a pulse run through the layers, the candidates for the next token share out the probability, and the winner flies into the answer, which then streams in. Then a notice says the chat has hit its message limit, with the reset time in the visitor's local time, and links to Contact to ask Santiago directly; the box switches off. About 15 s, with Skip (or Escape) and Replay; it pauses in a hidden tab and finishes itself if scrolled away. Embeddings, attention weights and probabilities are illustrative. Without JavaScript the chat is shown answered, with the notice (without a time); with reduced motion the answer and the notice fade in without zoom or stages.
 - **Scroll**: sections assemble once as they arrive, and a thin gold line drawn with the scroll links the section numbers (CSS scroll timeline where supported, `requestAnimationFrame` elsewhere). Content is always visible in the HTML; nothing holds or redirects the scroll.
 
 ## Built With
@@ -51,11 +51,11 @@ src/index.html             # Page template ({{ key }} placeholders, see tools/bu
 i18n/en.json, es.json, fr.json   # All copy, per language
 data/projects.json         # Projects: titles, courses, descriptions, metrics, links (3 languages)
 data/site.json             # Site URL, profiles, languages
-data/tokens.json           # Real cl100k_base token ids of the hero chat's question and answer
-data/llm.json              # Illustrative values of the hero chat: attention weights, next-token candidates
+data/tokens.json           # Real cl100k_base token ids of the About chat's question and answer
+data/llm.json              # Illustrative values of the About chat: attention weights, next-token candidates
 css/styles.css             # All styles: tokens, layout, components, motion
 js/main.js                 # Behaviour only: header, menus, language suggestion
-js/hero-chat.js            # Plays the hero chat (Web Animations; the text is already in the HTML)
+js/chat.js                 # Plays the About chat (Web Animations; the text is already in the HTML)
 js/scroll.js               # Progress line, current section, sections assembling on scroll
 img/                       # SD logos (unmodified) and project screenshots (img/projects/*.webp)
 fonts/                     # Hubot Sans, Mona Sans, JetBrains Mono (woff2 subsets) with their OFL licences
@@ -95,8 +95,8 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 
 ## Editing or Adding a Translation
 
-- Edit the same key in the three files in `i18n/`. Lists (`experience.items`, `education.items`, `skills.groups`) must have the same entries in every language; an empty list shows a short "nothing yet" message, and an empty `about.paragraphs` removes the About section and its menu link.
-- The hero chat's question and answer are `chat.prompt` and `chat.answer`. After editing them, run `python tools/tokenize.py` to re-encode both with the `cl100k_base` tokenizer into `data/tokens.json` (it needs `pip install tiktoken` and only runs locally; the GitHub workflow does not use it); the build refuses ids that no longer spell the text. In `data/llm.json`, keep one attention weight per question token and start `next` with the first answer token (the other candidates and the probabilities are illustrative).
+- Edit the same key in the three files in `i18n/`. Lists (`experience.items`, `education.items`, `skills.groups`) must have the same entries in every language; an empty list shows a short "nothing yet" message. `about.paragraphs` is optional text under the About chat; paragraphs that still start with `TODO` are not published.
+- The About chat's question and answer are `chat.prompt` and `chat.answer`; the message-limit notice is `chat.limit` (`{time}` marks the reset time, and `resetOne` is the form for one o'clock, "a la 1:00" in Spanish). After editing them, run `python tools/tokenize.py` to re-encode both with the `cl100k_base` tokenizer into `data/tokens.json` (it needs `pip install tiktoken` and only runs locally; the GitHub workflow does not use it); the build refuses ids that no longer spell the text. In `data/llm.json`, keep one attention weight per question token and start `next` with the first answer token (the other candidates and the probabilities are illustrative).
 - To add the CV, put the PDF in a `cv/` folder (it is copied into `dist/`) and set `contact.cvFile`, for example `"cv/santiago-die-morejon-cv.pdf"`, in each language file.
 - To add a language: copy `i18n/en.json` to `i18n/<code>.json` and translate it, add every project's `<code>` texts, add `{ "code": "<code>", "path": "<code>/" }` to `languages` in `data/site.json`, add its tokens to `data/tokens.json` and its attention weights and candidates to `data/llm.json`. The menu, hreflang links and sitemap appear automatically; for the language suggestion bar add the `html[data-suggest="<code>"]` line in `css/styles.css`, and for its link preview add an `og-image-<code>.png` (1200×630).
 
