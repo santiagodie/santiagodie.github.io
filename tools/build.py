@@ -151,6 +151,11 @@ def text(value):
     return esc(value)
 
 
+def published(value):
+    """Paragraphs and entries still marked TODO stay in i18n but are not published."""
+    return bool(value) and not TODO.match(str(value))
+
+
 def lookup(strings, path, lang):
     node = strings
     for key in path.split("."):
@@ -401,20 +406,35 @@ def render_skills(s):
     return '          <div class="skills">\n' + "\n".join(blocks) + "\n          </div>"
 
 
-def render_cv(s, root):
+def render_email(s):
+    """The address is published only once it is set (it is a TODO until the owner decides)."""
     contact = s["contact"]
-    if contact["cvFile"]:
-        name = contact["cvFile"].split("/")[-1]
-        return (f'              <a class="contact__link" href="{root}{esc(contact["cvFile"])}" target="_blank" rel="noopener">'
-                f'<span class="contact__label">{text(contact["cv"])}</span><span class="contact__value">{esc(name)}</span>{ARROW}'
-                f'<span class="visually-hidden">({esc(s["a11y"]["newTab"])})</span></a>')
-    return (f'              <div class="contact__row"><span class="contact__label">{text(contact["cv"])}</span>'
-            f'<span class="contact__value">{text(contact["cvPending"])}</span></div>')
+    if not published(contact["email"]):
+        return ""
+    return (f'            <li>\n              <a class="contact__link" href="mailto:{esc(contact["email"])}">'
+            f'<span class="contact__label">{text(contact["emailLabel"])}</span><span class="contact__value">{esc(contact["email"])}</span>{ARROW}</a>\n'
+            f'            </li>')
+
+
+def render_cv(s, root, warnings):
+    """The CV button only exists when the PDF does."""
+    contact = s["contact"]
+    if not contact["cvFile"]:
+        return ""
+    if not (ROOT / contact["cvFile"]).exists():
+        warnings.add(f"contact.cvFile is {contact['cvFile']!r}, which does not exist: the CV is not published")
+        return ""
+    name = contact["cvFile"].split("/")[-1]
+    return (f'            <li>\n              <a class="contact__link" href="{root}{esc(contact["cvFile"])}" target="_blank" rel="noopener">'
+            f'<span class="contact__label">{text(contact["cv"])}</span><span class="contact__value">{esc(name)}</span>{ARROW}'
+            f'<span class="visually-hidden">({esc(s["a11y"]["newTab"])})</span></a>\n'
+            f'            </li>')
 
 
 # Page ---------------------------------------------------------------------
 
 PLACEHOLDER = re.compile(r"\{\{\s*([=@!]?)\s*([\w.]+)\s*\}\}")
+FRAGMENT_LINE = re.compile(r"^[ \t]*\{\{\s*(!)\s*(\w+)\s*\}\}\n", re.M)
 
 
 def render_page(template, site, strings, projects, tokens, model, language, warnings):
@@ -442,7 +462,8 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),
         "skills": lambda: render_skills(s),
-        "cv": lambda: render_cv(s, root),
+        "email": lambda: render_email(s),
+        "cv": lambda: render_cv(s, root, warnings),
     }
 
     def replace(match):
@@ -458,7 +479,13 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         value = lookup(strings[lang], name, lang)
         return esc(value) if kind == "=" else text(value)
 
-    return PLACEHOLDER.sub(replace, template)
+    def line(match):
+        # A fragment alone on its line that renders nothing takes its line with it.
+        rendered = replace(match)
+        return rendered + "\n" if rendered else ""
+
+    page = FRAGMENT_LINE.sub(line, template)
+    return PLACEHOLDER.sub(replace, page)
 
 
 def render_sitemap(site):

@@ -2278,8 +2278,7 @@ main {
   border-top: 1px solid var(--line-dark);
 }
 
-.contact__link,
-.contact__row {
+.contact__link {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -2312,13 +2311,8 @@ main {
   color: var(--gold);
 }
 
-.contact__row .contact__label {
-  color: var(--bone-2);
-}
-
 @media (min-width: 48em) {
-  .contact__link,
-  .contact__row {
+  .contact__link {
     grid-template-columns: 14rem minmax(0, 1fr) auto;
   }
 

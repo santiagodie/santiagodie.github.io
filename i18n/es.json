@@ -118,12 +118,13 @@
     ]
   },
   "contact": {
-    "text": "TODO: Una línea sobre cómo prefieres que te contacten.",
+    "text": "Me puedes encontrar en GitHub y LinkedIn.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
+    "emailLabel": "Correo",
+    "email": "TODO: tu dirección de correo, cuando decidas publicarla",
     "cv": "CV (PDF)",
-    "cvFile": "",
-    "cvPending": "TODO: añadir el PDF"
+    "cvFile": ""
   },
   "footer": {
     "rights": "Santiago Die Morejón",
