@@ -272,7 +272,6 @@ def render_chat(s, tokens, model, lang):
             <button class="chat__ctl" type="button" data-chat-skip hidden>{esc(chat["skip"])}{SKIP}</button>
             <button class="chat__ctl" type="button" data-chat-replay hidden>{REPLAY}{esc(chat["replay"])}</button>
           </div>
-          <p class="chat__note">{esc(chat["note"])}</p>
           <p class="visually-hidden" aria-live="polite" data-chat-live></p>
           <script type="application/json" data-chat-model>{payload}</script>
         </div>'''

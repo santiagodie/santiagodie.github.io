@@ -49,7 +49,6 @@
       "atención",
       "softmax"
     ],
-    "note": "Visualización ilustrativa · ids de token reales (cl100k_base)",
     "description": "Animación: la pregunta se envía, se divide en tokens con sus ids reales, se convierte en vectores, pasa por capas de atención y se puntúa; se elige el siguiente token más probable y la respuesta se escribe token a token."
   },
   "sections": {

@@ -49,7 +49,6 @@
       "attention",
       "softmax"
     ],
-    "note": "Illustrative visualisation · real token ids (cl100k_base)",
     "description": "Animation: the question is sent, split into tokens with their real ids, turned into vectors, passed through attention layers and scored; the most likely next token is chosen, and the answer is written one token at a time."
   },
   "sections": {

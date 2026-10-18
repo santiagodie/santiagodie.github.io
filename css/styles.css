@@ -1130,15 +1130,6 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   outline-offset: 3px;
 }
 
-.chat__note {
-  min-height: 1.4em;
-  margin-top: 0.6rem;
-  color: var(--navy-3);
-  font: 400 0.6875rem/1.4 var(--font-mono);
-  text-align: right;
-  transition: opacity 400ms ease;
-}
-
 .chat__clock {
   position: absolute;
 }
@@ -1413,8 +1404,7 @@ html:not(.js) .chat__placeholder,
 .js .chat:not([data-state]) .chat__answer .t,
 .js .chat[data-state="idle"] .chat__bubble,
 .js .chat[data-state="idle"] .chat__answer .t,
-.js .chat[data-state="run"] .chat__answer .t,
-.js .chat:not([data-state="done"]) .chat__note {
+.js .chat[data-state="run"] .chat__answer .t {
   opacity: 0;
 }
 

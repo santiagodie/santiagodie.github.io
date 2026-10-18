@@ -49,7 +49,6 @@
       "attention",
       "softmax"
     ],
-    "note": "Visualisation illustrative · identifiants de tokens réels (cl100k_base)",
     "description": "Animation : la question est envoyée, découpée en tokens avec leurs vrais identifiants, transformée en vecteurs, passée par des couches d’attention puis évaluée ; le token suivant le plus probable est choisi et la réponse s’écrit token après token."
   },
   "sections": {
