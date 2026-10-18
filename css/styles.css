@@ -850,7 +850,9 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 
 .hero__role {
   grid-area: role;
-  max-width: 32ch;
+  /* 32ch of Mona Sans, in em: a ch measure would follow the fallback font while
+     the web font loads, and the French role would wrap, then unwrap. */
+  max-width: 19.7em;
   margin-top: calc(-1 * clamp(0.5rem, 1.5vw, 1.25rem));
   color: var(--navy-2);
   font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
@@ -1558,7 +1560,7 @@ html:not(.js) .chat__placeholder,
 }
 
 .prose p {
-  max-width: 34ch;
+  max-width: 23em; /* 34ch of Hubot Sans; in em so the measure holds while it loads */
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
   font-weight: 500;
