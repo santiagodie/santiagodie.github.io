@@ -7,7 +7,7 @@ Usage:
 
 Inputs: src/index.html (template), i18n/<lang>.json (all copy), data/projects.json
 (projects, with their three languages), data/site.json (URL, profiles, languages),
-data/tokens.json (real token ids, written by tools/tokenize.py) and data/llm.json
+data/tokens.json (real cl100k_base token ids) and data/llm.json
 (the illustrative values of the hero diagram). Python standard library only.
 
 Template syntax:
@@ -109,7 +109,7 @@ def validate_model(strings, tokens, model, langs):
         if len(llm["stages"]) != 8:
             problems.append(f"{lang}: llm.stages must list the 8 stages")
     if problems:
-        raise BuildError("the hero diagram data is out of date (run python tools/tokenize.py after editing a prompt or answer):\n  - "
+        raise BuildError("the hero diagram data is out of date (re-encode the prompt and answer into data/tokens.json):\n  - "
                          + "\n  - ".join(problems))
 
 
@@ -235,7 +235,7 @@ def render_lang_suggest(site, strings, current, root):
 
 
 # The hero's generate() diagram -------------------------------------------
-# Token texts and ids are real (data/tokens.json, from tools/tokenize.py); the
+# Token texts and ids are real (data/tokens.json, cl100k_base); the
 # probabilities, embeddings and attention weights are illustrative (data/llm.json)
 # and the panel says so. Every word and number is written here, into the HTML; the
 # script js/hero-model.js only decides what is visible when.
@@ -554,7 +554,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "lang": lang, "langCode": lang.upper(), "root": root, "year": date.today().year,
         "langs": ",".join(l["code"] for l in site["languages"]),
         "canonical": page_url(site, language), "siteUrl": site["url"],
-        # Each language has its own link preview (tools/og-image.html), English as fallback.
+        # Each language has its own link preview, English as fallback.
         "ogImage": site["url"] + (f"og-image-{lang}.png" if (ROOT / f"og-image-{lang}.png").exists() else "og-image.png"),
         "github": site["person"]["github"], "linkedin": site["person"]["linkedin"],
     }

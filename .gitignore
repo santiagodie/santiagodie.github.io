@@ -16,3 +16,12 @@ dist/
 Thumbs.db
 .vscode/
 __pycache__/
+
+# Local working files, kept out of the repository: design and product context,
+# design-skill config, the offline token script and the link-preview source
+DESIGN.md
+PRODUCT.md
+.impeccable/
+skills-lock.json
+tools/tokenize.py
+tools/og-image.html
