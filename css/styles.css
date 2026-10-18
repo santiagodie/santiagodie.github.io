@@ -719,6 +719,13 @@ main:focus {
   display: none;
 }
 
+/* Shown from the first paint when the head script picked this language. */
+html[data-suggest="en"] .lang-suggest[data-suggest="en"],
+html[data-suggest="es"] .lang-suggest[data-suggest="es"],
+html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
+  display: flex;
+}
+
 .lang-suggest p {
   margin-left: auto;
 }
@@ -774,9 +781,8 @@ main:focus {
     "mark"
     "name"
     "role"
-    "tokens"
     "actions"
-    "predict";
+    "llm";
   row-gap: clamp(1.75rem, 3.5vw, 2.75rem);
 }
 
@@ -789,14 +795,6 @@ main:focus {
   font-weight: 500;
   line-height: 1.35;
   text-wrap: balance;
-}
-
-.tokenizer {
-  grid-area: tokens;
-}
-
-.predict {
-  grid-area: predict;
 }
 
 .hero__mark {
@@ -825,127 +823,6 @@ main:focus {
   display: block;
 }
 
-.tokenizer .code-label,
-.predict .code-label {
-  margin-bottom: 0.75rem;
-}
-
-.tokens {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 0.5rem;
-}
-
-/* One word = one group. Sub-word tokens inside a word sit 2px apart: that is where
-   the tokenizer split it. */
-.tokens__word {
-  display: flex;
-  gap: 2px;
-}
-
-.token {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.token__text {
-  display: block;
-  min-width: 2em;
-  padding: 0.3em 0.55em;
-  font-family: var(--font-mono);
-  font-size: clamp(0.9375rem, 0.8rem + 0.5vw, 1.25rem);
-  font-weight: 500;
-  line-height: 1.3;
-  text-align: center;
-  white-space: pre;
-  background: var(--white);
-  border: 1px solid var(--gold-line);
-  border-radius: var(--radius-sm);
-}
-
-.tokens__word:first-child .token:first-child .token__text {
-  border-color: var(--gold);
-}
-
-.token__id {
-  color: var(--navy-3);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.predict__context {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-bottom: 1rem;
-  font-family: var(--font-mono);
-  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
-  font-weight: 500;
-}
-
-.predict__caret {
-  display: inline-block;
-  width: 0.55em;
-  height: 1.1em;
-  background: var(--navy);
-  opacity: 0.35;
-}
-
-.predict__arrow {
-  margin-left: 0.75rem;
-  color: var(--navy-3);
-}
-
-.predict__list {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.predict__row {
-  display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr) 3rem;
-  align-items: center;
-  gap: 1rem;
-  font-family: var(--font-mono);
-  font-size: 0.9375rem;
-  color: var(--navy-3);
-}
-
-.predict__row--top {
-  color: var(--navy);
-  font-weight: 500;
-}
-
-.predict__bar {
-  position: relative;
-  height: 6px;
-  background: var(--line);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.predict__bar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: calc(var(--p) * 100%);
-  background: var(--line-strong);
-  border-radius: inherit;
-  transform-origin: left;
-}
-
-.predict__row--top .predict__bar::before {
-  background: var(--gold);
-}
-
-.predict__p {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
 .hero__actions {
   grid-area: actions;
   display: flex;
@@ -960,8 +837,8 @@ main:focus {
     grid-template-areas:
       "name    name"
       "role    role"
-      "tokens  predict"
-      "actions predict";
+      "actions actions"
+      "llm     llm";
     column-gap: clamp(2rem, 4vw, 4rem);
     align-items: start;
   }
@@ -972,14 +849,6 @@ main:focus {
     grid-row: 1 / span 2;
     grid-column: 2;
     justify-self: end;
-  }
-
-  .predict {
-    padding-left: clamp(2rem, 4vw, 4rem);
-    border-left: 1px solid var(--gold-line);
-  }
-
-  .hero__mark {
     align-self: start;
     padding-top: 0.5rem;
   }
@@ -987,6 +856,1391 @@ main:focus {
   .hero__logo {
     width: clamp(11rem, 17vw, 16rem);
   }
+}
+
+/* generate(): how a language model turns a prompt into an answer -------------
+   All text and numbers are in the HTML (tools/build.py). By default this is a
+   complete static diagram with a legend of the eight stages: that is what readers
+   without JavaScript, with reduced motion, and search engines get. js/hero-model.js
+   walks through the stages by toggling classes. The live layout and every hidden
+   starting state are scoped to html.motion, which the inline script in <head> sets
+   before the first paint when JavaScript runs and motion is allowed, so the panel
+   never changes size when the script starts. */
+
+.llm {
+  --row: 2.125rem;
+  --arc: clamp(2.25rem, 8vw, 2.75rem);
+  --arc-h: 3.25rem;
+  --legend-h: 1.75rem;
+  --legend-w: 9rem;
+  grid-area: llm;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+  margin-top: clamp(0.5rem, 2vw, 1.5rem);
+  padding: clamp(1rem, 2.8vw, 2rem);
+  background: var(--white);
+  border: 1px solid var(--gold-soft);
+  border-radius: 16px;
+  /* JetBrains Mono would join <| and |> of the end token into arrows. */
+  font-variant-ligatures: none;
+}
+
+.llm > * {
+  flex: none;
+}
+
+.llm__head { order: 1; }
+.llm__canvas { order: 2; }
+.llm__nav { order: 3; }
+.llm__note { order: 4; }
+
+.llm__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+
+.llm__title {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 650;
+  font-stretch: 104%;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.llm__note {
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+/* Stages: a legend in the static diagram. */
+.llm__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14.5rem), 1fr));
+  gap: 1rem 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.llm__step {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  color: var(--navy-2);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.llm__step-head {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.llm__step-num {
+  color: var(--navy-3);
+  font-weight: 400;
+}
+
+.llm__step-tag {
+  display: none;
+}
+
+/* Canvas ------------------------------------------------------------------ */
+
+.llm__canvas {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+}
+
+.llm__canvas > div {
+  position: relative;
+  min-width: 0;
+}
+
+.llm__region {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  height: 1.25rem;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color var(--dur) ease;
+}
+
+/* The region of the current stage gets a small gold node. */
+.llm__region::before {
+  content: "";
+  flex: none;
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.llm__labels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 1rem;
+}
+
+/* 01 prompt */
+.llm__prompt {
+  display: flex;
+  align-items: center;
+  height: 2.25rem;
+  margin-block: 0.375rem 1rem;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  font-weight: 500;
+  white-space: pre;
+}
+
+.llm__caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.15em;
+  margin-left: 2px;
+  background: var(--navy);
+  opacity: 0;
+}
+
+/* 02-03 token table (vertical: one token per row, arcs on the left) */
+.llm__table {
+  position: relative;
+  margin-top: 0.375rem;
+  padding-left: var(--arc);
+}
+
+.llm__arcs {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.llm__arcs--h {
+  display: none;
+}
+
+.llm__arcs--v {
+  top: var(--legend-h);
+  left: 0;
+  width: var(--arc);
+  height: calc(100% - var(--legend-h));
+}
+
+.llm__arcs path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: calc(0.75px + 1.75px * var(--w));
+  stroke-linecap: round;
+  opacity: calc(0.25 + 0.75 * var(--w));
+  vector-effect: non-scaling-stroke;
+}
+
+/* The arcs of the fed-back token belong to the loop. */
+.llm__arcset[data-arcs="fed"] {
+  display: none;
+}
+
+.llm__slots {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-template-rows: var(--legend-h) repeat(var(--slots), var(--row));
+  justify-content: start;
+  column-gap: clamp(0.5rem, 2.5vw, 1.25rem);
+}
+
+.llm__slot {
+  grid-row: var(--n);
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-width: 0;
+}
+
+.llm__legend .llm__region {
+  align-self: start;
+}
+
+.llm__region--sub::before {
+  display: none;
+}
+
+/* Narrow table: the embeddings label also covers the position column. */
+@media (max-width: 63.99em) {
+  .llm__legend .llm__region:nth-child(3) {
+    grid-column: 3 / span 2;
+  }
+
+  .llm__legend .llm__region:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 22.49em) {
+  .llm__slots {
+    grid-template-columns: auto auto auto;
+  }
+
+  .llm__pos {
+    display: none;
+  }
+}
+
+.llm__chip {
+  justify-self: start;
+  max-width: 100%;
+  padding: 0.1em 0.5em;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  white-space: pre;
+  text-overflow: ellipsis;
+  background: var(--white);
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius-sm);
+}
+
+.llm__slot--fed .llm__chip {
+  border-color: var(--gold);
+}
+
+.llm__id,
+.llm__pos {
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.llm__pos {
+  font-size: 0.6875rem;
+}
+
+.llm__vec {
+  display: flex;
+  gap: 2px;
+}
+
+.llm__vec i {
+  width: 0.4375rem;
+  height: 0.875rem;
+  background: var(--navy);
+  border-radius: 1px;
+  opacity: var(--v);
+}
+
+/* Only one fed-back token is shown at a time. */
+.llm__slot--fed {
+  visibility: hidden;
+  opacity: 0;
+}
+
+:root:not(.motion) .llm .llm__slot--fed.is-static,
+.motion .llm .llm__slot--fed.is-current {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* 04 Transformer × N */
+.llm__blocks {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border-radius: 9px;
+}
+
+.llm__block {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+}
+
+.llm__more {
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  line-height: 0.8;
+  text-align: center;
+}
+
+/* The pulse: a short gold line that travels down through the blocks. */
+.llm__pulse {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.llm__pulse::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 1px;
+}
+
+/* 05-06 logits → softmax, sampling */
+.llm__dists {
+  display: grid;
+  margin-top: 0.75rem;
+}
+
+.llm__dist {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: 0.25rem;
+  visibility: hidden;
+  opacity: 0;
+}
+
+:root:not(.motion) .llm .llm__dist.is-static,
+.motion .llm .llm__dist.is-current {
+  visibility: visible;
+  opacity: 1;
+}
+
+.llm__cand {
+  display: grid;
+  grid-template-columns: minmax(0, 6.5rem) minmax(3rem, 1fr) 3.25rem;
+  align-items: center;
+  gap: 0.75rem;
+  height: 1.75rem;
+  padding-inline: 0.5rem;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+
+.llm__word {
+  overflow: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+
+.llm__bar {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  background: var(--line);
+  border-radius: 3px;
+}
+
+.llm__bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--line-strong);
+  border-radius: inherit;
+  transform: scaleX(var(--p));
+  transform-origin: left;
+}
+
+.llm__val {
+  display: grid;
+  justify-items: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.llm__logit,
+.llm__prob {
+  grid-area: 1 / 1;
+}
+
+.llm__logit {
+  opacity: 0;
+}
+
+/* The sampled token: navy text, gold bar, thin gold frame. */
+.llm__cand--chosen {
+  color: var(--navy);
+  font-weight: 500;
+  border-color: var(--gold-line);
+}
+
+.llm__cand--chosen .llm__bar::before {
+  background: var(--gold);
+}
+
+/* 07 output */
+.llm__detoks {
+  display: grid;
+  height: 1.5rem;
+  margin-top: 0.25rem;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.llm__detok {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+:root:not(.motion) .llm .llm__detok.is-static,
+.motion .llm .llm__detok.is-current {
+  visibility: visible;
+  opacity: 1;
+}
+
+.llm__detok-text {
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.llm__answer {
+  margin-top: 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  font-weight: 600;
+  font-stretch: 104%;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  white-space: pre-wrap;
+}
+
+.llm__out {
+  position: relative;
+}
+
+.llm__eos {
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0 0.4em;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6;
+  vertical-align: 0.2em;
+  border: 1px dashed var(--gold);
+  border-radius: 4px;
+}
+
+/* 08 loop: drawn by the script from the answer back to the fed-back slot. */
+.llm__loop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.llm__loop path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Thin connectors between the regions (vertical on narrow screens). */
+.llm__stack::before,
+.llm__scores::before,
+.llm__output::before {
+  content: "";
+  position: absolute;
+  top: -1.625rem;
+  left: 0.25rem;
+  width: 1.5px;
+  height: 1.25rem;
+  background: var(--gold-line);
+  border-radius: 1px;
+}
+
+@media (max-width: 47.99em) {
+  .llm__canvas {
+    gap: 1.75rem;
+  }
+
+  .llm__blocks {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    align-items: center;
+  }
+
+  .llm__block {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 0.375rem 0.25rem;
+    line-height: 1.4;
+  }
+
+  .llm__more {
+    padding-inline: 0.25rem;
+    transform: rotate(90deg);
+  }
+
+  .llm__pulse::before {
+    top: 12%;
+    bottom: 12%;
+    left: 0;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+}
+
+@media (max-width: 47.99em) and (prefers-reduced-motion: no-preference) {
+  .motion .llm[data-anim][data-stage="4"] .llm__pulse,
+  .motion .llm[data-fast]:not([data-run="done"]) .llm__pulse {
+    animation-name: llm-pulse-x;
+  }
+}
+
+@media (min-width: 48em) and (max-width: 63.99em) {
+  .llm__canvas {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    grid-template-areas:
+      "input  input"
+      "stack  scores"
+      "output output";
+  }
+
+  .llm__input { grid-area: input; }
+  .llm__stack { grid-area: stack; }
+  .llm__scores { grid-area: scores; }
+  .llm__output { grid-area: output; }
+
+  .llm__scores::before {
+    top: 2.375rem;
+    left: -1.375rem;
+    width: 1rem;
+    height: 1.5px;
+  }
+}
+
+/* Wide screens: tokens left to right with the arcs above them, then the model,
+   the scores and the answer side by side. */
+@media (min-width: 64em) {
+  .llm__canvas {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.25fr) minmax(0, 1.3fr);
+    grid-template-areas:
+      "input  input  input"
+      "stack  scores output";
+    column-gap: clamp(2rem, 3vw, 3rem);
+    row-gap: 2.25rem;
+  }
+
+  .llm__input { grid-area: input; }
+  .llm__stack { grid-area: stack; }
+  .llm__scores { grid-area: scores; }
+  .llm__output { grid-area: output; }
+
+  .llm__table {
+    padding-left: 0;
+    padding-top: var(--arc-h);
+  }
+
+  .llm__arcs--v {
+    display: none;
+  }
+
+  .llm__arcs--h {
+    display: block;
+    top: 0;
+    left: var(--legend-w);
+    width: calc(100% - var(--legend-w));
+    height: var(--arc-h);
+  }
+
+  .llm__slots {
+    grid-template-columns: var(--legend-w) repeat(var(--slots), minmax(0, 1fr));
+    grid-template-rows: repeat(4, auto);
+    row-gap: 0.375rem;
+    column-gap: 0;
+  }
+
+  .llm__slot {
+    grid-row: 1 / -1;
+    grid-column: var(--n);
+    grid-template-columns: none;
+    grid-template-rows: subgrid;
+    justify-items: center;
+    padding-inline: 0.25rem;
+  }
+
+  .llm__legend {
+    justify-items: start;
+    padding-inline: 0;
+  }
+
+  .llm__legend .llm__region {
+    align-self: center;
+  }
+
+  .llm__chip {
+    justify-self: center;
+  }
+
+  .llm__vec {
+    flex-direction: column;
+    margin-block: 0.25rem;
+  }
+
+  .llm__vec i {
+    width: 1.375rem;
+    height: 0.4375rem;
+  }
+
+  .llm__scores::before,
+  .llm__output::before {
+    top: 2.375rem;
+    left: calc(-1 * clamp(2rem, 3vw, 3rem) + 0.5rem);
+    width: calc(clamp(2rem, 3vw, 3rem) - 1rem);
+    height: 1.5px;
+  }
+
+  /* From the token row down into the first block. */
+  .llm__stack::before {
+    top: -1.75rem;
+    left: 0.25rem;
+    width: 1.5px;
+    height: 1.25rem;
+  }
+}
+
+/* generate() live mode -------------------------------------------------------
+   Only under html.motion (JavaScript on, motion allowed). The script sets
+   data-stage (1-8), .has-N for every stage reached, data-run (playing, paused,
+   done), data-fast during the token loop and data-anim while a stage is entered
+   by playback (a stage reached by stepping while paused shows its end state). */
+
+.motion .llm .llm__nav {
+  order: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem 1.5rem;
+}
+
+.motion .llm .llm__canvas {
+  order: 3;
+}
+
+.llm__controls {
+  display: flex;
+  gap: 4px;
+}
+
+/* The controls only exist for the animated diagram. */
+:root:not(.motion) .llm__controls,
+.llm__controls[hidden] {
+  display: none;
+}
+
+.motion .llm .llm__steps {
+  grid-template-columns: repeat(8, minmax(1.5rem, 2.75rem)) minmax(0, 1fr);
+  gap: 0 2px;
+  padding: 0;
+  border: 0;
+  justify-content: start;
+}
+
+.motion .llm .llm__step {
+  display: contents;
+}
+
+/* Before the script turns each stage head into a button, the head already takes
+   the button's place and size. */
+.motion .llm__step-head {
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  height: 44px;
+  color: var(--navy-3);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.motion .llm__step-head .llm__step-label {
+  display: none;
+}
+
+.llm__step-btn {
+  position: relative;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  height: 44px;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  border-radius: var(--radius-sm);
+  touch-action: manipulation;
+  transition: color var(--dur-fast) ease;
+}
+
+.llm__step-btn .llm__step-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.llm__step-btn::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 8px;
+  height: 2px;
+  background: var(--line-strong);
+  border-radius: 1px;
+  transition: background-color var(--dur) ease;
+}
+
+.llm__step.is-done .llm__step-btn {
+  color: var(--navy-2);
+}
+
+.llm__step.is-done .llm__step-btn::after {
+  background: var(--navy-3);
+}
+
+.llm__step.is-current .llm__step-btn {
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.llm__step.is-current .llm__step-btn::after {
+  background: var(--gold);
+}
+
+.motion .llm .llm__step-text {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  max-width: 62ch;
+  min-height: 3em;
+  margin-top: 0.375rem;
+  color: var(--navy-2);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--dur-fast) ease, visibility 0s linear var(--dur-fast);
+}
+
+.motion .llm .llm__step.is-current .llm__step-text {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity var(--dur) var(--ease-out), visibility 0s;
+}
+
+.motion .llm .llm__step-tag {
+  display: inline;
+  margin-right: 0.5em;
+  color: var(--navy);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.llm__ctl {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--navy);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  touch-action: manipulation;
+  transition: border-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+}
+
+.llm__ctl svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.llm__ctl:active {
+  transform: scale(0.96);
+}
+
+.llm__icon-play,
+.llm:not([data-run="playing"]) [data-llm-pause] svg:first-child {
+  display: none;
+}
+
+.llm:not([data-run="playing"]) [data-llm-pause] .llm__icon-play {
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .llm__ctl:hover {
+    border-color: var(--navy);
+  }
+
+  .llm__step-btn:hover {
+    color: var(--navy);
+  }
+}
+
+@media (min-width: 48em) {
+  .motion .llm .llm__nav {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .llm__controls {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+/* The region of the current stage. */
+.motion .llm[data-stage="1"] [data-region="1"],
+.motion .llm[data-stage="2"] [data-region="2"],
+.motion .llm[data-stage="3"] [data-region="3"],
+.motion .llm[data-stage="4"] [data-region="4"],
+.motion .llm[data-stage="5"] [data-region="5"],
+.motion .llm[data-stage="6"] [data-region="6"],
+.motion .llm[data-stage="7"] [data-region="7"],
+.motion .llm[data-stage="8"] [data-region="8"] {
+  color: var(--navy);
+}
+
+.motion .llm[data-stage="1"] [data-region="1"]::before,
+.motion .llm[data-stage="2"] [data-region="2"]::before,
+.motion .llm[data-stage="3"] [data-region="3"]::before,
+.motion .llm[data-stage="4"] [data-region="4"]::before,
+.motion .llm[data-stage="5"] [data-region="5"]::before,
+.motion .llm[data-stage="6"] [data-region="6"]::before,
+.motion .llm[data-stage="7"] [data-region="7"]::before,
+.motion .llm[data-stage="8"] [data-region="8"]::before {
+  opacity: 1;
+  transform: none;
+}
+
+/* What each stage reveals. Before a stage is reached its data is not there yet. */
+.motion .llm:not(.has-1) .llm__chars span,
+.motion .llm:not(.has-2) .llm__slot .llm__chip,
+.motion .llm:not(.has-2) .llm__slot .llm__id,
+.motion .llm:not(.has-3) .llm__vec i,
+.motion .llm:not(.has-3) .llm__pos,
+.motion .llm:not(.has-5) .llm__dist,
+.motion .llm:not(.has-7) .llm__detok,
+.motion .llm .llm__out:not(.is-on) {
+  opacity: 0;
+}
+
+.motion .llm:not(.has-4) .llm__arcs path {
+  visibility: hidden;
+}
+
+.motion .llm:not(.has-8) .llm__loop path {
+  stroke-dashoffset: 1;
+}
+
+.llm__loop path {
+  stroke-dasharray: 1;
+}
+
+/* The prompt's own arcs until a generated token is fed back; then the new token's. */
+.motion .llm:not(.has-8) .llm__arcset[data-arcs="prompt"] {
+  display: inline;
+}
+
+.motion .llm:not(.has-8) .llm__arcset[data-arcs="fed"],
+:root:not(.motion) .llm .llm__arcset[data-arcs="prompt"],
+.motion .llm.has-8 .llm__arcset[data-arcs="prompt"] {
+  display: none;
+}
+
+:root:not(.motion) .llm .llm__arcset[data-arcs="fed"],
+.motion .llm.has-8 .llm__arcset[data-arcs="fed"] {
+  display: inline;
+}
+
+/* Until sampling, the top candidate is only the longest bar. */
+.motion .llm:not(.has-6) .llm__cand--chosen {
+  color: var(--navy-3);
+  font-weight: 400;
+  border-color: transparent;
+}
+
+.motion .llm:not(.has-6) .llm__cand--chosen .llm__bar::before {
+  background: var(--navy-3);
+}
+
+.motion .llm .llm__cand {
+  transition: color var(--dur) ease, border-color var(--dur) ease;
+}
+
+/* The caret: blinking while the prompt is typed, then at the end of the answer. */
+.motion .llm[data-stage="1"] .llm__prompt .llm__caret,
+.motion .llm[data-stage="2"] .llm__prompt .llm__caret {
+  opacity: 0.4;
+}
+
+.motion .llm:not([data-run="done"]) .llm__out.is-last::after {
+  content: "";
+  position: absolute;
+  top: 0.2em;
+  bottom: 0.15em;
+  left: 100%;
+  width: 0.45em;
+  margin-left: 3px;
+  background: var(--navy);
+  opacity: 0.35;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion .llm[data-stage="1"] .llm__prompt .llm__caret {
+    animation: blink 1s steps(1) infinite;
+  }
+
+  /* 01: typed one character at a time. */
+  .motion .llm[data-anim][data-stage="1"] .llm__chars span {
+    animation: llm-type 1ms steps(1) both;
+    animation-delay: calc(250ms + var(--c) * 55ms);
+  }
+
+  /* 02: chips land one by one, ids with them. */
+  .motion .llm[data-anim][data-stage="2"] .llm__slot .llm__chip,
+  .motion .llm[data-anim][data-stage="2"] .llm__slot .llm__id {
+    animation: llm-in 360ms var(--ease-out) both;
+    animation-delay: calc(var(--n) * 110ms);
+  }
+
+  /* 03: each id becomes a column of values, plus its position. */
+  .motion .llm[data-anim][data-stage="3"] .llm__vec i,
+  .motion .llm[data-anim][data-stage="3"] .llm__pos {
+    animation: llm-cell 320ms var(--ease-out) both;
+    animation-delay: calc(var(--n) * 90ms);
+  }
+
+  .motion .llm[data-anim][data-stage="3"] .llm__vec i:nth-child(2) { animation-delay: calc(var(--n) * 90ms + 35ms); }
+  .motion .llm[data-anim][data-stage="3"] .llm__vec i:nth-child(3) { animation-delay: calc(var(--n) * 90ms + 70ms); }
+  .motion .llm[data-anim][data-stage="3"] .llm__vec i:nth-child(4) { animation-delay: calc(var(--n) * 90ms + 105ms); }
+  .motion .llm[data-anim][data-stage="3"] .llm__vec i:nth-child(5) { animation-delay: calc(var(--n) * 90ms + 140ms); }
+  .motion .llm[data-anim][data-stage="3"] .llm__vec i:nth-child(6) { animation-delay: calc(var(--n) * 90ms + 175ms); }
+  .motion .llm[data-anim][data-stage="3"] .llm__pos { animation-delay: calc(var(--n) * 90ms + 220ms); }
+
+  /* 04: arcs from the last token draw in, then a pulse runs through the blocks. */
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path {
+    animation: llm-fade 520ms var(--ease-out) both;
+  }
+
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path:nth-child(2) { animation-delay: 80ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path:nth-child(3) { animation-delay: 160ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path:nth-child(4) { animation-delay: 240ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path:nth-child(5) { animation-delay: 320ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path:nth-child(6) { animation-delay: 400ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__arcs path:nth-child(7) { animation-delay: 480ms; }
+
+  .motion .llm[data-anim][data-stage="4"] .llm__pulse {
+    animation: llm-pulse 1200ms var(--ease-in-out) 750ms both;
+  }
+
+  .motion .llm[data-anim][data-stage="4"] .llm__block::after {
+    animation: llm-flash 520ms var(--ease-out) both;
+  }
+
+  .motion .llm[data-anim][data-stage="4"] .llm__block:nth-child(1)::after { animation-delay: 850ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__block:nth-child(2)::after { animation-delay: 1150ms; }
+  .motion .llm[data-anim][data-stage="4"] .llm__block:nth-child(3)::after { animation-delay: 1450ms; }
+
+  /* 05: raw scores first, then softmax normalises them into probabilities. */
+  .motion .llm[data-anim][data-stage="5"] .llm__bar::before {
+    animation: llm-softmax 1600ms var(--ease-out) both;
+  }
+
+  .motion .llm[data-anim][data-stage="5"] .llm__logit {
+    animation: llm-logit 1600ms linear both;
+  }
+
+  .motion .llm[data-anim][data-stage="5"] .llm__prob {
+    animation: llm-prob 1600ms linear both;
+  }
+
+  /* 06: the sampled row settles in its frame. */
+  .motion .llm[data-anim][data-stage="6"] .llm__dist.is-current .llm__cand--chosen {
+    animation: llm-pick 420ms var(--ease-out) both;
+  }
+
+  /* 07: the id turns back into text and joins the answer. */
+  .motion .llm[data-anim] .llm__detok.is-current,
+  .motion .llm .llm__out.is-new {
+    animation: llm-in 300ms var(--ease-out) both;
+  }
+
+  /* 08: the loop draws back to the input, where the new token takes its slot. */
+  .motion .llm[data-anim][data-stage="8"]:not([data-fast]) .llm__loop path {
+    animation: llm-draw 640ms var(--ease-in-out) both;
+  }
+
+  .motion .llm[data-anim][data-stage="8"] .llm__slot--fed.is-current {
+    animation: llm-in 320ms var(--ease-out) 380ms both;
+  }
+
+  .motion .llm[data-anim][data-stage="8"] .llm__arcset[data-arcs="fed"] path {
+    animation: llm-fade 420ms var(--ease-out) 520ms both;
+  }
+
+  /* Then the loop runs quickly, one token per beat. */
+  .motion .llm[data-fast] .llm__slot--fed.is-current,
+  .motion .llm[data-fast] .llm__detok.is-current {
+    animation: llm-in 180ms var(--ease-out) both;
+  }
+
+  .motion .llm[data-fast] .llm__dist.is-current .llm__bar::before {
+    animation: llm-bar 260ms var(--ease-out) both;
+  }
+
+  .motion .llm[data-fast]:not([data-run="done"]) .llm__pulse {
+    animation: llm-pulse 330ms linear infinite;
+  }
+
+  .llm[data-run="paused"],
+  .llm[data-run="paused"] *,
+  .llm[data-run="paused"] *::before,
+  .llm[data-run="paused"] *::after {
+    animation-play-state: paused !important;
+  }
+}
+
+.llm__block {
+  position: relative;
+}
+
+.llm__block::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--gold);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Phones: the live diagram is a fixed-height card that shows one stage at a time,
+   with the stage indicator as a clickable progress bar and the answer always at the
+   bottom. Every size below is fixed, so moving between stages never shifts the page.
+   Without JavaScript or with reduced motion, phones get the full static diagram. */
+@media (max-width: 47.99em) {
+  .motion .llm {
+    gap: 0.625rem;
+    padding: 0.875rem;
+  }
+
+  .motion .llm .llm__head {
+    height: 40px;
+    align-items: center;
+  }
+
+  .motion .llm .llm__title,
+  .motion .llm .llm__step-num {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .motion .llm .llm__nav {
+    margin-top: calc(-40px - 0.625rem);
+    gap: 0.375rem;
+  }
+
+  .motion .llm .llm__controls {
+    grid-row: 1;
+    justify-self: end;
+    gap: 2px;
+  }
+
+  .motion .llm .llm__steps {
+    grid-row: 2;
+  }
+
+  .motion .llm .llm__slot.llm__legend {
+    display: none;
+  }
+
+  .motion .llm .llm__ctl {
+    width: 40px;
+    height: 40px;
+  }
+
+  .motion .llm .llm__steps {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 0 3px;
+  }
+
+  .motion .llm .llm__step-btn,
+  .motion .llm .llm__step-head {
+    height: 24px;
+  }
+
+  .motion .llm .llm__step-head .llm__step-num {
+    visibility: hidden;
+  }
+
+  .motion .llm .llm__step-btn::after {
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    height: 4px;
+    border-radius: 2px;
+  }
+
+  /* Minimum heights, not fixed ones: at normal text size every stage fits and the
+     card never changes height; with enlarged text the card grows instead of clipping. */
+  .motion .llm .llm__step-text {
+    min-height: 4.2em;
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .motion .llm .llm__canvas {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(11.5rem, auto) minmax(4.25rem, auto);
+    gap: 0.5rem;
+  }
+
+  /* The views share one cell; the stage decides which one is shown. */
+  .motion .llm .llm__input,
+  .motion .llm .llm__stack,
+  .motion .llm .llm__scores {
+    grid-area: 1 / 1;
+    align-self: start;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out), visibility 0s linear 180ms;
+  }
+
+  .motion .llm:not([data-stage]) .llm__input,
+  .motion .llm[data-stage="1"] .llm__input,
+  .motion .llm[data-stage="2"] .llm__input,
+  .motion .llm[data-stage="3"] .llm__input,
+  .motion .llm[data-stage="8"]:not([data-fast]) .llm__input,
+  .motion .llm[data-stage="4"] .llm__stack,
+  .motion .llm[data-stage="5"] .llm__scores,
+  .motion .llm[data-stage="6"] .llm__scores,
+  .motion .llm[data-fast] .llm__scores {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: opacity 260ms var(--ease-out) 80ms, transform 260ms var(--ease-out) 80ms, visibility 0s;
+  }
+
+  .motion .llm .llm__stack {
+    align-self: center;
+  }
+
+  .motion .llm .llm__stack::before,
+  .motion .llm .llm__scores::before,
+  .motion .llm .llm__output::before,
+  .motion .llm .llm__loop,
+  .motion .llm .llm__arcs,
+  .motion .llm .llm__legend,
+  .motion .llm .llm__pos,
+  .motion .llm .llm__output .llm__labels {
+    display: none;
+  }
+
+  /* Input view: the prompt, then the tokens as wrapped chips with id and vector. */
+  .motion .llm .llm__prompt {
+    height: 1.75rem;
+    margin-block: 0.125rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .motion .llm .llm__table {
+    margin: 0;
+    padding: 0;
+  }
+
+  .motion .llm .llm__slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .motion .llm .llm__slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 2.5rem;
+  }
+
+  .motion .llm .llm__slot--fed:not(.is-current) {
+    display: none;
+  }
+
+  .motion .llm .llm__chip {
+    font-size: 0.8125rem;
+  }
+
+  .motion .llm .llm__id {
+    font-size: 0.6875rem;
+  }
+
+  .motion .llm .llm__vec i {
+    width: 5px;
+    height: 9px;
+  }
+
+  /* Output: the id turned back into text fills the view at stage 07. */
+  .motion .llm .llm__output {
+    grid-row: 2;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .motion .llm .llm__detoks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 0.5rem);
+    height: 11.5rem;
+    margin: 0;
+    place-items: center;
+    font-size: 1.25rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 180ms var(--ease-out), visibility 0s linear 180ms;
+  }
+
+  .motion .llm[data-stage="7"] .llm__detoks {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 260ms var(--ease-out) 80ms, visibility 0s;
+  }
+
+  .motion .llm .llm__answer {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.3;
+  }
+
+  .motion .llm .llm__cand {
+    height: 1.5rem;
+  }
+
+  .motion .llm .llm__note {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    line-height: 1.4;
+  }
+}
+
+/* The narrowest phones need a fourth caption line for the longest stages. */
+@media (max-width: 22.49em) {
+  .motion .llm .llm__step-text {
+    min-height: 5.6em;
+  }
+}
+
+@keyframes llm-fade {
+  from { opacity: 0; }
+}
+
+@keyframes llm-pulse-x {
+  0% { opacity: 0; transform: translateX(0); }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+@keyframes llm-type {
+  from { opacity: 0; }
+}
+
+@keyframes llm-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+@keyframes llm-cell {
+  from { opacity: 0; transform: scale(0.5); }
+}
+
+@keyframes llm-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes llm-pulse {
+  0% { opacity: 0; transform: translateY(0); }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(100%); }
+}
+
+@keyframes llm-flash {
+  0%, 100% { opacity: 0; }
+  35% { opacity: 0.8; }
+}
+
+@keyframes llm-softmax {
+  0% { transform: scaleX(0); }
+  30%, 52% { transform: scaleX(var(--l)); }
+  100% { transform: scaleX(var(--p)); }
+}
+
+@keyframes llm-logit {
+  0% { opacity: 0; }
+  12%, 52% { opacity: 1; }
+  64%, 100% { opacity: 0; }
+}
+
+@keyframes llm-prob {
+  0%, 58% { opacity: 0; }
+  76%, 100% { opacity: 1; }
+}
+
+@keyframes llm-pick {
+  from { transform: scale(0.98); }
+}
+
+@keyframes llm-bar {
+  from { transform: scaleX(0); }
 }
 
 /* Buttons --------------------------------------------------------------- */
@@ -1149,59 +2403,187 @@ main:focus {
   font-size: 0.875rem;
 }
 
-/* Pipeline thread ----------------------------------------------------------
-   A thin gold line in the logo's stroke language (butt ends, rounded turn) runs
-   down the left edge of the content and through every section number. It draws
-   itself with CSS scroll-driven animations where supported; elsewhere it is simply
-   there. Decorative only: pointer-events none, nothing in the accessibility tree. */
+/* Progress line ---------------------------------------------------------
+   One gold line (js/scroll.js) drawn with the scroll through every section number,
+   alternating sides from 48em. Its tip carries the site's only glow: a soft halo
+   and a short trail, both opacities of the same gold (DESIGN.md). Decorative:
+   aria-hidden, no pointer events. Without JavaScript it is simply not there. */
 
-.hero__inner,
-.section__inner {
-  --thread-x: calc(var(--page-left) - var(--thread-gap));
-}
-
-.hero__inner {
+main {
   position: relative;
+  overflow-x: clip;
 }
 
-/* Hero: the thread leaves from under the primary action with a rounded turn. */
-.hero__inner::after {
-  content: "";
+.progress {
   position: absolute;
-  left: var(--thread-x);
-  bottom: calc(-1 * clamp(4rem, 9vw, 7.5rem));
-  width: calc(var(--thread-gap) + 1.5rem);
-  height: calc(clamp(4rem, 9vw, 7.5rem) - 1.25rem);
-  border-top: 1.5px solid var(--gold);
-  border-left: 1.5px solid var(--gold);
-  border-top-left-radius: 14px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+  width: 100%;
+  height: 0;
+  overflow: visible;
   pointer-events: none;
 }
 
-.section__inner::before {
-  content: "";
-  position: absolute;
-  left: var(--thread-x);
-  top: calc(-1 * var(--section-y));
-  bottom: calc(-1 * var(--section-y));
-  width: 1.5px;
-  background: var(--gold);
-  transform-origin: top;
-  pointer-events: none;
+.has-progress .progress {
+  display: block;
 }
 
-/* A node on the thread at each section number: one step of the pipeline. */
-.section__num::before {
-  content: "";
+.progress path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.progress__line {
+  stroke-width: 1.5;
+  stroke-dashoffset: calc((var(--total, 0) - var(--len, 0)) * 1px);
+}
+
+.progress__trail {
+  stroke-width: 3;
+  filter: blur(1.5px);
+}
+
+.progress__trail--1 {
+  opacity: 0.5;
+  stroke-dashoffset: calc((var(--trail-1) - var(--len, 0)) * 1px);
+}
+
+.progress__trail--2 {
+  opacity: 0.28;
+  stroke-dashoffset: calc((var(--trail-2) - var(--len, 0)) * 1px);
+}
+
+.progress__trail--3 {
+  opacity: 0.14;
+  stroke-width: 4;
+  stroke-dashoffset: calc((var(--trail-3) - var(--len, 0)) * 1px);
+}
+
+.progress__tip {
+  offset-distance: calc(var(--len, 0) * 1px);
+  offset-rotate: 0deg;
+  filter: drop-shadow(0 0 4px rgb(201 162 39 / 0.6));
+}
+
+.progress__tip circle {
+  fill: var(--gold);
+}
+
+.progress__halo {
+  opacity: 0.18;
+  filter: blur(3px);
+}
+
+.progress[data-empty] .progress__trail,
+.progress[data-empty] .progress__tip,
+.progress[data-quiet] .progress__trail,
+.progress[data-quiet] .progress__tip {
+  visibility: hidden;
+}
+
+/* Where scroll timelines exist the browser draws the line from the scroll position
+   with keyframes written by js/scroll.js. */
+.progress.is-timeline {
+  animation: progress-draw linear both;
+  animation-timeline: scroll(root);
+}
+
+/* A node on the line at each section number; it lights up when the tip arrives. */
+.section__node {
   position: absolute;
   top: 50%;
-  left: calc(-1 * var(--thread-gap) - 3.75px);
+  left: calc(-1 * var(--thread-gap) - 4.5px);
+  z-index: 2;
+  display: none;
   width: 9px;
   height: 9px;
   margin-top: -4.5px;
-  background: var(--gold);
+  background: var(--section-bg);
   border: 1.5px solid var(--gold);
   border-radius: 50%;
+  transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+
+.has-progress .section__node {
+  display: block;
+}
+
+.section__num {
+  transition: color 200ms ease;
+}
+
+.section__num.is-lit {
+  color: var(--navy);
+}
+
+.section--navy .section__num.is-lit {
+  color: var(--gold);
+}
+
+.section__num.is-lit .section__node {
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgb(201 162 39 / 0.18);
+}
+
+.section__label {
+  display: inline-block;
+}
+
+/* From 48em the line alternates sides: even sections set their number and title on
+   the right, where the line meets them. Body text stays left-aligned for reading. */
+@media (min-width: 48em) {
+  .section:nth-child(even of .section) .section__title {
+    text-align: right;
+  }
+
+  .section:nth-child(even of .section) .section__node {
+    left: auto;
+    right: calc(-1 * var(--thread-gap) - 4.5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__trail,
+  .progress__tip {
+    display: none;
+  }
+
+  .section__num,
+  .section__node {
+    transition: none;
+  }
+}
+
+/* Card frames: drawn as an SVG rect so they can trace themselves in. */
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.frame rect {
+  x: 0.5px;
+  y: 0.5px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  rx: 12px;
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+}
+
+.feature__card .frame rect {
+  rx: 16px;
+  stroke: var(--gold);
 }
 
 /* Projects -------------------------------------------------------------- */
@@ -1324,6 +2706,7 @@ main:focus {
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -1418,6 +2801,15 @@ main:focus {
   text-decoration-thickness: 1.5px;
   text-underline-offset: 6px;
   transition: text-decoration-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+}
+
+/* The repository name, untranslated, beside the links. */
+.card__repo {
+  align-self: center;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
 }
 
 /* Featured cards: Demo is the primary action, Code the secondary one. */
@@ -1685,47 +3077,63 @@ main:focus {
     animation: draw 1600ms var(--ease-in-out) 150ms forwards;
   }
 
-  /* 2. The name and the model settle in behind it. */
+  /* 2. The name, the role and the actions settle in behind it, then the model. */
   .js .hero__name,
+  .js .hero__role,
   .js .hero__actions,
-  .js .tokenizer .code-label,
-  .js .predict {
+  .js .llm {
     animation: settle 700ms var(--ease-out) both;
   }
 
   .js .hero__name { animation-delay: 250ms; }
-  .js .tokenizer .code-label { animation-delay: 450ms; }
-  .js .predict { animation-delay: 900ms; }
-  .js .hero__actions { animation-delay: 1050ms; }
+  .js .hero__role { animation-delay: 400ms; }
+  .js .hero__actions { animation-delay: 550ms; }
+  .js .llm { animation-delay: 700ms; }
 
-  .js .token {
-    animation: settle 500ms var(--ease-out) both;
-    animation-delay: calc(500ms + var(--i) * 45ms);
+  /* 3. Sections assemble as they arrive (js/scroll.js marks what is still off
+     screen): number and node, title, text, then cards or entries. Cards trace
+     their frame first. Once only; time-based, so nothing stops half-visible. */
+  .is-assembling [data-reveal]:not([data-reveal="card"]):not(.is-in),
+  .is-assembling [data-reveal="card"]:not(.is-in) > :not(.frame),
+  .is-assembling [data-reveal="card"]:not(.is-in) > .feature__card > :not(.frame) {
+    opacity: 0;
+    transform: translateY(12px);
   }
 
-  .js .predict__bar::before {
-    animation: grow 800ms var(--ease-out) both;
-    animation-delay: 1100ms;
+  .is-assembling [data-reveal].is-in:not([data-reveal="card"]) {
+    animation: reveal 520ms var(--ease-out) var(--reveal-delay, 0ms) both;
   }
 
-  .js .predict__caret {
-    animation: blink 1s steps(1) 1300ms 4;
+  .is-assembling [data-reveal="card"].is-in > :not(.frame),
+  .is-assembling [data-reveal="card"].is-in > .feature__card > :not(.frame) {
+    animation: reveal 520ms var(--ease-out) calc(var(--reveal-delay, 0ms) + 300ms) both;
   }
 
-  /* 3. The pipeline thread draws as each section scrolls through, and its node
-     fills in. Scroll-driven, so it never holds or hijacks the scroll. */
-  @supports (animation-timeline: view()) {
-    .section__inner::before {
-      animation: thread linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 45%;
-    }
+  .is-assembling [data-reveal="card"]:not(.is-in) .frame {
+    opacity: 1;
+  }
 
-    .section__num::before {
-      animation: node linear both;
-      animation-timeline: view();
-      animation-range: entry 60% cover 30%;
-    }
+  .is-assembling [data-reveal="card"]:not(.is-in) .frame rect {
+    stroke-dashoffset: 1;
+  }
+
+  .is-assembling [data-reveal="card"].is-in .frame {
+    animation: frame-hold 900ms linear var(--reveal-delay, 0ms) both;
+  }
+
+  .is-assembling [data-reveal="card"].is-in .frame rect {
+    animation: frame-draw 600ms var(--ease-in-out) var(--reveal-delay, 0ms) both;
+  }
+
+  /* The card's own border takes over once the frame is closed. */
+  .is-assembling .card[data-reveal]:not(.is-in),
+  .is-assembling [data-reveal]:not(.is-in) > .feature__card {
+    border-color: transparent;
+  }
+
+  .is-assembling .card[data-reveal].is-in,
+  .is-assembling [data-reveal].is-in > .feature__card {
+    animation: border-in 1ms steps(1) calc(var(--reveal-delay, 0ms) + 600ms) both;
   }
 }
 
@@ -1759,16 +3167,22 @@ main:focus {
   from { opacity: 0; transform: translateY(10px); }
 }
 
-@keyframes grow {
-  from { transform: scaleX(0); }
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(12px); }
 }
 
-@keyframes thread {
-  from { transform: scaleY(0); }
+@keyframes frame-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
 }
 
-@keyframes node {
-  from { background: var(--section-bg); transform: scale(0.6); }
+@keyframes frame-hold {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes border-in {
+  from { border-color: transparent; }
 }
 
 @keyframes blink {
