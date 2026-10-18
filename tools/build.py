@@ -32,7 +32,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
-STATIC = ["css", "js", "img", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv"]
+STATIC = ["css", "js", "img", "fonts", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv"]
 ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>'
 FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
 TODO = re.compile(r"^TODO\s*:?\s*")

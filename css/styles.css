@@ -3,6 +3,75 @@
    for text and featured blocks, gold only on navy or as a thin line/frame/icon on
    light. Every other colour below is one of those four with a different opacity. */
 
+/* Fonts ------------------------------------------------------------------
+   Self-hosted from the official repositories (SIL OFL 1.1, licences in fonts/):
+   variable woff2 cut to the axis ranges the site uses and subset to Latin, Latin
+   Extended-A and Spanish/French punctuation. Each has a fallback face on a local
+   system font whose size and line metrics are overridden to match it, so the swap
+   from fallback to web font does not move the layout. */
+
+@font-face {
+  font-family: "Hubot Sans";
+  src: url("../fonts/hubot-sans.woff2") format("woff2");
+  font-weight: 500 750;
+  font-stretch: 100% 112%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mona Sans";
+  src: url("../fonts/mona-sans.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono.woff2") format("woff2");
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hubot Sans Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT");
+  font-weight: 500 900;
+  size-adjust: 112.9%;
+  ascent-override: 96.54%;
+  descent-override: 28.34%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Mona Sans Fallback";
+  src: local("Arial"), local("ArialMT");
+  font-weight: 400 500;
+  size-adjust: 104.83%;
+  ascent-override: 103.97%;
+  descent-override: 30.52%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Mona Sans Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT");
+  font-weight: 600 900;
+  size-adjust: 104.83%;
+  ascent-override: 103.97%;
+  descent-override: 30.52%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  src: local("Courier New"), local("CourierNewPSMT");
+  font-weight: 400 500;
+  size-adjust: 99.98%;
+  ascent-override: 102.02%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
 :root {
   --white: #ffffff;
   --bone: #f5f0e1;
@@ -18,9 +87,9 @@
   --gold-line: rgb(201 162 39 / 0.55);
   --gold-soft: rgb(201 162 39 / 0.3);
 
-  --font-display: "Hubot Sans", "Mona Sans", "Segoe UI", system-ui, sans-serif;
-  --font-sans: "Mona Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --font-display: "Hubot Sans", "Hubot Sans Fallback", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Mona Sans", "Mona Sans Fallback", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, "SFMono-Regular", Consolas, monospace;
 
   --step--1: 0.8125rem;
   --step-0: 1.0625rem;

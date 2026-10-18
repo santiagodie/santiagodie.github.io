@@ -31,7 +31,7 @@
 
 - HTML, CSS and vanilla JavaScript
 - Python 3 (standard library only) for the generator
-- [Hubot Sans](https://fonts.google.com/specimen/Hubot+Sans), [Mona Sans](https://fonts.google.com/specimen/Mona+Sans) and [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) from Google Fonts
+- [Hubot Sans](https://github.com/github/hubot-sans), [Mona Sans](https://github.com/github/mona-sans) and [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono), self-hosted in `fonts/` (SIL Open Font License; variable woff2 cut to the weights and widths in use and subset to Latin and Latin Extended)
 - GitHub Actions and GitHub Pages
 
 ## Getting Started
@@ -58,6 +58,7 @@ js/main.js                 # Behaviour only: header, menus, language suggestion
 js/hero-chat.js            # Plays the hero chat (Web Animations; the text is already in the HTML)
 js/scroll.js               # Progress line, current section, sections assembling on scroll
 img/                       # SD logos (unmodified) and project screenshots (img/projects/*.webp)
+fonts/                     # Hubot Sans, Mona Sans, JetBrains Mono (woff2 subsets) with their OFL licences
 favicon.svg, favicon.ico, apple-touch-icon.png, CNAME
 og-image.png, og-image-es.png, og-image-fr.png   # Link previews, one per language
 tools/build.py             # Generator: renders dist/, sitemap.xml and robots.txt
