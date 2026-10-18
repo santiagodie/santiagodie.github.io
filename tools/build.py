@@ -255,7 +255,11 @@ def render_chat(s, tokens, model, lang):
     # "</" cannot close the script block early: every "<" is escaped.
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     return f'''        <div class="chat" data-chat>
-          <p class="visually-hidden">{esc(chat["description"])}</p>
+          <div class="visually-hidden">
+            <p>{esc(chat["description"])}</p>
+            <p>{esc(chat["prompt"])}</p>
+            <p>{esc(chat["answer"])}</p>
+          </div>
           <div class="chat__panel">
             <div class="chat__scene">
               <div class="chat__log" aria-hidden="true">
