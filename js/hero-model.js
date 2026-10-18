@@ -228,13 +228,16 @@
     enableControls();
 
     if ("IntersectionObserver" in window) {
+      // Start only once the diagram itself is well in view (60 % of the canvas, or
+      // as much of it as the screen can show), so it never plays below the fold.
       new IntersectionObserver(([entry]) => {
-        if (!started && entry.intersectionRatio >= 0.35) {
+        const fits = Math.min(1, (window.innerHeight * 0.9) / entry.boundingClientRect.height);
+        if (!started && entry.intersectionRatio >= 0.6 * fits) {
           started = true;
           play();
         }
-        hold(!entry.isIntersecting);
-      }, { threshold: [0, 0.35] }).observe(figure);
+      }, { threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6] }).observe(canvas);
+      new IntersectionObserver(([entry]) => hold(!entry.isIntersecting)).observe(figure);
     } else {
       started = true;
       play();

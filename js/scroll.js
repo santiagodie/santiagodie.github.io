@@ -51,7 +51,7 @@
         el.classList.add("is-in");
         observer.unobserve(el);
       });
-    }, { rootMargin: "0px 0px -10% 0px" });
+    }, { threshold: 0 });
 
     pending.forEach(([el, kind]) => {
       // Whatever is already on screen stays as it is: no flash, no replay.
