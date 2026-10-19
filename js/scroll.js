@@ -82,6 +82,7 @@
   let scrollTimeline = false;
   const lit = new Set();
   let quiet = false; // the About chat animation is playing on screen: the line keeps still
+  let menuOpen = false; // the mobile menu covers the page: nothing here reacts
 
   function point(el) {
     const box = el.getBoundingClientRect();
@@ -176,6 +177,7 @@
 
   function update() {
     ticking = false;
+    if (menuOpen) return;
     const y = window.scrollY + window.innerHeight * READ - top;
     const len = reduce.matches ? total : lengthAt(y);
     if (!quiet) {
@@ -239,6 +241,13 @@
     svg.toggleAttribute("data-quiet", quiet);
     svg.classList.toggle("is-timeline", scrollTimeline && !quiet && !reduce.matches);
     update();
+  });
+
+  // While the mobile menu is open the line, the numbers and the navigation's
+  // current section stay as they were; they catch up when it closes.
+  document.addEventListener("menu:toggle", (event) => {
+    menuOpen = event.detail;
+    if (!menuOpen) requestAnimationFrame(geometry);
   });
 
   reduce.addEventListener("change", () => {

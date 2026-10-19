@@ -69,19 +69,30 @@
         <span class="menu-toggle__label" data-label-open="{{= nav.menu }}" data-label-close="{{= nav.close }}">{{ nav.menu }}</span>
       </button>
 
-      <div class="site-menu" id="site-menu" data-menu>
+      <!-- Desktop: the navigation bar. Below 64em with JavaScript: a full-screen dialog
+           (js/main.js adds role="dialog" and aria-modal there), with its own bar, the
+           section numbers and a row of languages. -->
+      <div class="site-menu" id="site-menu" data-menu-label="{{= nav.menu }}" data-menu>
+        <div class="site-menu__bar">
+          <img class="site-menu__logo" src="{{ @root }}img/sd-gold.svg" alt="" width="290" height="208">
+          <button class="menu-toggle menu-close" type="button" data-menu-close>
+            <span class="menu-toggle__icon" aria-hidden="true"></span>
+            <span class="menu-toggle__label">{{ nav.close }}</span>
+          </button>
+        </div>
+
         <nav class="nav" aria-label="{{= a11y.nav }}">
           <ul class="nav__list">
-            <li><a href="#about" data-nav-link>{{ nav.about }}</a></li>
-            <li><a href="#projects" data-nav-link>{{ nav.projects }}</a></li>
-            <li><a href="#experience" data-nav-link>{{ nav.experience }}</a></li>
-            <li><a href="#education" data-nav-link>{{ nav.education }}</a></li>
-            <li><a href="#skills" data-nav-link>{{ nav.skills }}</a></li>
-            <li><a href="#contact" data-nav-link>{{ nav.contact }}</a></li>
+            <li style="--i: 0"><a href="#about" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_about }}</span>{{ nav.about }}</a></li>
+            <li style="--i: 1"><a href="#projects" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_projects }}</span>{{ nav.projects }}</a></li>
+            <li style="--i: 2"><a href="#experience" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_experience }}</span>{{ nav.experience }}</a></li>
+            <li style="--i: 3"><a href="#education" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_education }}</span>{{ nav.education }}</a></li>
+            <li style="--i: 4"><a href="#skills" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_skills }}</span>{{ nav.skills }}</a></li>
+            <li style="--i: 5"><a href="#contact" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_contact }}</span>{{ nav.contact }}</a></li>
           </ul>
         </nav>
 
-        <div class="site-menu__tools">
+        <div class="site-menu__tools" style="--i: 6">
           <ul class="social" role="list">
             <li>
               <a class="social__link" href="{{ @github }}" target="_blank" rel="noopener me" aria-label="{{= a11y.github }} ({{= a11y.newTab }})" data-tooltip="GitHub">
@@ -112,6 +123,8 @@
             </ul>
           </nav>
         </div>
+
+        <p class="site-menu__foot" style="--i: 7" translate="no">Santiago Die ©{{ @year }}</p>
       </div>
     </div>
   </header>

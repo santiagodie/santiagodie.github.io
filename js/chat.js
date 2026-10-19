@@ -54,13 +54,15 @@
   const ABORT = Symbol("abort");
   let gen = 0;
   let running = false;
+  let menuOpen = false; // the mobile menu covers the page (js/main.js)
+  const held = () => document.hidden || menuOpen;
   let keyboard = false;
 
   function play(node, frames, options) {
     const animation = node.animate(frames, { fill: "both", ...options });
     anims.add(animation);
     animation.finished.catch(() => {});
-    if (document.hidden) animation.pause();
+    if (held()) animation.pause();
     return animation;
   }
   const done = (animation) => animation.finished;
@@ -589,14 +591,20 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && running) finish();
   });
-  document.addEventListener("visibilitychange", () => {
+  // A hidden tab or the open mobile menu holds the run where it is.
+  function hold() {
     anims.forEach((animation) => {
-      if (document.hidden) {
+      if (held()) {
         if (animation.playState === "running") animation.pause();
       } else if (animation.playState === "paused") {
         animation.play();
       }
     });
+  }
+  document.addEventListener("visibilitychange", hold);
+  document.addEventListener("menu:toggle", (event) => {
+    menuOpen = event.detail;
+    hold();
   });
   // Typing starts once a good part of the panel is visible; a run that scrolls
   // fully out of view completes itself instead of playing on unseen.

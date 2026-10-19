@@ -579,10 +579,11 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
     shown = [section for section in SECTIONS if content[section]]
     for number, section in enumerate(shown, 1):
         values[f"num_{section}"] = f"{number:02d} /"
+        values[f"navnum_{section}"] = f"{number:02d}"  # the same number in the mobile menu
         values[f"bg_{section}"] = "white" if number % 2 else "bone"
     for section in SECTIONS:
-        values.setdefault(f"num_{section}", "")
-        values.setdefault(f"bg_{section}", "")
+        for key in ("num", "navnum", "bg"):
+            values.setdefault(f"{key}_{section}", "")
     fragments = {
         "alternates": lambda: render_alternates(site),
         "ogAlternates": lambda: render_og_alternates(site, strings, lang),
@@ -629,7 +630,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
     for section in SECTIONS:
         if section not in shown:
             page, removed = re.subn(rf'\n\n *<section class="section[^"]*" id="{section}".*?</section>\n', "\n", page, flags=re.S)
-            page, unlinked = re.subn(rf'\n *<li><a href="#{section}"[^<]*</a></li>', "", page)
+            page, unlinked = re.subn(rf'\n *<li[^>]*><a href="#{section}".*?</a></li>', "", page)
             if not (removed and unlinked):
                 raise BuildError(f"src/index.html: could not leave out the empty '{section}' section")
     return page

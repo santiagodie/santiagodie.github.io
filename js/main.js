@@ -32,25 +32,77 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // Mobile menu ---------------------------------------------------------------
+  // Mobile menu: a full-screen modal dialog below 64em -------------------------
+  // On desktop the same element is the navigation bar, so it only becomes a dialog
+  // (role, aria-modal, name) on narrow screens. While it is open the page behind it
+  // does not scroll, focus stays inside, and the progress line and the About chat
+  // hold still (they listen for "menu:toggle").
 
-  const label = toggle.querySelector(".menu-toggle__label");
+  const closeButton = menu.querySelector("[data-menu-close]");
+  const root = document.documentElement;
 
-  function setMenu(open, { returnFocus = false } = {}) {
-    toggle.setAttribute("aria-expanded", String(open));
-    header.toggleAttribute("data-menu-open", open);
-    menu.inert = compact.matches && !open;
-    label.textContent = open ? label.dataset.labelClose : label.dataset.labelOpen;
-    if (!open) closeLang();
-    if (!open && returnFocus) toggle.focus();
+  function asDialog(on) {
+    if (on) {
+      menu.setAttribute("role", "dialog");
+      menu.setAttribute("aria-modal", "true");
+      menu.setAttribute("aria-label", menu.dataset.menuLabel);
+    } else {
+      ["role", "aria-modal", "aria-label"].forEach((name) => menu.removeAttribute(name));
+    }
   }
 
-  toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
+  const isOpen = () => header.hasAttribute("data-menu-open");
+
+  function setMenu(open, { returnFocus = false } = {}) {
+    open = open && compact.matches;
+    if (open === isOpen()) {
+      menu.inert = compact.matches && !open;
+      return;
+    }
+    toggle.setAttribute("aria-expanded", String(open));
+    header.toggleAttribute("data-menu-open", open);
+    root.toggleAttribute("data-menu-open", open);
+    menu.inert = compact.matches && !open;
+    if (open) {
+      menu.querySelector("[data-nav-link]")?.focus({ preventScroll: true });
+    } else {
+      closeLang();
+      if (returnFocus) toggle.focus({ preventScroll: true });
+    }
+    document.dispatchEvent(new CustomEvent("menu:toggle", { detail: open }));
+  }
+
+  // Tab and Shift+Tab go round the dialog's own controls.
+  function trapFocus(event) {
+    if (event.key !== "Tab" || !isOpen()) return;
+    const stops = [...menu.querySelectorAll("a[href], button:not([disabled])")]
+      .filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== "hidden");
+    const first = stops[0];
+    const last = stops[stops.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !menu.contains(document.activeElement))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !menu.contains(document.activeElement))) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  toggle.addEventListener("click", () => setMenu(true));
+  closeButton.addEventListener("click", () => setMenu(false, { returnFocus: true }));
+  // A section link closes the menu and the page scrolls to it (the browser follows
+  // the link once the scroll lock is lifted).
   menu.addEventListener("click", (event) => {
-    if (compact.matches && event.target.closest("[data-nav-link]")) setMenu(false);
+    if (event.target.closest("[data-nav-link]")) setMenu(false);
   });
-  compact.addEventListener("change", () => setMenu(false));
-  setMenu(false);
+  document.addEventListener("keydown", trapFocus);
+  compact.addEventListener("change", () => {
+    setMenu(false);
+    asDialog(compact.matches);
+    menu.inert = compact.matches;
+  });
+  asDialog(compact.matches);
+  menu.inert = compact.matches;
 
   // Language menu (WAI-ARIA menu button: arrows, Home/End, Enter, Escape) -------
 
@@ -106,13 +158,12 @@
 
   document.addEventListener("click", (event) => {
     if (!langSwitch.contains(event.target)) closeLang();
-    if (header.hasAttribute("data-menu-open") && !header.contains(event.target)) setMenu(false);
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (langSwitch.hasAttribute("data-open")) closeLang({ returnFocus: true });
-    else if (header.hasAttribute("data-menu-open")) setMenu(false, { returnFocus: true });
+    else if (isOpen()) setMenu(false, { returnFocus: true });
   });
 
   // Current section: js/scroll.js marks it in the navigation, following the tip of

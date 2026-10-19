@@ -114,6 +114,7 @@
      that travel or draw on screen. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --dur-fast: 150ms;
   --dur: 220ms;
   --dur-slow: 260ms;
@@ -692,87 +693,213 @@ html:not(.js) .lang {
   transition: transform var(--dur) var(--ease-out), opacity var(--dur-fast) ease;
 }
 
-.menu-toggle[aria-expanded="true"] .menu-toggle__icon {
+/* The menu's own close button: the same button, in the same place, as an X. */
+.menu-close .menu-toggle__icon {
   border-color: transparent;
 }
 
-.menu-toggle[aria-expanded="true"] .menu-toggle__icon::before {
+.menu-close .menu-toggle__icon::before {
   opacity: 1;
   transform: rotate(45deg);
 }
 
-.menu-toggle[aria-expanded="true"] .menu-toggle__icon::after {
+.menu-close .menu-toggle__icon::after {
   opacity: 1;
   transform: rotate(-45deg);
 }
 
+.menu-toggle:active {
+  transform: scale(0.97);
+}
+
+/* Only the mobile menu has its own bar, section numbers and foot line. */
+.site-menu__bar,
+.site-menu__foot,
+.nav__num {
+  display: none;
+}
+
+/* While the mobile menu is open the page behind it does not scroll; the gutter is
+   always reserved, so locking it does not shift the layout. */
+html {
+  scrollbar-gutter: stable;
+}
+
+html[data-menu-open] {
+  overflow: hidden;
+}
+
+/* Mobile menu, below 64em with JavaScript: a full-screen navy dialog (inspired by
+   the menus of apple.com and supersolid.com). It covers the safe areas and draws
+   its own bar where the header's is: the gold SD on the left, the close button
+   exactly where the menu button was. Below: the sections, large, each with its
+   number; then the profiles, the languages and the name with the year.
+   Motion (emil-design-eng): the panel uncovers itself from the top (clip-path,
+   360 ms, drawer curve), the rows follow 40 ms apart (opacity and 10px, 300 ms,
+   ease-out); closing is the same, quicker (200 ms), rows fading together. */
 @media (max-width: 63.99em) {
   .js .menu-toggle {
     display: inline-flex;
   }
 
   .js .site-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 1.5rem;
-    max-height: calc(100dvh - var(--header-h) - env(safe-area-inset-top, 0px));
+    gap: 0;
+    height: 100dvh;
+    padding: env(safe-area-inset-top, 0px) var(--page-right) calc(1rem + env(safe-area-inset-bottom, 0px)) var(--page-left);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 0.5rem var(--page-right) calc(2rem + env(safe-area-inset-bottom, 0px)) var(--page-left);
     background: var(--navy);
     color: var(--bone);
-    border-bottom: 1px solid var(--gold-line);
+    --focus: var(--gold);
+    --flag-edge: rgb(245 240 225 / 0.32);
     visibility: hidden;
-    opacity: 0;
-    transform: translateY(-6px);
-    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 200ms var(--ease-drawer), visibility 0s linear 200ms;
   }
 
   .js .site-header[data-menu-open] .site-menu {
     visibility: visible;
-    opacity: 1;
-    transform: none;
-    transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0s;
+    clip-path: inset(0);
+    transition: clip-path 360ms var(--ease-drawer), visibility 0s;
+  }
+
+  .js .site-menu__bar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gutter);
+    height: var(--header-h);
+  }
+
+  .site-menu__logo {
+    width: 2.375rem;
+    height: 1.75rem;
+  }
+
+  .js .site-menu .nav {
+    margin-top: clamp(0.5rem, 3vh, 2rem);
   }
 
   .js .nav__list {
     flex-direction: column;
+    gap: 0;
   }
 
   .js .nav__list li + li {
     border-top: 1px solid var(--line-dark);
   }
 
-  .js .nav__list a {
+  .js .site-header .nav__list a {
     display: flex;
-    min-height: 56px;
+    align-items: baseline;
+    gap: 0.875rem;
+    min-height: 0;
+    /* Room inside the link, so its focus ring goes round the number too. */
+    margin-inline: -0.5rem;
+    padding: clamp(0.625rem, 2.1svh, 1rem) 0.5rem;
+    color: var(--bone);
     font-family: var(--font-display);
-    font-size: 1.375rem;
-    font-weight: 600;
+    /* Sized by the width, and by the height on phones held sideways. */
+    font-size: clamp(1.75rem, min(1.1rem + 4vw, 7.5svh), 2.75rem);
+    font-weight: 700;
+    font-stretch: 108%;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .js .site-header .nav__list a[aria-current="true"] {
+    color: var(--gold);
+  }
+
+  .js .site-header .nav__list a:focus-visible {
+    outline-offset: -2px;
+    border-radius: 8px;
   }
 
   .js .nav__list a::after {
     display: none;
   }
 
+  .js .nav__num {
+    display: inline;
+    flex: none;
+    min-width: 1.5rem;
+    color: var(--gold);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    font-stretch: 100%;
+    letter-spacing: 0.04em;
+  }
+
   .js .site-menu__tools {
+    flex-wrap: wrap;
     justify-content: space-between;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--gold-line);
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 2rem;
   }
 
   .js .social__link::after {
     display: none;
   }
 
-  .js .lang__menu {
-    top: auto;
-    bottom: calc(100% + 8px);
-    transform-origin: bottom right;
+  .js .lang {
+    display: none;
+  }
+
+  .js .lang-list {
+    display: block;
+  }
+
+  .js .lang-list a {
+    color: var(--bone-2);
+  }
+
+  .js .lang-list a[aria-current="page"] {
+    color: var(--bone);
+  }
+
+  .js .site-menu__foot {
+    display: flex;
+    flex: none;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-dark);
+    color: var(--bone-2);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Rows: in one after another on open, out together on close. */
+  .js .site-menu .nav__list li,
+  .js .site-menu__tools,
+  .js .site-menu__foot {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out);
+  }
+
+  .js .site-header[data-menu-open] .site-menu .nav__list li,
+  .js .site-header[data-menu-open] .site-menu__tools,
+  .js .site-header[data-menu-open] .site-menu__foot {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 300ms var(--ease-out) calc(90ms + var(--i, 0) * 40ms),
+      transform 300ms var(--ease-out) calc(90ms + var(--i, 0) * 40ms);
   }
 
   html:not(.js) .site-header__inner {
@@ -2653,8 +2780,35 @@ main {
   }
 
   .js .site-menu,
-  .js .lang__menu {
+  .js .lang__menu,
+  .menu-toggle:active {
     transform: none !important;
+  }
+}
+
+/* Reduced motion: the mobile menu only fades, in and out; its rows are just there. */
+@media (prefers-reduced-motion: reduce) and (max-width: 63.99em) {
+  .js .site-menu {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 140ms ease, visibility 0s linear 140ms;
+  }
+
+  .js .site-header[data-menu-open] .site-menu {
+    clip-path: none;
+    opacity: 1;
+    transition: opacity 180ms ease, visibility 0s;
+  }
+
+  .js .site-menu .nav__list li,
+  .js .site-menu__tools,
+  .js .site-menu__foot,
+  .js .site-header[data-menu-open] .site-menu .nav__list li,
+  .js .site-header[data-menu-open] .site-menu__tools,
+  .js .site-header[data-menu-open] .site-menu__foot {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
