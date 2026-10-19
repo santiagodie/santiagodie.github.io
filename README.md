@@ -22,6 +22,7 @@
 
 - **One static page per language**, for search engines: English at `/`, Spanish at `/es/`, French at `/fr/`. Every word is in the generated HTML; JavaScript only adds behaviour (header state, menus, a dismissible language suggestion) and never injects content.
 - **Sections**: About (the chat), Projects, Experience, Education (with Certifications), Skills (with spoken Languages) and Contact, numbered 01–06.
+- **Navigation**: on desktop, a sticky bar with the profiles and a language menu shown as flags (inline SVG, each language named in its own language). Below 64em, a full-screen menu (a modal dialog with the sections and their numbers, the profiles and the languages); without JavaScript the links simply sit in the header.
 - **SEO per language**: translated `title`, description and Open Graph, `<link rel="canonical">`, `hreflang` alternates (with `x-default` to English), a Person JSON-LD block (education, languages, location, email, profiles; the internship as `affiliation`, not `worksFor`), `sitemap.xml` and `robots.txt`. There is no automatic redirect by browser language.
 - **Content lives in JSON**: interface text and personal content in `i18n/<lang>.json`, projects (with their three languages) in `data/projects.json`, shared data (profiles, email, address, schools) in `data/site.json`. The build fails with a clear message if any language misses a key, so a page with gaps is never published.
 - **Unpublished placeholders**: paragraphs and entries that start with `TODO` stay in `i18n/*.json` but are not published. A section left without content is left out with its menu link and its point on the progress line, and the other sections are renumbered 01, 02, 03... without gaps; it comes back by itself once it has content. Contact always shows the email, GitHub, LinkedIn and the location; the CV appears once the PDF exists.
@@ -57,7 +58,7 @@ data/site.json             # Site URL, languages, and the person: email, profile
 data/tokens.json           # Real cl100k_base token ids of the About chat's question and answer
 data/llm.json              # Illustrative values of the About chat: attention weights, next-token candidates
 css/styles.css             # All styles: tokens, layout, components, motion
-js/main.js                 # Behaviour only: header, menus, language suggestion
+js/main.js                 # Behaviour only: header, the full-screen mobile menu (dialog, focus), language menu, language suggestion
 js/chat.js                 # Plays the About chat (Web Animations; the text is already in the HTML)
 js/scroll.js               # Progress line, current section, sections assembling on scroll
 img/                       # SD logos (unmodified)
