@@ -73,13 +73,14 @@
     "intro": "Trabajos de asignatura de la Universidad de La Rioja, cada uno con su código y, cuando la tiene, una demo en vivo.",
     "featured": "Destacados",
     "more": "Más proyectos",
-    "university": "Universidad de La Rioja",
     "code": "Código",
     "demo": "Demo en vivo",
     "colab": "Abrir en Colab",
     "stack": "Tecnologías",
     "metrics": "Resultados",
-    "translationPending": "TODO: traducir la descripción"
+    "translationPending": "TODO: traducir la descripción",
+    "demoShort": "Demo",
+    "colabShort": "Colab"
   },
   "experience": {
     "items": [

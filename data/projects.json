@@ -7,7 +7,7 @@
         "es": "Predicción del salario de recién graduados",
         "fr": "Prédiction du salaire des jeunes diplômés"
       },
-      "course": {
+      "subject": {
         "en": "Professional Practice in Computer Engineering",
         "es": "Profesión de Ingeniero Informático",
         "fr": "Métier d’ingénieur informatique"
@@ -45,16 +45,6 @@
           }
         }
       ],
-      "image": {
-        "src": "img/projects/graduate-salary-predictor.webp",
-        "width": 1200,
-        "height": 750,
-        "alt": {
-          "en": "Screenshot of the live demo: Graduate Salary Predictor",
-          "es": "Captura de la demo en vivo: Predicción del salario de recién graduados",
-          "fr": "Capture de la démo en ligne : Prédiction du salaire des jeunes diplômés"
-        }
-      },
       "tech": [
         "Python",
         "Flask",
@@ -76,7 +66,7 @@
         "es": "Búsqueda de caras por similitud",
         "fr": "Recherche de visages par similarité"
       },
-      "course": {
+      "subject": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
@@ -114,16 +104,6 @@
           }
         }
       ],
-      "image": {
-        "src": "img/projects/face-similarity-search-pipeline.webp",
-        "width": 1200,
-        "height": 750,
-        "alt": {
-          "en": "Screenshot of the live demo: Face Similarity Search",
-          "es": "Captura de la demo en vivo: Búsqueda de caras por similitud",
-          "fr": "Capture de la démo en ligne : Recherche de visages par similarité"
-        }
-      },
       "tech": [
         "Python",
         "OpenCV",
@@ -147,7 +127,7 @@
         "es": "WordHive: pasatiempos de palabras por sockets",
         "fr": "WordHive : jeux de lettres en réseau"
       },
-      "course": {
+      "subject": {
         "en": "Distributed Systems",
         "es": "Sistemas Distribuidos",
         "fr": "Systèmes distribués"
@@ -185,16 +165,6 @@
           }
         }
       ],
-      "image": {
-        "src": "img/projects/wordhive-socket-server.webp",
-        "width": 1200,
-        "height": 750,
-        "alt": {
-          "en": "Screenshot of the live demo: WordHive: word puzzles over sockets",
-          "es": "Captura de la demo en vivo: WordHive: pasatiempos de palabras por sockets",
-          "fr": "Capture de la démo en ligne : WordHive : jeux de lettres en réseau"
-        }
-      },
       "tech": [
         "Java",
         "Sockets",
@@ -215,7 +185,7 @@
         "es": "Clasificador de imágenes de satélite",
         "fr": "Classification d’images satellite"
       },
-      "course": {
+      "subject": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
@@ -246,7 +216,7 @@
         "es": "Clasificador de temas de prompts",
         "fr": "Classification de prompts par thème"
       },
-      "course": {
+      "subject": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
@@ -276,7 +246,7 @@
         "es": "Clasificación de la actividad humana",
         "fr": "Reconnaissance de l’activité humaine"
       },
-      "course": {
+      "subject": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
@@ -307,7 +277,7 @@
         "es": "Resolución de sudokus por visión artificial",
         "fr": "Résolution de sudokus par vision par ordinateur"
       },
-      "course": {
+      "subject": {
         "en": "Artificial Intelligence",
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
@@ -339,7 +309,7 @@
         "es": "Electrosa: tienda online full stack",
         "fr": "Electrosa : boutique en ligne full stack"
       },
-      "course": {
+      "subject": {
         "en": "Web Application Programming",
         "es": "Programación de Aplicaciones Web",
         "fr": "Programmation d’applications web"

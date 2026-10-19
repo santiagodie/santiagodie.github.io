@@ -73,13 +73,14 @@
     "intro": "Projets universitaires réalisés à l’Université de La Rioja, chacun avec son code source et, le cas échéant, une démo en ligne.",
     "featured": "À la une",
     "more": "Autres projets",
-    "university": "Université de La Rioja",
     "code": "Code",
     "demo": "Démo en ligne",
     "colab": "Ouvrir dans Colab",
     "stack": "Technologies",
     "metrics": "Résultats",
-    "translationPending": "TODO : traduire la description"
+    "translationPending": "TODO : traduire la description",
+    "demoShort": "Démo",
+    "colabShort": "Colab"
   },
   "experience": {
     "items": [

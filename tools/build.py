@@ -119,15 +119,13 @@ def validate(strings, projects, langs):
             problems += compare_keys(reference, strings[lang], lang)
     for project in projects:
         pid = project.get("id", "?")
-        for field in ("id", "title", "course", "description", "repo"):
+        for field in ("id", "title", "subject", "description", "repo"):
             if field not in project:
                 problems.append(f"projects.json: '{pid}' has no '{field}'")
-        localized = [("title", project.get("title")), ("course", project.get("course")),
+        localized = [("title", project.get("title")), ("subject", project.get("subject")),
                      ("description", project.get("description"))]
         for index, metric in enumerate(project.get("metrics", [])):
             localized += [(f"metrics[{index}].value", metric.get("value")), (f"metrics[{index}].label", metric.get("label"))]
-        if project.get("image"):
-            localized.append(("image.alt", project["image"].get("alt")))
         for name, values in localized:
             for lang in langs:
                 if not isinstance(values, dict) or not values.get(lang):
@@ -350,12 +348,8 @@ def project_links(project, lang, s):
         label = s["projects"]["colab"] if demo.get("type") == "colab" else s["projects"]["demo"]
         links.insert(0, external(demo["url"], label, title, s))
     # The repository keeps its own name in every language.
-    repo = "/".join(project["repo"].rstrip("/").split("/")[-2:])
+    repo = project["repo"].rstrip("/").split("/")[-1]
     return "".join(links) + f'<span class="card__repo" translate="no">{esc(repo)}</span>'
-
-
-def course_line(project, lang, s):
-    return f'{esc(project["course"][lang])} · <span class="nowrap">{esc(s["projects"]["university"])}</span>'
 
 
 def tags(project, s):
@@ -363,51 +357,53 @@ def tags(project, s):
     return f'<p class="visually-hidden">{esc(s["projects"]["stack"])}</p><ul class="tags" role="list">{items}</ul>'
 
 
-def render_featured(projects, lang, s, root, warnings):
+def render_featured(projects, lang, s):
+    """The three featured projects: one row of cards, each with its README metrics."""
     cards = []
     for project in projects:
         if not project.get("featured"):
             continue
-        image = project.get("image")
-        if image and (ROOT / image["src"]).exists():
-            media = (f'<img src="{root}{esc(image["src"])}" alt="{esc(image["alt"][lang])}" width="{image["width"]}" '
-                     f'height="{image["height"]}" loading="lazy" decoding="async">')
-        else:
-            warnings.add(f"no screenshot for {project['id']} (expected {image['src'] if image else 'image'}), using a placeholder")
-            media = (f'<div class="feature__placeholder" role="img" aria-label="{esc(project["title"][lang])}">'
-                     f'<img src="{root}img/sd-navy.svg" alt="" width="290" height="208"></div>')
         metrics = "".join(
-            f'<div class="metric"><dt>{esc(m["label"][lang])}</dt><dd>{esc(m["value"][lang])}</dd></div>'
+            f'<div><dt>{esc(m["label"][lang])}</dt><dd>{esc(m["value"][lang])}</dd></div>'
             for m in project.get("metrics", []))
-        cards.append(f'''            <li class="feature">
-              <article class="feature__card" aria-labelledby="p-{project["id"]}">{FRAME}
-                <div class="feature__media">{media}</div>
-                <div class="feature__body">
-                  <h4 class="feature__title" id="p-{project["id"]}">{esc(project["title"][lang])}</h4>
-                  <p class="card__course">{course_line(project, lang, s)}</p>
-                  {project_text(project, lang, s)}
-                  <dl class="metrics" aria-label="{esc(s["projects"]["metrics"])}">{metrics}</dl>
-                  {tags(project, s)}
-                  <div class="card__links">{project_links(project, lang, s)}</div>
-                </div>
-              </article>
+        if metrics:
+            metrics = f'\n              <dl class="card__metrics" aria-label="{esc(s["projects"]["metrics"])}">{metrics}</dl>'
+        cards.append(f'''            <li class="card card--feature">{FRAME}
+              <h4 class="card__title">{esc(project["title"][lang])}</h4>
+              <p class="card__subject">{esc(project["subject"][lang])}</p>
+              {project_text(project, lang, s)}{metrics}
+              {tags(project, s)}
+              <div class="card__links">{project_links(project, lang, s)}</div>
             </li>''')
     return "\n".join(cards)
 
 
 def render_projects(projects, lang, s):
+    """The other projects: small cards that are one link to the repository (the link's
+    ::after covers the card), with a separate, smaller Demo link where there is one."""
     cards = []
+    new_tab = s["a11y"]["newTab"]
     for project in projects:
         if project.get("featured"):
             continue
-        cards.append(f'''            <li class="card">{FRAME}
-              <h4 class="card__title">{esc(project["title"][lang])}</h4>
-              <p class="card__course">{course_line(project, lang, s)}</p>
-              {project_text(project, lang, s)}
+        title = project["title"][lang]
+        repo = project["repo"].rstrip("/").split("/")[-1]
+        demo = project.get("demo")
+        extra = ""
+        if demo and demo.get("url"):
+            label = s["projects"]["colabShort"] if demo.get("type") == "colab" else s["projects"]["demoShort"]
+            extra = (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(label)}{ARROW}'
+                     f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
+        cards.append(f'''            <li class="card card--mini">{FRAME}
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
+              <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
-              <div class="card__links">{project_links(project, lang, s)}</div>
+              <p class="card__foot"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{esc(repo)}</span>{ARROW}</span>{extra}</p>
             </li>''')
-    return "\n".join(cards)
+    if not cards:
+        return ""  # no heading over an empty list
+    return (f'          <h3 class="subhead">{text(s["projects"]["more"])}</h3>\n'
+            f'          <ul class="projects" role="list">\n' + "\n".join(cards) + "\n          </ul>")
 
 
 def entries(s, name):
@@ -554,7 +550,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "langSuggest": lambda: render_lang_suggest(site, strings, lang, root),
         "chat": lambda: render_chat(s, tokens, model, lang),
         "about": lambda: render_about(s),
-        "featured": lambda: render_featured(projects, lang, s, root, warnings),
+        "featured": lambda: render_featured(projects, lang, s),
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),

@@ -73,13 +73,14 @@
     "intro": "Coursework from the University of La Rioja, each with its code and, where there is one, a live demo.",
     "featured": "Featured",
     "more": "More projects",
-    "university": "University of La Rioja",
     "code": "Code",
     "demo": "Live demo",
     "colab": "Open in Colab",
     "stack": "Built with",
     "metrics": "Results",
-    "translationPending": "TODO: translate description"
+    "translationPending": "TODO: translate description",
+    "demoShort": "Demo",
+    "colabShort": "Colab"
   },
   "experience": {
     "items": [
