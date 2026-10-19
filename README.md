@@ -60,7 +60,7 @@ css/styles.css             # All styles: tokens, layout, components, motion
 js/main.js                 # Behaviour only: header, menus, language suggestion
 js/chat.js                 # Plays the About chat (Web Animations; the text is already in the HTML)
 js/scroll.js               # Progress line, current section, sections assembling on scroll
-img/                       # SD logos (unmodified) and project screenshots (img/projects/*.webp, not used on the page)
+img/                       # SD logos (unmodified)
 fonts/                     # Hubot Sans, Mona Sans, JetBrains Mono (woff2 subsets) with their OFL licences
 favicon.svg, favicon.ico, apple-touch-icon.png, CNAME
 og-image.png, og-image-es.png, og-image-fr.png   # Link previews, one per language
