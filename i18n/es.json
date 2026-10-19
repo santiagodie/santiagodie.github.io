@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Ingeniero informático · IA y ML · MLOps",
-    "description": "Portfolio de Santiago Die Morejón, ingeniero informático especializado en IA, machine learning y MLOps. Proyectos con código y demos en vivo, experiencia y contacto.",
+    "description": "Santiago Die Morejón, estudiante de Ingeniería Informática en la Universidad de La Rioja y en prácticas en Encore Lab. Su objetivo: ingeniero de machine learning y MLOps.",
     "ogLocale": "es_ES",
     "langName": "Español",
     "jobTitle": "Ingeniero informático"
@@ -84,41 +84,147 @@
   "experience": {
     "items": [
       {
-        "period": "TODO: 2026",
-        "title": "TODO: Puesto",
-        "org": "TODO: Empresa · Ciudad",
-        "text": "TODO: Una o dos frases sobre lo que hiciste y con qué herramientas."
+        "period": "Sept. 2026 – Actualidad",
+        "title": "Estudiante en prácticas",
+        "org": "Encore Lab",
+        "place": "Logroño, España",
+        "text": "Desarrollo de un portal cloud seguro para los clientes de una consultora de subvenciones, sincronizado con un sistema on-premise sin exponer la red interna, con clasificación de documentos y un asistente para clientes basados en LLM.",
+        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · DevOps · LLM"
       }
     ]
   },
   "education": {
     "items": [
       {
-        "period": "TODO: Años",
-        "title": "TODO: Titulación",
-        "org": "TODO: Universidad",
-        "text": "TODO: Especialidad, asignaturas destacadas o trabajo de fin de grado."
+        "period": "2021 – 2027 (previsto)",
+        "title": "Grado en Ingeniería Informática",
+        "org": "Universidad de La Rioja",
+        "text": "Mención en Gestión del Conocimiento: gestión de información compleja para su explotación como conocimiento en la empresa, mediante ingeniería del conocimiento y sistemas inteligentes.",
+        "details": "IA, aprendizaje automático, visión por computador, PLN, MLOps, ontologías, web semántica, minería de datos"
+      },
+      {
+        "period": "Promoción 2020",
+        "title": "Baccalauréat francés y Bachillerato ecuatoriano",
+        "org": "Lycée franco-équatorien La Condamine, Quito",
+        "text": "",
+        "details": "Bac de Ciencias Económicas y Sociales, especialidad de matemáticas · Bachiller en Ciencias"
       }
-    ]
+    ],
+    "certifications": {
+      "title": "Certificaciones",
+      "items": [
+        "Introduction to Quantum Computing (Basic & Advanced Levels)",
+        "DELF B2"
+      ]
+    }
   },
   "skills": {
     "groups": [
       {
-        "name": "TODO: Área",
+        "name": "IA y datos",
         "items": [
-          "TODO: Habilidad",
-          "TODO: Habilidad",
-          "TODO: Habilidad"
+          "Machine learning",
+          "deep learning",
+          "visión por computador",
+          "PLN",
+          "LLM",
+          "minería de datos",
+          "MLOps"
+        ]
+      },
+      {
+        "name": "Gestión del conocimiento",
+        "items": [
+          "Ontologías",
+          "web semántica",
+          "ingeniería del conocimiento"
+        ]
+      },
+      {
+        "name": "Lenguajes",
+        "items": [
+          "Python",
+          "Java",
+          "C++",
+          "C#",
+          "JavaScript",
+          "TypeScript",
+          "PHP",
+          "SQL",
+          "R"
+        ]
+      },
+      {
+        "name": "Web y frameworks",
+        "items": [
+          "AngularJS",
+          "Spring MVC",
+          "Flask",
+          "Figma"
+        ]
+      },
+      {
+        "name": "Bases de datos",
+        "items": [
+          "PostgreSQL",
+          "MySQL"
+        ]
+      },
+      {
+        "name": "DevOps",
+        "items": [
+          "Docker",
+          "CI/CD",
+          "GitHub",
+          "RabbitMQ",
+          "Claude Code"
+        ]
+      },
+      {
+        "name": "Computación cuántica",
+        "items": [
+          "Qiskit",
+          "circuitos cuánticos",
+          "algoritmos cuánticos (Grover, Deutsch-Jozsa)"
+        ]
+      },
+      {
+        "name": "Otros",
+        "items": [
+          "Programación concurrente",
+          "sistemas operativos",
+          "gestión de redes",
+          "análisis de requisitos",
+          "diseño de interfaces",
+          "prototipado"
         ]
       }
-    ]
+    ],
+    "languages": {
+      "title": "Idiomas",
+      "items": [
+        {
+          "name": "Español",
+          "level": "nativo"
+        },
+        {
+          "name": "Inglés",
+          "level": "competencia profesional completa"
+        },
+        {
+          "name": "Francés",
+          "level": "competencia profesional completa"
+        }
+      ]
+    }
   },
   "contact": {
-    "text": "Me puedes encontrar en GitHub y LinkedIn.",
+    "text": "Escríbeme por correo o encuéntrame en GitHub y LinkedIn.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "emailLabel": "Correo",
-    "email": "TODO: tu dirección de correo, cuando decidas publicarla",
+    "locationLabel": "Ubicación",
+    "location": "Logroño, La Rioja, España",
     "cv": "CV (PDF)",
     "cvFile": ""
   },

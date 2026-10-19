@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Computer Engineer · AI & ML · MLOps",
-    "description": "Portfolio of Santiago Die Morejón, computer engineer specialising in AI, machine learning and MLOps. Projects with code and live demos, experience and contact.",
+    "description": "Santiago Die Morejón, computer engineering student at the University of La Rioja and intern at Encore Lab, aiming to become a machine learning and MLOps engineer.",
     "ogLocale": "en_GB",
     "langName": "English",
     "jobTitle": "Computer Engineer"
@@ -84,41 +84,147 @@
   "experience": {
     "items": [
       {
-        "period": "TODO: 2026",
-        "title": "TODO: Role",
-        "org": "TODO: Company · City",
-        "text": "TODO: One or two sentences on what you did and with which tools."
+        "period": "Sep 2026 – Present",
+        "title": "Intern",
+        "org": "Encore Lab",
+        "place": "Logroño, Spain",
+        "text": "Building a secure cloud client portal for a grant consultancy, synced from an on-premise system without exposing the internal network, with LLM-based document classification and a client assistant.",
+        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · DevOps · LLMs"
       }
     ]
   },
   "education": {
     "items": [
       {
-        "period": "TODO: Years",
-        "title": "TODO: Degree",
-        "org": "TODO: University",
-        "text": "TODO: Focus, relevant courses or final project."
+        "period": "2021 – 2027 (expected)",
+        "title": "BSc in Computer Engineering",
+        "org": "University of La Rioja",
+        "text": "Specialisation in Knowledge Management: turning complex information into usable knowledge for organisations through knowledge engineering and intelligent systems.",
+        "details": "AI, machine learning, computer vision, NLP, MLOps, ontologies, semantic web, data mining"
+      },
+      {
+        "period": "Graduated 2020",
+        "title": "French Baccalauréat & Ecuadorian Bachillerato",
+        "org": "Lycée franco-équatorien La Condamine, Quito",
+        "text": "",
+        "details": "Economics and Social Sciences track, mathematics specialisation · Bachiller en Ciencias"
       }
-    ]
+    ],
+    "certifications": {
+      "title": "Certifications",
+      "items": [
+        "Introduction to Quantum Computing (Basic & Advanced Levels)",
+        "DELF B2"
+      ]
+    }
   },
   "skills": {
     "groups": [
       {
-        "name": "TODO: Area",
+        "name": "AI & data",
         "items": [
-          "TODO: Skill",
-          "TODO: Skill",
-          "TODO: Skill"
+          "Machine learning",
+          "deep learning",
+          "computer vision",
+          "NLP",
+          "LLMs",
+          "data mining",
+          "MLOps"
+        ]
+      },
+      {
+        "name": "Knowledge management",
+        "items": [
+          "Ontologies",
+          "semantic web",
+          "knowledge engineering"
+        ]
+      },
+      {
+        "name": "Programming languages",
+        "items": [
+          "Python",
+          "Java",
+          "C++",
+          "C#",
+          "JavaScript",
+          "TypeScript",
+          "PHP",
+          "SQL",
+          "R"
+        ]
+      },
+      {
+        "name": "Web & frameworks",
+        "items": [
+          "AngularJS",
+          "Spring MVC",
+          "Flask",
+          "Figma"
+        ]
+      },
+      {
+        "name": "Databases",
+        "items": [
+          "PostgreSQL",
+          "MySQL"
+        ]
+      },
+      {
+        "name": "DevOps",
+        "items": [
+          "Docker",
+          "CI/CD",
+          "GitHub",
+          "RabbitMQ",
+          "Claude Code"
+        ]
+      },
+      {
+        "name": "Quantum computing",
+        "items": [
+          "Qiskit",
+          "quantum circuits",
+          "quantum algorithms (Grover, Deutsch-Jozsa)"
+        ]
+      },
+      {
+        "name": "Other",
+        "items": [
+          "Concurrent programming",
+          "operating systems",
+          "network management",
+          "requirements analysis",
+          "UI design",
+          "prototyping"
         ]
       }
-    ]
+    ],
+    "languages": {
+      "title": "Languages",
+      "items": [
+        {
+          "name": "Spanish",
+          "level": "native"
+        },
+        {
+          "name": "English",
+          "level": "full professional proficiency"
+        },
+        {
+          "name": "French",
+          "level": "full professional proficiency"
+        }
+      ]
+    }
   },
   "contact": {
-    "text": "You can find me on GitHub and LinkedIn.",
+    "text": "Write to me by email or find me on GitHub and LinkedIn.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "emailLabel": "Email",
-    "email": "TODO: your email address, once you decide to publish it",
+    "locationLabel": "Location",
+    "location": "Logroño, La Rioja, Spain",
     "cv": "CV (PDF)",
     "cvFile": ""
   },

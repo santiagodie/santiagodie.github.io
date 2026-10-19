@@ -191,6 +191,7 @@
         <div class="section__body">
 {{ !contactLead }}
           <ul class="contact" role="list">
+{{ !email }}
             <li>
               <a class="contact__link" href="{{ @github }}" target="_blank" rel="noopener me">
                 <span class="contact__label">{{ contact.github }}</span>
@@ -207,8 +208,8 @@
                 <span class="visually-hidden">({{ a11y.newTab }})</span>
               </a>
             </li>
-{{ !email }}
 {{ !cv }}
+{{ !location }}
           </ul>
         </div>
       </div>

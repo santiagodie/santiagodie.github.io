@@ -2262,6 +2262,10 @@ main {
   color: var(--navy-2);
 }
 
+.entry__place {
+  color: var(--navy-3);
+}
+
 .entry__text {
   max-width: 62ch;
   margin-top: 0.75rem;
@@ -2269,29 +2273,112 @@ main {
   text-wrap: pretty;
 }
 
-/* Skills ---------------------------------------------------------------- */
-
-.skills {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
-  gap: 2.5rem var(--gutter);
+.entry__details {
+  max-width: 62ch;
+  margin-top: 0.75rem;
+  color: var(--navy-3);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  text-wrap: pretty;
 }
 
-.skills__name {
-  padding-bottom: 0.75rem;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 700;
+.entry .tags {
+  margin-top: 1rem;
+}
+
+/* A short list under a section's main one: Certifications, Languages. */
+.minor {
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0.25rem;
+  color: var(--navy-3);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.certs > li {
+  padding-block: 0.875rem;
+  border-bottom: 1px solid var(--line);
+  font-weight: 500;
+}
+
+/* Skills ----------------------------------------------------------------
+   One ruled row per group: the name, then its items in mono with gold dots. No
+   levels, no bars. From 48em the name takes the same column as entry periods. */
+
+.skills__group,
+.langs__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.375rem var(--gutter);
+  padding-block: 1.125rem;
+  border-top: 1px solid var(--line);
+}
+
+.skills__group:last-child,
+.langs__item:last-child {
   border-bottom: 1px solid var(--line);
 }
 
+@media (min-width: 48em) {
+  .skills__group,
+  .langs__item {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+
+.skills__name,
+.langs dt {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .skills__items {
-  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0;
   color: var(--navy-2);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
 }
 
 .skills__items li {
-  padding-block: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.skills__items li:not(:last-child)::after {
+  content: "";
+  flex: none;
+  width: 3px;
+  height: 3px;
+  margin-inline: 0.6em;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.langs {
+  margin-top: 0.75rem;
+}
+
+.langs dd {
+  color: var(--navy-2);
+}
+
+.minor + .langs,
+.minor + .certs {
+  margin-top: 0.75rem;
+}
+
+.minor + .certs > li:first-child {
+  border-top: 1px solid var(--line);
 }
 
 /* Contact --------------------------------------------------------------- */
@@ -2304,7 +2391,8 @@ main {
   border-top: 1px solid var(--line-dark);
 }
 
-.contact__link {
+.contact__link,
+.contact__row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -2338,7 +2426,8 @@ main {
 }
 
 @media (min-width: 48em) {
-  .contact__link {
+  .contact__link,
+  .contact__row {
     grid-template-columns: 14rem minmax(0, 1fr) auto;
   }
 

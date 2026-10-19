@@ -196,16 +196,43 @@ def render_og_alternates(site, strings, current):
         for lang in site["languages"] if lang["code"] != current)
 
 
-def render_jsonld(site, s):
-    person = {
+def obfuscate(value):
+    """Every character as an HTML entity: the browser shows and follows the same
+    address, with or without JavaScript, while naive scrapers that grep the source
+    for addresses do not find one."""
+    return "".join(f"&#{ord(char)};" for char in value)
+
+
+def thing(item):
+    node = {"@type": item["type"], "name": item["name"]}
+    if item.get("url"):
+        node["url"] = item["url"]
+    return node
+
+
+def render_jsonld(site, strings, lang):
+    person = site["person"]
+    address = person["address"]
+    data = {
         "@context": "https://schema.org",
         "@type": "Person",
-        "name": site["person"]["name"],
+        "name": person["name"],
         "url": site["url"],
-        "jobTitle": s["meta"]["jobTitle"],
-        "sameAs": [site["person"]["github"], site["person"]["linkedin"]],
+        "jobTitle": strings[lang]["meta"]["jobTitle"],
+        "email": person["email"],
+        "address": {"@type": "PostalAddress", "addressLocality": address["locality"],
+                    "addressRegion": address["region"], "addressCountry": address["country"]},
+        "alumniOf": [thing(school) for school in person["alumniOf"]],
+        # An internship is not employment: `affiliation` says he is linked to the
+        # organisation without claiming, as `worksFor` would, that he is on its staff.
+        "affiliation": thing(person["affiliation"]),
+        "knowsLanguage": [language["code"] for language in site["languages"]],
+        "sameAs": [person["github"], person["linkedin"]],
     }
-    return json.dumps(person, ensure_ascii=False).replace("</", "<\\/")
+    # "@" and "." escaped as JSON unicode escapes (same value for any JSON parser),
+    # so the address is not in the page source as plain text either.
+    return (json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+            .replace(person["email"], person["email"].replace("@", "\\u0040").replace(".", "\\u002e")))
 
 
 def render_lang_menu(site, strings, current, root):
@@ -388,6 +415,12 @@ def entries(s, name):
     return [item for item in s[name]["items"] if published(item["title"])]
 
 
+def stack(value, s):
+    """A "A · B · C" line as a list in mono with gold dots, like a project's technologies."""
+    items = "".join(f"<li>{esc(t)}</li>" for t in value.split(" · "))
+    return f'<p class="visually-hidden">{esc(s["projects"]["stack"])}</p><ul class="tags" role="list">{items}</ul>'
+
+
 def render_entries(s, name):
     rows = []
     for item in entries(s, name):
@@ -395,11 +428,25 @@ def render_entries(s, name):
         parts = [f'<p class="entry__period">{text(period)}</p><div class="entry__body">',
                  f'<h3 class="entry__title">{text(item["title"])}</h3>']
         if published(item.get("org")):
-            parts.append(f'<p class="entry__org">{text(item["org"])}</p>')
+            place = f'<span class="entry__place"> · {esc(item["place"])}</span>' if published(item.get("place")) else ""
+            parts.append(f'<p class="entry__org">{text(item["org"])}{place}</p>')
         if published(item.get("text")):
             parts.append(f'<p class="entry__text">{text(item["text"])}</p>')
+        if published(item.get("details")):
+            parts.append(f'<p class="entry__details">{esc(item["details"])}</p>')
+        if published(item.get("stack")):
+            parts.append(stack(item["stack"], s))
         rows.append("            <li class=\"entry\">" + "".join(parts) + "</div></li>")
-    return '          <ol class="entries" role="list">\n' + "\n".join(rows) + "\n          </ol>" if rows else ""
+    if not rows:
+        return ""
+    out = '          <ol class="entries" role="list">\n' + "\n".join(rows) + "\n          </ol>"
+    # Certifications sit under Education, as a short list of their own.
+    certs = s[name].get("certifications")
+    if certs and [c for c in certs["items"] if published(c)]:
+        items = "".join(f"<li>{esc(c)}</li>" for c in certs["items"] if published(c))
+        out += (f'\n          <h3 class="minor">{esc(certs["title"])}</h3>'
+                f'\n          <ul class="certs" role="list">{items}</ul>')
+    return out
 
 
 def skill_groups(s):
@@ -413,21 +460,36 @@ def skill_groups(s):
 
 
 def render_skills(s):
-    blocks = []
+    """Each group as a row: its name, then its items in mono; then the spoken languages."""
+    rows = []
     for name, items in skill_groups(s):
-        items = "".join(f"<li>{text(item)}</li>" for item in items)
-        blocks.append(f'            <div class="skills__group"><h3 class="skills__name">{text(name)}</h3>'
-                      f'<ul class="skills__items" role="list">{items}</ul></div>')
-    return '          <div class="skills">\n' + "\n".join(blocks) + "\n          </div>" if blocks else ""
-
-
-def render_email(s):
-    """The address is published only once it is set (it is a TODO until the owner decides)."""
-    contact = s["contact"]
-    if not published(contact["email"]):
+        items = "".join(f"<li>{esc(item)}</li>" for item in items)
+        rows.append(f'            <div class="skills__group"><dt class="skills__name">{text(name)}</dt>'
+                    f'<dd><ul class="skills__items" role="list">{items}</ul></dd></div>')
+    if not rows:
         return ""
-    return (f'            <li>\n              <a class="contact__link" href="mailto:{esc(contact["email"])}">'
-            f'<span class="contact__label">{text(contact["emailLabel"])}</span><span class="contact__value">{esc(contact["email"])}</span>{ARROW}</a>\n'
+    out = '          <dl class="skills">\n' + "\n".join(rows) + "\n          </dl>"
+    languages = s["skills"]["languages"]
+    if languages["items"]:
+        items = "".join(f'<div class="langs__item"><dt>{esc(item["name"])}</dt><dd>{esc(item["level"])}</dd></div>'
+                        for item in languages["items"])
+        out += (f'\n          <h3 class="minor">{esc(languages["title"])}</h3>'
+                f'\n          <dl class="langs">{items}</dl>')
+    return out
+
+
+def render_email(site, s):
+    """The address, entity-encoded (see obfuscate); a plain mailto link for the visitor."""
+    address = obfuscate(site["person"]["email"])
+    return (f'            <li>\n              <a class="contact__link" href="{obfuscate("mailto:")}{address}">'
+            f'<span class="contact__label">{text(s["contact"]["emailLabel"])}</span><span class="contact__value">{address}</span>{ARROW}</a>\n'
+            f'            </li>')
+
+
+def render_location(s):
+    contact = s["contact"]
+    return (f'            <li>\n              <p class="contact__row">'
+            f'<span class="contact__label">{esc(contact["locationLabel"])}</span><span class="contact__value">{esc(contact["location"])}</span></p>\n'
             f'            </li>')
 
 
@@ -487,7 +549,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
     fragments = {
         "alternates": lambda: render_alternates(site),
         "ogAlternates": lambda: render_og_alternates(site, strings, lang),
-        "jsonld": lambda: render_jsonld(site, s),
+        "jsonld": lambda: render_jsonld(site, strings, lang),
         "langMenu": lambda: render_lang_menu(site, strings, lang, root),
         "langSuggest": lambda: render_lang_suggest(site, strings, lang, root),
         "chat": lambda: render_chat(s, tokens, model, lang),
@@ -499,7 +561,8 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "skills": lambda: render_skills(s),
         "projectsLead": lambda: lead(s["projects"]["intro"]),
         "contactLead": lambda: lead(s["contact"]["text"]),
-        "email": lambda: render_email(s),
+        "email": lambda: render_email(site, s),
+        "location": lambda: render_location(s),
         "cv": lambda: render_cv(s, root, warnings),
     }
 

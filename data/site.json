@@ -2,8 +2,29 @@
   "url": "https://santiagodie.com/",
   "person": {
     "name": "Santiago Die Morejón",
+    "email": "santiagodimo@gmail.com",
     "github": "https://github.com/santiagodie",
-    "linkedin": "https://www.linkedin.com/in/santiago-die-morejon"
+    "linkedin": "https://www.linkedin.com/in/santiago-die-morejon",
+    "address": {
+      "locality": "Logroño",
+      "region": "La Rioja",
+      "country": "ES"
+    },
+    "alumniOf": [
+      {
+        "type": "CollegeOrUniversity",
+        "name": "Universidad de La Rioja",
+        "url": "https://www.unirioja.es/"
+      },
+      {
+        "type": "HighSchool",
+        "name": "Lycée franco-équatorien La Condamine"
+      }
+    ],
+    "affiliation": {
+      "type": "Organization",
+      "name": "Encore Lab"
+    }
   },
   "languages": [
     {
