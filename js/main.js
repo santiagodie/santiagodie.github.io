@@ -95,8 +95,9 @@
     }
   });
 
-  // Keep the reader in the same section when switching language.
-  langItems.forEach((item) => {
+  // Keep the reader in the same section when switching language (from the
+  // dropdown or from the row of languages).
+  document.querySelectorAll("[data-lang-link]").forEach((item) => {
     item.addEventListener("click", () => {
       const section = currentSection();
       if (section && !item.hasAttribute("aria-current")) item.hash = section;

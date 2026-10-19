@@ -233,6 +233,37 @@ def render_jsonld(site, strings, lang):
             .replace(person["email"], person["email"].replace("@", "\\u0040").replace(".", "\\u002e")))
 
 
+# Flags for the language links, drawn once as symbols. National flags in their own
+# colours, the one exception to the palette (owner's request, v2.5); Spain's is the
+# civil flag, without the coat of arms, which would be a smudge at this size.
+FLAGS = {
+    "en": ("gb", "0 0 60 30",
+           '<clipPath id="flag-gb-clip"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath>'
+           '<path fill="#012169" d="M0 0h60v30H0z"/>'
+           '<path stroke="#fff" stroke-width="6" d="M0 0l60 30m0-30L0 30"/>'
+           '<path stroke="#C8102E" stroke-width="4" clip-path="url(#flag-gb-clip)" d="M0 0l60 30m0-30L0 30"/>'
+           '<path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/>'
+           '<path stroke="#C8102E" stroke-width="6" d="M30 0v30M0 15h60"/>'),
+    "es": ("es", "0 0 750 500",
+           '<path fill="#AA151B" d="M0 0h750v500H0z"/><path fill="#F1BF00" d="M0 125h750v250H0z"/>'),
+    "fr": ("fr", "0 0 3 2",
+           '<path fill="#000091" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#E1000F" d="M2 0h1v2H2z"/>'),
+}
+
+
+def render_flag_sprite(site):
+    symbols = "".join(f'<symbol id="flag-{name}" viewBox="{box}">{body}</symbol>'
+                      for name, box, body in (FLAGS[lang["code"]] for lang in site["languages"]))
+    return f'  <svg class="flag-sprite" aria-hidden="true" focusable="false">{symbols}</svg>'
+
+
+def flag(code):
+    """A decorative flag: the link or button around it carries the language's name."""
+    name, box, _ = FLAGS[code]
+    return (f'<svg class="flag flag--{name}" viewBox="{box}" aria-hidden="true" focusable="false">'
+            f'<use href="#flag-{name}"/></svg>')
+
+
 def render_lang_menu(site, strings, current, root):
     items = []
     for lang in site["languages"]:
@@ -240,8 +271,18 @@ def render_lang_menu(site, strings, current, root):
         current_attr = ' aria-current="page"' if code == current else ""
         items.append(
             f'              <li role="none"><a role="menuitem" href="{relative_href(root, lang)}" hreflang="{code}" lang="{code}"'
-            f' data-lang-link{current_attr}><span class="lang__name">{esc(strings[code]["meta"]["langName"])}</span>'
-            f'<span class="lang__item-code" aria-hidden="true">{code.upper()}</span></a></li>')
+            f' data-lang-link{current_attr}>{flag(code)}<span class="lang__name">{esc(strings[code]["meta"]["langName"])}</span></a></li>')
+    return "\n".join(items)
+
+
+def render_lang_list(site, strings, current, root):
+    items = []
+    for lang in site["languages"]:
+        code = lang["code"]
+        current_attr = ' aria-current="page"' if code == current else ""
+        items.append(
+            f'              <li><a href="{relative_href(root, lang)}" hreflang="{code}" lang="{code}" data-lang-link{current_attr}>'
+            f'{flag(code)}<span>{esc(strings[code]["meta"]["langName"])}</span></a></li>')
     return "\n".join(items)
 
 
@@ -547,6 +588,9 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "ogAlternates": lambda: render_og_alternates(site, strings, lang),
         "jsonld": lambda: render_jsonld(site, strings, lang),
         "langMenu": lambda: render_lang_menu(site, strings, lang, root),
+        "langList": lambda: render_lang_list(site, strings, lang, root),
+        "langFlag": lambda: flag(lang),
+        "flagSprite": lambda: render_flag_sprite(site),
         "langSuggest": lambda: render_lang_suggest(site, strings, lang, root),
         "chat": lambda: render_chat(s, tokens, model, lang),
         "about": lambda: render_about(s),

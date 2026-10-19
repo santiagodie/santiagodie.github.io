@@ -52,6 +52,7 @@
   <script type="application/ld+json">{{ !jsonld }}</script>
 </head>
 <body>
+{{ !flagSprite }}
   <a class="skip-link" href="#main">{{ a11y.skip }}</a>
 
 {{ !langSuggest }}
@@ -96,13 +97,20 @@
 
           <div class="lang" data-lang-switch>
             <button class="lang__button" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="{{= a11y.currentLanguage }}">
-              <span class="lang__code" aria-hidden="true">{{ @langCode }}</span>
+              {{ !langFlag }}
               <svg class="lang__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
             </button>
             <ul class="lang__menu" id="lang-menu" role="menu" aria-label="{{= a11y.language }}">
 {{ !langMenu }}
             </ul>
           </div>
+
+          <!-- The languages as plain links: in the mobile menu, and without JavaScript. -->
+          <nav class="lang-list" aria-label="{{= a11y.language }}">
+            <ul role="list">
+{{ !langList }}
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
