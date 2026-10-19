@@ -38,7 +38,7 @@
   },
   "chat": {
     "prompt": "Who is Santiago Die?",
-    "answer": "From what I see, he is a computer engineer focused on AI, machine learning and MLOps. His projects at the University of La Rioja range from computer vision to REST APIs.",
+    "answer": "Based on my analysis, Santiago is a computer engineering student at the University of La Rioja, specialising in knowledge management, and he is aiming to become a machine learning and MLOps engineer. He is currently an intern at Encore Lab, building a secure cloud platform with LLM features.\n\nHe approaches problems empirically: rather than assuming which solution is best, he measures it, whether that means comparing five CNN architectures or benchmarking a VP-tree index against brute-force search. He cares about the details that make a system reliable, not just functional.\n\nHe grew up in Quito, studied at a French lycée and now lives in Spain, so he adapts quickly and works comfortably in Spanish, English and French.",
     "send": "Send the question",
     "skip": "Skip",
     "replay": "Replay",
@@ -55,7 +55,8 @@
       "attention",
       "softmax"
     ],
-    "description": "Animation: the question is sent, split into tokens with their real ids, turned into vectors, passed through attention layers and scored; the most likely next token is chosen, and the answer is written one token at a time."
+    "description": "Animation: the question is sent, split into tokens with their real ids, turned into vectors, passed through attention layers and scored; the most likely next token is chosen, and the answer is written one token at a time.",
+    "log": "Conversation"
   },
   "sections": {
     "about": "About",
@@ -66,9 +67,7 @@
     "contact": "Contact"
   },
   "about": {
-    "paragraphs": [
-      "TODO: One or two sentences on what you are looking for (the chat above already says who you are and what you work on)."
-    ]
+    "paragraphs": []
   },
   "projects": {
     "intro": "Coursework from the University of La Rioja, each with its code and, where there is one, a live demo.",

@@ -38,7 +38,7 @@
   },
   "chat": {
     "prompt": "Qui est Santiago Die ?",
-    "answer": "D’après ce que je vois, il est ingénieur informatique spécialisé en IA, machine learning et MLOps. Ses projets à l’Université de La Rioja vont de la vision par ordinateur aux API REST.",
+    "answer": "D’après mon analyse, Santiago est étudiant en génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et il vise un poste d’ingénieur en machine learning et MLOps. Il est actuellement stagiaire chez Encore Lab, où il développe une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM.\n\nIl aborde les problèmes de manière empirique : plutôt que de supposer quelle solution est la meilleure, il la mesure, qu’il s’agisse de comparer cinq architectures de CNN ou d’évaluer un index VP-tree face à une recherche exhaustive. Il soigne les détails qui rendent un système fiable, et pas seulement fonctionnel.\n\nIl a grandi à Quito, a étudié dans un lycée français et vit aujourd’hui en Espagne : il s’adapte vite et travaille aisément en espagnol, en anglais et en français.",
     "send": "Envoyer la question",
     "skip": "Passer",
     "replay": "Rejouer",
@@ -55,7 +55,8 @@
       "attention",
       "softmax"
     ],
-    "description": "Animation : la question est envoyée, découpée en tokens avec leurs vrais identifiants, transformée en vecteurs, passée par des couches d’attention puis évaluée ; le token suivant le plus probable est choisi et la réponse s’écrit token après token."
+    "description": "Animation : la question est envoyée, découpée en tokens avec leurs vrais identifiants, transformée en vecteurs, passée par des couches d’attention puis évaluée ; le token suivant le plus probable est choisi et la réponse s’écrit token après token.",
+    "log": "Conversation"
   },
   "sections": {
     "about": "À propos",
@@ -66,9 +67,7 @@
     "contact": "Contact"
   },
   "about": {
-    "paragraphs": [
-      "TODO : Une ou deux phrases sur ce que vous recherchez (le chat ci-dessus dit déjà qui vous êtes et sur quoi vous travaillez)."
-    ]
+    "paragraphs": []
   },
   "projects": {
     "intro": "Projets universitaires réalisés à l’Université de La Rioja, chacun avec son code source et, le cas échéant, une démo en ligne.",

@@ -942,13 +942,16 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
    The About section's introduction. The question, the answer and the message-limit
    notice are in the HTML (tools/build.py): without JavaScript this is the finished
    chat. With it, the chat starts with the question typed in the box; send plays
-   the answer token by token (js/chat.js, Web Animations,
-   transform and opacity only). The panel has a fixed height in every state, so
-   nothing below it moves. The zoomed-in stages are drawn on .chat__stage at their
-   real size, so they stay sharp while the camera (.chat__scene) is scaled. */
+   the first token through the model's stages, then streams the rest of the answer
+   by words (js/chat.js, Web Animations, transform and opacity only). The panel is
+   as tall as the finished chat from the start, so nothing below it moves. The
+   zoomed-in stages are drawn on .chat__stage at their real size, so they stay
+   sharp while the camera (.chat__scene) is scaled. */
 
 .chat {
-  --chat-h: 30rem;
+  /* The conversation scrolls inside the panel past this height: on phones and short
+     windows, where the whole answer would make the panel taller than the screen. */
+  --log-max: max(15rem, min(36rem, 100svh - 22rem));
   min-width: 0;
 }
 
@@ -956,9 +959,11 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
+/* The panel's height is that of the finished chat (everything is laid out from the
+   start, only invisible), so it is right for every language and width and never
+   changes while the chat plays. */
 .chat__panel {
   position: relative;
-  height: var(--chat-h);
   overflow: hidden;
   isolation: isolate;
   border-radius: 22px;
@@ -972,8 +977,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 }
 
 .chat__scene {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: clamp(1rem, 2.5vw, 1.5rem);
@@ -990,12 +994,38 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 
 .chat__log {
   position: relative;
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 0;
-  padding-top: 2.25rem;
+  max-height: var(--log-max);
+  /* A margin, not padding: scrolled text stops below the Skip/Replay corner. */
+  margin-block: 2.25rem 1rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(245 240 225 / 0.22) transparent;
+}
+
+/* Where it scrolls, the text fades under the edges that have more to show. */
+.chat__log[data-more~="up"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 2rem);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 2rem);
+}
+
+.chat__log[data-more~="down"] {
+  -webkit-mask-image: linear-gradient(to top, transparent 0, #000 2rem);
+  mask-image: linear-gradient(to top, transparent 0, #000 2rem);
+}
+
+.chat__log[data-more~="up"][data-more~="down"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 2rem, #000 calc(100% - 2rem), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 2rem, #000 calc(100% - 2rem), transparent 100%);
+}
+
+.chat__log:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 12px;
 }
 
 .chat__bubble {
@@ -1017,6 +1047,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
 }
 
 .chat__composer {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1531,7 +1562,7 @@ html:not(.js) .chat__placeholder,
 
 .js .chat:not([data-state]) .chat__composer,
 .js .chat[data-state="idle"] .chat__composer {
-  transform: translateY(var(--lift, calc(var(--chat-h) * -0.4)));
+  transform: translateY(var(--lift, calc(var(--log-max) * -0.5)));
 }
 
 .js .chat:not([data-state]) .chat__bubble,
@@ -1542,14 +1573,15 @@ html:not(.js) .chat__placeholder,
   opacity: 0;
 }
 
-.js .chat:not([data-state="done"]) .chat__limit-body {
-  display: none;
+/* Until the answer is written, the conversation is not scrolled by hand (the run
+   scrolls it to follow the text). */
+.js .chat:not([data-state="done"]) .chat__log {
+  overflow-y: hidden;
 }
 
-@media (max-width: 40em) {
-  .chat {
-    --chat-h: 29.5rem;
-  }
+/* The notice keeps its place while it waits, so the panel does not grow when it shows. */
+.js .chat:not([data-state="done"]) .chat__limit-body {
+  visibility: hidden;
 }
 
 /* Buttons --------------------------------------------------------------- */

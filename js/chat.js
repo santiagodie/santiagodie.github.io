@@ -42,6 +42,11 @@
   const OUT = "cubic-bezier(0.23, 1, 0.32, 1)";
   const MOVE = "cubic-bezier(0.77, 0, 0.175, 1)";
   const DRAWER = "cubic-bezier(0.32, 0.72, 0, 1)";
+  // The stream after the camera pulls out: the whole answer is written STREAM ms
+  // later; each word fades in over FADE ms; a paragraph waits BREATH ms more.
+  const STREAM = 5000;
+  const FADE = 220;
+  const BREATH = 200;
 
   // Every animation of a run, so a hidden tab can pause them and Skip can drop them.
   // Waits are animations too (on an invisible clock), so pausing stops the timeline.
@@ -172,6 +177,8 @@
   }
 
   async function full(step, lift) {
+    const run = gen;
+    log.scrollTop = 0;
     const W = panel.clientWidth;
     const H = panel.clientHeight;
     const narrow = W < 420;
@@ -413,9 +420,11 @@
     log.append(ghost);
     const flashes = Math.min(8, outs.length - 1);
     const logBox = box(log);
+    let flashTime = 0;
     play(ghost, { opacity: [0, 1] }, { duration: 140 });
     for (let k = 1; k <= flashes; k += 1) {
       const d = Math.round(300 * 0.8 ** (k - 1));
+      flashTime += d;
       const r = targets[k];
       ghost.style.transform = `translate(${r.x - logBox.x}px, ${r.y - logBox.y + r.h * 0.18}px)`;
       bars.forEach((bar, j) => {
@@ -426,9 +435,51 @@
       play(outs[k], { opacity: [0, 1], transform: ["translateY(3px)", "none"] }, { duration: 180, easing: OUT });
     }
     play(ghost, { opacity: [1, 0] }, { duration: 180 });
-    const rest = outs.slice(flashes + 1);
-    rest.forEach((t, i) => play(t, { opacity: [0, 1] }, { duration: 200, delay: i * 24, easing: OUT }));
-    await step(wait(rest.length * 24 + 240));
+
+    // The rest streams in a word at a time (a word is a token that starts with a
+    // space and the pieces that follow it), slightly faster as it goes, with a breath
+    // before each paragraph. Its length is fixed, so the whole answer is written
+    // about five seconds after the camera pulled out, in every language.
+    const words = [];
+    outs.slice(flashes + 1).forEach((t) => {
+      const text = t.textContent;
+      if (!words.length || /^\s/.test(text)) words.push({ toks: [t], text });
+      else {
+        words[words.length - 1].toks.push(t);
+        words[words.length - 1].text += text;
+      }
+    });
+    const elapsed = 160 + flashTime;
+    const breaths = words.filter((w) => w.text.includes("\n")).length;
+    const pace = words.map((_, i) => 1.25 - (0.5 * i) / words.length);
+    const unit = Math.max(0, STREAM - elapsed - FADE - BREATH * breaths) / pace.reduce((a, b) => a + b, 0);
+    let at = 0;
+    words.forEach((w, i) => {
+      if (w.text.includes("\n")) at += BREATH;
+      w.at = at;
+      w.toks.forEach((t) => play(t, { opacity: [0, 1] }, { duration: FADE, delay: at, easing: OUT }));
+      at += unit * pace[i];
+    });
+    const stream = play(clock, { opacity: [0, 0] }, { duration: at + FADE });
+
+    // Where the conversation scrolls (narrow screens), it follows the last word in.
+    if (log.scrollHeight > log.clientHeight + 2) {
+      const follow = () => {
+        if (run !== gen) return;
+        const t = stream.currentTime ?? 0;
+        let k = 0;
+        while (k < words.length && words[k].at <= t) k += 1;
+        const tok = k ? words[k - 1].toks[words[k - 1].toks.length - 1] : null;
+        if (tok) {
+          const target = tok.offsetTop + tok.offsetHeight + 16 - log.clientHeight;
+          if (target > log.scrollTop) log.scrollTop += Math.max(1, (target - log.scrollTop) * 0.18);
+          edges();
+        }
+        if (stream.playState !== "finished") requestAnimationFrame(follow);
+      };
+      requestAnimationFrame(follow);
+    }
+    await step(done(stream));
   }
 
   // h. The finished chat, however we got here: end of the run, Skip, Escape or
@@ -446,12 +497,11 @@
     setOff(true);
     skip.hidden = true;
     replay.hidden = false;
-    live.textContent = answer.textContent.trim();
+    scrollable();
 
-    // Then the notice, just after the answer: announced by its own polite live
-    // region when it is put back in, and the keyboard's next stop.
-    resetTime();
-    limit.append(notice);
+    // Then the notice, just after the answer (its place was kept): announced with
+    // the answer, and the keyboard's next stop.
+    live.textContent = `${answer.textContent.trim()} ${notice.textContent.trim()}`;
     play(notice, reduce.matches
       ? { opacity: [0, 1] }
       : { opacity: [0, 1], transform: ["translateY(6px)", "none"] }, { duration: 320, delay: 120, easing: OUT });
@@ -462,16 +512,37 @@
   function reset() {
     anims.forEach((animation) => animation.cancel());
     anims.clear();
-    notice.remove();
     chat.dataset.state = "idle";
     setOff(false);
     live.textContent = "";
+    log.scrollTop = 0;
+    scrollable();
+    resetTime();
   }
 
+  // Where the conversation scrolls, its edges fade where there is more to read, and
+  // once it is finished it takes keyboard focus to be scrolled (only then: before,
+  // the answer is still invisible).
+  function edges() {
+    const more = [];
+    if (log.scrollTop > 2) more.push("up");
+    if (log.scrollTop + log.clientHeight < log.scrollHeight - 2) more.push("down");
+    log.dataset.more = more.join(" ");
+  }
+  function scrollable() {
+    const scrolls = log.scrollHeight > log.clientHeight + 2;
+    if (scrolls && chat.dataset.state === "done") log.tabIndex = 0;
+    else log.removeAttribute("tabindex");
+    edges();
+  }
+  log.addEventListener("scroll", edges, { passive: true });
+
   // At rest the box waits mid-panel, like a new conversation.
-  const setLift = () => chat.style.setProperty("--lift", `${-Math.round(log.clientHeight / 2 - 8)}px`);
-  setLift();
-  if ("ResizeObserver" in window) new ResizeObserver(setLift).observe(panel);
+  const setLift = () => {
+    const mid = panel.clientHeight / 2 - composer.offsetHeight / 2;
+    chat.style.setProperty("--lift", `${Math.round(mid - composer.offsetTop)}px`);
+    scrollable();
+  };
 
   // The section assembles first (js/scroll.js holds back what starts off screen):
   // number, title, then this panel. The question waits until the panel is in place.
@@ -534,8 +605,11 @@
     if (!entry.isIntersecting && running) finish();
   }, { threshold: [0, 0.35] }).observe(panel);
 
-  // Ready: the box takes the question; the notice waits for the answer.
-  notice.remove();
+  // Ready: the box takes the question; the notice waits, invisible, in its place
+  // (with its reset time already written, so it does not change size when shown).
   chat.dataset.state = "idle";
   setOff(false);
+  resetTime();
+  setLift();
+  if ("ResizeObserver" in window) new ResizeObserver(setLift).observe(panel);
 })();

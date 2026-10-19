@@ -38,7 +38,7 @@
   },
   "chat": {
     "prompt": "¿Quién es Santiago Die?",
-    "answer": "Por lo que veo, es ingeniero informático y se centra en IA, machine learning y MLOps. Sus proyectos en la Universidad de La Rioja van de la visión artificial a las APIs REST.",
+    "answer": "Según mi análisis, Santiago es estudiante de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento, y su objetivo es trabajar como ingeniero de machine learning y MLOps. Ahora está de prácticas en Encore Lab, desarrollando una plataforma cloud segura con funciones basadas en LLM.\n\nAborda los problemas de forma empírica: en lugar de suponer cuál es la mejor solución, la mide, ya sea comparando cinco arquitecturas de CNN o evaluando un índice VP-tree frente a una búsqueda por fuerza bruta. Cuida los detalles que hacen que un sistema sea fiable, no solo que funcione.\n\nCreció en Quito, estudió en un liceo francés y ahora vive en España, así que se adapta rápido y trabaja con soltura en español, inglés y francés.",
     "send": "Enviar la pregunta",
     "skip": "Saltar",
     "replay": "Repetir",
@@ -55,7 +55,8 @@
       "atención",
       "softmax"
     ],
-    "description": "Animación: la pregunta se envía, se divide en tokens con sus ids reales, se convierte en vectores, pasa por capas de atención y se puntúa; se elige el siguiente token más probable y la respuesta se escribe token a token."
+    "description": "Animación: la pregunta se envía, se divide en tokens con sus ids reales, se convierte en vectores, pasa por capas de atención y se puntúa; se elige el siguiente token más probable y la respuesta se escribe token a token.",
+    "log": "Conversación"
   },
   "sections": {
     "about": "Sobre mí",
@@ -66,9 +67,7 @@
     "contact": "Contacto"
   },
   "about": {
-    "paragraphs": [
-      "TODO: Una o dos frases sobre qué buscas (el chat de arriba ya dice quién eres y en qué trabajas)."
-    ]
+    "paragraphs": []
   },
   "projects": {
     "intro": "Trabajos de asignatura de la Universidad de La Rioja, cada uno con su código y, cuando la tiene, una demo en vivo.",

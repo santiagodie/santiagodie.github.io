@@ -266,19 +266,20 @@ def render_chat(s, tokens, model, lang):
     cta = esc(" ".join(words + [""])) + f'<span class="nowrap">{esc(last)}&nbsp;{FORWARD}</span>'
     # "</" cannot close the script block early: every "<" is escaped.
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+    # Readers get the answer as paragraphs; the token spans are only drawn.
+    paragraphs = "".join(f"<p>{esc(p)}</p>" for p in chat["answer"].split("\n\n"))
+    # On narrow screens the conversation scrolls inside the panel, so it is a
+    # focusable region (js/chat.js drops the tab stop where it does not scroll).
     return f'''        <div class="chat" data-chat>
-          <div class="visually-hidden">
-            <p>{esc(chat["description"])}</p>
-            <p>{esc(chat["prompt"])}</p>
-            <p>{esc(chat["answer"])}</p>
-          </div>
+          <p class="visually-hidden">{esc(chat["description"])}</p>
           <div class="chat__panel">
             <div class="chat__scene">
-              <div class="chat__log" aria-hidden="true">
-                <p class="chat__bubble"><span>{esc(chat["prompt"])}</span></p>
-                <p class="chat__answer">{answer}</p>
+              <div class="chat__log" role="region" aria-label="{esc(chat["log"])}" tabindex="0">
+                <div class="visually-hidden"><p>{esc(chat["prompt"])}</p>{paragraphs}</div>
+                <p class="chat__bubble" aria-hidden="true"><span>{esc(chat["prompt"])}</span></p>
+                <p class="chat__answer" aria-hidden="true">{answer}</p>
               </div>
-              <div class="chat__limit" aria-live="polite" data-chat-limit>
+              <div class="chat__limit" data-chat-limit>
                 <p class="chat__limit-body">{CLOCK}<span class="chat__limit-text">{esc(chat["limit"]["text"])}<span data-chat-reset></span></span><a class="chat__limit-link" href="#contact">{cta}</a></p>
               </div>
               <div class="chat__composer" role="group" aria-label="{esc(chat["placeholder"])}" aria-disabled="true">
