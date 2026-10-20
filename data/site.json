@@ -5,6 +5,11 @@
     "email": "santiagodimo@gmail.com",
     "github": "https://github.com/santiagodie",
     "linkedin": "https://www.linkedin.com/in/santiago-die-morejon",
+    "alternateName": ["Santiago Die Morejon", "Santiago Die"],
+    "otherProfiles": [
+      "https://huggingface.co/santiagodie",
+      "https://www.instagram.com/santiago_die/"
+    ],
     "address": {
       "locality": "Logroño",
       "region": "La Rioja",
