@@ -218,6 +218,7 @@ def render_jsonld(site, strings, lang):
         "alternateName": person.get("alternateName", []),
         "url": site["url"],
         "jobTitle": strings[lang]["meta"]["jobTitle"],
+        "description": strings[lang]["meta"]["description"],
         "email": person["email"],
         "address": {"@type": "PostalAddress", "addressLocality": address["locality"],
                     "addressRegion": address["region"], "addressCountry": address["country"]},
@@ -337,7 +338,9 @@ def render_chat(s, tokens, model, lang):
     paragraphs = "".join(f"<p>{esc(p)}</p>" for p in chat["answer"].split("\n\n"))
     # On narrow screens the conversation scrolls inside the panel, so it is a
     # focusable region (js/chat.js drops the tab stop where it does not scroll).
-    return f'''        <div class="chat" data-chat>
+    # data-nosnippet: the chat is still indexed, but search engines do not quote it
+    # as the page's summary (meta.description is the summary).
+    return f'''        <div class="chat" data-chat data-nosnippet>
           <p class="visually-hidden">{esc(chat["description"])}</p>
           <div class="chat__panel">
             <div class="chat__scene">
