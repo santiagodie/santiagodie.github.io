@@ -210,6 +210,13 @@
     <section class="section section--navy" id="contact" aria-labelledby="contact-title">
       <div class="section__inner wrap">
         <h2 class="section__title" id="contact-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_contact }}</span> <span class="section__label">{{ sections.contact }}</span></h2>
+        <div class="portrait"><svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>
+          <picture>
+            <source type="image/avif" srcset="{{ @root }}img/portrait-160.avif 1x, {{ @root }}img/portrait-320.avif 2x">
+            <source type="image/webp" srcset="{{ @root }}img/portrait-160.webp 1x, {{ @root }}img/portrait-320.webp 2x">
+            <img src="{{ @root }}img/portrait-160.jpg" srcset="{{ @root }}img/portrait-320.jpg 2x" alt="{{= contact.photoAlt }}" width="160" height="200" loading="lazy" decoding="async">
+          </picture>
+        </div>
         <div class="section__body">
 {{ !contactLead }}
           <ul class="contact" role="list">

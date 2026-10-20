@@ -23,7 +23,7 @@
 
   // Number and node first, then the title, the text, and the cards, entries or the
   // About chat (js/chat.js starts typing only once the chat is in place).
-  const ITEMS = ".chat, .card, .entry, .skills__group, .langs__item, .certs > li, .contact > li";
+  const ITEMS = ".chat, .card, .portrait, .entry, .skills__group, .langs__item, .certs > li, .contact > li";
   const TEXT = ".section__lead, .prose p, .subhead, .minor";
 
   function assemble() {
@@ -34,7 +34,7 @@
         const kind = el.matches(".section__num") ? "num"
           : el.matches(".section__label") ? "title"
             : el.matches(TEXT) ? "text"
-              : el.matches(".card") ? "card" : "item";
+              : el.matches(".card, .portrait") ? "card" : "item";
         pending.push([el, kind]);
       });
     });

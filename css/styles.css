@@ -2657,6 +2657,69 @@ main {
   }
 }
 
+/* The owner's photo: a fine gold frame with a narrow mat, like a card's border, and
+   the photo untouched. Above the text on small screens; beside it from 64em. */
+.portrait {
+  position: relative;
+  width: 8rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  padding: 5px;
+  border: 1px solid var(--gold-line);
+  border-radius: 12px;
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border-radius: 7px;
+  background: var(--navy-2);
+}
+
+.portrait .frame rect {
+  stroke: var(--gold);
+}
+
+/* From 64em, to the right of the text and under the title, on the side where the
+   progress line arrives (Contact is an even section). Up to 80em the photo is
+   smaller and the text one column wider, so every address stays on one line. */
+@media (min-width: 64em) {
+  .portrait {
+    grid-column: 11 / -1;
+    grid-row: 2;
+    justify-self: end;
+    align-self: start;
+    width: 8rem;
+    margin-bottom: 0;
+  }
+
+  #contact .section__body {
+    grid-column: 3 / 11;
+    grid-row: 2;
+  }
+
+  #contact .contact__link,
+  #contact .contact__row {
+    grid-template-columns: 12rem minmax(0, 1fr) auto;
+  }
+}
+
+@media (min-width: 80em) {
+  .portrait {
+    width: 10rem;
+  }
+
+  #contact .section__body {
+    grid-column: 3 / 10;
+  }
+
+  #contact .contact__link,
+  #contact .contact__row {
+    grid-template-columns: 14rem minmax(0, 1fr) auto;
+  }
+}
+
 /* Footer ---------------------------------------------------------------- */
 
 .site-footer {
@@ -2752,11 +2815,13 @@ main {
   }
 
   /* The card's own border takes over once the frame is closed. */
-  .is-assembling .card[data-reveal]:not(.is-in) {
+  .is-assembling .card[data-reveal]:not(.is-in),
+  .is-assembling .portrait[data-reveal]:not(.is-in) {
     border-color: transparent;
   }
 
-  .is-assembling .card[data-reveal].is-in {
+  .is-assembling .card[data-reveal].is-in,
+  .is-assembling .portrait[data-reveal].is-in {
     /* backwards, not both: once over it lets go, and the card's own border (and its
        hover and focus colours) apply; a finished fill could pin it transparent. */
     animation: border-in 1ms steps(1) calc(var(--reveal-delay, 0ms) + 600ms) backwards;

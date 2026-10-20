@@ -219,6 +219,7 @@ def render_jsonld(site, strings, lang):
         "url": site["url"],
         "jobTitle": strings[lang]["meta"]["jobTitle"],
         "description": strings[lang]["meta"]["description"],
+        "image": site["url"] + person["image"],
         "email": person["email"],
         "address": {"@type": "PostalAddress", "addressLocality": address["locality"],
                     "addressRegion": address["region"], "addressCountry": address["country"]},
