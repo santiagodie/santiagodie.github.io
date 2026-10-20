@@ -288,6 +288,13 @@ main:focus {
   --focus: var(--gold);
 }
 
+/* Without JavaScript nothing gives the header its background on scroll, and on
+   small screens the whole menu is laid out in it: it scrolls away with the page
+   instead of covering the content. */
+html:not(.js) .site-header {
+  position: relative;
+}
+
 .site-header__inner {
   position: relative;
   display: flex;
