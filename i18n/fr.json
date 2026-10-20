@@ -91,6 +91,14 @@
         "place": "Logroño, Espagne",
         "text": "Développement d’un portail cloud sécurisé pour les clients d’un cabinet de conseil en subventions, synchronisé avec un système on-premise sans exposer le réseau interne, avec classification de documents et assistant client basés sur des LLM.",
         "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · DevOps · LLM"
+      },
+      {
+        "period": "Avr. 2026 – Aujourd’hui",
+        "title": "Développeur full-stack (freelance)",
+        "org": "Islamontana Travel",
+        "place": "À distance",
+        "text": "Conception et développement du site d’une agence de voyages nature en Équateur, bilingue et optimisé pour le SEO. En cours : un back-office avec 2FA et rôles, une API FastAPI avec PostgreSQL, et un déploiement sur VPS avec Docker Compose et une CI/CD avec préproduction et versions étiquetées.",
+        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · PostgreSQL · Docker · GitHub Actions"
       }
     ]
   },
