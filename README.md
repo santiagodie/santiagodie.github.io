@@ -113,4 +113,4 @@ Every push to `main` (or a manual run) triggers `.github/workflows/pages.yml`: i
 
 ## Contact
 
-Santiago Die · [Email](mailto:santiagodimo@gmail.com) · [GitHub](https://github.com/santiagodie) · [LinkedIn](https://www.linkedin.com/in/santiago-die-morejon)
+Santiago Die · [Email](mailto:contact@santiagodie.com) · [GitHub](https://github.com/santiagodie) · [LinkedIn](https://www.linkedin.com/in/santiago-die-morejon)

@@ -15,7 +15,7 @@ Still binding from v1: derived tints (lighter, darker, transparent) of the four 
 
 > Hidden sections (owner's rule, 2026-10-18): paragraphs and entries that still start with `TODO` stay in `i18n/*.json` but are never published. A section left without published content is not published either: not the section, not its link in the navigation (desktop and mobile menu), not its point on the progress line; the visible sections are numbered 01, 02, 03... without gaps and keep alternating left/right and white/bone. A section comes back by itself once it has content. Contact is never empty, because the chat's notice links to it: it always has the real GitHub and LinkedIn profiles and a short translated sentence; the email stays TODO (unpublished) until the owner decides, and the CV button only exists when the PDF does.
 
-Since v2.4 (2026-10-19) every section has the owner's real content, and Contact also publishes the email (santiagodimo@gmail.com, owner's decision) and the location. Content texts are used exactly as supplied in EN/ES/FR; corrections are proposed to the owner, never applied silently.
+Since v2.4 (2026-10-19) every section has the owner's real content, and Contact also publishes the email (contact@santiagodie.com, owner's decision) and the location. Content texts are used exactly as supplied in EN/ES/FR; corrections are proposed to the owner, never applied silently.
 
 v2.1 additions (2026-10-18), also binding. The first one is verbatim from the v2.1 brief:
 
