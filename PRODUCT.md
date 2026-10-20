@@ -47,7 +47,7 @@ Career moment (confirmed 2026-10-17): Santiago is doing the degree internship an
 ## Brand Commitments
 
 - Name: **Santiago Die Morejón**. Headline: "Computer Engineer · AI & ML · MLOps"; Spanish "Ingeniero informático"; French "Ingénieur informatique" (owner's choice, 2026-10-18, not "Ingénieur informaticien").
-- SD monogram (`assets/logo/sd-gold.svg`, copied unmodified from `sd-logo/`), used in header, footer and favicon.
+- SD monogram (`assets/logo/sd-gold.svg`, copied unmodified from `sd-logo/`), used in header and footer. The favicons redraw the same geometry: `favicon.svg` without a background, navy in light mode and white in dark mode, with a stroke of 28 instead of 20 so it holds at 16 px; `favicon.ico` (16, 32, 48 px) navy on a rounded bone square for browsers without SVG favicons; `apple-touch-icon.png` gold on navy with a safe margin.
 - Logo versions from `sd-logo/`, unmodified: `sd-navy.svg` on light grounds, `sd-gold.svg` on navy.
 - LinkedIn banner concept (`linkedin-banner.png`): a phrase shown as `tokenize()` chips with token ids (cl100k_base) and a `predict_next()` panel, "Computer → engineer 0.86, science 0.09, vision 0.03, programmer 0.02". Since v2.1 the hero expands it into a diagram of how a language model turns the prompt "Who is Santiago Die?" into "A computer engineer focused on AI and MLOps." (translated per page): token ids are real, the other values illustrative, and the static diagram shows the banner's own step, "computer → engineer 0.86". It is described as "a language model" in general, never as any specific model.
 - Visual coherence with the GitHub profile and banners: navy, bone, gold, white; thin gold lines and frames; sobriety. Full rules in DESIGN.md.
