@@ -215,6 +215,7 @@ def render_jsonld(site, strings, lang):
         "@context": "https://schema.org",
         "@type": "Person",
         "name": person["name"],
+        "alternateName": person.get("alternateName", []),
         "url": site["url"],
         "jobTitle": strings[lang]["meta"]["jobTitle"],
         "email": person["email"],
@@ -225,7 +226,7 @@ def render_jsonld(site, strings, lang):
         # organisation without claiming, as `worksFor` would, that he is on its staff.
         "affiliation": thing(person["affiliation"]),
         "knowsLanguage": [language["code"] for language in site["languages"]],
-        "sameAs": [person["github"], person["linkedin"]],
+        "sameAs": [person["github"], person["linkedin"]] + person.get("otherProfiles", []),
     }
     # "@" and "." escaped as JSON unicode escapes (same value for any JSON parser),
     # so the address is not in the page source as plain text either.
