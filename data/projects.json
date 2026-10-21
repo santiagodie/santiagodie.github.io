@@ -132,7 +132,7 @@
         "es": "Sistemas Distribuidos",
         "fr": "Systèmes distribués"
       },
-      "featured": true,
+      "featured": false,
       "description": {
         "en": "A multithreaded word puzzle server written in plain Java on top of raw sockets, playable from a TCP console client or from the browser through a hand-written HTTP server.",
         "es": "Servidor multihilo de pasatiempos de palabras escrito en Java puro sobre sockets, al que se juega desde un cliente de consola TCP o desde el navegador a través de un servidor HTTP hecho a mano.",
@@ -349,13 +349,39 @@
         "es": "Taller Transversal I: Programación y Proceso de Información",
         "fr": "Atelier transversal I : programmation et traitement de l’information"
       },
-      "featured": false,
+      "featured": true,
       "description": {
-        "en": "A team-built artificial-life simulation: a Spring Boot REST API queues cellular-automaton runs in RabbitMQ, five workers process them and MySQL stores the results, and a Spring Boot + Thymeleaf web client requests simulations and replays them step by step on a grid.",
-        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola ejecuciones de un autómata celular en RabbitMQ, cinco workers las procesan y MySQL guarda los resultados, y un cliente web en Spring Boot + Thymeleaf solicita simulaciones y las reproduce paso a paso en una rejilla.",
-        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des exécutions d’un automate cellulaire dans RabbitMQ, cinq workers les traitent et MySQL stocke les résultats, et un client web Spring Boot + Thymeleaf demande des simulations et les rejoue pas à pas sur une grille."
+        "en": "A team-built artificial-life simulation: a Spring Boot REST API queues cellular-automaton runs in RabbitMQ, five workers run them into MySQL, and a Thymeleaf web client replays them step by step.",
+        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola autómatas celulares en RabbitMQ, cinco workers los ejecutan y guardan en MySQL, y un cliente web en Thymeleaf los reproduce paso a paso.",
+        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les stockent dans MySQL, et un client web Thymeleaf les rejoue pas à pas."
       },
       "todo": [],
+      "metrics": [
+        {
+          "value": {
+            "en": "108 tests",
+            "es": "108 tests",
+            "fr": "108 tests"
+          },
+          "label": {
+            "en": "passing across 3 Maven modules",
+            "es": "superados en 3 módulos Maven",
+            "fr": "réussis sur 3 modules Maven"
+          }
+        },
+        {
+          "value": {
+            "en": "220 requests",
+            "es": "220 solicitudes",
+            "fr": "220 requêtes"
+          },
+          "label": {
+            "en": "in 30 s, drained by 5 workers",
+            "es": "en 30 s, vaciadas por 5 workers",
+            "fr": "en 30 s, traitées par 5 workers"
+          }
+        }
+      ],
       "tech": [
         "Java 21",
         "Spring Boot",
