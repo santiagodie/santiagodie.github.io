@@ -392,25 +392,32 @@
         "Docker"
       ],
       "repo": "https://github.com/santiagodie/life-simulation-service",
-      "repoLabel": {
-        "en": "Service",
-        "es": "Servicio",
-        "fr": "Service"
-      },
-      "repos": [
+      "parts": [
         {
-          "url": "https://github.com/santiagodie/life-simulation-web-client",
+          "label": {
+            "en": "Service",
+            "es": "Servicio",
+            "fr": "Service"
+          },
+          "repo": "https://github.com/santiagodie/life-simulation-service",
+          "demo": {
+            "url": "https://santiagodie.com/life-simulation-service/",
+            "type": "web"
+          }
+        },
+        {
           "label": {
             "en": "Web client",
             "es": "Cliente web",
             "fr": "Client web"
+          },
+          "repo": "https://github.com/santiagodie/life-simulation-web-client",
+          "demo": {
+            "url": "https://santiagodie.com/life-simulation-web-client/",
+            "type": "web"
           }
         }
-      ],
-      "demo": {
-        "url": "https://santiagodie.com/life-simulation-service/",
-        "type": "web"
-      }
+      ]
     }
   ]
 }

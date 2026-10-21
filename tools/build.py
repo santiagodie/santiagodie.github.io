@@ -126,12 +126,10 @@ def validate(strings, projects, langs):
                      ("description", project.get("description"))]
         for index, metric in enumerate(project.get("metrics", [])):
             localized += [(f"metrics[{index}].value", metric.get("value")), (f"metrics[{index}].label", metric.get("label"))]
-        if "repoLabel" in project:
-            localized.append(("repoLabel", project["repoLabel"]))
-        for index, extra in enumerate(project.get("repos", [])):
-            if not extra.get("url"):
-                problems.append(f"projects.json: '{pid}' has no repos[{index}].url")
-            localized.append((f"repos[{index}].label", extra.get("label")))
+        for index, part in enumerate(project.get("parts", [])):
+            if not part.get("repo"):
+                problems.append(f"projects.json: '{pid}' has no parts[{index}].repo")
+            localized.append((f"parts[{index}].label", part.get("label")))
         for name, values in localized:
             for lang in langs:
                 if not isinstance(values, dict) or not values.get(lang):
@@ -392,22 +390,46 @@ def project_text(project, lang, s):
     return f'<p class="card__text"{attr}>{text(project["description"][lang])}</p>{note}'
 
 
-def repo_label(project, lang, s):
-    """The main repository's link text: "Code", or its own label when the project has several."""
-    return project["repoLabel"][lang] if "repoLabel" in project else s["projects"]["code"]
+def repo_name(url):
+    # The repository keeps its own name in every language.
+    return url.rstrip("/").split("/")[-1]
+
+
+def demo_label(demo, s, short=False):
+    if demo.get("type") == "colab":
+        return s["projects"]["colabShort" if short else "colab"]
+    return s["projects"]["demoShort" if short else "demo"]
 
 
 def project_links(project, lang, s):
     title = project["title"][lang]
-    links = [external(project["repo"], repo_label(project, lang, s), title, s)]
-    links += [external(extra["url"], extra["label"][lang], title, s) for extra in project.get("repos", [])]
+    links = [external(project["repo"], s["projects"]["code"], title, s)]
     demo = project.get("demo")
     if demo and demo.get("url"):
-        label = s["projects"]["colab"] if demo.get("type") == "colab" else s["projects"]["demo"]
-        links.insert(0, external(demo["url"], label, title, s))
-    # The repository keeps its own name in every language.
-    repo = project["repo"].rstrip("/").split("/")[-1]
-    return "".join(links) + f'<span class="card__repo" translate="no">{esc(repo)}</span>'
+        links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
+    return "".join(links) + f'<span class="card__repo" translate="no">{esc(repo_name(project["repo"]))}</span>'
+
+
+def project_parts(project, lang, s):
+    """A project made of several repositories: one labelled group per part, each with its
+    demo and its code. The links keep the usual "Live demo" and "Code" text; the part and
+    the project are added for screen readers, so no two links have the same name."""
+    title = project["title"][lang]
+    groups = []
+    for index, part in enumerate(project["parts"]):
+        label = part["label"][lang]
+        context = f"{label}, {title}"
+        links = external(part["repo"], s["projects"]["code"], context, s)
+        demo = part.get("demo")
+        if demo and demo.get("url"):
+            links = external(demo["url"], demo_label(demo, s), context, s) + links
+        heading = f'{project["id"]}-part-{index}'
+        groups.append(
+            f'<div class="card__part" role="group" aria-labelledby="{heading}">'
+            f'<p class="card__part-label" id="{heading}">{esc(label)} '
+            f'<span class="card__repo" translate="no">{esc(repo_name(part["repo"]))}</span></p>'
+            f'{links}</div>')
+    return "".join(groups)
 
 
 def tags(project, s):
@@ -426,12 +448,16 @@ def render_featured(projects, lang, s):
             for m in project.get("metrics", []))
         if metrics:
             metrics = f'\n              <dl class="card__metrics" aria-label="{esc(s["projects"]["metrics"])}">{metrics}</dl>'
+        if project.get("parts"):
+            links = f'<div class="card__links card__links--parts">{project_parts(project, lang, s)}</div>'
+        else:
+            links = f'<div class="card__links">{project_links(project, lang, s)}</div>'
         cards.append(f'''            <li class="card card--feature">{FRAME}
               <h4 class="card__title">{esc(project["title"][lang])}</h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
               {tags(project, s)}
-              <div class="card__links">{project_links(project, lang, s)}</div>
+              {links}
             </li>''')
     return "\n".join(cards)
 
@@ -445,23 +471,23 @@ def render_projects(projects, lang, s):
         if project.get("featured"):
             continue
         title = project["title"][lang]
-        repo = project["repo"].rstrip("/").split("/")[-1]
+        repo = repo_name(project["repo"])
         demo = project.get("demo")
-        extra = "".join(
-            f'<a class="card__demo" href="{esc(other["url"])}" target="_blank" rel="noopener">{esc(other["label"][lang])}{ARROW}'
-            f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>'
-            for other in project.get("repos", []))
+        extra = ""
         if demo and demo.get("url"):
-            label = s["projects"]["colabShort"] if demo.get("type") == "colab" else s["projects"]["demoShort"]
-            extra += (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(label)}{ARROW}'
-                      f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
+            extra = (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(demo_label(demo, s, short=True))}{ARROW}'
+                     f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
         foot = "card__foot"
-        if project.get("repos"):
-            # With several links the repository name gets its own line and the links go below it
+        if project.get("parts"):
+            # One demo link per part, named after it; the repository name gets its own line
+            extra = "".join(
+                f'<a class="card__demo" href="{esc(part["demo"]["url"])}" target="_blank" rel="noopener">{esc(part["label"][lang])}{ARROW}'
+                f'<span class="visually-hidden">: {esc(demo_label(part["demo"], s))}, {esc(title)} ({esc(new_tab)})</span></a>'
+                for part in project["parts"] if part.get("demo", {}).get("url"))
             foot += " card__foot--stacked"
             extra = f'<span class="card__more">{extra}</span>'
         cards.append(f'''            <li class="card card--mini">{FRAME}
-              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(repo_label(project, lang, s))} ({esc(new_tab)})</span></a></h4>
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
               <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{esc(repo)}</span>{ARROW}</span>{extra}</p>

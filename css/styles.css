@@ -2369,6 +2369,35 @@ main {
   transition: text-decoration-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
 }
 
+/* A project with several repositories: one group per part, a label line
+   (part name and repository) above its demo and code links. */
+.card__links--parts {
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card__part {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.25rem;
+}
+
+.card__part-label {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.125rem 0.625rem;
+  color: var(--navy);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.card__part-label .card__repo {
+  font-weight: 400;
+}
+
 /* The repository name, untranslated, beside the links. */
 .card__repo {
   align-self: center;
