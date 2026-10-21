@@ -398,6 +398,8 @@ def repo_name(url):
 def demo_label(demo, s, short=False):
     if demo.get("type") == "colab":
         return s["projects"]["colabShort" if short else "colab"]
+    if demo.get("type") == "download":
+        return s["projects"]["downloadShort" if short else "download"]
     return s["projects"]["demoShort" if short else "demo"]
 
 

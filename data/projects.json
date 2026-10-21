@@ -338,6 +338,37 @@
       }
     },
     {
+      "id": "library-management-system",
+      "title": {
+        "en": "Library Management System",
+        "es": "Sistema de gestión de biblioteca",
+        "fr": "Système de gestion de bibliothèque"
+      },
+      "subject": {
+        "en": "Object-Oriented Technology",
+        "es": "Tecnología Orientada a Objetos",
+        "fr": "Technologie orientée objet"
+      },
+      "featured": false,
+      "description": {
+        "en": "A team project: a Windows desktop application for a library, built in C# WinForms with a layered architecture, covering members, staff roles, documents and copies, loans and returns.",
+        "es": "Proyecto en equipo: aplicación de escritorio para Windows que gestiona una biblioteca, hecha en C# WinForms con arquitectura en capas: usuarios, roles del personal, documentos y ejemplares, préstamos y devoluciones.",
+        "fr": "Projet d’équipe : application de bureau Windows pour une bibliothèque, en C# WinForms avec une architecture en couches : usagers, rôles du personnel, documents et exemplaires, prêts et retours."
+      },
+      "todo": [],
+      "tech": [
+        "C#",
+        ".NET Framework 4.7.2",
+        "Windows Forms",
+        "Layered architecture"
+      ],
+      "repo": "https://github.com/santiagodie/library-management-system",
+      "demo": {
+        "url": "https://github.com/santiagodie/library-management-system/releases/latest",
+        "type": "download"
+      }
+    },
+    {
       "id": "life-simulation",
       "title": {
         "en": "Life Simulation: service and web client",

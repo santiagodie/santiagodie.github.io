@@ -76,11 +76,13 @@
     "code": "Code",
     "demo": "Live demo",
     "colab": "Open in Colab",
+    "download": "Download",
     "stack": "Built with",
     "metrics": "Results",
     "translationPending": "TODO: translate description",
     "demoShort": "Demo",
-    "colabShort": "Colab"
+    "colabShort": "Colab",
+    "downloadShort": "Download"
   },
   "experience": {
     "items": [

@@ -76,11 +76,13 @@
     "code": "Código",
     "demo": "Demo en vivo",
     "colab": "Abrir en Colab",
+    "download": "Descargar",
     "stack": "Tecnologías",
     "metrics": "Resultados",
     "translationPending": "TODO: traducir la descripción",
     "demoShort": "Demo",
-    "colabShort": "Colab"
+    "colabShort": "Colab",
+    "downloadShort": "Descargar"
   },
   "experience": {
     "items": [
