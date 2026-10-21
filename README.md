@@ -93,6 +93,7 @@ Add an object to `data/projects.json`. Cards appear in the order of the list.
 
 - `title`, `description`, `subject` (the university course, from the README's "Built for the … course" line) and the metric labels are required in every language; the build stops if one is missing. The repository name is not translated: it is shown in mono on the card.
 - `demo` is optional; use `"type": "colab"` for a notebook. On small cards it becomes a small "Demo" (or "Colab") link of its own beside the card's link to the repository.
+- A project split across several repositories keeps the main one in `repo`, names its link with `repoLabel` (`{en, es, fr}`, instead of "Code") and lists the others in `repos`: `[{ "url": "…", "label": { "en": "Web client", "es": "Cliente web", "fr": "Client web" } }]`. On small cards the main repository's name gets its own line and the extra links sit below it, next to the demo.
 - `todo` lists what is still pending. While it contains `description.es` or `description.fr`, that page shows a "translate description" marker and marks the English text with `lang="en"`.
 - **Featured projects** (`"featured": true`) sit in the top row, three across on desktop, with their description and `metrics`: one or two `{ "value": {en, es, fr}, "label": {en, es, fr} }` taken from the README (format numbers per language: `4,122` / `4.122` / `4 122`). The other projects get small cards, four across, without the description (keep writing it: it is used if the project becomes featured).
 

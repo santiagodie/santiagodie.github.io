@@ -126,6 +126,12 @@ def validate(strings, projects, langs):
                      ("description", project.get("description"))]
         for index, metric in enumerate(project.get("metrics", [])):
             localized += [(f"metrics[{index}].value", metric.get("value")), (f"metrics[{index}].label", metric.get("label"))]
+        if "repoLabel" in project:
+            localized.append(("repoLabel", project["repoLabel"]))
+        for index, extra in enumerate(project.get("repos", [])):
+            if not extra.get("url"):
+                problems.append(f"projects.json: '{pid}' has no repos[{index}].url")
+            localized.append((f"repos[{index}].label", extra.get("label")))
         for name, values in localized:
             for lang in langs:
                 if not isinstance(values, dict) or not values.get(lang):
@@ -386,9 +392,15 @@ def project_text(project, lang, s):
     return f'<p class="card__text"{attr}>{text(project["description"][lang])}</p>{note}'
 
 
+def repo_label(project, lang, s):
+    """The main repository's link text: "Code", or its own label when the project has several."""
+    return project["repoLabel"][lang] if "repoLabel" in project else s["projects"]["code"]
+
+
 def project_links(project, lang, s):
     title = project["title"][lang]
-    links = [external(project["repo"], s["projects"]["code"], title, s)]
+    links = [external(project["repo"], repo_label(project, lang, s), title, s)]
+    links += [external(extra["url"], extra["label"][lang], title, s) for extra in project.get("repos", [])]
     demo = project.get("demo")
     if demo and demo.get("url"):
         label = s["projects"]["colab"] if demo.get("type") == "colab" else s["projects"]["demo"]
@@ -435,16 +447,24 @@ def render_projects(projects, lang, s):
         title = project["title"][lang]
         repo = project["repo"].rstrip("/").split("/")[-1]
         demo = project.get("demo")
-        extra = ""
+        extra = "".join(
+            f'<a class="card__demo" href="{esc(other["url"])}" target="_blank" rel="noopener">{esc(other["label"][lang])}{ARROW}'
+            f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>'
+            for other in project.get("repos", []))
         if demo and demo.get("url"):
             label = s["projects"]["colabShort"] if demo.get("type") == "colab" else s["projects"]["demoShort"]
-            extra = (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(label)}{ARROW}'
-                     f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
+            extra += (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(label)}{ARROW}'
+                      f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
+        foot = "card__foot"
+        if project.get("repos"):
+            # With several links the repository name gets its own line and the links go below it
+            foot += " card__foot--stacked"
+            extra = f'<span class="card__more">{extra}</span>'
         cards.append(f'''            <li class="card card--mini">{FRAME}
-              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(repo_label(project, lang, s))} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
-              <p class="card__foot"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{esc(repo)}</span>{ARROW}</span>{extra}</p>
+              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{esc(repo)}</span>{ARROW}</span>{extra}</p>
             </li>''')
     if not cards:
         return ""  # no heading over an empty list

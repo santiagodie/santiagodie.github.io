@@ -336,6 +336,55 @@
         "url": "https://santiagodie.com/electrosa-fullstack-ecommerce/",
         "type": "web"
       }
+    },
+    {
+      "id": "life-simulation",
+      "title": {
+        "en": "Life Simulation: service and web client",
+        "es": "Simulación de vida: servicio y cliente web",
+        "fr": "Simulation de vie : service et client web"
+      },
+      "subject": {
+        "en": "Cross-disciplinary Workshop I: Programming and Information Processing",
+        "es": "Taller Transversal I: Programación y Proceso de Información",
+        "fr": "Atelier transversal I : programmation et traitement de l’information"
+      },
+      "featured": false,
+      "description": {
+        "en": "A team-built artificial-life simulation: a Spring Boot REST API queues cellular-automaton runs in RabbitMQ, five workers process them and MySQL stores the results, and a Spring Boot + Thymeleaf web client requests simulations and replays them step by step on a grid.",
+        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola ejecuciones de un autómata celular en RabbitMQ, cinco workers las procesan y MySQL guarda los resultados, y un cliente web en Spring Boot + Thymeleaf solicita simulaciones y las reproduce paso a paso en una rejilla.",
+        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des exécutions d’un automate cellulaire dans RabbitMQ, cinq workers les traitent et MySQL stocke les résultats, et un client web Spring Boot + Thymeleaf demande des simulations et les rejoue pas à pas sur une grille."
+      },
+      "todo": [],
+      "tech": [
+        "Java 21",
+        "Spring Boot",
+        "RabbitMQ",
+        "MySQL",
+        "Thymeleaf",
+        "OpenAPI",
+        "Docker"
+      ],
+      "repo": "https://github.com/santiagodie/life-simulation-service",
+      "repoLabel": {
+        "en": "Service",
+        "es": "Servicio",
+        "fr": "Service"
+      },
+      "repos": [
+        {
+          "url": "https://github.com/santiagodie/life-simulation-web-client",
+          "label": {
+            "en": "Web client",
+            "es": "Cliente web",
+            "fr": "Client web"
+          }
+        }
+      ],
+      "demo": {
+        "url": "https://santiagodie.com/life-simulation-service/",
+        "type": "web"
+      }
     }
   ]
 }

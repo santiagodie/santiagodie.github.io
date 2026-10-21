@@ -2267,6 +2267,21 @@ main {
   flex: none;
 }
 
+/* A project with several repositories: the name on its own line, the links below it */
+.card__foot--stacked {
+  flex-wrap: wrap;
+}
+
+.card__foot--stacked .card__repo {
+  flex-basis: 100%;
+}
+
+.card__more {
+  display: inline-flex;
+  gap: 0 1rem;
+  margin-left: auto;
+}
+
 .card__demo {
   position: relative;
   z-index: 2;
