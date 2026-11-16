@@ -795,6 +795,9 @@ def build():
             shutil.copytree(source, DIST / name)
         elif source.exists():
             shutil.copy2(source, DIST / name)
+    # The CSS ships minified (conservatively, see minify_css); the JavaScript does not.
+    for sheet in DIST.glob("css/*.css"):
+        sheet.write_text(minify_css(sheet.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
     (DIST / "sitemap.xml").write_text(render_sitemap(site), encoding="utf-8", newline="\n")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}sitemap.xml\n", encoding="utf-8", newline="\n")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
@@ -803,6 +806,42 @@ def build():
         print(f"warning: {warning}", file=sys.stderr)
     print(f"built {len(langs)} pages into {DIST.relative_to(ROOT)}/ ({', '.join(langs)})")
     report_sizes()
+
+
+def minify_css(css):
+    """Conservative CSS minification with the standard library: drops comments and the
+    whitespace that never matters, outside strings. It never touches the spaces around
+    + - * / (calc, clamp, min, max), before a colon (".a :is()" is not ".a:is()") or
+    next to brackets ("and (" in media queries), so the result renders the same."""
+    out, i, n = [], 0, len(css)
+    while i < n:
+        ch = css[i]
+        if ch in "\"'":  # a string, verbatim
+            j = i + 1
+            while j < n and css[j] != ch:
+                j += 2 if css[j] == "\\" else 1
+            out.append(css[i:j + 1])
+            i = j + 1
+        elif css.startswith("/*", i):  # a comment
+            end = css.find("*/", i + 2)
+            i = n if end < 0 else end + 2
+        elif ch.isspace():  # a run of whitespace: one space, or none next to { } ; , :
+            j = i
+            while j < n and css[j].isspace():
+                j += 1
+            prev = out[-1][-1:] if out else ""
+            nxt = css[j:j + 1]
+            if prev not in ("", "{", "}", ";", ",", ":") and nxt not in ("{", "}", ";", ","):
+                out.append(" ")
+            i = j
+        elif ch == "}" and out and out[-1].endswith(";"):  # the last ; of a block
+            out[-1] = out[-1][:-1]
+            out.append(ch)
+            i += 1
+        else:
+            out.append(ch)
+            i += 1
+    return "".join(out)
 
 
 def report_sizes():
