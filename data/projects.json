@@ -402,7 +402,8 @@
             "en": "passing across 3 Maven modules",
             "es": "superados en 3 módulos Maven",
             "fr": "réussis sur 3 modules Maven"
-          }
+          },
+          "source": "https://github.com/santiagodie/life-simulation-service#tests-and-ci"
         },
         {
           "value": {
@@ -414,7 +415,8 @@
             "en": "in 30 s, drained by 5 workers",
             "es": "en 30 s, vaciadas por 5 workers",
             "fr": "en 30 s, traitées par 5 workers"
-          }
+          },
+          "source": "https://github.com/santiagodie/life-simulation-service#live-demo"
         }
       ],
       "tech": [
