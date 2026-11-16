@@ -422,6 +422,15 @@ html:not(.js) .site-header {
   border-color: var(--line-dark);
 }
 
+/* A 44px target around the 40px square: the inset counts from inside the 1px
+   border, so -3px. The row keeps an 8px gap, so targets never overlap. ::after is
+   the tooltip. */
+.social__link::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+}
+
 .social__icon {
   width: 18px;
   height: 18px;
@@ -1408,9 +1417,11 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   text-wrap: pretty;
 }
 
-/* Inline, so a wrapped label keeps its arrow on the last line; the padding makes
-   a 44px target. */
+/* Inline, so a wrapped label keeps its arrow on the last line; the padding gives
+   a 40px box and ::before adds 2px above and below for a 44px target without
+   moving anything. */
 .chat__limit-link {
+  position: relative;
   grid-column: 2;
   justify-self: start;
   margin: -0.4rem 0 -0.55rem -0.5rem;
@@ -1423,6 +1434,12 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
   transition: text-decoration-color var(--dur-fast) ease;
+}
+
+.chat__limit-link::before {
+  content: "";
+  position: absolute;
+  inset: -2px 0;
 }
 
 .chat__limit-link .icon {
