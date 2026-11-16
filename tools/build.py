@@ -38,9 +38,9 @@ ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11
 FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
 TODO = re.compile(r"^TODO\s*:?\s*")
 # Size budget for the CSS and JavaScript the pages load, gzipped (GitHub Pages serves
-# them compressed). Baseline on 2026-11-16: 28.0 KB; the ceiling allows 3 KB more for
-# new work. Raise it only on purpose, in its own commit, saying why.
-BUDGET_GZIP_KB = 31.0
+# them compressed, file by file). Baseline on 2026-11-16: 29.4 KB; the ceiling allows
+# 3 KB more for new work. Raise it only on purpose, in its own commit, saying why.
+BUDGET_GZIP_KB = 32.4
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
