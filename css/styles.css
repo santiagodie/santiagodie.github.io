@@ -2731,7 +2731,7 @@ main {
 /* A project with several repositories: one compact row per part,
    "Service · Live demo · Code", the part's name leading. */
 .card__links--parts {
-  flex-direction: column;
+  display: grid;
   gap: 0;
 }
 
