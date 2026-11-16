@@ -2741,10 +2741,17 @@ main {
 }
 
 .card__part-label {
-  min-width: 6.5rem;
+  flex-basis: 100%; /* narrow cards: the part's name over its links */
   color: var(--navy-3);
   font-size: 0.875rem;
   font-weight: 600;
+}
+
+/* One compact row, "Service · Live demo · Code", where the card is wide enough. */
+@media (min-width: 36em) and (max-width: 63.99em), (min-width: 84em) {
+  .card__part-label {
+    flex-basis: 6.5rem;
+  }
 }
 
 /* The repository name, untranslated, beside the links. */
