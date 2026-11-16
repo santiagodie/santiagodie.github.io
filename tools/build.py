@@ -33,7 +33,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
-STATIC = ["css", "js", "img", "fonts", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv", "assets/cv"]
+STATIC = ["css", "js", "img", "fonts", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv"]
 ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>'
 DOWNLOAD = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>'
 FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
@@ -504,13 +504,27 @@ def render_featured(projects, lang, s):
 
 
 def render_hero_cv(s, lang, root):
-    """The hero's main button: the CV of this language (assets/cv, made by
-    tools/make_cv.py), downloaded. Without the PDF, the button to the projects stays."""
+    """The hero's main button: the CV of this language, made at every deploy
+    (tools/make_cv.py writes dist/cv/ after the build), downloaded."""
     name = f"cv-santiago-die-{lang}.pdf"
-    if not (ROOT / "assets" / "cv" / name).exists():
-        return f'          <a class="button button--primary" href="#projects">{text(s["hero"]["ctaProjects"])}</a>'
-    return (f'          <a class="button button--primary" href="{root}assets/cv/{name}" download="{name}" type="application/pdf" hreflang="{lang}">'
+    return (f'          <a class="button button--primary" href="/cv/{name}" download="{name}" type="application/pdf" hreflang="{lang}">'
             f'{DOWNLOAD}{label(s["hero"]["ctaCv"])}<span class="visually-hidden"> (PDF)</span></a>')
+
+
+def render_cv_profile(s):
+    """Print only (css/print.css): the CV's profile, in the first person, in place of
+    the chat; hidden on the screen, where the chat says it."""
+    return f'          <p class="cv-only cv-profile" hidden>{label(s["cv"]["profile"])}</p>'
+
+
+def render_cv_nationality(s):
+    """Print only: nationality and the right to work, a CV detail the page does not show
+    (and that stays out of the JSON-LD)."""
+    cv = s["cv"]
+    return (f'            <li class="cv-only" hidden>\n              <p class="contact__row">'
+            f'<span class="contact__label">{label(cv["nationalityLabel"])}</span>'
+            f'<span class="contact__value contact__value--text">{label(cv["nationality"])}</span></p>\n'
+            f'            </li>')
 
 
 def render_hero_featured(projects, lang, s):
@@ -662,17 +676,14 @@ def render_location(s):
 
 
 def render_cv(s, root, warnings):
-    """The CV button only exists when the PDF does."""
+    """The CV row: the PDF of this language, made at every deploy from the built page
+    (tools/make_cv.py writes dist/cv/ after the build), downloaded."""
     contact = s["contact"]
     if not contact["cvFile"]:
         return ""
-    if not (ROOT / contact["cvFile"]).exists():
-        warnings.add(f"contact.cvFile is {contact['cvFile']!r}, which does not exist: the CV is not published")
-        return ""
     name = contact["cvFile"].split("/")[-1]
-    return (f'            <li>\n              <a class="contact__link" href="{root}{esc(contact["cvFile"])}" target="_blank" rel="noopener">'
-            f'<span class="contact__label">{text(contact["cv"])}</span><span class="contact__value">{esc(name)}</span>{ARROW}'
-            f'<span class="visually-hidden">({esc(s["a11y"]["newTab"])})</span></a>\n'
+    return (f'            <li class="contact__cv">\n              <a class="contact__link" href="/{esc(contact["cvFile"])}" download="{esc(name)}" type="application/pdf">'
+            f'<span class="contact__label">{text(contact["cv"])}</span><span class="contact__value">{esc(name)}</span>{DOWNLOAD}</a>\n'
             f'            </li>')
 
 
@@ -729,6 +740,8 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "featured": lambda: render_featured(projects, lang, s),
         "heroFeatured": lambda: render_hero_featured(projects, lang, s),
         "heroCv": lambda: render_hero_cv(s, lang, root),
+        "cvProfile": lambda: render_cv_profile(s),
+        "cvNationality": lambda: render_cv_nationality(s),
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),

@@ -607,3 +607,40 @@ a[data-url]::after {
 .entry {
   padding-block: 0.6mm !important;
 }
+
+/* The English CV goes without the photo (owner's decision); Spanish and French keep it. */
+html[lang="en"] .portrait {
+  display: none !important;
+}
+
+/* CV-only content (hidden on screen): the profile in place of the chat in About, and
+   the nationality line in Contact. The row that downloads the CV is pointless on it. */
+.cv-only[hidden] {
+  display: block !important;
+}
+
+.cv-profile {
+  margin: 0;
+  font-size: 8.3pt;
+  line-height: 1.45;
+}
+
+.chat,
+.contact__cv {
+  display: none !important;
+}
+
+/* Links as text, so a long URL (Colab's) wraps instead of running off the page. */
+.card__demo,
+.card__links a,
+.card__foot {
+  display: inline !important;
+}
+
+.card__foot > * + * {
+  margin-left: 4mm !important;
+}
+
+.card__foot {
+  display: block !important;
+}

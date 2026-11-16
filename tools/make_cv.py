@@ -1,19 +1,25 @@
-"""Make the CV PDFs (one per language) from the built site, with the system's Chrome.
+"""Make the CV PDFs (one per language) from the freshly built site, with Chrome.
 
-Development script, not part of the build or the workflow: run it after
-`python tools/build.py` whenever the content changes, and commit the PDFs. Standard
-library only. It serves dist/ on a local port for the time it takes, prints each
-language page with css/print.css (Chrome headless, A4, no header or footer), then
-sets the PDF's title ("Santiago Die Morejón · CV") with an incremental update, which
-leaves Chrome's own bytes untouched.
+Runs at every deploy, right after `python tools/build.py` (and locally the same way),
+so the CV can never fall behind the page. Standard library only, no new dependency:
+it serves dist/ over HTTP on a free local port for the time it takes (fonts, photo and
+absolute paths resolve as on the site), prints each language page with css/print.css
+(Chrome headless, A4, no header or footer) to dist/cv/cv-santiago-die-{lang}.pdf, sets
+the PDF's title with an incremental update (Chrome's own bytes are left untouched), and
+checks every PDF. Any failure exits non-zero, so a broken CV fails the deploy instead
+of being published.
+
+Checks: the file exists and weighs under 300 KB; at most two pages; the English CV has
+no photo and the Spanish and French ones have one (the images in the PDF); the title is
+set and the language is the page's.
 
 Usage: python tools/make_cv.py [--chrome PATH]
-Writes assets/cv/cv-santiago-die-{en,es,fr}.pdf (copied to dist/ by the build).
 """
 import argparse
 import functools
 import http.server
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -24,14 +30,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-OUT = ROOT / "assets" / "cv"
+OUT = DIST / "cv"
 TITLE = "Santiago Die Morejón · CV"
+MAX_KB = 300
+MAX_PAGES = 2
+WITH_PHOTO = {"es", "fr"}  # owner's decision: the English CV goes without the photo
 CHROMES = [
+    "google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "chrome",
     r"C:\Program Files\Google\Chrome\Application\chrome.exe",
     r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "google-chrome", "chromium", "chrome",
 ]
+
+
+class CVError(Exception):
+    pass
 
 
 def find_chrome(given):
@@ -39,7 +52,8 @@ def find_chrome(given):
         path = shutil.which(candidate) or (candidate if Path(candidate).exists() else None)
         if path:
             return path
-    sys.exit("make_cv: Chrome not found (use --chrome PATH)")
+    raise CVError("Chrome not found (tried google-chrome, chromium and the usual paths); "
+                  "install it or pass --chrome PATH")
 
 
 def pdf_text_string(value):
@@ -47,10 +61,9 @@ def pdf_text_string(value):
     return "<FEFF" + value.encode("utf-16-be").hex().upper() + ">"
 
 
-def set_title(pdf_path, title, lang):
+def set_title(pdf_path, title):
     """Append an incremental update: a new Info dictionary with the title (keeping
-    Chrome's creator, producer and dates). Readers use the last trailer. Returns
-    whether Chrome already set the document language (/Lang)."""
+    Chrome's creator, producer and dates). Readers use the last trailer."""
     data = pdf_path.read_bytes()
     trailer = data[data.rfind(b"trailer"):]
     size = int(re.search(rb"/Size (\d+)", trailer).group(1))
@@ -73,7 +86,34 @@ def set_title(pdf_path, title, lang):
     tail = (f"trailer\n<< /Size {size + 1} /Root {root} 0 R /Info {size} 0 R /Prev {xref_prev} >>\n"
             f"startxref\n{xref_at}\n%%EOF\n").encode()
     pdf_path.write_bytes(data + b"\n" + obj + xref + tail)
-    return re.search(rb"/Lang\s*\(" + lang.encode(), data) is not None
+
+
+def check(pdf_path, lang):
+    """The checks that fail the deploy. Returns a one-line summary."""
+    if not pdf_path.exists():
+        raise CVError(f"{pdf_path.name}: not written")
+    data = pdf_path.read_bytes()
+    kb = len(data) / 1024
+    pages = len(re.findall(rb"/Type\s*/Page(?![s\w])", data))
+    images = len(re.findall(rb"/Subtype\s*/Image", data))
+    has_lang = re.search(rb"/Lang\s*\(" + lang.encode() + rb"\)", data) is not None
+    has_title = pdf_text_string(TITLE).encode() in data
+    problems = []
+    if kb >= MAX_KB:
+        problems.append(f"weighs {kb:.0f} KB (limit {MAX_KB} KB)")
+    if not 1 <= pages <= MAX_PAGES:
+        problems.append(f"has {pages} pages (at most {MAX_PAGES})")
+    if lang in WITH_PHOTO and images < 1:
+        problems.append("has no photo, and the Spanish and French CVs carry one")
+    if lang not in WITH_PHOTO and images > 0:
+        problems.append(f"has {images} image(s), and the English CV goes without the photo")
+    if not has_lang:
+        problems.append(f"its language is not set to {lang!r}")
+    if not has_title:
+        problems.append("its title is not set")
+    if problems:
+        raise CVError(f"{pdf_path.name}: " + "; ".join(problems))
+    return f"{pdf_path.relative_to(ROOT).as_posix()}  {kb:.0f} KB, {pages} pages, {images} image(s), lang {lang}"
 
 
 def main():
@@ -82,7 +122,7 @@ def main():
     args = ap.parse_args()
     chrome = find_chrome(args.chrome)
     if not (DIST / "index.html").exists():
-        sys.exit("make_cv: build the site first (python tools/build.py)")
+        raise CVError("dist/ is empty: run python tools/build.py first")
     site = json.loads((ROOT / "data" / "site.json").read_text(encoding="utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
 
@@ -90,10 +130,10 @@ def main():
         def log_message(self, *args):
             pass
 
-    handler = functools.partial(Quiet, directory=str(DIST))
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(DIST)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     port = server.server_address[1]
+    sandbox = ["--no-sandbox"] if sys.platform.startswith("linux") and os.environ.get("CI") else []
     try:
         with tempfile.TemporaryDirectory() as profile:
             for language in site["languages"]:
@@ -101,16 +141,21 @@ def main():
                 out = OUT / f"cv-santiago-die-{code}.pdf"
                 url = f"http://127.0.0.1:{port}/{language['path']}"
                 cmd = [chrome, "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
-                       f"--user-data-dir={profile}", "--run-all-compositor-stages-before-draw",
+                       *sandbox, f"--user-data-dir={profile}", "--run-all-compositor-stages-before-draw",
                        "--virtual-time-budget=8000", "--no-pdf-header-footer", f"--print-to-pdf={out}", url]
-                subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
-                has_lang = set_title(out, TITLE, code)
-                print(f"{out.relative_to(ROOT).as_posix()}  {out.stat().st_size / 1024:.0f} KB"
-                      f"  lang {code}: {'yes' if has_lang else 'NOT SET by Chrome'}")
+                done = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=180)
+                if done.returncode != 0 or not out.exists():
+                    raise CVError(f"Chrome could not print {url} (exit {done.returncode}): "
+                                  + done.stderr.decode(errors="replace")[-400:])
+                set_title(out, TITLE)
+                print(check(out, code))
     finally:
         server.shutdown()
         server.server_close()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except CVError as error:
+        sys.exit(f"make_cv: {error}")
