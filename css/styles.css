@@ -2819,14 +2819,15 @@ main {
     animation: draw 1600ms var(--ease-in-out) 150ms forwards;
   }
 
-  /* 2. The name, the role and the actions settle in behind it. */
-  .js .hero__name,
+  /* 2. The name, the role and the actions settle in behind it. The name is the
+     page's largest text (its LCP element), so it is visible from the first frame
+     and only rises into place; the role and the actions also fade in. */
   .js .hero__role,
   .js .hero__actions {
     animation: settle 700ms var(--ease-out) both;
   }
 
-  .js .hero__name { animation-delay: 250ms; }
+  .js .hero__name { animation: rise 700ms var(--ease-out) both; }
   .js .hero__role { animation-delay: 400ms; }
   .js .hero__actions { animation-delay: 550ms; }
 
@@ -2934,6 +2935,10 @@ main {
 
 @keyframes settle {
   from { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes rise {
+  from { transform: translateY(10px); }
 }
 
 @keyframes reveal {
