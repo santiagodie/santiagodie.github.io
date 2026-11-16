@@ -305,10 +305,14 @@ def render_lang_suggest(site, strings, current, root):
         if code == current:
             continue
         s = strings[code]["langSuggest"]
+        # Below 48em only the link and the close button show, so the link's name carries
+        # the whole sentence; it starts with the visible words (label in name, WCAG 2.5.3)
+        # and the paragraph is hidden from screen readers so it is never read twice.
         blocks.append(
             f'  <div class="lang-suggest" data-suggest="{code}" lang="{code}" hidden>\n'
-            f'    <p>{esc(s["text"])}</p>\n'
-            f'    <a class="lang-suggest__action" href="{relative_href(root, lang)}" hreflang="{code}">{esc(s["action"])}</a>\n'
+            f'    <p aria-hidden="true">{esc(s["text"])}</p>\n'
+            f'    <a class="lang-suggest__action" href="{relative_href(root, lang)}" hreflang="{code}"'
+            f' aria-label="{esc(s["action"])}. {esc(s["text"])}">{esc(s["action"])}</a>\n'
             f'    <button class="lang-suggest__close" type="button" data-suggest-dismiss aria-label="{esc(s["dismiss"])}">'
             f'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>\n'
             f'  </div>')
@@ -459,7 +463,7 @@ def render_featured(projects, lang, s):
             links = f'<div class="card__links card__links--parts">{project_parts(project, lang, s)}</div>'
         else:
             links = f'<div class="card__links">{project_links(project, lang, s)}</div>'
-        cards.append(f'''            <li class="card card--feature">{FRAME}
+        cards.append(f'''            <li class="card card--feature" id="p-{project["id"]}">{FRAME}
               <h4 class="card__title">{esc(project["title"][lang])}</h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
@@ -467,6 +471,19 @@ def render_featured(projects, lang, s):
               {links}
             </li>''')
     return "\n".join(cards)
+
+
+def render_hero_featured(projects, lang, s):
+    """The hero's index of the featured projects: their titles, each a link to its card
+    in Projects, strung on the start of the progress line (one lit node per title)."""
+    items = "".join(
+        f'<li><a href="#p-{p["id"]}">{esc(p["title"][lang])}</a></li>'
+        for p in projects if p.get("featured"))
+    label = esc(s["projects"]["featured"])
+    return (f'        <nav class="hero__featured" aria-labelledby="hero-featured-label">\n'
+            f'          <p class="hero__featured-label" id="hero-featured-label">{label}</p>\n'
+            f'          <ol class="hero__featured-list" role="list">{items}</ol>\n'
+            f'        </nav>')
 
 
 def render_projects(projects, lang, s):
@@ -608,7 +625,7 @@ def render_cv(s, root, warnings):
 PLACEHOLDER = re.compile(r"\{\{\s*([=@!]?)\s*([\w.]+)\s*\}\}")
 FRAGMENT_LINE = re.compile(r"^[ \t]*\{\{\s*(!)\s*(\w+)\s*\}\}\n", re.M)
 # The page's sections, in order (ids in src/index.html).
-SECTIONS = ["about", "projects", "experience", "education", "skills", "contact"]
+SECTIONS = ["projects", "about", "experience", "education", "skills", "contact"]
 
 
 def render_page(template, site, strings, projects, tokens, model, language, warnings):
@@ -654,6 +671,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "chat": lambda: render_chat(s, tokens, model, lang),
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
+        "heroFeatured": lambda: render_hero_featured(projects, lang, s),
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),

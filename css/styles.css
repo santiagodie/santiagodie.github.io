@@ -944,8 +944,9 @@ html[data-menu-open] {
 @media (max-width: 63.99em) {
   /* Over the hero the hero's own monogram is the logo, so the header's is hidden:
      invisible and out of the tab order (visibility), switched only after the fade
-     out ends and at once when the header turns navy and the logo fades back in. */
-  .site-header:not([data-scrolled]):not([data-menu-open]) .brand {
+     out ends and at once when the header turns navy and the logo fades back in.
+     Only with JavaScript: without it the header never turns navy, so the logo stays. */
+  .js .site-header:not([data-scrolled]):not([data-menu-open]) .brand {
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear var(--dur-slow);
@@ -1033,12 +1034,50 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   }
 }
 
+/* Phones: one 44px line with the link and the close button. The sentence lives in
+   the link's accessible name; the rule is an inset shadow so it adds no height. */
+@media (max-width: 47.99em) {
+  .lang-suggest {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding-block: env(safe-area-inset-top, 0px) 0;
+    border-bottom: 0;
+    box-shadow: inset 0 -1px 0 var(--line);
+  }
+
+  .lang-suggest p {
+    display: none;
+  }
+
+  .lang-suggest__action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-left: auto;
+  }
+
+  .lang-suggest__close {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 /* Hero ------------------------------------------------------------------ */
 
 .hero {
   position: relative;
-  padding-block: clamp(2rem, 5vw, 4.5rem) clamp(4rem, 9vw, 7.5rem);
+  /* The bottom gives way on phones so 01's title is never cut by the fold at 390x844. */
+  padding-block: clamp(2rem, 5vw, 4.5rem) clamp(2.5rem, 9vw, 7.5rem);
   background: var(--white);
+}
+
+/* Phones shorter than 844px cannot show 01's title whole under the hero, so the hero
+   fills the screen and the title starts just below the fold instead of being cut. */
+@media (max-width: 47.99em) and (max-height: 52.7em) {
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
 }
 
 .hero__inner {
@@ -1048,7 +1087,8 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
     "mark"
     "name"
     "role"
-    "actions";
+    "actions"
+    "featured";
   row-gap: clamp(1.75rem, 3.5vw, 2.75rem);
 }
 
@@ -1099,13 +1139,100 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   gap: 0.75rem 1.75rem;
 }
 
+/* The featured projects: the progress line starts here. Each title hangs on a lit
+   node at the line's x (the same offset as a section number's node), and the stroke
+   between them is drawn in CSS, so it is there without JavaScript too; js/scroll.js
+   continues the line from the last node down to 01. */
+.hero__featured {
+  grid-area: featured;
+}
+
+.hero__featured-label {
+  margin-bottom: 0.25rem;
+  color: var(--navy-2);
+  font-size: var(--step-0);
+  font-weight: 600;
+}
+
+.hero__featured-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero__featured-list li {
+  position: relative;
+}
+
+/* The stroke: each item carries its share, from the node above to the one below. */
+.hero__featured-list li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * var(--thread-gap) - 0.75px);
+  width: 1.5px;
+  background: var(--gold);
+  transform-origin: top;
+}
+
+.hero__featured-list li:first-child::before {
+  top: 50%;
+}
+
+.hero__featured-list li:last-child::before {
+  bottom: 50%;
+}
+
+/* The node, already lit: this work counts as read. */
+.hero__featured-list li::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--thread-gap) - 4.5px);
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  background: var(--gold);
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgb(201 162 39 / 0.18);
+}
+
+.hero__featured-list a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: 0.375rem;
+  color: var(--navy);
+  font-size: var(--step-1);
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition: text-decoration-thickness var(--dur-fast) ease;
+}
+
+.hero__featured-list a:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero__featured-list a:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
 @media (min-width: 64em) {
   .hero__inner {
     grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
     grid-template-areas:
-      "name    name"
-      "role    role"
-      "actions actions";
+      "name     name"
+      "role     role"
+      "actions  actions"
+      "featured featured";
     column-gap: clamp(2rem, 4vw, 4rem);
     align-items: start;
   }
@@ -2008,8 +2135,21 @@ main {
   filter: blur(3px);
 }
 
+/* The line, its tip and its trail fade in once the stroke is as long as the trail
+   (js/scroll.js sets data-empty below that), so a phone's first screen never shows
+   a lone gold dot or a loose stub of line. */
+.progress__line,
+.progress__trail,
+.progress__tip {
+  transition: opacity var(--dur-fast) ease;
+}
+
+.progress[data-empty] .progress__line,
 .progress[data-empty] .progress__trail,
-.progress[data-empty] .progress__tip,
+.progress[data-empty] .progress__tip {
+  opacity: 0;
+}
+
 .progress[data-quiet] .progress__trail,
 .progress[data-quiet] .progress__tip {
   visibility: hidden;
@@ -2855,8 +2995,31 @@ main {
   }
 
   .js .hero__name { animation: rise 700ms var(--ease-out) both; }
-  .js .hero__role { animation-delay: 400ms; }
-  .js .hero__actions { animation-delay: 550ms; }
+  .js .hero__role { animation-delay: 650ms; }
+  .js .hero__actions { animation-delay: 750ms; }
+
+  /* The featured projects come before the role and the actions, pose to pose: the
+     titles settle, the stroke draws down through them (three linear pieces, 450 ms in
+     all) and each node lights as the stroke reaches it. Done by 700 ms. */
+  /* js/scroll.js measures the last node again when this ends, to start the line there. */
+  .js .hero__featured {
+    animation: settle 400ms var(--ease-out) 200ms both;
+  }
+
+  .js .hero__featured-list li::before {
+    animation: stroke 150ms linear both;
+  }
+
+  .js .hero__featured-list li::after {
+    animation: node 200ms var(--ease-out) both;
+  }
+
+  .js .hero__featured-list li:nth-child(1)::before { animation-delay: 250ms; }
+  .js .hero__featured-list li:nth-child(2)::before { animation-delay: 400ms; }
+  .js .hero__featured-list li:nth-child(3)::before { animation-delay: 550ms; }
+  .js .hero__featured-list li:nth-child(1)::after { animation-delay: 250ms; }
+  .js .hero__featured-list li:nth-child(2)::after { animation-delay: 475ms; }
+  .js .hero__featured-list li:nth-child(3)::after { animation-delay: 625ms; }
 
   /* 3. Sections assemble as they arrive (js/scroll.js marks what is still off
      screen): number and node, title, text, then cards or entries. Cards trace
@@ -2966,6 +3129,14 @@ main {
 
 @keyframes rise {
   from { transform: translateY(10px); }
+}
+
+@keyframes stroke {
+  from { transform: scaleY(0); }
+}
+
+@keyframes node {
+  from { opacity: 0; transform: scale(0.9); }
 }
 
 @keyframes reveal {

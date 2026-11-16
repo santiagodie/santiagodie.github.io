@@ -98,7 +98,13 @@
     top = host.top + window.scrollY;
     const points = nodes.map(point);
     const tops = sections.map((section) => section.getBoundingClientRect().top - host.top);
-    let d = `M${points[0].x} ${tops[0]}V${points[0].y}`;
+    // The line starts in the hero, at the last featured project's node (the stroke
+    // through the featured titles above it is CSS), and runs on down to 01.
+    const featured = document.querySelector(".hero__featured-list > li:last-child");
+    const start = featured
+      ? featured.getBoundingClientRect().top + featured.offsetHeight / 2 - host.top
+      : tops[0];
+    let d = `M${points[0].x} ${start}V${points[0].y}`;
     for (let i = 1; i < points.length; i += 1) {
       const a = points[i - 1];
       const b = points[i];
@@ -182,7 +188,8 @@
     const len = reduce.matches ? total : lengthAt(y);
     if (!quiet) {
       if (!scrollTimeline || reduce.matches) svg.style.setProperty("--len", len);
-      svg.toggleAttribute("data-empty", len < 1);
+      // Line, tip and trail stay hidden until the stroke is as long as the trail.
+      svg.toggleAttribute("data-empty", len < TRAILS[2]);
     }
 
     // Numbers light up when the tip reaches them and stay lit; the navigation's
@@ -229,6 +236,13 @@
   if ("ResizeObserver" in window) new ResizeObserver(() => requestAnimationFrame(geometry)).observe(main);
   else window.addEventListener("resize", geometry);
   if (document.fonts) document.fonts.ready.then(geometry);
+  // The hero's featured projects settle in from 10px lower; measure again once they land.
+  const featuredNav = document.querySelector(".hero__featured");
+  if (featuredNav) {
+    featuredNav.addEventListener("animationend", (event) => {
+      if (event.target === featuredNav) requestAnimationFrame(geometry);
+    });
+  }
   geometry();
   assemble();
 

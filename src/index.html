@@ -86,8 +86,8 @@
 
         <nav class="nav" aria-label="{{= a11y.nav }}">
           <ul class="nav__list">
-            <li style="--i: 0"><a href="#about" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_about }}</span>{{ nav.about }}</a></li>
-            <li style="--i: 1"><a href="#projects" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_projects }}</span>{{ nav.projects }}</a></li>
+            <li style="--i: 0"><a href="#projects" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_projects }}</span>{{ nav.projects }}</a></li>
+            <li style="--i: 1"><a href="#about" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_about }}</span>{{ nav.about }}</a></li>
             <li style="--i: 2"><a href="#experience" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_experience }}</span>{{ nav.experience }}</a></li>
             <li style="--i: 3"><a href="#education" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_education }}</span>{{ nav.education }}</a></li>
             <li style="--i: 4"><a href="#skills" data-nav-link><span class="nav__num" aria-hidden="true">{{ @navnum_skills }}</span>{{ nav.skills }}</a></li>
@@ -153,16 +153,7 @@
           <a class="button button--primary" href="#projects">{{ hero.ctaProjects }}</a>
           <a class="button button--quiet" href="#contact">{{ hero.ctaContact }}</a>
         </div>
-      </div>
-    </section>
-
-    <section class="section section--{{ @bg_about }}" id="about" aria-labelledby="about-title">
-      <div class="section__inner wrap">
-        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_about }}</span> <span class="section__label">{{ sections.about }}</span></h2>
-        <div class="section__body">
-{{ !chat }}
-{{ !about }}
-        </div>
+{{ !heroFeatured }}
       </div>
     </section>
 
@@ -176,6 +167,16 @@
 {{ !featured }}
           </ul>
 {{ !projects }}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--{{ @bg_about }}" id="about" aria-labelledby="about-title">
+      <div class="section__inner wrap">
+        <h2 class="section__title" id="about-title"><span class="section__num" aria-hidden="true"><span class="section__node"></span>{{ @num_about }}</span> <span class="section__label">{{ sections.about }}</span></h2>
+        <div class="section__body">
+{{ !chat }}
+{{ !about }}
         </div>
       </div>
     </section>
