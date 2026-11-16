@@ -236,6 +236,13 @@
   if ("ResizeObserver" in window) new ResizeObserver(() => requestAnimationFrame(geometry)).observe(main);
   else window.addEventListener("resize", geometry);
   if (document.fonts) document.fonts.ready.then(geometry);
+  // The hero's featured projects settle in from 10px lower; measure again once they land.
+  const featuredNav = document.querySelector(".hero__featured");
+  if (featuredNav) {
+    featuredNav.addEventListener("animationend", (event) => {
+      if (event.target === featuredNav) requestAnimationFrame(geometry);
+    });
+  }
   geometry();
   assemble();
 

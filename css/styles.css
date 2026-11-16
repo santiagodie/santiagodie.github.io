@@ -2992,9 +2992,9 @@ main {
   /* The featured projects come before the role and the actions, pose to pose: the
      titles settle, the stroke draws down through them (three linear pieces, 450 ms in
      all) and each node lights as the stroke reaches it. Done by 700 ms. */
-  /* Opacity only: js/scroll.js measures the last node to start the line there. */
+  /* js/scroll.js measures the last node again when this ends, to start the line there. */
   .js .hero__featured {
-    animation: fade 300ms var(--ease-out) 200ms both;
+    animation: settle 400ms var(--ease-out) 200ms both;
   }
 
   .js .hero__featured-list li::before {
@@ -3122,16 +3122,12 @@ main {
   from { transform: translateY(10px); }
 }
 
-@keyframes fade {
-  from { opacity: 0; }
-}
-
 @keyframes stroke {
   from { transform: scaleY(0); }
 }
 
 @keyframes node {
-  from { opacity: 0; transform: scale(0.4); }
+  from { opacity: 0; transform: scale(0.9); }
 }
 
 @keyframes reveal {
