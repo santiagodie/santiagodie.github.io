@@ -1,0 +1,584 @@
+/* santiagodie.com · print: the page as a one-to-two page A4 CV.
+   Loaded with media="print" (never on the screen's critical path). Black and white,
+   navy the only colour; every word comes from the page itself. The screen's motion,
+   chrome and interactive parts go; what JavaScript may have left mid-animation
+   (section assembly, the chat, the monogram) is shown finished. */
+
+@page {
+  size: A4;
+  margin: 14mm;
+}
+
+html {
+  font-size: 8.6pt;
+}
+
+body {
+  background: #fff;
+  color: #000;
+  line-height: 1.4;
+}
+
+*,
+*::before,
+*::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Fonts. Chrome embeds a variable font in a PDF as drawn glyphs (Type 3), not as a
+   font: the text in Mona Sans alone made the PDF weigh 650 KB. So the name and the
+   headings keep Hubot Sans, and the running text and the data use the system's
+   faces, which embed as small font subsets (the PDF stays under 300 KB). */
+* {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+  font-stretch: 100% !important;
+  font-variation-settings: normal !important;
+}
+
+.hero__name,
+.hero__name *,
+.section__title,
+.section__title * {
+  font-family: var(--font-display) !important;
+}
+
+.card__metrics dd,
+.entry__period,
+.card__repo,
+a[data-url]::after,
+.contact__value:not(.contact__value--text) {
+  font-family: Consolas, "SF Mono", Menlo, monospace !important;
+}
+
+.section__title,
+.section__title *,
+.card__title,
+.card__title *,
+.entry__title,
+.subhead,
+.more__title {
+  font-weight: 700 !important;
+}
+
+/* What only makes sense on a screen. */
+.skip-link,
+.lang-suggest,
+.site-header,
+.progress,
+.hero__actions,
+.hero__featured,
+.section__num,
+.frame,
+.icon,
+.chat__bubble,
+.chat__limit,
+.chat__composer,
+.chat__ctl,
+.chat__stage,
+.chat__clock,
+.more__icon,
+.more__count,
+.more__nav,
+.site-footer {
+  display: none !important;
+}
+
+/* Finished, whatever the script had reached. */
+[data-reveal],
+[data-reveal] > *,
+.chat__answer .t {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.hero__logo path {
+  stroke-dashoffset: 0 !important;
+}
+
+/* Layout: one column across the page, no screen spacing. */
+main *,
+.section__lead {
+  color: #000 !important;
+}
+
+.card__subject,
+.tags,
+.entry__org,
+.entry__details,
+.card__metrics dt,
+.skills__items,
+.langs dd {
+  color: #333 !important;
+}
+
+main,
+.section,
+.hero {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  color: #000 !important;
+}
+
+.wrap,
+.section__inner {
+  display: block !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+.section__body {
+  margin: 0 !important;
+}
+
+.section__lead,
+.entry__org,
+.entry__text,
+.entry__details,
+.skills__items,
+.langs dd,
+.certs > li,
+.contact__value {
+  max-width: none !important;
+  margin-top: 0.4mm !important;
+  font-size: 8.6pt !important;
+  line-height: 1.4 !important;
+}
+
+.section__lead {
+  margin: 0 0 1.5mm !important;
+}
+
+/* Head: the SD monogram, small and navy, beside the name; the role and the site. */
+.hero__inner {
+  display: grid !important;
+  grid-template-columns: 12mm 1fr;
+  grid-template-areas: "mark name" "mark role";
+  gap: 0 4mm;
+  align-items: center;
+}
+
+.hero__logo {
+  width: 12mm;
+}
+
+.hero__name {
+  max-width: none;
+  color: #0b1f3a;
+  font-size: 20pt;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.hero__surname {
+  display: inline;
+}
+
+.hero__role {
+  max-width: none;
+  margin: 1mm 0 0;
+  color: #000;
+  font-size: 10.5pt;
+}
+
+.hero__role::after {
+  content: "  ·  __SITE__";
+  color: #0b1f3a;
+}
+
+/* Section titles: small, navy, a hairline under them, never alone at a page foot. */
+.section__title {
+  display: block !important;
+  margin: 5mm 0 2mm !important;
+  padding-bottom: 0.8mm;
+  border-bottom: 0.4pt solid #0b1f3a;
+  color: #0b1f3a;
+  font-size: 11.5pt !important;
+  line-height: 1.2;
+  break-after: avoid;
+}
+
+h3,
+h4,
+.subhead,
+.more__summary {
+  break-after: avoid;
+}
+
+.subhead {
+  margin: 3mm 0 1mm !important;
+  font-size: 10pt;
+}
+
+/* Projects: the featured cards as plain blocks, then More projects open and compact. */
+.featured {
+  display: block !important;
+}
+
+.card {
+  display: block !important;
+  margin: 0 0 2.5mm !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  break-inside: avoid;
+}
+
+.card__title {
+  font-size: 10pt !important;
+}
+
+.card__subject,
+.card__text,
+.tags,
+.card__metrics,
+.card__links {
+  margin-top: 0.6mm !important;
+}
+
+.card__text {
+  color: #000;
+  font-size: 8.6pt;
+}
+
+.card__metrics {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 0 6mm;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.card__metrics > div {
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+  align-items: baseline;
+  gap: 1.5mm !important;
+}
+
+.card__metrics dd {
+  font-size: 8.6pt !important;
+}
+
+.card__link::after {
+  content: none !important;
+}
+
+.card__part-label {
+  flex-basis: auto !important;
+  font-weight: 700;
+}
+
+.card__links,
+.card__links--parts,
+.card__part {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 0 4mm !important;
+  margin-top: 0.6mm;
+}
+
+.card__links a,
+.card__demo,
+.card__metric-link {
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-decoration: none !important;
+}
+
+/* The URL after each outside link, without its scheme (data-url from the build). */
+a[data-url]:not(.card__link):not(.contact__link)::after {
+  content: " " attr(data-url);
+  color: #0b1f3a;
+  font-size: 7.4pt;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.card__metric-link::after {
+  content: none !important;
+}
+
+.more {
+  margin: 3mm 0 0 !important;
+  border: 0 !important;
+}
+
+.more__summary {
+  min-height: 0 !important;
+  margin-bottom: 1mm;
+}
+
+.more__title {
+  font-size: 10pt;
+}
+
+.more::details-content {
+  content-visibility: visible !important;
+  block-size: auto !important;
+  overflow: visible !important;
+}
+
+.more__row {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  mask: none !important;
+  animation: none !important;
+}
+
+.more__list {
+  display: block !important;
+  width: auto !important;
+}
+
+.more__list > .card {
+  margin-bottom: 1.6mm !important;
+}
+
+.card--mini .card__title {
+  display: inline;
+  font-size: 9pt !important;
+}
+
+.card--mini .card__subject {
+  display: inline;
+  margin-left: 2mm !important;
+}
+
+.card--mini .tags {
+  margin-top: 0.3mm !important;
+}
+
+.card__foot {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: flex-start !important;
+  gap: 0 4mm;
+  margin: 0.3mm 0 0 !important;
+  padding: 0 !important;
+}
+
+.card__foot .card__repo {
+  min-height: 0 !important;
+}
+
+/* About: the chat's answer as an ordinary paragraph. */
+.chat,
+.chat__panel,
+.chat__scene,
+.chat__log {
+  position: static !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  color: #000 !important;
+}
+
+.chat__answer {
+  max-width: none;
+  font-family: var(--font-sans);
+  font-size: 8.6pt;
+  line-height: 1.45;
+}
+
+/* Experience, education, skills and languages: compact ruled rows. */
+.entry,
+.certs > li,
+.skills__group,
+.langs__item {
+  padding-block: 0.8mm !important;
+  break-inside: avoid;
+}
+
+.entry {
+  grid-template-columns: 26mm 1fr !important;
+  gap: 0 3mm !important;
+}
+
+.entry > * {
+  grid-column: 2;
+}
+
+.entry__period {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+.entry__title {
+  font-size: 9.6pt !important;
+}
+
+.entry__text {
+  margin-top: 0.5mm !important;
+}
+
+.skills__group dt,
+.langs dt,
+.contact__label {
+  font-size: 8.6pt !important;
+}
+
+.skills__group,
+.langs__item {
+  display: grid !important;
+  grid-template-columns: 30mm 1fr !important;
+  gap: 0 3mm !important;
+}
+
+/* Contact: every line as the page shows it, and the photo, small, beside them. */
+.portrait {
+  float: right;
+  width: 20mm !important;
+  margin: 0 0 2mm 4mm !important;
+  padding: 0 !important;
+  border: 0.4pt solid #0b1f3a !important;
+}
+.contact__row,
+.contact__link {
+  display: flex !important;
+  gap: 3mm;
+  min-height: 0 !important;
+  padding: 0.6mm 0 !important;
+  color: #000 !important;
+}
+
+.contact__label {
+  width: 26mm;
+  font-size: 9pt !important;
+}
+
+.contact__value {
+  color: #000 !important;
+}
+
+.contact,
+.contact > li {
+  border-color: #ccc !important;
+}
+
+/* Navy, the one colour: name, section titles, the URLs and the dots between items. */
+.hero__name,
+.hero__name *,
+.hero__role::after,
+.section__title,
+.section__title *,
+a[data-url]::after {
+  color: #0b1f3a !important;
+}
+
+.tags li::after,
+.skills__items li::after {
+  background: #0b1f3a !important;
+}
+
+/* Compact enough for two pages. */
+.section__title {
+  margin: 3.5mm 0 1.2mm !important;
+}
+
+.skills__group,
+.langs__item,
+.certs > li {
+  padding-block: 0.4mm !important;
+}
+
+.skills__items,
+.skills__group dt,
+.langs dd,
+.langs dt {
+  line-height: 1.35 !important;
+}
+
+/* More projects: two lines each, the title, course and technologies, then the links. */
+.card--mini .tags {
+  display: inline !important;
+  margin: 0 0 0 2mm !important;
+}
+
+.card--mini .tags li {
+  display: inline !important;
+}
+
+.card--mini .tags li:not(:last-child)::after {
+  content: " · " !important;
+  display: inline !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  background: none !important;
+  color: #0b1f3a;
+}
+
+.chat *,
+.chat__answer {
+  max-width: none !important;
+}
+
+.card__text,
+.chat__answer {
+  line-height: 1.4 !important;
+}
+
+.tags,
+.tags li,
+.skills__items,
+.skills__items li {
+  font-weight: 400 !important;
+}
+
+.skills__group,
+.langs__item {
+  grid-template-columns: 40mm 1fr !important;
+}
+
+.entry__period {
+  font-size: 7.6pt !important;
+  line-height: 1.35 !important;
+}
+
+.section__title + .section__body .entry:first-child,
+.entries,
+.skills,
+.langs,
+.certs {
+  border-top: 0 !important;
+}
+
+/* Contact stays whole, its title with it. */
+#contact {
+  break-inside: avoid;
+}
+
+.portrait {
+  width: 16mm !important;
+}
+
+.section__title {
+  margin: 2.6mm 0 1mm !important;
+}
+
+.subhead {
+  margin: 2mm 0 0.5mm !important;
+}
+
+.card {
+  margin-bottom: 1.8mm !important;
+}
+
+.more__list > .card {
+  margin-bottom: 1mm !important;
+}
+
+.entry {
+  padding-block: 0.6mm !important;
+}
