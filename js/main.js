@@ -213,6 +213,7 @@
       frame = 0;
       const x = row.scrollLeft, at = [x < 2, x > row.scrollWidth - row.clientWidth - 2];
       [...nav.children].forEach((arrow, i) => arrow.setAttribute("aria-disabled", at[i]));
+      nav.hidden = at[0] && at[1]; // nothing to scroll (one card): no arrows
       if (fallback) at.forEach((end, i) => row.toggleAttribute(i ? "data-end" : "data-start", !end));
     };
     nav.onclick = ({ target }) => {
@@ -224,7 +225,6 @@
     // A card reached with Tab comes whole into view, clear of the fades (scroll-padding).
     row.addEventListener("focusin", ({ target }) => target.closest("li").scrollIntoView({ block: "nearest", inline: "nearest" }));
     window.addEventListener("hashchange", reveal);
-    nav.hidden = false;
     reveal();
     ends();
   }
