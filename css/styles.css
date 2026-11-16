@@ -243,9 +243,14 @@ main:focus {
   transform: translateY(-200%);
 }
 
+/* Its ring works on any ground: a gold ring right on the navy pill, then a navy
+   band outside it, so the indicator contrasts with white or bone (navy) and with
+   the navy header (gold). */
 .skip-link:focus-visible {
   transform: none;
-  --focus: var(--gold);
+  outline: 2px solid var(--gold);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--navy);
 }
 
 /* TODO marker: plain where real content is still missing. Navy text with a dashed
