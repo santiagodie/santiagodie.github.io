@@ -2432,6 +2432,13 @@ main {
   overflow-wrap: normal; /* the name wraps only after its hyphens (<wbr> from the build) */
 }
 
+/* The arrow follows the name's last word, even when the name wraps. */
+.card__repo-name .icon {
+  display: inline;
+  margin-left: 0.3rem;
+  vertical-align: -0.05em;
+}
+
 .card__foot .card__demo {
   flex: none;
 }

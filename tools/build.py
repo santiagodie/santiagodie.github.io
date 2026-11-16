@@ -404,9 +404,12 @@ def repo_name(url):
     return url.rstrip("/").split("/")[-1]
 
 
-def repo_html(url):
-    """The repository name, escaped, free to wrap after each hyphen and nowhere else."""
-    return esc(repo_name(url)).replace("-", "-<wbr>")
+def repo_html(url, tail=""):
+    """The repository name, escaped, free to wrap after each hyphen and nowhere else;
+    `tail` (an arrow) stays on the line of the name's last piece."""
+    head, _, last = esc(repo_name(url)).rpartition("-")
+    head = head.replace("-", "-<wbr>") + "-<wbr>" if head else ""
+    return f'{head}<span class="nowrap">{last}{tail}</span>' if tail else head + last
 
 
 def demo_label(demo, s, short=False):
@@ -519,7 +522,7 @@ def render_projects(projects, lang, s):
               <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
-              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{repo_html(project["repo"])}</span>{ARROW}</span>{extra}</p>
+              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{repo_html(project["repo"], ARROW)}</span></span>{extra}</p>
             </li>''')
     if not cards:
         return ""  # no heading over an empty list
