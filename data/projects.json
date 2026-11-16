@@ -30,7 +30,8 @@
             "en": "200-row test set",
             "es": "conjunto de prueba de 200 filas",
             "fr": "jeu de test de 200 lignes"
-          }
+          },
+          "source": "https://github.com/santiagodie/graduate-salary-predictor#results"
         },
         {
           "value": {
@@ -42,7 +43,8 @@
             "en": "mean absolute error",
             "es": "error absoluto medio",
             "fr": "erreur absolue moyenne"
-          }
+          },
+          "source": "https://github.com/santiagodie/graduate-salary-predictor#results"
         }
       ],
       "tech": [
@@ -89,7 +91,8 @@
             "en": "face embeddings indexed",
             "es": "embeddings de caras indexados",
             "fr": "embeddings de visages indexés"
-          }
+          },
+          "source": "https://github.com/santiagodie/face-similarity-search-pipeline#about-the-project"
         },
         {
           "value": {
@@ -101,7 +104,8 @@
             "en": "at the calibrated threshold",
             "es": "con el umbral calibrado",
             "fr": "au seuil calibré"
-          }
+          },
+          "source": "https://github.com/santiagodie/face-similarity-search-pipeline#results"
         }
       ],
       "tech": [

@@ -454,6 +454,16 @@ def tags(project, s):
     return f'<p class="visually-hidden">{esc(s["projects"]["stack"])}</p><ul class="tags" role="list">{items}</ul>'
 
 
+def metric_value(metric, lang, s):
+    """A README result; a link to the README section it comes from, where the build
+    was given one (`source`, an anchor checked against the rendered README)."""
+    value = esc(metric["value"][lang])
+    if not metric.get("source"):
+        return value
+    return (f'<a class="card__metric-link" href="{esc(metric["source"])}" target="_blank" rel="noopener">{value}'
+            f'<span class="visually-hidden">: {esc(metric["label"][lang])} ({esc(s["a11y"]["newTab"])})</span></a>')
+
+
 def render_featured(projects, lang, s):
     """The three featured projects: one row of cards, each with its README metrics. The
     whole card is a link to the main repository (the title link's ::after covers it,
@@ -464,7 +474,7 @@ def render_featured(projects, lang, s):
         if not project.get("featured"):
             continue
         metrics = "".join(
-            f'<div><dt>{esc(m["label"][lang])}</dt><dd>{esc(m["value"][lang])}</dd></div>'
+            f'<div><dt>{esc(m["label"][lang])}</dt><dd>{metric_value(m, lang, s)}</dd></div>'
             for m in project.get("metrics", []))
         if metrics:
             metrics = f'\n              <dl class="card__metrics" aria-label="{esc(s["projects"]["metrics"])}">{metrics}</dl>'

@@ -2381,6 +2381,27 @@ main {
   white-space: nowrap; /* a number never splits ("MAE ≈ 4 / 122") */
 }
 
+/* A value with a README source links to it: a fine underline, the number unchanged,
+   above the card's own link layer, its target 24px+ without moving the layout. */
+.card__metric-link {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding-block: 4px;
+  margin-block: -4px;
+  text-decoration: underline;
+  text-decoration-color: var(--gold-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card__metric-link:hover {
+    text-decoration-color: var(--gold);
+  }
+}
+
 .card__metrics dt {
   color: var(--navy-3);
   font-size: 0.75rem;
