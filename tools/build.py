@@ -558,10 +558,11 @@ def render_projects(projects, lang, s):
             f'          <details class="more">\n'
             f'            <summary class="more__summary"><span class="more__title">{text(p["more"])}</span>'
             f'<span class="more__count">· {len(cards)}</span><span class="more__icon" aria-hidden="true"></span></summary>\n'
+            f'            <div class="more__body">\n'
             f'            <div class="more__nav" hidden>{arrow(-1, p["morePrev"])}{arrow(1, p["moreNext"])}</div>\n'
             f'            <div class="more__row" role="region" aria-label="{label(p["moreRegion"])}" tabindex="0">\n'
             f'              <ul class="more__list" role="list">\n' + "\n".join(cards)
-            + "\n              </ul>\n            </div>\n          </details>")
+            + "\n              </ul>\n            </div>\n            </div>\n          </details>")
 
 
 def entries(s, name):
