@@ -182,7 +182,7 @@
     const len = reduce.matches ? total : lengthAt(y);
     if (!quiet) {
       if (!scrollTimeline || reduce.matches) svg.style.setProperty("--len", len);
-      // Tip and trail stay hidden until the stroke is as long as the trail.
+      // Line, tip and trail stay hidden until the stroke is as long as the trail.
       svg.toggleAttribute("data-empty", len < TRAILS[2]);
     }
 
