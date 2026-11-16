@@ -36,7 +36,7 @@ Career moment (confirmed 2026-10-17): Santiago is doing the degree internship an
 
 ## Capabilities and Constraints
 
-- One page per language with sticky navigation: Header, Hero, About (the chat), Projects, Experience, Education, Skills, Contact, Footer. Sections without published content are left out (see below).
+- One page per language with sticky navigation: Header, Hero, Projects, About (the chat), Experience, Education, Skills, Contact, Footer. Sections without published content are left out (see below).
 - No automatic redirect by browser language. At most a discreet, dismissible suggestion of the matching language version; the dismissal is remembered.
 - All ten current projects are coursework from the University of La Rioja (confirmed again 2026-11-16 for the two added later); each card shows its course (`subject` in `data/projects.json`, taken from the "Built for the … course" line of each README). Official Spanish course names: "Sistemas Distribuidos", "Programación de Aplicaciones Web", "Inteligencia Artificial", "Profesión de Ingeniero Informático", "Tecnología Orientada a Objetos", "Taller Transversal I: Programación y Proceso de Información"; English and French use natural translations.
 - Featured projects (one row of cards with their README metrics; no screenshots since v2.4, owner's choice): graduate-salary-predictor, face-similarity-search-pipeline, and the life simulation (replaced wordhive-socket-server on 2026-10-21). The rest are small cards (title, course, technologies) that each link to their repository, with a separate Demo link where there is one.

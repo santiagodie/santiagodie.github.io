@@ -612,7 +612,7 @@ def render_cv(s, root, warnings):
 PLACEHOLDER = re.compile(r"\{\{\s*([=@!]?)\s*([\w.]+)\s*\}\}")
 FRAGMENT_LINE = re.compile(r"^[ \t]*\{\{\s*(!)\s*(\w+)\s*\}\}\n", re.M)
 # The page's sections, in order (ids in src/index.html).
-SECTIONS = ["about", "projects", "experience", "education", "skills", "contact"]
+SECTIONS = ["projects", "about", "experience", "education", "skills", "contact"]
 
 
 def render_page(template, site, strings, projects, tokens, model, language, warnings):
