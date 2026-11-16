@@ -2284,21 +2284,180 @@ main {
   letter-spacing: -0.01em;
 }
 
-.projects {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
+/* More projects: a FAQ-like disclosure, closed at first, holding one row of small cards
+   that scrolls sideways and snaps, bleeding into the page margins (the next card always
+   peeks in); the sides with more to see fade out (a mask, never a colour). */
+@property --fade-start { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --fade-end { syntax: "<length>"; inherits: false; initial-value: 0px; }
+
+.more {
+  margin-top: clamp(3.5rem, 7vw, 5rem);
+  border-block: 1px solid var(--line);
 }
 
-@media (min-width: 36em) {
-  .projects {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.more__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 4.5rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.more__summary::-webkit-details-marker {
+  display: none;
+}
+
+.more__title {
+  font: 700 var(--step-1)/1.25 var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.more__count {
+  color: var(--navy-3);
+  font: var(--step--1) var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Round buttons: 32px seen (a 1px ring) in a 44px box. The plus is two 1.5px strokes
+   and turns 45 degrees into a cross when open. */
+.more__icon,
+.more__arrow {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  color: var(--navy);
+  background: none;
+  border: 6px solid transparent;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+.more__icon {
+  margin-left: auto;
+}
+
+.more__icon::before,
+.more__icon::after {
+  content: "";
+  grid-area: 1 / 1;
+  width: 12px;
+  height: 1.5px;
+  background: currentColor;
+}
+
+.more__icon::after {
+  rotate: 90deg;
+}
+
+.more[open] .more__icon {
+  transform: rotate(45deg);
+}
+
+.more__summary:focus-visible .more__icon {
+  box-shadow: inset 0 0 0 1px var(--navy);
+}
+
+.more::details-content {
+  contain: layout;
+}
+
+.more__nav {
+  display: none;
+}
+
+.more__arrow[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.more__row {
+  --fade: var(--page-x);
+  margin-inline: calc(-1 * var(--page-left)) calc(-1 * var(--page-right));
+  padding: 0.5rem var(--page-right) 2rem var(--page-left);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--page-left) var(--page-right);
+  container-type: inline-size;
+  mask:
+    linear-gradient(#000 0 0) no-clip subtract,
+    linear-gradient(to right, #000, #0000) 0 / var(--fade-start) 100% no-repeat no-clip,
+    linear-gradient(to left, #000, #0000) 100% / var(--fade-end) 100% no-repeat no-clip;
+}
+
+/* Without scroll timelines, main.js marks the sides with more to see. */
+.more__row[data-start] { --fade-start: var(--fade); }
+.more__row[data-end] { --fade-end: var(--fade); }
+
+@supports (animation-timeline: scroll()) {
+  .more__row {
+    animation: fade-start linear both, fade-end linear reverse both;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--fade), calc(100% - var(--fade)) 100%;
   }
 }
 
+.more__list {
+  display: grid;
+  grid-auto-columns: 85cqi;
+  grid-auto-flow: column;
+  gap: 1rem;
+  width: max-content;
+}
+
+.more__list > li {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 36em) {
+  .more__list { grid-auto-columns: calc((100cqi - 1rem) / 2.25); }
+}
+
 @media (min-width: 64em) {
-  .projects {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .more__list { grid-auto-columns: calc((100cqi - 3rem) / 3.3); }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .more__summary:hover .more__icon,
+  .more__arrow[aria-disabled="false"]:hover {
+    box-shadow: inset 0 0 0 1px var(--navy);
+  }
+
+  .more__nav:not([hidden]) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+}
+
+/* Opening grows to the content's height where the browser can (interpolate-size),
+   elsewhere it is instant; the clip margin keeps the row's bleed meanwhile. */
+@media (prefers-reduced-motion: no-preference) {
+  .more__icon {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    .more::details-content {
+      interpolate-size: allow-keywords;
+      overflow: clip;
+      overflow-clip-margin: var(--page-x);
+      transition: block-size 280ms var(--ease-out), content-visibility 280ms allow-discrete;
+    }
+
+    .more:not([open])::details-content {
+      block-size: 0;
+    }
+
+    .more[data-instant]::details-content {
+      transition: none;
+    }
   }
 }
 
@@ -3180,6 +3339,14 @@ main {
 @keyframes frame-draw {
   from { stroke-dashoffset: 1; }
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes fade-start {
+  to { --fade-start: var(--fade); }
+}
+
+@keyframes fade-end {
+  to { --fade-end: var(--fade); }
 }
 
 @keyframes target-draw {

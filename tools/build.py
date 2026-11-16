@@ -161,6 +161,12 @@ def text(value):
     return esc(value)
 
 
+def label(value):
+    """Text for an attribute (aria-label): a leading TODO marks wording still to be
+    confirmed in i18n, and is left out of what screen readers say."""
+    return esc(TODO.sub("", str(value)))
+
+
 def published(value):
     """Paragraphs and entries still marked TODO stay in i18n but are not published."""
     return bool(value) and not TODO.match(str(value))
@@ -531,7 +537,7 @@ def render_projects(projects, lang, s):
                 for part in project["parts"] if part.get("demo", {}).get("url"))
             foot += " card__foot--stacked"
             extra = f'<span class="card__more">{extra}</span>'
-        cards.append(f'''            <li class="card card--mini">{FRAME}
+        cards.append(f'''            <li class="card card--mini" id="p-{project["id"]}">{FRAME}
               <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
@@ -539,8 +545,24 @@ def render_projects(projects, lang, s):
             </li>''')
     if not cards:
         return ""  # no heading over an empty list
-    return (f'          <h3 class="subhead">{text(s["projects"]["more"])}</h3>\n'
-            f'          <ul class="projects" role="list">\n' + "\n".join(cards) + "\n          </ul>")
+    # Closed at first: a disclosure (no heading inside the summary, which screen readers
+    # expose as a button, so the h3 sits before it, hidden) holding one row that scrolls
+    # sideways. The arrows only show for a fine pointer, once main.js wires them.
+    p = s["projects"]
+
+    def arrow(step, name):
+        path = "M10 3 5 8l5 5" if step < 0 else "M6 3l5 5-5 5"
+        return (f'<button class="more__arrow" type="button" data-dir="{step}" aria-label="{label(name)}">'
+                f'<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="{path}"/></svg></button>')
+
+    return (f'          <h3 class="visually-hidden">{text(p["more"])}</h3>\n'
+            f'          <details class="more">\n'
+            f'            <summary class="more__summary"><span class="more__title">{text(p["more"])}</span>'
+            f'<span class="more__count">· {len(cards)}</span><span class="more__icon" aria-hidden="true"></span></summary>\n'
+            f'            <div class="more__nav" hidden>{arrow(-1, p["morePrev"])}{arrow(1, p["moreNext"])}</div>\n'
+            f'            <div class="more__row" role="region" aria-label="{label(p["moreRegion"])}" tabindex="0">\n'
+            f'              <ul class="more__list" role="list">\n' + "\n".join(cards)
+            + "\n              </ul>\n            </div>\n          </details>")
 
 
 def entries(s, name):

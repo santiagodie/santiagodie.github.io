@@ -35,7 +35,7 @@
           : el.matches(".section__label") ? "title"
             : el.matches(TEXT) ? "text"
               : el.matches(".card, .portrait") ? "card" : "item";
-        pending.push([el, kind]);
+        if (!el.closest(".more")) pending.push([el, kind]); // the disclosure opens on its own
       });
     });
     const viewH = window.innerHeight;
