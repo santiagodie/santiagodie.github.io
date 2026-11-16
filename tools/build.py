@@ -21,6 +21,7 @@ a translation, so a page with gaps is never published.
 """
 import argparse
 import functools
+import gzip
 import html
 import http.server
 import json
@@ -36,6 +37,10 @@ STATIC = ["css", "js", "img", "fonts", "favicon.ico", "favicon.svg", "apple-touc
 ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>'
 FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
 TODO = re.compile(r"^TODO\s*:?\s*")
+# Size budget for the CSS and JavaScript the pages load, gzipped (GitHub Pages serves
+# them compressed). Baseline on 2026-11-16: 28.0 KB; the ceiling allows 3 KB more for
+# new work. Raise it only on purpose, in its own commit, saying why.
+BUDGET_GZIP_KB = 31.0
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
@@ -736,6 +741,24 @@ def build():
     for warning in sorted(warnings):
         print(f"warning: {warning}", file=sys.stderr)
     print(f"built {len(langs)} pages into {DIST.relative_to(ROOT)}/ ({', '.join(langs)})")
+    report_sizes()
+
+
+def report_sizes():
+    """Print the raw and gzipped size of every CSS and JS file in dist/ and fail the
+    build when their gzipped total goes over BUDGET_GZIP_KB."""
+    files = sorted([*DIST.glob("css/*.css"), *DIST.glob("js/*.js")])
+    total_raw = total_gz = 0
+    print("size     raw KB   gzip KB")
+    for path in files:
+        data = path.read_bytes()
+        raw, gz = len(data), len(gzip.compress(data, compresslevel=9, mtime=0))
+        total_raw += raw
+        total_gz += gz
+        print(f"  {path.relative_to(DIST).as_posix():<16} {raw / 1024:7.1f} {gz / 1024:9.1f}")
+    print(f"  {'total':<16} {total_raw / 1024:7.1f} {total_gz / 1024:9.1f}  (budget {BUDGET_GZIP_KB:.1f} KB gzip)")
+    if total_gz / 1024 > BUDGET_GZIP_KB:
+        raise BuildError(f"CSS + JS weigh {total_gz / 1024:.1f} KB gzipped, over the {BUDGET_GZIP_KB:.1f} KB budget (BUDGET_GZIP_KB in tools/build.py)")
 
 
 def serve(port):
