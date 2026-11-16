@@ -2302,6 +2302,8 @@ main {
   min-height: 4.5rem;
   list-style: none;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .more__summary::-webkit-details-marker {
@@ -2480,11 +2482,12 @@ main {
       interpolate-size: allow-keywords;
       overflow: clip;
       overflow-clip-margin: var(--page-x);
-      transition: block-size 280ms var(--ease-out), content-visibility 280ms allow-discrete;
+      transition: block-size 260ms var(--ease-out), content-visibility 260ms allow-discrete;
     }
 
     .more:not([open])::details-content {
       block-size: 0;
+      transition-duration: 200ms;
     }
 
     .more[data-instant]::details-content {
