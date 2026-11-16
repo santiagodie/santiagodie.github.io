@@ -10,7 +10,7 @@
 }
 
 html {
-  font-size: 8.6pt;
+  font-size: 8.3pt;
 }
 
 body {
@@ -26,21 +26,46 @@ body {
   transition: none !important;
 }
 
-/* Fonts. Chrome embeds a variable font in a PDF as drawn glyphs (Type 3), not as a
-   font: the text in Mona Sans alone made the PDF weigh 650 KB. So the name and the
-   headings keep Hubot Sans, and the running text and the data use the system's
-   faces, which embed as small font subsets (the PDF stays under 300 KB). */
+/* Fonts: static instances of the site's faces, only for print (fonts/print, made once
+   with fonttools; renamed, as the OFL asks of a modified font with a reserved name).
+   Chrome embeds a variable font in a PDF as drawn glyphs, which made a PDF of 650 KB;
+   static fonts embed as small subsets and print the same on Windows and on Ubuntu. */
+@font-face {
+  font-family: "SD Print Sans";
+  src: url("../fonts/print/sd-print-sans-regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "SD Print Sans";
+  src: url("../fonts/print/sd-print-sans-semibold.woff2") format("woff2");
+  font-weight: 600 700;
+}
+
+@font-face {
+  font-family: "SD Print Display";
+  src: url("../fonts/print/sd-print-display-bold.woff2") format("woff2");
+  font-weight: 400 900;
+}
+
+@font-face {
+  font-family: "SD Print Mono";
+  src: url("../fonts/print/sd-print-mono-regular.woff2") format("woff2");
+  font-weight: 400 700;
+}
+
 * {
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+  font-family: "SD Print Sans", sans-serif !important;
   font-stretch: 100% !important;
   font-variation-settings: normal !important;
+  font-synthesis: none !important;
 }
 
 .hero__name,
 .hero__name *,
 .section__title,
 .section__title * {
-  font-family: var(--font-display) !important;
+  font-family: "SD Print Display", sans-serif !important;
 }
 
 .card__metrics dd,
@@ -48,7 +73,7 @@ body {
 .card__repo,
 a[data-url]::after,
 .contact__value:not(.contact__value--text) {
-  font-family: Consolas, "SF Mono", Menlo, monospace !important;
+  font-family: "SD Print Mono", monospace !important;
 }
 
 .section__title,
@@ -58,7 +83,7 @@ a[data-url]::after,
 .entry__title,
 .subhead,
 .more__title {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 /* What only makes sense on a screen. */
@@ -143,7 +168,7 @@ main,
 .contact__value {
   max-width: none !important;
   margin-top: 0.4mm !important;
-  font-size: 8.6pt !important;
+  font-size: 8.3pt !important;
   line-height: 1.4 !important;
 }
 
@@ -241,7 +266,7 @@ h4,
 
 .card__text {
   color: #000;
-  font-size: 8.6pt;
+  font-size: 8.3pt;
 }
 
 .card__metrics {
@@ -260,7 +285,7 @@ h4,
 }
 
 .card__metrics dd {
-  font-size: 8.6pt !important;
+  font-size: 8.3pt !important;
 }
 
 .card__link::after {
@@ -387,7 +412,7 @@ a[data-url]:not(.card__link):not(.contact__link)::after {
 .chat__answer {
   max-width: none;
   font-family: var(--font-sans);
-  font-size: 8.6pt;
+  font-size: 8.3pt;
   line-height: 1.45;
 }
 
@@ -425,7 +450,7 @@ a[data-url]:not(.card__link):not(.contact__link)::after {
 .skills__group dt,
 .langs dt,
 .contact__label {
-  font-size: 8.6pt !important;
+  font-size: 8.3pt !important;
 }
 
 .skills__group,
