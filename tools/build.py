@@ -40,7 +40,10 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 # Size budget for the CSS and JavaScript the pages load, gzipped (GitHub Pages serves
 # them compressed, file by file). Baseline on 2026-11-16: 29.4 KB; the ceiling allows
 # 3 KB more for new work. Raise it only on purpose, in its own commit, saying why.
-BUDGET_GZIP_KB = 32.4
+# 2026-11-16, lot 3: 33.4 KB, approved by the owner, for "More projects" as a disclosure
+# with a scrolling row (about 1.7 KB: the opening animation, the edge fades and their
+# fallback, the arrows); the branch weighed 31.5 KB before it.
+BUDGET_GZIP_KB = 33.4
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
