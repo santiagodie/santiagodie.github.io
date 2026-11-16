@@ -98,7 +98,13 @@
     top = host.top + window.scrollY;
     const points = nodes.map(point);
     const tops = sections.map((section) => section.getBoundingClientRect().top - host.top);
-    let d = `M${points[0].x} ${tops[0]}V${points[0].y}`;
+    // The line starts in the hero, at the last featured project's node (the stroke
+    // through the featured titles above it is CSS), and runs on down to 01.
+    const featured = document.querySelector(".hero__featured-list > li:last-child");
+    const start = featured
+      ? featured.getBoundingClientRect().top + featured.offsetHeight / 2 - host.top
+      : tops[0];
+    let d = `M${points[0].x} ${start}V${points[0].y}`;
     for (let i = 1; i < points.length; i += 1) {
       const a = points[i - 1];
       const b = points[i];

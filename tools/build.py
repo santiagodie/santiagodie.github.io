@@ -463,7 +463,7 @@ def render_featured(projects, lang, s):
             links = f'<div class="card__links card__links--parts">{project_parts(project, lang, s)}</div>'
         else:
             links = f'<div class="card__links">{project_links(project, lang, s)}</div>'
-        cards.append(f'''            <li class="card card--feature">{FRAME}
+        cards.append(f'''            <li class="card card--feature" id="p-{project["id"]}">{FRAME}
               <h4 class="card__title">{esc(project["title"][lang])}</h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
@@ -471,6 +471,19 @@ def render_featured(projects, lang, s):
               {links}
             </li>''')
     return "\n".join(cards)
+
+
+def render_hero_featured(projects, lang, s):
+    """The hero's index of the featured projects: their titles, each a link to its card
+    in Projects, strung on the start of the progress line (one lit node per title)."""
+    items = "".join(
+        f'<li><a href="#p-{p["id"]}">{esc(p["title"][lang])}</a></li>'
+        for p in projects if p.get("featured"))
+    label = esc(s["projects"]["featured"])
+    return (f'        <nav class="hero__featured" aria-labelledby="hero-featured-label">\n'
+            f'          <p class="hero__featured-label" id="hero-featured-label">{label}</p>\n'
+            f'          <ol class="hero__featured-list" role="list">{items}</ol>\n'
+            f'        </nav>')
 
 
 def render_projects(projects, lang, s):
@@ -658,6 +671,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "chat": lambda: render_chat(s, tokens, model, lang),
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
+        "heroFeatured": lambda: render_hero_featured(projects, lang, s),
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),
