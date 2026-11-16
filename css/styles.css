@@ -2436,8 +2436,7 @@ main {
   }
 }
 
-/* Opening grows to the content's height where the browser can (interpolate-size),
-   elsewhere it is instant; the clip margin keeps the row's bleed meanwhile. */
+/* Grows open where interpolate-size exists; the clip margin keeps the bleed. */
 @media (prefers-reduced-motion: no-preference) {
   .more__icon {
     transition: transform 200ms var(--ease-out);
@@ -2595,8 +2594,11 @@ main {
   padding-top: 0.75rem;
 }
 
-.card__foot {
-  flex-wrap: nowrap;
+/* Narrowest phones: Demo may drop below, so the name never breaks in a word. */
+@media (min-width: 22.5em) {
+  .card__foot {
+    flex-wrap: nowrap;
+  }
 }
 
 .card__foot .card__repo {
