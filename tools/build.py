@@ -423,7 +423,7 @@ def project_links(project, lang, s):
     demo = project.get("demo")
     if demo and demo.get("url"):
         links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
-    return "".join(links) + f'<span class="card__repo" translate="no">{repo_html(project["repo"])}</span>'
+    return "".join(links)
 
 
 def project_parts(project, lang, s):
@@ -442,9 +442,7 @@ def project_parts(project, lang, s):
         heading = f'{project["id"]}-part-{index}'
         groups.append(
             f'<div class="card__part" role="group" aria-labelledby="{heading}">'
-            f'<p class="card__part-label" id="{heading}">{esc(label)} '
-            f'<span class="card__repo" translate="no">{repo_html(part["repo"])}</span></p>'
-            f'{links}</div>')
+            f'<span class="card__part-label" id="{heading}">{esc(label)}</span>{links}</div>')
     return "".join(groups)
 
 
@@ -454,8 +452,11 @@ def tags(project, s):
 
 
 def render_featured(projects, lang, s):
-    """The three featured projects: one row of cards, each with its README metrics."""
+    """The three featured projects: one row of cards, each with its README metrics. The
+    whole card is a link to the main repository (the title link's ::after covers it,
+    as in the small cards); Demo and Code sit above that layer as targets of their own."""
     cards = []
+    new_tab = s["a11y"]["newTab"]
     for project in projects:
         if not project.get("featured"):
             continue
@@ -469,7 +470,7 @@ def render_featured(projects, lang, s):
         else:
             links = f'<div class="card__links">{project_links(project, lang, s)}</div>'
         cards.append(f'''            <li class="card card--feature" id="p-{project["id"]}">{FRAME}
-              <h4 class="card__title">{esc(project["title"][lang])}</h4>
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(project["title"][lang])}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
               {tags(project, s)}

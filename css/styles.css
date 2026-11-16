@@ -2263,6 +2263,7 @@ main {
 .featured {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  align-items: start; /* each card as tall as its content: no stretched gaps */
   gap: 1.25rem;
 }
 
@@ -2477,10 +2478,6 @@ main {
   overflow-wrap: break-word;
 }
 
-.card .card__text {
-  flex: 1;
-}
-
 .card__pending {
   margin-top: 0.75rem;
   font-size: 0.8125rem;
@@ -2537,11 +2534,17 @@ main {
   transition: text-decoration-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
 }
 
-/* A project with several repositories: one group per part, a label line
-   (part name and repository) above its demo and code links. */
+/* Above the layer of the card's own link (see .card__link::after). */
+.card__links a {
+  position: relative;
+  z-index: 2;
+}
+
+/* A project with several repositories: one compact row per part,
+   "Service · Live demo · Code", the part's name leading. */
 .card__links--parts {
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0;
 }
 
 .card__part {
@@ -2552,18 +2555,10 @@ main {
 }
 
 .card__part-label {
-  flex-basis: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.125rem 0.625rem;
-  color: var(--navy);
+  min-width: 6.5rem;
+  color: var(--navy-3);
   font-size: 0.875rem;
   font-weight: 600;
-}
-
-.card__part-label .card__repo {
-  font-weight: 400;
 }
 
 /* The repository name, untranslated, beside the links. */
