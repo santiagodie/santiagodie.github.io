@@ -54,6 +54,7 @@
   const ABORT = Symbol("abort");
   let gen = 0;
   let running = false;
+  let unannounced = false; // the run started by itself (reduced motion, on arrival)
   let menuOpen = false; // the mobile menu covers the page (js/main.js)
   const held = () => document.hidden || menuOpen;
   let keyboard = false;
@@ -151,7 +152,7 @@
     keyboard = Boolean(event) && event.detail === 0; // Enter or Space on the button
     const lift = getComputedStyle(composer).transform;
     chat.dataset.state = "run";
-    skip.hidden = false;
+    skip.hidden = unannounced; // nothing to skip in the short fade on arrival
     replay.hidden = true;
     scene.inert = true;
     if (keyboard) skip.focus({ preventScroll: true });
@@ -502,8 +503,11 @@
     scrollable();
 
     // Then the notice, just after the answer (its place was kept): announced with
-    // the answer, and the keyboard's next stop.
-    live.textContent = `${answer.textContent.trim()} ${notice.textContent.trim()}`;
+    // the answer, and the keyboard's next stop. Not announced when the chat
+    // answered itself on arrival (reduced motion): nobody asked, and the text is
+    // already readable in place.
+    if (!unannounced) live.textContent = `${answer.textContent.trim()} ${notice.textContent.trim()}`;
+    unannounced = false;
     play(notice, reduce.matches
       ? { opacity: [0, 1] }
       : { opacity: [0, 1], transform: ["translateY(6px)", "none"] }, { duration: 320, delay: 120, easing: OUT });
@@ -564,10 +568,18 @@
 
   // When the panel comes into view (once): the question types itself, then the
   // send button pulses once.
+  // Reduced motion: no typing, no stages. The chat shows itself answered as soon
+  // as it is in view: the bubble, the answer and the notice fade in (quiet()).
   let entered = false;
   async function enter() {
     entered = true;
-    if (reduce.matches) return;
+    if (reduce.matches) {
+      if (!running && chat.dataset.state === "idle") {
+        unannounced = true;
+        start();
+      }
+      return;
+    }
     await assembled();
     if (running || chat.dataset.state !== "idle") return;
     const text = typed.textContent;
