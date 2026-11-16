@@ -2340,14 +2340,13 @@ main {
 .card__subject {
   margin-top: 0.5rem;
   color: var(--navy-3);
-  font-family: var(--font-mono);
   font-size: var(--step--1);
   line-height: 1.5;
 }
 
 .card--mini .card__subject {
   margin-top: 0.375rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
 }
 
 /* The README results: value in mono, what it measures below. */
@@ -2518,8 +2517,8 @@ main {
   gap: 0.25rem 0;
   margin-top: 1.25rem;
   color: var(--navy-3);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -2790,8 +2789,8 @@ main {
   align-items: center;
   gap: 0.25rem 0;
   color: var(--navy-2);
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
   line-height: 1.7;
 }
 
@@ -2863,6 +2862,12 @@ main {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   overflow-wrap: anywhere;
+}
+
+/* A value that is plain text, not an address (the location). */
+.contact__value--text {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
 }
 
 .contact__link .icon {

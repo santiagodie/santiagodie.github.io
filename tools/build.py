@@ -619,7 +619,7 @@ def render_email(site, s):
 def render_location(s):
     contact = s["contact"]
     return (f'            <li>\n              <p class="contact__row">'
-            f'<span class="contact__label">{esc(contact["locationLabel"])}</span><span class="contact__value">{esc(contact["location"])}</span></p>\n'
+            f'<span class="contact__label">{esc(contact["locationLabel"])}</span><span class="contact__value contact__value--text">{esc(contact["location"])}</span></p>\n'
             f'            </li>')
 
 
