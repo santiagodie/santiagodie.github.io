@@ -2037,8 +2037,18 @@ main {
   filter: blur(3px);
 }
 
+/* The tip and its trail fade in once the stroke is as long as the trail (js/scroll.js
+   sets data-empty below that), so a phone's first screen never shows a lone gold dot. */
+.progress__trail,
+.progress__tip {
+  transition: opacity var(--dur-fast) ease;
+}
+
 .progress[data-empty] .progress__trail,
-.progress[data-empty] .progress__tip,
+.progress[data-empty] .progress__tip {
+  opacity: 0;
+}
+
 .progress[data-quiet] .progress__trail,
 .progress[data-quiet] .progress__tip {
   visibility: hidden;

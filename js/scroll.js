@@ -182,7 +182,8 @@
     const len = reduce.matches ? total : lengthAt(y);
     if (!quiet) {
       if (!scrollTimeline || reduce.matches) svg.style.setProperty("--len", len);
-      svg.toggleAttribute("data-empty", len < 1);
+      // Tip and trail stay hidden until the stroke is as long as the trail.
+      svg.toggleAttribute("data-empty", len < TRAILS[2]);
     }
 
     // Numbers light up when the tip reaches them and stay lit; the navigation's
