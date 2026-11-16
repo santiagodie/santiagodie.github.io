@@ -404,6 +404,11 @@ def repo_name(url):
     return url.rstrip("/").split("/")[-1]
 
 
+def repo_html(url):
+    """The repository name, escaped, free to wrap after each hyphen and nowhere else."""
+    return esc(repo_name(url)).replace("-", "-<wbr>")
+
+
 def demo_label(demo, s, short=False):
     if demo.get("type") == "colab":
         return s["projects"]["colabShort" if short else "colab"]
@@ -418,7 +423,7 @@ def project_links(project, lang, s):
     demo = project.get("demo")
     if demo and demo.get("url"):
         links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
-    return "".join(links) + f'<span class="card__repo" translate="no">{esc(repo_name(project["repo"]))}</span>'
+    return "".join(links) + f'<span class="card__repo" translate="no">{repo_html(project["repo"])}</span>'
 
 
 def project_parts(project, lang, s):
@@ -438,7 +443,7 @@ def project_parts(project, lang, s):
         groups.append(
             f'<div class="card__part" role="group" aria-labelledby="{heading}">'
             f'<p class="card__part-label" id="{heading}">{esc(label)} '
-            f'<span class="card__repo" translate="no">{esc(repo_name(part["repo"]))}</span></p>'
+            f'<span class="card__repo" translate="no">{repo_html(part["repo"])}</span></p>'
             f'{links}</div>')
     return "".join(groups)
 
@@ -495,7 +500,6 @@ def render_projects(projects, lang, s):
         if project.get("featured"):
             continue
         title = project["title"][lang]
-        repo = repo_name(project["repo"])
         demo = project.get("demo")
         extra = ""
         if demo and demo.get("url"):
@@ -514,7 +518,7 @@ def render_projects(projects, lang, s):
               <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
-              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{esc(repo)}</span>{ARROW}</span>{extra}</p>
+              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{repo_html(project["repo"])}</span>{ARROW}</span>{extra}</p>
             </li>''')
     if not cards:
         return ""  # no heading over an empty list

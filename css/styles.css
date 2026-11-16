@@ -2428,9 +2428,7 @@ main {
 }
 
 .card__repo-name {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow-wrap: normal; /* the name wraps only after its hyphens (<wbr> from the build) */
 }
 
 .card__foot .card__demo {
