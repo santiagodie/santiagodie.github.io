@@ -2641,7 +2641,8 @@ main {
   border-color: var(--gold-line);
 }
 
-.card--feature:focus-within {
+.card--feature:focus-within,
+.card--feature:target {
   border-color: var(--gold);
 }
 
@@ -3053,6 +3054,15 @@ main {
     border-color: transparent;
   }
 
+  /* Arriving from the hero's index (#p-<id>): the card's frame traces once in gold. */
+  .featured > .card.card--feature:target .frame {
+    animation: target-hold 1700ms linear 300ms both;
+  }
+
+  .featured > .card.card--feature:target .frame rect {
+    animation: target-draw 700ms var(--ease-in-out) 300ms both;
+  }
+
   .is-assembling .card[data-reveal].is-in,
   .is-assembling .portrait[data-reveal].is-in {
     /* backwards, not both: once over it lets go, and the card's own border (and its
@@ -3137,6 +3147,15 @@ main {
 @keyframes frame-draw {
   from { stroke-dashoffset: 1; }
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes target-draw {
+  from { stroke-dashoffset: 1; }
+}
+
+@keyframes target-hold {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes frame-hold {
