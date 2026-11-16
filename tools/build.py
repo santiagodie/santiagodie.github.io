@@ -40,6 +40,8 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 # Size budget for the CSS and JavaScript the pages load, gzipped (GitHub Pages serves
 # them compressed, file by file). Baseline on 2026-11-16: 29.4 KB; the ceiling allows
 # 3 KB more for new work. Raise it only on purpose, in its own commit, saying why.
+# 2026-11-16, lot 3: briefly 33.4 KB for "More projects" (about 1.7 KB); back to 32.4 KB
+# on 2026-11-17 once the CSS ships minified (minify_css), at about 26 KB in all.
 BUDGET_GZIP_KB = 32.4
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
@@ -156,6 +158,12 @@ def text(value):
         rest = TODO.sub("", value)
         return f'<span class="todo">TODO</span> <span class="todo-text">{esc(rest)}</span>'
     return esc(value)
+
+
+def label(value):
+    """Text for an attribute (aria-label): a leading TODO marks wording still to be
+    confirmed in i18n, and is left out of what screen readers say."""
+    return esc(TODO.sub("", str(value)))
 
 
 def published(value):
@@ -404,6 +412,14 @@ def repo_name(url):
     return url.rstrip("/").split("/")[-1]
 
 
+def repo_html(url, tail=""):
+    """The repository name, escaped, free to wrap after each hyphen and nowhere else;
+    `tail` (an arrow) stays on the line of the name's last piece."""
+    head, _, last = esc(repo_name(url)).rpartition("-")
+    head = head.replace("-", "-<wbr>") + "-<wbr>" if head else ""
+    return f'{head}<span class="nowrap">{last}{tail}</span>' if tail else head + last
+
+
 def demo_label(demo, s, short=False):
     if demo.get("type") == "colab":
         return s["projects"]["colabShort" if short else "colab"]
@@ -418,7 +434,7 @@ def project_links(project, lang, s):
     demo = project.get("demo")
     if demo and demo.get("url"):
         links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
-    return "".join(links) + f'<span class="card__repo" translate="no">{esc(repo_name(project["repo"]))}</span>'
+    return "".join(links)
 
 
 def project_parts(project, lang, s):
@@ -437,9 +453,7 @@ def project_parts(project, lang, s):
         heading = f'{project["id"]}-part-{index}'
         groups.append(
             f'<div class="card__part" role="group" aria-labelledby="{heading}">'
-            f'<p class="card__part-label" id="{heading}">{esc(label)} '
-            f'<span class="card__repo" translate="no">{esc(repo_name(part["repo"]))}</span></p>'
-            f'{links}</div>')
+            f'<span class="card__part-label" id="{heading}">{esc(label)}</span>{links}</div>')
     return "".join(groups)
 
 
@@ -448,14 +462,27 @@ def tags(project, s):
     return f'<p class="visually-hidden">{esc(s["projects"]["stack"])}</p><ul class="tags" role="list">{items}</ul>'
 
 
+def metric_value(metric, lang, s):
+    """A README result; a link to the README section it comes from, where the build
+    was given one (`source`, an anchor checked against the rendered README)."""
+    value = esc(metric["value"][lang])
+    if not metric.get("source"):
+        return value
+    return (f'<a class="card__metric-link" href="{esc(metric["source"])}" target="_blank" rel="noopener">{value}'
+            f'<span class="visually-hidden">: {esc(metric["label"][lang])} ({esc(s["a11y"]["newTab"])})</span></a>')
+
+
 def render_featured(projects, lang, s):
-    """The three featured projects: one row of cards, each with its README metrics."""
+    """The three featured projects: one row of cards, each with its README metrics. The
+    whole card is a link to the main repository (the title link's ::after covers it,
+    as in the small cards); Demo and Code sit above that layer as targets of their own."""
     cards = []
+    new_tab = s["a11y"]["newTab"]
     for project in projects:
         if not project.get("featured"):
             continue
         metrics = "".join(
-            f'<div><dt>{esc(m["label"][lang])}</dt><dd>{esc(m["value"][lang])}</dd></div>'
+            f'<div><dt>{esc(m["label"][lang])}</dt><dd>{metric_value(m, lang, s)}</dd></div>'
             for m in project.get("metrics", []))
         if metrics:
             metrics = f'\n              <dl class="card__metrics" aria-label="{esc(s["projects"]["metrics"])}">{metrics}</dl>'
@@ -464,7 +491,7 @@ def render_featured(projects, lang, s):
         else:
             links = f'<div class="card__links">{project_links(project, lang, s)}</div>'
         cards.append(f'''            <li class="card card--feature" id="p-{project["id"]}">{FRAME}
-              <h4 class="card__title">{esc(project["title"][lang])}</h4>
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(project["title"][lang])}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
               {tags(project, s)}
@@ -495,7 +522,6 @@ def render_projects(projects, lang, s):
         if project.get("featured"):
             continue
         title = project["title"][lang]
-        repo = repo_name(project["repo"])
         demo = project.get("demo")
         extra = ""
         if demo and demo.get("url"):
@@ -510,16 +536,33 @@ def render_projects(projects, lang, s):
                 for part in project["parts"] if part.get("demo", {}).get("url"))
             foot += " card__foot--stacked"
             extra = f'<span class="card__more">{extra}</span>'
-        cards.append(f'''            <li class="card card--mini">{FRAME}
+        cards.append(f'''            <li class="card card--mini" id="p-{project["id"]}">{FRAME}
               <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
-              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{esc(repo)}</span>{ARROW}</span>{extra}</p>
+              <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{repo_html(project["repo"], ARROW)}</span></span>{extra}</p>
             </li>''')
     if not cards:
         return ""  # no heading over an empty list
-    return (f'          <h3 class="subhead">{text(s["projects"]["more"])}</h3>\n'
-            f'          <ul class="projects" role="list">\n' + "\n".join(cards) + "\n          </ul>")
+    # Closed at first: a disclosure (no heading inside the summary, which screen readers
+    # expose as a button, so the h3 sits before it, hidden) holding one row that scrolls
+    # sideways. The arrows only show for a fine pointer, once main.js wires them.
+    p = s["projects"]
+
+    def arrow(step, name):
+        path = "M10 3 5 8l5 5" if step < 0 else "M6 3l5 5-5 5"
+        return (f'<button class="more__arrow" type="button" data-dir="{step}" aria-label="{label(name)}">'
+                f'<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="{path}"/></svg></button>')
+
+    return (f'          <h3 class="visually-hidden">{text(p["more"])}</h3>\n'
+            f'          <details class="more">\n'
+            f'            <summary class="more__summary"><span class="more__title">{text(p["more"])}</span>'
+            f'<span class="more__count">· {len(cards)}</span><span class="more__icon" aria-hidden="true"></span></summary>\n'
+            f'            <div class="more__body">\n'
+            f'            <div class="more__nav" hidden>{arrow(-1, p["morePrev"])}{arrow(1, p["moreNext"])}</div>\n'
+            f'            <div class="more__row" role="region" aria-label="{label(p["moreRegion"])}" tabindex="0">\n'
+            f'              <ul class="more__list" role="list">\n' + "\n".join(cards)
+            + "\n              </ul>\n            </div>\n            </div>\n          </details>")
 
 
 def entries(s, name):
@@ -556,7 +599,7 @@ def render_entries(s, name):
     certs = s[name].get("certifications")
     if certs and [c for c in certs["items"] if published(c)]:
         items = "".join(f"<li>{esc(c)}</li>" for c in certs["items"] if published(c))
-        out += (f'\n          <h3 class="minor">{esc(certs["title"])}</h3>'
+        out += (f'\n          <h3 class="subhead subhead--minor">{esc(certs["title"])}</h3>'
                 f'\n          <ul class="certs" role="list">{items}</ul>')
     return out
 
@@ -585,7 +628,7 @@ def render_skills(s):
     if languages["items"]:
         items = "".join(f'<div class="langs__item"><dt>{esc(item["name"])}</dt><dd>{esc(item["level"])}</dd></div>'
                         for item in languages["items"])
-        out += (f'\n          <h3 class="minor">{esc(languages["title"])}</h3>'
+        out += (f'\n          <h3 class="subhead subhead--minor">{esc(languages["title"])}</h3>'
                 f'\n          <dl class="langs">{items}</dl>')
     return out
 
@@ -601,7 +644,7 @@ def render_email(site, s):
 def render_location(s):
     contact = s["contact"]
     return (f'            <li>\n              <p class="contact__row">'
-            f'<span class="contact__label">{esc(contact["locationLabel"])}</span><span class="contact__value">{esc(contact["location"])}</span></p>\n'
+            f'<span class="contact__label">{esc(contact["locationLabel"])}</span><span class="contact__value contact__value--text">{esc(contact["location"])}</span></p>\n'
             f'            </li>')
 
 
@@ -752,6 +795,9 @@ def build():
             shutil.copytree(source, DIST / name)
         elif source.exists():
             shutil.copy2(source, DIST / name)
+    # The CSS ships minified (conservatively, see minify_css); the JavaScript does not.
+    for sheet in DIST.glob("css/*.css"):
+        sheet.write_text(minify_css(sheet.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
     (DIST / "sitemap.xml").write_text(render_sitemap(site), encoding="utf-8", newline="\n")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}sitemap.xml\n", encoding="utf-8", newline="\n")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
@@ -760,6 +806,42 @@ def build():
         print(f"warning: {warning}", file=sys.stderr)
     print(f"built {len(langs)} pages into {DIST.relative_to(ROOT)}/ ({', '.join(langs)})")
     report_sizes()
+
+
+def minify_css(css):
+    """Conservative CSS minification with the standard library: drops comments and the
+    whitespace that never matters, outside strings. It never touches the spaces around
+    + - * / (calc, clamp, min, max), before a colon (".a :is()" is not ".a:is()") or
+    next to brackets ("and (" in media queries), so the result renders the same."""
+    out, i, n = [], 0, len(css)
+    while i < n:
+        ch = css[i]
+        if ch in "\"'":  # a string, verbatim
+            j = i + 1
+            while j < n and css[j] != ch:
+                j += 2 if css[j] == "\\" else 1
+            out.append(css[i:j + 1])
+            i = j + 1
+        elif css.startswith("/*", i):  # a comment
+            end = css.find("*/", i + 2)
+            i = n if end < 0 else end + 2
+        elif ch.isspace():  # a run of whitespace: one space, or none next to { } ; , :
+            j = i
+            while j < n and css[j].isspace():
+                j += 1
+            prev = out[-1][-1:] if out else ""
+            nxt = css[j:j + 1]
+            if prev not in ("", "{", "}", ";", ",", ":") and nxt not in ("{", "}", ";", ","):
+                out.append(" ")
+            i = j
+        elif ch == "}" and out and out[-1].endswith(";"):  # the last ; of a block
+            out[-1] = out[-1][:-1]
+            out.append(ch)
+            i += 1
+        else:
+            out.append(ch)
+            i += 1
+    return "".join(out)
 
 
 def report_sizes():

@@ -190,4 +190,42 @@
       storage.set(DISMISS_KEY, "1");
     });
   }
+
+  // More projects: a link to a card inside opens the disclosure; the arrows move one
+  // card and switch off at the ends, where the fades (without scroll timelines) go too.
+  const more = document.querySelector(".more");
+  if (more) {
+    const row = more.querySelector(".more__row");
+    const nav = more.querySelector(".more__nav");
+    const fallback = !CSS.supports("animation-timeline: scroll()");
+    let frame = 0;
+    const reveal = () => {
+      const target = document.getElementById(location.hash.slice(1));
+      if (target && more.contains(target)) {
+        // Opened at once (no growing), so the card is there to scroll to.
+        more.dataset.instant = "";
+        more.open = true;
+        target.scrollIntoView();
+        requestAnimationFrame(() => delete more.dataset.instant);
+      }
+    };
+    const ends = () => {
+      frame = 0;
+      const x = row.scrollLeft, at = [x < 2, x > row.scrollWidth - row.clientWidth - 2];
+      [...nav.children].forEach((arrow, i) => arrow.setAttribute("aria-disabled", at[i]));
+      nav.hidden = at[0] && at[1]; // nothing to scroll (one card): no arrows
+      if (fallback) at.forEach((end, i) => row.toggleAttribute(i ? "data-end" : "data-start", !end));
+    };
+    nav.onclick = ({ target }) => {
+      const arrow = target.closest("[aria-disabled=false]");
+      if (arrow) row.scrollBy({ left: arrow.dataset.dir * (row.querySelector("li").offsetWidth + 16), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    };
+    row.addEventListener("scroll", () => { frame ||= requestAnimationFrame(ends); }, { passive: true });
+    more.addEventListener("toggle", ends);
+    // A card reached with Tab comes whole into view, clear of the fades (scroll-padding).
+    row.addEventListener("focusin", ({ target }) => target.closest("li").scrollIntoView({ block: "nearest", inline: "nearest" }));
+    window.addEventListener("hashchange", reveal);
+    reveal();
+    ends();
+  }
 })();

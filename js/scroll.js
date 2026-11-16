@@ -24,7 +24,7 @@
   // Number and node first, then the title, the text, and the cards, entries or the
   // About chat (js/chat.js starts typing only once the chat is in place).
   const ITEMS = ".chat, .card, .portrait, .entry, .skills__group, .langs__item, .certs > li, .contact > li";
-  const TEXT = ".section__lead, .prose p, .subhead, .minor";
+  const TEXT = ".section__lead, .prose p, .subhead";
 
   function assemble() {
     if (reduce.matches || !("IntersectionObserver" in window)) return;
@@ -35,7 +35,7 @@
           : el.matches(".section__label") ? "title"
             : el.matches(TEXT) ? "text"
               : el.matches(".card, .portrait") ? "card" : "item";
-        pending.push([el, kind]);
+        if (!el.closest(".more")) pending.push([el, kind]); // the disclosure opens on its own
       });
     });
     const viewH = window.innerHeight;

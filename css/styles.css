@@ -2263,6 +2263,7 @@ main {
 .featured {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  align-items: start; /* each card as tall as its content: no stretched gaps */
   gap: 1.25rem;
 }
 
@@ -2272,29 +2273,226 @@ main {
   }
 }
 
+/* Group subheads (More projects, Certifications, Languages): the second of the two
+   h3 levels, below entry titles (step-2). One look wherever a section adds a group. */
 .subhead {
   margin: clamp(3.5rem, 7vw, 5rem) 0 1.5rem;
   font-family: var(--font-display);
-  font-size: var(--step-2);
+  font-size: var(--step-1);
   font-weight: 700;
-  letter-spacing: -0.015em;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-.projects {
+/* More projects: a FAQ-like disclosure, closed at first, holding one row of small cards
+   that scrolls sideways and snaps, bleeding into the page margins (the next card always
+   peeks in); the sides with more to see fade out (a mask, never a colour). */
+@property --fade-start { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --fade-end { syntax: "<length>"; inherits: false; initial-value: 0px; }
+
+.more {
+  margin-top: clamp(3.5rem, 7vw, 5rem);
+  border-block: 1px solid var(--line);
+}
+
+.more__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 4.5rem;
+  list-style: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.more__summary::-webkit-details-marker {
+  display: none;
+}
+
+.more__title {
+  font: 700 var(--step-1)/1.25 var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.more__count {
+  color: var(--navy-3);
+  font: var(--step--1) var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Round buttons: 32px seen (a 1px ring) in a 44px box. The plus is two 1.5px strokes
+   and turns 45 degrees into a cross when open. */
+.more__icon,
+.more__arrow {
+  position: relative;
+  flex: none;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  color: var(--navy);
+  background: none;
+  border: 6px solid transparent;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
 }
 
-@media (min-width: 36em) {
-  .projects {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.more__icon {
+  margin-left: auto;
+}
+
+.more__icon::before,
+.more__icon::after {
+  content: "";
+  grid-area: 1 / 1;
+  width: 12px;
+  height: 1.5px;
+  background: currentColor;
+}
+
+.more__icon::after {
+  rotate: 90deg;
+}
+
+.more[open] .more__icon {
+  transform: rotate(45deg);
+}
+
+.more__summary:focus-visible .more__icon {
+  box-shadow: inset 0 0 0 1px var(--navy);
+}
+
+.more::details-content {
+  contain: layout;
+}
+
+.more__nav {
+  display: none;
+}
+
+/* At an end, the arrow towards it goes away (and out of reach for screen readers). */
+.more__arrow[aria-disabled="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.more__body {
+  position: relative;
+}
+
+.more__row {
+  --fade: var(--page-x);
+  margin-inline: calc(-1 * var(--page-left)) calc(-1 * var(--page-right));
+  padding: 0.5rem var(--page-right) 2rem var(--page-left);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--page-left) var(--page-right);
+  container-type: inline-size;
+  mask:
+    linear-gradient(#000 0 0) no-clip subtract,
+    linear-gradient(to right, #000, #0000) 0 / var(--fade-start) 100% no-repeat no-clip,
+    linear-gradient(to left, #000, #0000) 100% / var(--fade-end) 100% no-repeat no-clip;
+}
+
+/* Without scroll timelines, main.js marks the sides with more to see. */
+.more__row[data-start] { --fade-start: var(--fade); }
+.more__row[data-end] { --fade-end: var(--fade); }
+
+@supports (animation-timeline: scroll()) {
+  .more__row {
+    animation: fade-start linear both, fade-end linear reverse both;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--fade), calc(100% - var(--fade)) 100%;
   }
 }
 
+.more__list {
+  display: grid;
+  grid-auto-columns: 85cqi;
+  grid-auto-flow: column;
+  gap: 1rem;
+  width: max-content;
+}
+
+.more__list > li {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 36em) {
+  .more__list { grid-auto-columns: calc((100cqi - 1rem) / 2.25); }
+}
+
 @media (min-width: 64em) {
-  .projects {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .more__list { grid-auto-columns: calc((100cqi - 3rem) / 3.3); }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .more__summary:hover .more__icon,
+  .more__arrow[aria-disabled="false"]:hover {
+    box-shadow: inset 0 0 0 1px var(--navy);
+  }
+
+  /* The arrows sit on the row's sides, over the fades in the page margins, centred
+     on the cards (the row's padding is 0.5rem above and 2rem below). */
+  /* In a margin narrower than 56px the target shrinks (never under 24px) so it keeps
+     6px clear of the cards and their focus rings. */
+  .more__nav:not([hidden]) {
+    --size: clamp(24px, var(--page-x) - 12px, 44px);
+    position: absolute;
+    inset: 0.5rem calc(-1 * var(--page-right)) 2rem calc(-1 * var(--page-left));
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: calc((var(--page-x) - var(--size)) / 2);
+    pointer-events: none;
+  }
+
+  .more__nav .more__arrow {
+    width: var(--size);
+    height: var(--size);
+    border-width: max(0px, (var(--size) - 32px) / 2);
+    background: var(--white) padding-box; /* the faded card behind does not show through */
+    pointer-events: auto;
+  }
+}
+
+/* Grows open where interpolate-size exists; the clip margin keeps the bleed. */
+@media (prefers-reduced-motion: no-preference) {
+  .more__icon {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .more__arrow {
+    transition: opacity 150ms ease, visibility 0s 150ms;
+  }
+
+  .more__arrow[aria-disabled="false"] {
+    transition: opacity 150ms ease;
+  }
+
+  /* Opens in 260 ms; closes faster, in 200 ms (the system answering). */
+  @supports (interpolate-size: allow-keywords) {
+    .more::details-content {
+      interpolate-size: allow-keywords;
+      overflow: clip;
+      overflow-clip-margin: var(--page-x);
+      transition: block-size 260ms var(--ease-out), content-visibility 260ms allow-discrete;
+    }
+
+    .more:not([open])::details-content {
+      block-size: 0;
+      transition-duration: 200ms;
+    }
+
+    .more[data-instant]::details-content {
+      transition: none;
+    }
   }
 }
 
@@ -2336,14 +2534,13 @@ main {
 .card__subject {
   margin-top: 0.5rem;
   color: var(--navy-3);
-  font-family: var(--font-mono);
   font-size: var(--step--1);
   line-height: 1.5;
 }
 
 .card--mini .card__subject {
   margin-top: 0.375rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
 }
 
 /* The README results: value in mono, what it measures below. */
@@ -2375,6 +2572,27 @@ main {
   letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap; /* a number never splits ("MAE ≈ 4 / 122") */
+}
+
+/* A value with a README source links to it: a fine underline, the number unchanged,
+   above the card's own link layer, its target 24px+ without moving the layout. */
+.card__metric-link {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding-block: 4px;
+  margin-block: -4px;
+  text-decoration: underline;
+  text-decoration-color: var(--gold-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card__metric-link:hover {
+    text-decoration-color: var(--gold);
+  }
 }
 
 .card__metrics dt {
@@ -2412,8 +2630,11 @@ main {
   padding-top: 0.75rem;
 }
 
-.card__foot {
-  flex-wrap: nowrap;
+/* Narrowest phones: Demo may drop below, so the name never breaks in a word. */
+@media (min-width: 22.5em) {
+  .card__foot {
+    flex-wrap: nowrap;
+  }
 }
 
 .card__foot .card__repo {
@@ -2425,9 +2646,14 @@ main {
 }
 
 .card__repo-name {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow-wrap: normal; /* the name wraps only after its hyphens (<wbr> from the build) */
+}
+
+/* The arrow follows the name's last word, even when the name wraps. */
+.card__repo-name .icon {
+  display: inline;
+  margin-left: 0.3rem;
+  vertical-align: -0.05em;
 }
 
 .card__foot .card__demo {
@@ -2476,10 +2702,6 @@ main {
   overflow-wrap: break-word;
 }
 
-.card .card__text {
-  flex: 1;
-}
-
 .card__pending {
   margin-top: 0.75rem;
   font-size: 0.8125rem;
@@ -2492,8 +2714,8 @@ main {
   gap: 0.25rem 0;
   margin-top: 1.25rem;
   color: var(--navy-3);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -2536,11 +2758,17 @@ main {
   transition: text-decoration-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
 }
 
-/* A project with several repositories: one group per part, a label line
-   (part name and repository) above its demo and code links. */
+/* Above the layer of the card's own link (see .card__link::after). */
+.card__links a {
+  position: relative;
+  z-index: 2;
+}
+
+/* A project with several repositories: one compact row per part,
+   "Service · Live demo · Code", the part's name leading. */
 .card__links--parts {
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  gap: 0;
 }
 
 .card__part {
@@ -2551,18 +2779,17 @@ main {
 }
 
 .card__part-label {
-  flex-basis: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.125rem 0.625rem;
-  color: var(--navy);
+  flex-basis: 100%; /* narrow cards: the part's name over its links */
+  color: var(--navy-3);
   font-size: 0.875rem;
   font-weight: 600;
 }
 
-.card__part-label .card__repo {
-  font-weight: 400;
+/* One compact row, "Service · Live demo · Code", where the card is wide enough. */
+@media (min-width: 36em) and (max-width: 63.99em), (min-width: 84em) {
+  .card__part-label {
+    flex-basis: 6.5rem;
+  }
 }
 
 /* The repository name, untranslated, beside the links. */
@@ -2645,7 +2872,8 @@ main {
   border-color: var(--gold-line);
 }
 
-.card--feature:focus-within {
+.card--feature:focus-within,
+.card--feature:target {
   border-color: var(--gold);
 }
 
@@ -2715,13 +2943,8 @@ main {
 }
 
 /* A short list under a section's main one: Certifications, Languages. */
-.minor {
+.subhead--minor {
   margin: clamp(2.5rem, 5vw, 3.5rem) 0 0.25rem;
-  color: var(--navy-3);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  font-weight: 400;
-  letter-spacing: 0.02em;
 }
 
 .certs > li {
@@ -2770,8 +2993,8 @@ main {
   align-items: center;
   gap: 0.25rem 0;
   color: var(--navy-2);
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
   line-height: 1.7;
 }
 
@@ -2800,12 +3023,12 @@ main {
   color: var(--navy-2);
 }
 
-.minor + .langs,
-.minor + .certs {
+.subhead--minor + .langs,
+.subhead--minor + .certs {
   margin-top: 0.75rem;
 }
 
-.minor + .certs > li:first-child {
+.subhead--minor + .certs > li:first-child {
   border-top: 1px solid var(--line);
 }
 
@@ -2843,6 +3066,12 @@ main {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   overflow-wrap: anywhere;
+}
+
+/* A value that is plain text, not an address (the location). */
+.contact__value--text {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
 }
 
 .contact__link .icon {
@@ -3062,6 +3291,15 @@ main {
     border-color: transparent;
   }
 
+  /* Arriving from the hero's index (#p-<id>): the card's frame traces once in gold. */
+  .featured > .card.card--feature:target .frame {
+    animation: target-hold 1700ms linear 300ms both;
+  }
+
+  .featured > .card.card--feature:target .frame rect {
+    animation: target-draw 700ms var(--ease-in-out) 300ms both;
+  }
+
   .is-assembling .card[data-reveal].is-in,
   .is-assembling .portrait[data-reveal].is-in {
     /* backwards, not both: once over it lets go, and the card's own border (and its
@@ -3146,6 +3384,23 @@ main {
 @keyframes frame-draw {
   from { stroke-dashoffset: 1; }
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes fade-start {
+  to { --fade-start: var(--fade); }
+}
+
+@keyframes fade-end {
+  to { --fade-end: var(--fade); }
+}
+
+@keyframes target-draw {
+  from { stroke-dashoffset: 1; }
+}
+
+@keyframes target-hold {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes frame-hold {
