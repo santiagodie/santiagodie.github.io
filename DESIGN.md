@@ -60,12 +60,12 @@ Light page. All tokens live in `css/styles.css` `:root`.
 | --- | --- | --- |
 | `--step-4` | `clamp(3.25rem, 1.2rem + 8vw, 8.75rem)` | Name (Hubot Sans 750, width 112 %, line-height 0.9) |
 | `--step-3` | `clamp(2.25rem, 1.4rem + 3.6vw, 4.5rem)` | Section titles (Hubot Sans 700, width 108 %) |
-| `--step-2` | `clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem)` | Sub-heads, entry titles, contact labels |
-| `--step-1` | `clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem)` | Lead text |
+| `--step-2` | `clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem)` | Entry titles (h3, first level), contact labels |
+| `--step-1` | `clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem)` | Lead text; group subheads (h3, second level: More projects, Certifications, Languages; Hubot Sans 700) |
 | `--step-0` | `1.0625rem` | Body (Mona Sans, line-height 1.65) |
 | `--step--1` | `0.8125rem` | Mono labels: section numbers, course, ids, periods |
 
-Optional About text under the chat is set as display copy (Hubot Sans 500, up to 2.5rem). Display headings keep tight leading (0.9–1.2) on purpose.
+Optional About text under the chat is set as display copy (Hubot Sans 500, up to 2.5rem). Display headings keep tight leading (0.9–1.2) on purpose. Subheads have two levels only: an h3 that titles an item (an entry) is `--step-2`; an h3 that opens a group inside a section is `--step-1`, always in display type, never a small mono label.
 
 ## Layout and spacing
 
@@ -89,8 +89,8 @@ Optional About text under the chat is set as display copy (Hubot Sans 500, up to
 - **Section header sides**: from 48em, even visible sections (02, 04...) set the number and title right-aligned so they meet the line on the right; body text always stays left-aligned for reading. Numbers are assigned by the build to the visible sections only.
 - **Featured card**: white, 1px gold border (30 %; the traced frame is full gold), 12px radius; title (translated), course in mono, description, README metrics (value in mono over its label, two across where they fit on one line, otherwise stacked; a value never wraps), technologies (gold dot separators), underlined "Live demo" and "Code" links and the repository name in mono. Three across from 64em, one column below. Hover: lifts 2px, soft shadow, border to full gold.
 - **Small project card**: white, hairline border, 12px radius; title, course in mono, technologies, and at the foot the repository name in mono with an arrow (ellipsis if long). The whole card is one link to the repository (the title link's `::after` covers it; no nested links), and its focus ring goes round the card; a project with a demo adds a small underlined "Demo" (or "Colab") link that sits above that layer as a separate target. Four across from 64em, two from 36em, one below. Hover: lifts 2px, gold border, arrow nudges; press scales to 0.985.
-- **Entries**: hairline-ruled rows; period in mono in a 12rem column from 48em; title in display type; organisation with the place in tertiary navy; text; Education's line of subjects or track in tertiary navy; Experience's technologies in mono with gold dots. **Certifications** follow Education as a short ruled list under a small mono heading.
-- **Skills**: one ruled row per group, the name (display type) in the 12rem column and the items in mono with gold dots; no levels, bars or percentages. **Languages** follow as ruled rows of language and level under a small mono heading.
+- **Entries**: hairline-ruled rows; period in mono in a 12rem column from 48em; title in display type; organisation with the place in tertiary navy; text; Education's line of subjects or track in tertiary navy; Experience's technologies in mono with gold dots. **Certifications** follow Education as a short ruled list under a group subhead.
+- **Skills**: one ruled row per group, the name (display type) in the 12rem column and the items in mono with gold dots; no levels, bars or percentages. **Languages** follow as ruled rows of language and level under a group subhead.
 - **Contact, footer**: hairline-ruled rows with labels in display type and values in mono: Email, GitHub, LinkedIn (gold arrow) and Location (no arrow, not a link); footer with the gold monogram. Contact also shows the owner's photo (`img/portrait-*`, 4:5, AVIF and WebP with a JPEG fallback at 1x and 2x, no metadata), untouched, in a fine gold frame with a 5px mat like a card: above the text below 64em, to its right from 64em, under the title where the progress line arrives (8rem wide up to 80em, so every contact value stays on one line; 10rem from 80em). It assembles like a card, its frame tracing in first.
 - **TODO marker**: dashed gold frame; navy text on light, gold on navy. Kept for any TODO string outside paragraphs and entries; paragraphs and entries marked TODO are not published at all.
 

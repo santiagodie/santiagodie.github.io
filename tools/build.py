@@ -556,7 +556,7 @@ def render_entries(s, name):
     certs = s[name].get("certifications")
     if certs and [c for c in certs["items"] if published(c)]:
         items = "".join(f"<li>{esc(c)}</li>" for c in certs["items"] if published(c))
-        out += (f'\n          <h3 class="minor">{esc(certs["title"])}</h3>'
+        out += (f'\n          <h3 class="subhead subhead--minor">{esc(certs["title"])}</h3>'
                 f'\n          <ul class="certs" role="list">{items}</ul>')
     return out
 
@@ -585,7 +585,7 @@ def render_skills(s):
     if languages["items"]:
         items = "".join(f'<div class="langs__item"><dt>{esc(item["name"])}</dt><dd>{esc(item["level"])}</dd></div>'
                         for item in languages["items"])
-        out += (f'\n          <h3 class="minor">{esc(languages["title"])}</h3>'
+        out += (f'\n          <h3 class="subhead subhead--minor">{esc(languages["title"])}</h3>'
                 f'\n          <dl class="langs">{items}</dl>')
     return out
 

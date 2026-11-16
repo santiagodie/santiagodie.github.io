@@ -2272,12 +2272,15 @@ main {
   }
 }
 
+/* Group subheads (More projects, Certifications, Languages): the second of the two
+   h3 levels, below entry titles (step-2). One look wherever a section adds a group. */
 .subhead {
   margin: clamp(3.5rem, 7vw, 5rem) 0 1.5rem;
   font-family: var(--font-display);
-  font-size: var(--step-2);
+  font-size: var(--step-1);
   font-weight: 700;
-  letter-spacing: -0.015em;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .projects {
@@ -2715,13 +2718,8 @@ main {
 }
 
 /* A short list under a section's main one: Certifications, Languages. */
-.minor {
+.subhead--minor {
   margin: clamp(2.5rem, 5vw, 3.5rem) 0 0.25rem;
-  color: var(--navy-3);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  font-weight: 400;
-  letter-spacing: 0.02em;
 }
 
 .certs > li {
@@ -2800,12 +2798,12 @@ main {
   color: var(--navy-2);
 }
 
-.minor + .langs,
-.minor + .certs {
+.subhead--minor + .langs,
+.subhead--minor + .certs {
   margin-top: 0.75rem;
 }
 
-.minor + .certs > li:first-child {
+.subhead--minor + .certs > li:first-child {
   border-top: 1px solid var(--line);
 }
 
