@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 STATIC = ["css", "js", "img", "fonts", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv", "assets/cv"]
 ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>'
+DOWNLOAD = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>'
 FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
 TODO = re.compile(r"^TODO\s*:?\s*")
 # Size budget for the CSS and JavaScript the pages load, gzipped (GitHub Pages serves
@@ -502,6 +503,16 @@ def render_featured(projects, lang, s):
     return "\n".join(cards)
 
 
+def render_hero_cv(s, lang, root):
+    """The hero's main button: the CV of this language (assets/cv, made by
+    tools/make_cv.py), downloaded. Without the PDF, the button to the projects stays."""
+    name = f"cv-santiago-die-{lang}.pdf"
+    if not (ROOT / "assets" / "cv" / name).exists():
+        return f'          <a class="button button--primary" href="#projects">{text(s["hero"]["ctaProjects"])}</a>'
+    return (f'          <a class="button button--primary" href="{root}assets/cv/{name}" download="{name}" type="application/pdf" hreflang="{lang}">'
+            f'{DOWNLOAD}{label(s["hero"]["ctaCv"])}<span class="visually-hidden"> (PDF)</span></a>')
+
+
 def render_hero_featured(projects, lang, s):
     """The hero's index of the featured projects: their titles, each a link to its card
     in Projects, strung on the start of the progress line (one lit node per title)."""
@@ -717,6 +728,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
         "heroFeatured": lambda: render_hero_featured(projects, lang, s),
+        "heroCv": lambda: render_hero_cv(s, lang, root),
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),
