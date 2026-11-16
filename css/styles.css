@@ -928,12 +928,17 @@ html[data-menu-open] {
 }
 
 @media (max-width: 63.99em) {
-  .site-header:not([data-scrolled]):not([data-menu-open]) .brand:not(:focus-visible) {
+  /* Over the hero the hero's own monogram is the logo, so the header's is hidden:
+     invisible and out of the tab order (visibility), switched only after the fade
+     out ends and at once when the header turns navy and the logo fades back in. */
+  .site-header:not([data-scrolled]):not([data-menu-open]) .brand {
     opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear var(--dur-slow);
   }
 
   .brand {
-    transition: opacity var(--dur-slow) var(--ease-out);
+    transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear 0s;
   }
 }
 
