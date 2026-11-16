@@ -1033,6 +1033,34 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   }
 }
 
+/* Phones: one 44px line with the link and the close button. The sentence lives in
+   the link's accessible name; the rule is an inset shadow so it adds no height. */
+@media (max-width: 47.99em) {
+  .lang-suggest {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding-block: env(safe-area-inset-top, 0px) 0;
+    border-bottom: 0;
+    box-shadow: inset 0 -1px 0 var(--line);
+  }
+
+  .lang-suggest p {
+    display: none;
+  }
+
+  .lang-suggest__action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-left: auto;
+  }
+
+  .lang-suggest__close {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 /* Hero ------------------------------------------------------------------ */
 
 .hero {

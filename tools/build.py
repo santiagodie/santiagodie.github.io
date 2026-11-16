@@ -305,10 +305,14 @@ def render_lang_suggest(site, strings, current, root):
         if code == current:
             continue
         s = strings[code]["langSuggest"]
+        # Below 48em only the link and the close button show, so the link's name carries
+        # the whole sentence; it starts with the visible words (label in name, WCAG 2.5.3)
+        # and the paragraph is hidden from screen readers so it is never read twice.
         blocks.append(
             f'  <div class="lang-suggest" data-suggest="{code}" lang="{code}" hidden>\n'
-            f'    <p>{esc(s["text"])}</p>\n'
-            f'    <a class="lang-suggest__action" href="{relative_href(root, lang)}" hreflang="{code}">{esc(s["action"])}</a>\n'
+            f'    <p aria-hidden="true">{esc(s["text"])}</p>\n'
+            f'    <a class="lang-suggest__action" href="{relative_href(root, lang)}" hreflang="{code}"'
+            f' aria-label="{esc(s["action"])}. {esc(s["text"])}">{esc(s["action"])}</a>\n'
             f'    <button class="lang-suggest__close" type="button" data-suggest-dismiss aria-label="{esc(s["dismiss"])}">'
             f'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>\n'
             f'  </div>')
