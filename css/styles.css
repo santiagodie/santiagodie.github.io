@@ -755,9 +755,11 @@ html[data-menu-open] {
    its own bar where the header's is: the gold SD on the left, the close button
    exactly where the menu button was. Below: the sections, large, each with its
    number; then the profiles, the languages and the name with the year.
-   Motion (emil-design-eng): the panel uncovers itself from the top (clip-path,
-   360 ms, drawer curve), the rows follow 40 ms apart (opacity and 10px, 300 ms,
-   ease-out); closing is the same, quicker (200 ms), rows fading together. */
+   Motion (emil-design-eng; lot 8, quicker, as the most used): the panel uncovers
+   itself from the top (clip-path, 240 ms, drawer curve) while its three lines turn
+   into the close X; the rows follow at shrinking gaps (opacity and 10px, 160 ms,
+   ease-out, the last done by ~290 ms); closing is quicker (170 ms), rows fading
+   together (110 ms). */
 @media (max-width: 63.99em) {
   .js .menu-toggle {
     display: inline-flex;
@@ -781,13 +783,13 @@ html[data-menu-open] {
     --flag-edge: rgb(245 240 225 / 0.32);
     visibility: hidden;
     clip-path: inset(0 0 100% 0);
-    transition: clip-path 200ms var(--ease-drawer), visibility 0s linear 200ms;
+    transition: clip-path 170ms var(--ease-drawer), visibility 0s linear 170ms;
   }
 
   .js .site-header[data-menu-open] .site-menu {
     visibility: visible;
     clip-path: inset(0);
-    transition: clip-path 360ms var(--ease-drawer), visibility 0s;
+    transition: clip-path 240ms var(--ease-drawer), visibility 0s;
   }
 
   .js .site-menu__bar {
@@ -910,7 +912,7 @@ html[data-menu-open] {
   .js .site-menu__foot {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out);
+    transition: opacity 110ms var(--ease-out), transform 110ms var(--ease-out);
   }
 
   .js .site-header[data-menu-open] .site-menu .nav__list li,
@@ -919,8 +921,26 @@ html[data-menu-open] {
     opacity: 1;
     transform: none;
     transition:
-      opacity 300ms var(--ease-out) calc(90ms + var(--i, 0) * 40ms),
-      transform 300ms var(--ease-out) calc(90ms + var(--i, 0) * 40ms);
+      opacity 160ms var(--ease-out) var(--row-delay),
+      transform 160ms var(--ease-out) var(--row-delay);
+    /* 30, 55, 76, 95, 110, 123, then 132 ms: gaps that shrink, the rest together. */
+    --row-n: min(var(--i, 0), 6);
+    --row-delay: calc(30ms + var(--row-n) * 26ms - var(--row-n) * var(--row-n) * 1.5ms);
+  }
+
+  /* The panel's close button sits where the menu button is: its lines start as the
+     menu's three and turn into the X as the panel opens. */
+  .js .site-header:not([data-menu-open]) .menu-close .menu-toggle__icon::before {
+    transform: translateY(-3.25px);
+  }
+
+  .js .site-header:not([data-menu-open]) .menu-close .menu-toggle__icon::after {
+    transform: translateY(3.25px);
+  }
+
+  .js .site-header[data-menu-open] .menu-close .menu-toggle__icon::before,
+  .js .site-header[data-menu-open] .menu-close .menu-toggle__icon::after {
+    transition-duration: 240ms;
   }
 
   html:not(.js) .site-header__inner {
@@ -3389,6 +3409,11 @@ main {
   .js .site-header[data-menu-open] .site-menu__foot {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  .js .menu-close .menu-toggle__icon::before,
+  .js .menu-close .menu-toggle__icon::after {
     transition: none;
   }
 }
