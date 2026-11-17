@@ -2462,7 +2462,7 @@ main {
   }
 }
 
-/* Grows open where interpolate-size exists; the clip margin keeps the bleed. */
+/* Motion for the disclosure and its arrows. */
 @media (prefers-reduced-motion: no-preference) {
   .more__icon {
     transition: transform 200ms var(--ease-out);
@@ -2476,23 +2476,21 @@ main {
     transition: opacity 150ms ease;
   }
 
-  /* Opens in 260 ms; closes faster, in 200 ms (the system answering). */
-  @supports (interpolate-size: allow-keywords) {
-    .more::details-content {
-      interpolate-size: allow-keywords;
-      overflow: clip;
-      overflow-clip-margin: var(--page-x);
-      transition: block-size 260ms var(--ease-out), content-visibility 260ms allow-discrete;
-    }
+  /* The block opens and closes at once (animating its height re-laid the page out
+     on every frame); what moves is its content, settling in from 8px lower. */
+  .more[open] .more__body {
+    animation: more-in 200ms var(--ease-out) both;
+  }
 
-    .more:not([open])::details-content {
-      block-size: 0;
-      transition-duration: 200ms;
-    }
+  .more[data-instant] .more__body {
+    animation: none;
+  }
+}
 
-    .more[data-instant]::details-content {
-      transition: none;
-    }
+@keyframes more-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
 }
 
