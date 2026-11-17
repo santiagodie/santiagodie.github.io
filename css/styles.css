@@ -3389,13 +3389,14 @@ main {
     border-color: transparent;
   }
 
-  /* Arriving from the hero's index (#p-<id>): the card's frame traces once in gold. */
-  .featured > .card.card--feature:target .frame {
-    animation: target-hold 1700ms linear 300ms both;
+  /* Arriving at a card (#p-<id>): once the scroll lands (main.js, data-arrived) its
+     frame traces once in gold, while the card unfolds. */
+  .featured > .card.card--feature[data-arrived] .frame {
+    animation: target-hold 1700ms linear both;
   }
 
-  .featured > .card.card--feature:target .frame rect {
-    animation: target-draw var(--dur-reveal) var(--ease-in-out) 300ms both;
+  .featured > .card.card--feature[data-arrived] .frame rect {
+    animation: target-draw var(--dur-reveal) var(--ease-in-out) both;
   }
 
   .is-assembling .card[data-reveal].is-in,
