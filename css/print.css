@@ -105,6 +105,7 @@ a[data-url]::after,
 .more__icon,
 .more__count,
 .more__nav,
+.more__hide,
 .site-footer {
   display: none !important;
 }
@@ -346,6 +347,17 @@ a[data-url]:not(.card__link):not(.contact__link)::after {
   content-visibility: visible !important;
   block-size: auto !important;
   overflow: visible !important;
+}
+
+/* Printed mid-way through a fold (lot 8): what folds is whole. */
+.more__body,
+.card__detail,
+.more__body > *,
+.card__detail > * {
+  height: auto !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .more__row {

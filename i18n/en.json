@@ -264,7 +264,8 @@
         }
       ]
     },
-    "more": "More skills"
+    "more": "More skills",
+    "hide": "Hide skills"
   },
   "contact": {
     "text": "Write to me by email or find me on GitHub and LinkedIn.",

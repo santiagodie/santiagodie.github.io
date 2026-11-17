@@ -191,29 +191,127 @@
     });
   }
 
-  // Featured cards on phones (lot 7): folded to title and technologies until "View
-  // details"; unfolded at once when reached from the hero's index (#p-<id>). Not kept
-  // between visits. Folding is CSS for one column only, so desktop is untouched.
-  const features = [...document.querySelectorAll(".card--feature")];
-  const fold = (card, open, animate) => {
-    card.toggleAttribute("data-collapsed", !open);
-    card.querySelector(".card__toggle")?.setAttribute("aria-expanded", String(open));
-    if (open && animate) {
-      card.setAttribute("data-opening", "");
-      setTimeout(() => card.removeAttribute("data-opening"), 260);
+  // Disclosures (lot 8), one engine for all; see DESIGN.md, Disclosure.
+  const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
+  const motionOk = matchMedia("(prefers-reduced-motion: no-preference)");
+  const STAGGER = [30, 60, 85, 105, 120, 130];
+  const sum = (list) => list.reduce((a, b) => a + b, 0);
+  const signal = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
+  let moving = 0;
+
+  // o: parts (grow), kids (follow, staggered up to cap), anchor (kept still on closing;
+  // gets the focus back), shift (anchor above the fold), force (keep what is below
+  // still), shown(), start() (state at once) and shut() (once closed).
+  function fold(host, open, animate, o) {
+    const turning = !!host._anims; // turn back from where it is
+    const from = o.parts.map((p) => (o.shown?.() === false ? 0 : p.getBoundingClientRect().height));
+    const fade = o.kids.map((k) => +getComputedStyle(k).opacity);
+    host._anims?.forEach((a) => a.cancel());
+    const token = host._token = (host._token || 0) + 1;
+    host._anims = null;
+    o.start();
+    if (!open && o.parts.some((p) => p.contains(document.activeElement))) o.anchor.focus({ preventScroll: true });
+    let fix = () => {};
+    const end = () => {
+      o.parts.forEach((p) => { p.inert = false; });
+      host.removeAttribute("data-moving");
+      if (!open) o.shut?.();
+      fix();
+      root.style.overflowAnchor = host._anims = null;
+      if (host._held && !(host._held = false) && !--moving) signal("disclosure:motion", false);
+    };
+    if (!animate || !motionOk.matches) {
+      end();
+      if (open && animate) o.kids.forEach((k) => k.animate({ opacity: [0, 1] }, { duration: 150, easing: "ease-out" }));
+      return;
     }
+    if (!host._held && (host._held = true) && !moving++) signal("disclosure:motion", true);
+    host.setAttribute("data-moving", "");
+    root.style.overflowAnchor = "none";
+    o.parts.forEach((p) => { p.inert = !open; });
+    const to = o.parts.map((p) => (open ? p.scrollHeight : 0));
+    const ms = (open ? 260 : 180) * Math.max(0.35, Math.abs(sum(to) - sum(from)) / (sum(o.parts.map((p) => p.scrollHeight)) || 1));
+    const anims = host._anims = o.parts.map((p, i) => p.animate({ height: [`${from[i]}px`, `${to[i]}px`] }, { duration: ms, easing: EASE, fill: "forwards" }));
+    o.kids.forEach((k, i) => anims.push(open
+      ? k.animate({ opacity: [turning ? fade[i] : 0, 1], transform: ["translateY(8px)", "none"] },
+        { duration: 180, delay: turning ? 0 : STAGGER[Math.min(i, (o.cap || 6) - 1)], easing: EASE, fill: "backwards" })
+      : k.animate({ opacity: [fade[i], 0] }, { duration: Math.min(110, ms), easing: EASE, fill: "forwards" })));
+    const now = document.timeline.currentTime; // start now: a turn-back never stalls
+    anims.forEach((a) => { a.startTime = now; });
+    if (!open) {
+      // The anchor stays if in view; otherwise what is below does (scrolling in-frame).
+      const box = o.anchor.getBoundingClientRect();
+      const top = header.getBoundingClientRect().bottom;
+      const total = sum(from) || 1;
+      const y1 = box.top >= top - 1 && box.bottom <= innerHeight + 1 && !o.force ? box.top
+        : Math.min(Math.max(box.top + (o.shift ? total : 0), top), innerHeight - box.height);
+      fix = () => {
+        const p = 1 - sum(o.parts.map((x) => x.getBoundingClientRect().height)) / total;
+        const dy = o.anchor.getBoundingClientRect().top - box.top - (y1 - box.top) * p;
+        if (Math.abs(dy) >= 0.5) scrollBy({ top: dy, behavior: "instant" });
+        signal("disclosure:frame");
+      };
+      const keep = () => {
+        if (host._token === token && host.hasAttribute("data-moving")) {
+          fix();
+          requestAnimationFrame(keep);
+        }
+      };
+      requestAnimationFrame(keep);
+    }
+    Promise.all(anims.map((a) => a.finished)).then(() => {
+      if (host._token !== token) return;
+      end();
+      anims.forEach((a) => a.cancel());
+    }, () => {});
+  }
+
+  // Featured cards on phones (lot 7): folded to title and technologies until "View
+  // details"; unfolded at once from the hero's index (#p-<id>). CSS folds them in one
+  // column only, so desktop is untouched.
+  const features = [...document.querySelectorAll(".card--feature")];
+  const foldCard = (card, open, animate) => {
+    const button = card.querySelector(".card__toggle");
+    const parts = [...card.querySelectorAll(".card__detail")];
+    fold(card, open, animate && compact.matches, {
+      parts, kids: parts.flatMap((p) => [...p.children]), anchor: button,
+      start() {
+        button?.setAttribute("aria-expanded", open);
+        if (open) card.removeAttribute("data-collapsed");
+      },
+      shut: () => card.setAttribute("data-collapsed", ""),
+    });
   };
   features.forEach((card) => {
-    fold(card, false, false);
-    card.querySelector(".card__toggle")?.addEventListener("click", () => fold(card, card.hasAttribute("data-collapsed"), true));
+    foldCard(card, false, false);
+    const button = card.querySelector(".card__toggle");
+    button?.addEventListener("click", () => foldCard(card, button.getAttribute("aria-expanded") === "false", true));
   });
   const unfoldTarget = () => {
     const card = features.find((c) => c.id === location.hash.slice(1));
     if (card) {
-      fold(card, true, false);
+      foldCard(card, true, false);
       card.scrollIntoView();
     }
   };
+
+  // More projects and More skills: native <details> (as ever without JavaScript); the
+  // summary's click is taken over, [open] still changes at once.
+  document.querySelectorAll("details.more").forEach((details) => {
+    const summary = details.querySelector("summary");
+    const body = details.querySelector(".more__body");
+    const go = (open, force) => fold(details, open, true, {
+      parts: [body], kids: [...body.querySelectorAll(".more__list > li, .skills__group, .more__hide")],
+      cap: body.querySelector(".more__list") ? 4 : 6, anchor: summary, shift: true, force,
+      shown: () => details.open || details.hasAttribute("data-moving"),
+      start: () => { details.open = open; },
+    });
+    summary.addEventListener("click", (event) => {
+      event.preventDefault();
+      go(!details.open);
+    });
+    details.querySelector("[data-more-hide]")?.addEventListener("click", () => go(false, true));
+  });
   window.addEventListener("hashchange", unfoldTarget);
   unfoldTarget();
 
@@ -230,10 +328,8 @@
       const target = document.getElementById(location.hash.slice(1));
       if (target && more.contains(target)) {
         // Opened at once (no growing), so the card is there to scroll to.
-        more.dataset.instant = "";
         more.open = true;
         target.scrollIntoView();
-        requestAnimationFrame(() => delete more.dataset.instant);
       }
     };
     const ends = () => {

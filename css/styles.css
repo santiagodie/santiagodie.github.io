@@ -2371,6 +2371,53 @@ main {
   contain: layout;
 }
 
+/* Lot 8: while it shrinks ([open] already off, main.js) the content stays drawn;
+   what grows or shrinks is clipped only meanwhile. */
+.more[data-moving]::details-content {
+  content-visibility: visible;
+}
+
+.more[data-moving] .more__body {
+  overflow: clip;
+}
+
+/* "Hide skills": at the foot of the long list, phones only, with JavaScript. */
+.more__hide {
+  display: none;
+}
+
+@media screen and (max-width: 47.99em) {
+  .js .more__hide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    min-height: 44px;
+    margin-block: 0.5rem 1rem;
+    padding: 0;
+    color: var(--navy);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .more__hide .more__icon {
+    margin-left: 0;
+    transform: rotate(45deg);
+  }
+
+  .more__hide:focus-visible .more__icon {
+    box-shadow: inset 0 0 0 1px var(--navy);
+  }
+}
+
 .more__nav {
   display: none;
 }
@@ -2384,6 +2431,7 @@ main {
 
 .more__body {
   position: relative;
+  display: flow-root; /* its children's margins inside: its height is all of it */
 }
 
 .more__row {
@@ -2466,8 +2514,13 @@ main {
 
 /* Motion for the disclosure and its arrows. */
 @media (prefers-reduced-motion: no-preference) {
+  /* The plus turns with the fold, on its clock: 260 ms in, 180 ms out. */
   .more__icon {
-    transition: transform 200ms var(--ease-out);
+    transition: transform 180ms var(--ease-out);
+  }
+
+  .more[open] .more__icon {
+    transition-duration: 260ms;
   }
 
   .more__arrow {
@@ -2476,23 +2529,6 @@ main {
 
   .more__arrow[aria-disabled="false"] {
     transition: opacity 150ms ease;
-  }
-
-  /* The block opens and closes at once (animating its height re-laid the page out
-     on every frame); what moves is its content, settling in from 8px lower. */
-  .more[open] .more__body {
-    animation: more-in 200ms var(--ease-out) both;
-  }
-
-  .more[data-instant] .more__body {
-    animation: none;
-  }
-}
-
-@keyframes more-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
   }
 }
 
@@ -3479,6 +3515,21 @@ main {
     box-shadow: inset 0 0 0 1px var(--navy);
   }
 
+  /* A block of its own (flow-root keeps its children's margins inside, so its height
+     is all of it), clipped only while it grows or shrinks. Its box would replay the
+     section's assembly each time it unfolds: the fold is its only motion. */
+  .js .card__detail {
+    display: flow-root;
+  }
+
+  .js .card--feature > .card__detail {
+    animation: none !important;
+  }
+
+  .card--feature[data-moving] .card__detail {
+    overflow: clip;
+  }
+
   .card--feature[data-collapsed] .card__detail {
     display: none;
   }
@@ -3486,11 +3537,10 @@ main {
 
 @media screen and (max-width: 63.99em) and (prefers-reduced-motion: no-preference) {
   .card__toggle .more__icon {
-    transition: transform 200ms var(--ease-out);
+    transition: transform 180ms var(--ease-out);
   }
 
-  /* The lot 6 entrance: the height does not animate, the content settles in. */
-  .card--feature[data-opening] .card__detail > * {
-    animation: more-in 200ms var(--ease-out) both;
+  .card__toggle[aria-expanded="true"] .more__icon {
+    transition-duration: 260ms;
   }
 }
