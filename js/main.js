@@ -177,7 +177,11 @@
   addEventListener("pageswap", (event) => {
     const section = event.viewTransition && document.getElementById(currentSection());
     const title = section?.querySelector(".section__title");
-    if (!title) return;
+    if (!title) {
+      // Still in the hero (lot 10): the next page keeps the same scroll.
+      if (event.viewTransition) try { sessionStorage.setItem("vt", JSON.stringify({ y: Math.round(scrollY) })); } catch { /* not kept */ }
+      return;
+    }
     try { sessionStorage.setItem("vt", JSON.stringify({ id: section.id, top: title.getBoundingClientRect().top })); } catch { return; }
     [[title, "vt-title"], [section.querySelector(".section__num"), "vt-num"]].forEach(([el, name]) => {
       el.style.viewTransitionName = name;

@@ -50,7 +50,19 @@
   }
 
   let drawn = false;
+  // Arrived from the other language mid-way (index.html, "vt-mid"): shown as arrived
+  // until the page is back at the top, then as usual.
+  let arrived = root.classList.contains("vt-mid");
   function apply(p) {
+    if (arrived && scrollY > 0) {
+      mark.style.opacity = 0;
+      root.style.setProperty("--brand", 1);
+      return;
+    }
+    if (arrived) {
+      arrived = false;
+      root.classList.remove("vt-mid");
+    }
     if (p > 0 && !drawn) {
       drawn = true;
       path.getAnimations().forEach((a) => a.finish()); // still drawing: complete it, then travel

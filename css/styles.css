@@ -992,6 +992,29 @@ html[data-menu-open] {
   }
 }
 
+/* Lot 10 (R4): with motion, the header has no logo at the very top on any width (the
+   hero's monogram is the logo there, and travels up into its place); it still takes
+   keyboard focus and shows then. Without JavaScript or with reduced motion, as before. */
+.js.motion .site-header:not([data-scrolled]):not([data-menu-open]) .brand {
+  opacity: 0;
+  visibility: visible;
+}
+
+.js.motion .site-header .brand:focus-visible {
+  opacity: 1;
+}
+
+/* Arrived from the other language with the monogram on its way (index.html, vt-mid):
+   it shows as arrived, the header's logo in place, until the page is back at the top. */
+.vt-mid .hero__logo {
+  opacity: 0;
+}
+
+.vt-mid .site-header .brand {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 /* Lot 10 (R4): while the monogram travels (js/deferred/logo-travel.js) it flies
    above the header, and the header's logo stays out of sight until it lands
    (--brand), except when it has keyboard focus or the menu is open. */
