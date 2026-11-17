@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 STATIC = ["css", "js", "img", "fonts", "favicon.ico", "favicon.svg", "apple-touch-icon.png", "og-image.png", "og-image-es.png", "og-image-fr.png", "CNAME", "cv"]
 ARROW = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg>'
+DOWNLOAD = '<svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>'
 FRAME = '<svg class="frame" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>'  # traced in on scroll (js/scroll.js)
 TODO = re.compile(r"^TODO\s*:?\s*")
 # Size budget for the CSS and JavaScript the pages load, gzipped (GitHub Pages serves
@@ -43,6 +44,8 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 # 2026-11-16, lot 3: briefly 33.4 KB for "More projects" (about 1.7 KB); back to 32.4 KB
 # on 2026-11-17 once the CSS ships minified (minify_css), at about 26 KB in all.
 BUDGET_GZIP_KB = 32.4
+# css/print.css only loads to print (media="print"), so it has a budget of its own.
+PRINT_BUDGET_GZIP_KB = 4
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
@@ -500,6 +503,30 @@ def render_featured(projects, lang, s):
     return "\n".join(cards)
 
 
+def render_hero_cv(s, lang, root):
+    """The hero's main button: the CV of this language, made at every deploy
+    (tools/make_cv.py writes dist/cv/ after the build), downloaded."""
+    name = f"cv-santiago-die-{lang}.pdf"
+    return (f'          <a class="button button--primary" href="/cv/{name}" download="{name}" type="application/pdf" hreflang="{lang}">'
+            f'{DOWNLOAD}{label(s["hero"]["ctaCv"])}<span class="visually-hidden"> (PDF)</span></a>')
+
+
+def render_cv_profile(s):
+    """Print only (css/print.css): the CV's profile, in the first person, in place of
+    the chat; hidden on the screen, where the chat says it."""
+    return f'          <p class="cv-only cv-profile" hidden>{label(s["cv"]["profile"])}</p>'
+
+
+def render_cv_nationality(s):
+    """Print only: nationality and the right to work, a CV detail the page does not show
+    (and that stays out of the JSON-LD)."""
+    cv = s["cv"]
+    return (f'            <li class="cv-only" hidden>\n              <p class="contact__row">'
+            f'<span class="contact__label">{label(cv["nationalityLabel"])}</span>'
+            f'<span class="contact__value contact__value--text">{label(cv["nationality"])}</span></p>\n'
+            f'            </li>')
+
+
 def render_hero_featured(projects, lang, s):
     """The hero's index of the featured projects: their titles, each a link to its card
     in Projects, strung on the start of the progress line (one lit node per title)."""
@@ -649,17 +676,14 @@ def render_location(s):
 
 
 def render_cv(s, root, warnings):
-    """The CV button only exists when the PDF does."""
+    """The CV row: the PDF of this language, made at every deploy from the built page
+    (tools/make_cv.py writes dist/cv/ after the build), downloaded."""
     contact = s["contact"]
     if not contact["cvFile"]:
         return ""
-    if not (ROOT / contact["cvFile"]).exists():
-        warnings.add(f"contact.cvFile is {contact['cvFile']!r}, which does not exist: the CV is not published")
-        return ""
     name = contact["cvFile"].split("/")[-1]
-    return (f'            <li>\n              <a class="contact__link" href="{root}{esc(contact["cvFile"])}" target="_blank" rel="noopener">'
-            f'<span class="contact__label">{text(contact["cv"])}</span><span class="contact__value">{esc(name)}</span>{ARROW}'
-            f'<span class="visually-hidden">({esc(s["a11y"]["newTab"])})</span></a>\n'
+    return (f'            <li class="contact__cv">\n              <a class="contact__link" href="/{esc(contact["cvFile"])}" download="{esc(name)}" type="application/pdf">'
+            f'<span class="contact__label">{text(contact["cv"])}</span><span class="contact__value">{esc(name)}</span>{DOWNLOAD}</a>\n'
             f'            </li>')
 
 
@@ -715,6 +739,9 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
         "heroFeatured": lambda: render_hero_featured(projects, lang, s),
+        "heroCv": lambda: render_hero_cv(s, lang, root),
+        "cvProfile": lambda: render_cv_profile(s),
+        "cvNationality": lambda: render_cv_nationality(s),
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),
@@ -752,7 +779,17 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
             page, unlinked = re.subn(rf'\n *<li[^>]*><a href="#{section}".*?</a></li>', "", page)
             if not (removed and unlinked):
                 raise BuildError(f"src/index.html: could not leave out the empty '{section}' section")
-    return page
+    # Every outside link carries its URL without the scheme, for print (css/print.css
+    # writes it after the link text).
+    return EXTERNAL_HREF.sub(lambda m: f'{m.group(0)} data-url="{short_url(html.unescape(m.group(1)))}"', page)
+
+
+EXTERNAL_HREF = re.compile(r'<a (?:class="[^"]*" )?href="(https?://[^"]+)"')
+
+
+def short_url(url):
+    """https://www.github.com/a/b/ -> github.com/a/b (escaped for an attribute)."""
+    return esc(re.sub(r"^https?://(www\.)?", "", url).rstrip("/"))
 
 
 def render_sitemap(site):
@@ -796,8 +833,10 @@ def build():
         elif source.exists():
             shutil.copy2(source, DIST / name)
     # The CSS ships minified (conservatively, see minify_css); the JavaScript does not.
+    host = re.sub(r"^https?://", "", site["url"]).rstrip("/")
     for sheet in DIST.glob("css/*.css"):
-        sheet.write_text(minify_css(sheet.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
+        css = sheet.read_text(encoding="utf-8").replace("__SITE__", host)  # print.css names the site
+        sheet.write_text(minify_css(css), encoding="utf-8", newline="\n")
     (DIST / "sitemap.xml").write_text(render_sitemap(site), encoding="utf-8", newline="\n")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}sitemap.xml\n", encoding="utf-8", newline="\n")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
@@ -848,6 +887,8 @@ def report_sizes():
     """Print the raw and gzipped size of every CSS and JS file in dist/ and fail the
     build when their gzipped total goes over BUDGET_GZIP_KB."""
     files = sorted([*DIST.glob("css/*.css"), *DIST.glob("js/*.js")])
+    print_sheet = DIST / "css" / "print.css"
+    files = [f for f in files if f != print_sheet]
     total_raw = total_gz = 0
     print("size     raw KB   gzip KB")
     for path in files:
@@ -859,6 +900,12 @@ def report_sizes():
     print(f"  {'total':<16} {total_raw / 1024:7.1f} {total_gz / 1024:9.1f}  (budget {BUDGET_GZIP_KB:.1f} KB gzip)")
     if total_gz / 1024 > BUDGET_GZIP_KB:
         raise BuildError(f"CSS + JS weigh {total_gz / 1024:.1f} KB gzipped, over the {BUDGET_GZIP_KB:.1f} KB budget (BUDGET_GZIP_KB in tools/build.py)")
+    if print_sheet.exists():
+        data = print_sheet.read_bytes()
+        gz = len(gzip.compress(data, compresslevel=9, mtime=0))
+        print(f"  {'css/print.css':<16} {len(data) / 1024:7.1f} {gz / 1024:9.1f}  (print only; budget {PRINT_BUDGET_GZIP_KB:.1f} KB gzip)")
+        if gz / 1024 > PRINT_BUDGET_GZIP_KB:
+            raise BuildError(f"css/print.css weighs {gz / 1024:.1f} KB gzipped, over its {PRINT_BUDGET_GZIP_KB:.1f} KB budget")
 
 
 def serve(port):

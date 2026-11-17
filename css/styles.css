@@ -1136,7 +1136,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem 1.75rem;
+  gap: 0.75rem 1.5rem;
 }
 
 /* The featured projects: the progress line starts here. Each title hangs on a lit

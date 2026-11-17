@@ -34,6 +34,7 @@
   "hero": {
     "role": "Computer Engineer · AI & ML · MLOps",
     "ctaProjects": "View projects",
+    "ctaCv": "Download CV",
     "ctaContact": "Get in touch"
   },
   "chat": {
@@ -241,7 +242,12 @@
     "location": "Logroño, La Rioja, Spain",
     "photoAlt": "Santiago Die Morejón",
     "cv": "CV (PDF)",
-    "cvFile": ""
+    "cvFile": "cv/cv-santiago-die-en.pdf"
+  },
+  "cv": {
+    "profile": "I am a computer engineering student at the University of La Rioja, specialising in knowledge management, aiming to become a machine learning and MLOps engineer. I am currently an intern at Encore Lab, building a secure cloud platform with LLM features. I approach problems empirically: rather than assuming which solution is best, I measure it. I work comfortably in Spanish, English and French.",
+    "nationalityLabel": "Nationality",
+    "nationality": "Spanish, French and Ecuadorian · EU citizen, free to work in the EU"
   },
   "footer": {
     "rights": "Santiago Die Morejón",
