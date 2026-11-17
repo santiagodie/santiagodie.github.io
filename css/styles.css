@@ -1071,9 +1071,11 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   background: var(--white);
 }
 
-/* Phones shorter than 844px cannot show 01's title whole under the hero, so the hero
-   fills the screen and the title starts just below the fold instead of being cut. */
-@media (max-width: 47.99em) and (max-height: 52.7em) {
+/* Phones up to 899px tall cannot show 01's title whole under the hero (lot 6: the
+   French featured titles and the longer role line cut it at 390x844, 393x852 and
+   384x854), so the hero fills the screen and the title starts just below the fold
+   instead of being cut. From 900px (412x915, 430x932) it shows whole. */
+@media (max-width: 47.99em) and (max-height: 56.2em) {
   .hero {
     min-height: 100vh;
     min-height: 100svh;
