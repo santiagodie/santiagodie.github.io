@@ -213,6 +213,11 @@
     suggestion.hidden = false;
     suggestion.querySelector("[data-suggest-dismiss]").addEventListener("click", () => {
       storage.set(DISMISS_KEY, "1");
+      // Focus goes to the header's first control in view (the logo, or on phones over
+      // the hero, where the logo is hidden, the menu button), not back to the page.
+      [...header.querySelectorAll("a[href], button")]
+        .find((el) => el.getClientRects().length && getComputedStyle(el).visibility !== "hidden")
+        ?.focus({ preventScroll: true });
       const gone = () => {
         suggestion.hidden = true;
         delete document.documentElement.dataset.suggest;
@@ -339,12 +344,12 @@
       shown: () => details.open || details.hasAttribute("data-moving"),
       start: () => { details.open = details._mine = open; },
     });
+    details._go = go;
     summary.addEventListener("click", (event) => {
       event.preventDefault();
       go(!details.open);
     });
     details.querySelector("[data-more-hide]")?.addEventListener("click", () => go(false, true));
-    details._go = go;
   });
 
   // Arriving at a card (#p-<id>: the hero's index, a link, or on load; lot 9): first the
