@@ -327,6 +327,7 @@
     // R1: the chat's background, once the chat is a screen away (with reduced motion
     // too: then it draws one still frame).
     const panel = document.querySelector(".chat__panel");
+    if (/[?&]debug=bg(&|$)/.test(location.search)) later("deferred/bg-debug.js").catch(() => {});
     if (panel && "IntersectionObserver" in window) {
       const near = new IntersectionObserver(([e]) => {
         if (!e.isIntersecting) return;
