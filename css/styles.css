@@ -1352,7 +1352,8 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   /* A margin, not padding: scrolled text stops below the Skip/Replay corner. */
   margin-block: 2.25rem 1rem;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  /* Lot 10: no "contain": a log that fits passes the wheel to the page, and one that
+     scrolls hands on to the page at its ends (it used to trap the page). */
   scrollbar-width: thin;
   scrollbar-color: rgb(245 240 225 / 0.22) transparent;
 }
