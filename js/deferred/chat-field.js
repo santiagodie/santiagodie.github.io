@@ -16,7 +16,7 @@
   // only (the troughs: a shade of the navy). Bone and gold text keep 4.5:1 on its lightest
   // pixel (.audit/l10m/variants.json). 11 palette stops (the last repeats the first: the palette loops), the tint's
   // base and accent, the troughs' colour, the sheen, the troughs' depth, the speed.
-  const PRESET = {"pal":["#0B1F3A","#132C4F","#0B1F3A","#173155","#132C4F","#0B1F3A","#132C4F","#173155","#132C4F","#0B1F3A","#0B1F3A"],"base":"#0B1F3A","accent":"#132C4F","bg":"#071323","sheen":0.45,"depth":0.9,"speed":0.88}; // variant (a), the owner's choice
+  const PRESET = {"pal":["#0B1F3A","#132C4F","#0B1F3A","#173155","#132C4F","#0B1F3A","#132C4F","#173155","#132C4F","#0B1F3A","#0B1F3A"],"base":"#0B1F3A","accent":"#132C4F","bg":"#071323","sheen":0.45,"depth":0.9,"speed":0.32}; // variant (a), the owner's choice
   // Prismveil's fragment shader with the owner's settings as constants: the palette
   // (sampled along the folds and drifting slowly), the sheen, the tint and the troughs.
   // No grain, no vignette, saturation and brightness at 1 (they are identities).
