@@ -431,11 +431,19 @@ def demo_label(demo, s, short=False):
     return s["projects"]["demoShort" if short else "demo"]
 
 
+def live_demo(item):
+    """The secondary link of a card: only a live web demo (owner's rule, lot 6). The
+    card itself always opens its repository (`repo`); a Colab notebook or a download
+    stays in data/projects.json, unlinked, until the owner decides."""
+    demo = item.get("demo")
+    return demo if demo and demo.get("url") and demo.get("type") == "web" else None
+
+
 def project_links(project, lang, s):
     title = project["title"][lang]
     links = [external(project["repo"], s["projects"]["code"], title, s)]
-    demo = project.get("demo")
-    if demo and demo.get("url"):
+    demo = live_demo(project)
+    if demo:
         links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
     return "".join(links)
 
@@ -450,8 +458,8 @@ def project_parts(project, lang, s):
         label = part["label"][lang]
         context = f"{label}, {title}"
         links = external(part["repo"], s["projects"]["code"], context, s)
-        demo = part.get("demo")
-        if demo and demo.get("url"):
+        demo = live_demo(part)
+        if demo:
             links = external(demo["url"], demo_label(demo, s), context, s) + links
         heading = f'{project["id"]}-part-{index}'
         groups.append(
@@ -549,9 +557,9 @@ def render_projects(projects, lang, s):
         if project.get("featured"):
             continue
         title = project["title"][lang]
-        demo = project.get("demo")
+        demo = live_demo(project)
         extra = ""
-        if demo and demo.get("url"):
+        if demo:
             extra = (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(demo_label(demo, s, short=True))}{ARROW}'
                      f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
         foot = "card__foot"
@@ -560,7 +568,7 @@ def render_projects(projects, lang, s):
             extra = "".join(
                 f'<a class="card__demo" href="{esc(part["demo"]["url"])}" target="_blank" rel="noopener">{esc(part["label"][lang])}{ARROW}'
                 f'<span class="visually-hidden">: {esc(demo_label(part["demo"], s))}, {esc(title)} ({esc(new_tab)})</span></a>'
-                for part in project["parts"] if part.get("demo", {}).get("url"))
+                for part in project["parts"] if live_demo(part))
             foot += " card__foot--stacked"
             extra = f'<span class="card__more">{extra}</span>'
         cards.append(f'''            <li class="card card--mini" id="p-{project["id"]}">{FRAME}
