@@ -28,7 +28,8 @@
 
   // Header: transparent over the hero, navy once the page scrolls -------------
 
-  const onScroll = () => header.toggleAttribute("data-scrolled", window.scrollY > 16);
+  // With the logo's travel running (lot 10), the travel sets the header's state instead.
+  const onScroll = () => document.documentElement.classList.contains("logo-travels") || header.toggleAttribute("data-scrolled", window.scrollY > 16);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 

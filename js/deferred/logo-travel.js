@@ -30,7 +30,7 @@
     mark.style.transform = t;
     // Where the logo sits once the header is stuck at the top.
     const stuckTop = b.top - header.getBoundingClientRect().top;
-    g = { x0: m.left, y0: m.top + scrollY, w: m.width, h: m.height, bx: b.left, by: stuckTop, k: b.width / m.width, range: hero.offsetHeight * 0.3, head: header.offsetHeight };
+    g = { x0: m.left, y0: m.top + scrollY, w: m.width, h: m.height, bx: b.left, by: stuckTop, k: b.width / m.width, range: innerWidth < 1024 ? 150 : hero.offsetHeight * 0.3, head: header.offsetHeight };
   }
 
   // Everything at progress p (0 at the top, 1 at the end of the range).
@@ -57,6 +57,8 @@
     if (arrived && scrollY > 0) {
       mark.style.opacity = 0;
       root.style.setProperty("--brand", 1);
+      root.style.setProperty("--head", 1);
+      header.setAttribute("data-scrolled", "");
       return;
     }
     if (arrived) {
@@ -74,6 +76,10 @@
     mark.style.opacity = v.hand ? 0 : "";
     mark.style.viewTransitionName = p > 0 ? "none" : "";
     root.style.setProperty("--brand", v.hand ? 1 : 0);
+    // One progress for both (fix, phones): the header's navy comes in as the monogram
+    // travels and is whole when it lands; its colours switch half-way.
+    root.style.setProperty("--head", Math.min(1, p).toFixed(3));
+    header.toggleAttribute("data-scrolled", p >= 0.5);
   }
 
   // Native: one update per frame while scrolling.
@@ -92,6 +98,7 @@
   function gsapEngine() {
     const { gsap, ScrollTrigger } = window;
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true }); // iOS: the address bar must not refresh it mid-scroll
     const state = { p: 0 };
     gsap.to(state, {
       p: 1,
