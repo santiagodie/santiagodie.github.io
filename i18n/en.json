@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Junior ML & MLOps Engineer",
-    "description": "Final-year computer engineering student (University of La Rioja). Machine learning and MLOps with Python, PyTorch and Docker. Available from June 2027.",
+    "description": "Final-year computer engineering student (University of La Rioja). Machine learning and MLOps with Python, PyTorch and Docker.",
     "ogLocale": "en_GB",
     "langName": "English",
     "jobTitle": "Computer engineering student, machine learning and MLOps"
@@ -32,14 +32,14 @@
     "dismiss": "Dismiss"
   },
   "hero": {
-    "role": "Machine learning & MLOps in Python · Available as a junior from June 2027",
+    "role": "Machine learning & MLOps in Python",
     "ctaProjects": "View projects",
     "ctaCv": "Download CV",
     "ctaContact": "Get in touch"
   },
   "chat": {
-    "prompt": "Santiago, introduce yourself.",
-    "answer": "I am in the final year of computer engineering at the University of La Rioja and I want to work as a machine learning and MLOps engineer. My face search indexes 38,299 faces from 21,678 press photos and reaches an F1 of 0.911 at the calibrated threshold.\n\nI am an intern at Encore Lab, on a secure cloud platform with LLM features. In my projects I measure before I choose: I compared five CNN architectures for classifying satellite images, and the artificial life simulation we built as a team passes 108 tests and clears 220 requests in 30 seconds with five workers.\n\nWhat interests me is what comes after the model. In my salary predictor, the Random Forest is served by a Flask API that validates every request with Pydantic, and the demo runs the same model in the browser with ONNX.\n\nMy specialisation in knowledge management gave me ontologies and knowledge engineering, a grounding I want to bring to LLM systems. I grew up in Quito, went to a French lycée and live in Spain; I work in Spanish, English and French.\n\nI finish my internship in May 2027 and I am looking for a junior ML or MLOps role from June. If that fits your team, write to me.",
+    "prompt": "Who is Santiago Die?",
+    "answer": "Based on my analysis, Santiago is a computer engineering student at the University of La Rioja, specialising in knowledge management, and he is aiming to become a machine learning and MLOps engineer. He is currently an intern at Encore Lab, building a secure cloud platform with LLM features.\n\nHe approaches problems empirically: rather than assuming which solution is best, he measures it, whether that means comparing five CNN architectures or benchmarking a VP-tree index against brute-force search. He cares about the details that make a system reliable, not just functional.\n\nHe grew up in Quito, studied at a French lycée and now lives in Spain, so he adapts quickly and works comfortably in Spanish, English and French.",
     "send": "Send the question",
     "skip": "Skip",
     "replay": "Replay",
@@ -96,14 +96,14 @@
         "org": "Encore Lab",
         "place": "Logroño, Spain",
         "text": "I build a secure cloud portal for the clients of a grant consultancy: it syncs from their on-premise system without exposing the internal network, and classifies documents and answers clients with LLM-based features.",
-        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLMs"
+        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLMs · legacy systems integration · software design"
       },
       {
         "period": "Apr 2026 – Present",
         "title": "Full-stack developer (freelance)",
         "org": "Islamontana Travel",
         "place": "Remote",
-        "text": "I designed and built the bilingual, SEO-optimised website of a nature travel agency in Ecuador. Still in development: an admin panel with 2FA and roles, a FastAPI API on PostgreSQL, and deployment to a VPS with Docker Compose and CI/CD with staging and tagged releases.",
+        "text": "I designed and built the bilingual, SEO-optimised website of a nature travel agency in Ecuador. Still in development: an admin panel with roles, a FastAPI API on PostgreSQL, and deployment with Docker Compose and CI/CD with staging and tagged releases.",
         "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · Docker · GitHub Actions"
       }
     ]
@@ -232,7 +232,9 @@
           "network management",
           "requirements analysis",
           "UI design",
-          "prototyping"
+          "prototyping",
+          "legacy systems integration",
+          "software design"
         ]
       },
       {
