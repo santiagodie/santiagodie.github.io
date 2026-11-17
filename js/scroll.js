@@ -241,7 +241,7 @@
     const y = window.scrollY + window.innerHeight * READ - top;
     const len = reduce.matches ? total : lengthAt(y);
     if (!quiet) {
-      if (!scrollTimeline || reduce.matches) svg.style.setProperty("--len", len);
+      if (!svg.classList.contains("is-timeline")) svg.style.setProperty("--len", len);
       // Line, tip and trail stay hidden until the stroke is as long as the trail.
       svg.toggleAttribute("data-empty", len < TRAILS[2]);
     }
@@ -290,9 +290,12 @@
   // Every change of size in one frame (several observer calls) makes one measurement.
   let measuring = 0;
   let measured = ""; // main's size at the last measurement from here
+  let folding = false;
   const remeasure = () => {
     measuring ||= requestAnimationFrame(() => {
       measuring = 0;
+      if (folding) return;
+      timed();
       // The observer and a "toggle" can both ask for the same change, a frame apart.
       const size = `${main.offsetWidth}x${main.offsetHeight}`;
       if (size === measured) return;
@@ -322,7 +325,22 @@
     quiet = event.detail;
     if (quiet) svg.style.setProperty("--len", lengthAt(window.scrollY + window.innerHeight * READ - top));
     svg.toggleAttribute("data-quiet", quiet);
-    svg.classList.toggle("is-timeline", scrollTimeline && !quiet && !reduce.matches);
+    timed();
+    update();
+  });
+
+  // Lot 8: while a disclosure moves the line keeps its geometry, measuring once at the
+  // end; when the fold scrolls the page it is drawn from here, in that same frame.
+  const timed = () => svg.classList.toggle("is-timeline", scrollTimeline && !quiet && !folding && !reduce.matches);
+  document.addEventListener("disclosure:motion", (event) => {
+    folding = event.detail;
+    if (!folding) {
+      measured = "";
+      remeasure();
+    }
+  });
+  document.addEventListener("disclosure:frame", () => {
+    svg.classList.remove("is-timeline");
     update();
   });
 
@@ -330,11 +348,14 @@
   // current section stay as they were; they catch up when it closes.
   document.addEventListener("menu:toggle", (event) => {
     menuOpen = event.detail;
-    if (!menuOpen) requestAnimationFrame(geometry);
+    if (!menuOpen) {
+      remeasure(); // only if the page changed size meanwhile
+      onScroll();
+    }
   });
 
   reduce.addEventListener("change", () => {
-    svg.classList.toggle("is-timeline", scrollTimeline && !quiet && !reduce.matches);
+    timed();
     update();
   });
 })();

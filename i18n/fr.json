@@ -264,7 +264,8 @@
         }
       ]
     },
-    "more": "Autres compétences"
+    "more": "Autres compétences",
+    "hide": "Masquer les compétences"
   },
   "contact": {
     "text": "Écrivez-moi par e-mail ou retrouvez-moi sur GitHub et LinkedIn.",

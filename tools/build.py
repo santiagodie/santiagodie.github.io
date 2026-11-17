@@ -689,7 +689,12 @@ def render_skills(s):
                 f'            <summary class="more__summary"><span class="more__title">{text(more)}</span>'
                 f'<span class="more__count">· {count}</span><span class="more__icon" aria-hidden="true"></span></summary>\n'
                 f'            <div class="more__body">\n          <dl class="skills">\n' + "\n".join(rows[SKILLS_SHOWN:])
-                + "\n          </dl>\n            </div>\n          </details>")
+                + "\n          </dl>"
+                # Lot 8: on phones the list is longer than a screen; this closes it from its
+                # foot (main.js; shown only with JavaScript, never on paper).
+                + f'\n          <button class="more__hide" type="button" data-more-hide><span>{text(s["skills"]["hide"])}</span>'
+                + '<span class="more__icon" aria-hidden="true"></span></button>'
+                + "\n            </div>\n          </details>")
     languages = s["skills"]["languages"]
     if languages["items"]:
         items = "".join(f'<div class="langs__item"><dt>{esc(item["name"])}</dt><dd>{esc(item["level"])}</dd></div>'

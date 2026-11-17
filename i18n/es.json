@@ -264,7 +264,8 @@
         }
       ]
     },
-    "more": "Más habilidades"
+    "more": "Más habilidades",
+    "hide": "Ocultar habilidades"
   },
   "contact": {
     "text": "Escríbeme por correo o encuéntrame en GitHub y LinkedIn.",
