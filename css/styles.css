@@ -2160,7 +2160,7 @@ main {
 /* Where scroll timelines exist the browser draws the line from the scroll position
    with keyframes written by js/scroll.js. */
 .progress.is-timeline {
-  animation: progress-draw linear both;
+  animation: progress-draw-a linear both; /* js/scroll.js names the keyframes */
   animation-timeline: scroll(root);
 }
 
@@ -3414,4 +3414,83 @@ main {
 
 @keyframes blink {
   50% { opacity: 0; }
+}
+
+/* Featured cards (lot 7) ------------------------------------------------- */
+
+/* What folds on phones; to every layout but the folded one it is not there. */
+.card__detail {
+  display: contents;
+}
+
+/* Desktop: three columns of the same height (the tallest card's), aligned on one
+   subgrid: title, course, description, metrics, technologies and links start at the
+   same height in all three, so the spare space is shared out between the rows and
+   the figures and links line up. Gaps are accepted (owner, lot 7). */
+@media (min-width: 64em) {
+  .featured {
+    align-items: stretch;
+  }
+
+  .featured > .card--feature {
+    display: grid;
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
+}
+
+/* Phones and tablets (one column): a card folds to its title and technologies;
+   "View details" unfolds the rest. The button sits above the card's link layer, so
+   touching it never opens GitHub. Screen only: on paper all shows. */
+.card__toggle {
+  display: none;
+}
+
+@media screen and (max-width: 63.99em) {
+  .js .card__toggle {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 0.75rem;
+    padding: 0;
+    color: var(--navy);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .card__toggle[aria-expanded="true"] .more__icon {
+    transform: rotate(45deg);
+  }
+
+  .card__toggle:focus-visible .more__icon {
+    box-shadow: inset 0 0 0 1px var(--navy);
+  }
+
+  .card--feature[data-collapsed] .card__detail {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 63.99em) and (prefers-reduced-motion: no-preference) {
+  .card__toggle .more__icon {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  /* The lot 6 entrance: the height does not animate, the content settles in. */
+  .card--feature[data-opening] .card__detail > * {
+    animation: more-in 200ms var(--ease-out) both;
+  }
 }

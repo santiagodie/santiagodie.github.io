@@ -86,7 +86,8 @@
     "translationPending": "TODO: traducir la descripción",
     "demoShort": "Demo",
     "colabShort": "Colab",
-    "downloadShort": "Descargar"
+    "downloadShort": "Descargar",
+    "details": "Ver detalles"
   },
   "experience": {
     "items": [

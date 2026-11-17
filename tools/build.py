@@ -502,12 +502,20 @@ def render_featured(projects, lang, s):
             links = f'<div class="card__links card__links--parts">{project_parts(project, lang, s)}</div>'
         else:
             links = f'<div class="card__links">{project_links(project, lang, s)}</div>'
-        cards.append(f'''            <li class="card card--feature" id="p-{project["id"]}">{FRAME}
+        # Lot 7: on phones (one column) a card shows its title and technologies, and
+        # "View details" unfolds the rest. What folds sits in two `card__detail`
+        # wrappers (display: contents, so the desktop subgrid sees their children);
+        # main.js collapses the cards, so without JavaScript and on paper all shows.
+        pid = project["id"]
+        cards.append(f'''            <li class="card card--feature" id="p-{pid}">{FRAME}
               <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(project["title"][lang])}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
+              <div class="card__detail" id="p-{pid}-about">
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
+              </div>
               {tags(project, s)}
-              {links}
+              <div class="card__detail" id="p-{pid}-links">{links}</div>
+              <button class="card__toggle" type="button" aria-expanded="true" aria-controls="p-{pid}-about p-{pid}-links"><span>{text(s["projects"]["details"])}</span><span class="more__icon" aria-hidden="true"></span></button>
             </li>''')
     return "\n".join(cards)
 
