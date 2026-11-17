@@ -46,6 +46,7 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 BUDGET_GZIP_KB = 32.4
 # css/print.css only loads to print (media="print"), so it has a budget of its own.
 PRINT_BUDGET_GZIP_KB = 4
+DEFERRED_BUDGET_GZIP_KB = 60  # lot 10: modules loaded after the page (GSAP, the chat's background)
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
@@ -550,6 +551,17 @@ def render_cv_nationality(s):
             f'            </li>')
 
 
+def render_hero_name():
+    """Lot 10 (R3): the name read once (visually hidden), and drawn as one span per
+    letter, words kept whole, for main.js to weight each letter by the pointer."""
+    def word(w):
+        return '<span class="hero__w">' + "".join(f'<span class="hero__l">{esc(c)}</span>' for c in w) + "</span>"
+    first, *rest = "Santiago Die Morejón".split()
+    return ('<span class="visually-hidden">Santiago Die Morejón</span>'
+            f'<span class="hero__letters" aria-hidden="true">{word(first)} '
+            f'<span class="hero__surname">{" ".join(word(w) for w in rest)}</span></span>')
+
+
 def render_hero_featured(projects, lang, s):
     """The hero's index of the featured projects: their titles, each a link to its card
     in Projects, strung on the start of the progress line (one lit node per title)."""
@@ -784,6 +796,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
         "heroFeatured": lambda: render_hero_featured(projects, lang, s),
+        "heroName": render_hero_name,
         # cv.public (data/site.json): while false, nothing links to the CV and its
         # CV-only lines are not in the page; the PDFs are still made and checked.
         "heroCv": lambda: render_hero_cv(s, lang, root) if cv_public else
@@ -949,6 +962,13 @@ def report_sizes():
         total_gz += gz
         print(f"  {path.relative_to(DIST).as_posix():<16} {raw / 1024:7.1f} {gz / 1024:9.1f}")
     print(f"  {'total':<16} {total_raw / 1024:7.1f} {total_gz / 1024:9.1f}  (budget {BUDGET_GZIP_KB:.1f} KB gzip)")
+    # Lot 10: what loads after the page (vendor libraries, deferred modules) has a budget
+    # of its own; it never blocks the first paint.
+    later = sorted([*DIST.glob("js/vendor/*.js"), *DIST.glob("js/deferred/*.js")])
+    later_gz = sum(len(gzip.compress(f.read_bytes(), 9)) for f in later)
+    print(f"  {'deferred (after load)':<16} {sum(f.stat().st_size for f in later) / 1024:7.1f} {later_gz / 1024:9.1f}  (budget {DEFERRED_BUDGET_GZIP_KB:.1f} KB gzip)")
+    if later_gz / 1024 > DEFERRED_BUDGET_GZIP_KB:
+        raise BuildError(f"Deferred JS weighs {later_gz / 1024:.1f} KB gzipped, over its {DEFERRED_BUDGET_GZIP_KB:.1f} KB budget")
     if total_gz / 1024 > BUDGET_GZIP_KB:
         raise BuildError(f"CSS + JS weigh {total_gz / 1024:.1f} KB gzipped, over the {BUDGET_GZIP_KB:.1f} KB budget (BUDGET_GZIP_KB in tools/build.py)")
     if print_sheet.exists():

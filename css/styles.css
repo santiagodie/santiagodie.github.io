@@ -992,6 +992,49 @@ html[data-menu-open] {
   }
 }
 
+/* Lot 10 (R4): with motion, the header has no logo at the very top on any width (the
+   hero's monogram is the logo there, and travels up into its place); it still takes
+   keyboard focus and shows then. Without JavaScript or with reduced motion, as before. */
+.js.motion .site-header:not([data-scrolled]):not([data-menu-open]) .brand {
+  opacity: 0;
+  visibility: visible;
+}
+
+.js.motion .site-header .brand:focus-visible {
+  opacity: 1;
+}
+
+/* Arrived from the other language with the monogram on its way (index.html, vt-mid):
+   it shows as arrived, the header's logo in place, until the page is back at the top. */
+.vt-mid .hero__logo {
+  opacity: 0;
+}
+
+.vt-mid .site-header .brand {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Lot 10 (R4): while the monogram travels (js/deferred/logo-travel.js) it flies
+   above the header, and the header's logo stays out of sight until it lands
+   (--brand), except when it has keyboard focus or the menu is open. */
+.logo-travels .hero__logo {
+  position: relative;
+  z-index: 60;
+  transform-origin: 0 0;
+}
+
+.logo-travels .site-header .brand {
+  opacity: var(--brand, 0) !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+.logo-travels .site-header .brand:focus-visible,
+.logo-travels .site-header[data-menu-open] .brand {
+  opacity: 1 !important;
+}
+
 /* Very narrow phones: the menu button keeps its label for screen readers only. */
 @media (max-width: 22.49em) {
   .menu-toggle__label {
@@ -1168,6 +1211,17 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   display: block;
 }
 
+/* Lot 10 (R3): letters stay plain text until main.js has measured them; then each is a
+   box of its resting width, the glyph centred, so a lighter letter never moves another. */
+.hero__w {
+  white-space: nowrap;
+}
+
+.hero__name[data-weighted] .hero__l {
+  display: inline-block;
+  text-align: center;
+}
+
 .hero__actions {
   grid-area: actions;
   display: flex;
@@ -1327,6 +1381,17 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   container-type: inline-size;
 }
 
+/* Lot 10 (R1): the panel's living navy (js/deferred/chat-field.js), behind the scene,
+   which the camera zooms; it only ever draws the navy, a little lighter or darker. */
+.chat__field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .chat__scene {
   position: relative;
   display: flex;
@@ -1352,7 +1417,8 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   /* A margin, not padding: scrolled text stops below the Skip/Replay corner. */
   margin-block: 2.25rem 1rem;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  /* Lot 10: no "contain": a log that fits passes the wheel to the page, and one that
+     scrolls hands on to the page at its ends (it used to trap the page). */
   scrollbar-width: thin;
   scrollbar-color: rgb(245 240 225 / 0.22) transparent;
 }
