@@ -323,6 +323,17 @@
   const base = new URL(".", document.querySelector('script[src*="js/main.js"]').src);
   const later = (file) => new Promise((ok, ko) => document.head.append(Object.assign(document.createElement("script"), { src: new URL(file, base), onload: ok, onerror: ko })));
   addEventListener("load", () => (window.requestIdleCallback || setTimeout)(() => {
+    // R1: the chat's background, once the chat is a screen away (with reduced motion
+    // too: then it draws one still frame).
+    const panel = document.querySelector(".chat__panel");
+    if (panel && "IntersectionObserver" in window) {
+      const near = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        near.disconnect();
+        later("deferred/chat-field.js").catch(() => {});
+      }, { rootMargin: "100% 0px" });
+      near.observe(panel);
+    }
     if (!motionOk.matches) return;
     if (matchMedia("(hover: hover) and (pointer: fine)").matches) later("deferred/name-weight.js").catch(() => {});
     const net = navigator.connection;
