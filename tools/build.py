@@ -962,6 +962,13 @@ def report_sizes():
         total_gz += gz
         print(f"  {path.relative_to(DIST).as_posix():<16} {raw / 1024:7.1f} {gz / 1024:9.1f}")
     print(f"  {'total':<16} {total_raw / 1024:7.1f} {total_gz / 1024:9.1f}  (budget {BUDGET_GZIP_KB:.1f} KB gzip)")
+    # Lot 10: what loads after the page (vendor libraries, deferred modules) has a budget
+    # of its own; it never blocks the first paint.
+    later = sorted([*DIST.glob("js/vendor/*.js"), *DIST.glob("js/deferred/*.js")])
+    later_gz = sum(len(gzip.compress(f.read_bytes(), 9)) for f in later)
+    print(f"  {'deferred (after load)':<16} {sum(f.stat().st_size for f in later) / 1024:7.1f} {later_gz / 1024:9.1f}  (budget {DEFERRED_BUDGET_GZIP_KB:.1f} KB gzip)")
+    if later_gz / 1024 > DEFERRED_BUDGET_GZIP_KB:
+        raise BuildError(f"Deferred JS weighs {later_gz / 1024:.1f} KB gzipped, over its {DEFERRED_BUDGET_GZIP_KB:.1f} KB budget")
     if total_gz / 1024 > BUDGET_GZIP_KB:
         raise BuildError(f"CSS + JS weigh {total_gz / 1024:.1f} KB gzipped, over the {BUDGET_GZIP_KB:.1f} KB budget (BUDGET_GZIP_KB in tools/build.py)")
     if print_sheet.exists():
@@ -974,13 +981,6 @@ def report_sizes():
 
 def serve(port):
     handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(DIST))
-    # Lot 10: what loads after the page (vendor libraries, deferred modules) has a budget
-    # of its own; it never blocks the first paint.
-    later = sorted([*DIST.glob("js/vendor/*.js"), *DIST.glob("js/deferred/*.js")])
-    later_gz = sum(len(gzip.compress(f.read_bytes(), 9)) for f in later)
-    print(f"  {'deferred (after load)':<16} {sum(f.stat().st_size for f in later) / 1024:7.1f} {later_gz / 1024:9.1f}  (budget {DEFERRED_BUDGET_GZIP_KB:.1f} KB gzip)")
-    if later_gz / 1024 > DEFERRED_BUDGET_GZIP_KB:
-        raise BuildError(f"Deferred JS weighs {later_gz / 1024:.1f} KB gzipped, over its {DEFERRED_BUDGET_GZIP_KB:.1f} KB budget")
     with http.server.ThreadingHTTPServer(("127.0.0.1", port), handler) as server:
         print(f"serving dist/ on http://localhost:{port}/  (Ctrl+C to stop)")
         try:
