@@ -190,8 +190,6 @@
   if (suggestion && preferred !== lang) {
     suggestion.hidden = false;
     suggestion.querySelector("[data-suggest-dismiss]").addEventListener("click", () => {
-      suggestion.hidden = true;
-      delete document.documentElement.dataset.suggest;
       storage.set(DISMISS_KEY, "1");
     });
   }
@@ -215,6 +213,18 @@
     const from = o.parts.map((p) => (o.shown?.() === false ? 0 : p.getBoundingClientRect().height));
     const fade = o.kids.map((k) => +getComputedStyle(k).opacity);
     host._anims?.forEach((a) => a.cancel());
+      const gone = () => {
+        suggestion.hidden = true;
+        delete document.documentElement.dataset.suggest;
+      };
+      if (!motionOk.matches) return gone();
+      // It gathers up rather than vanishing, so the page below rises instead of jumping.
+      const cs = getComputedStyle(suggestion);
+      suggestion.style.overflow = "hidden";
+      suggestion.animate({
+        height: [cs.height, "0px"], paddingTop: [cs.paddingTop, "0px"], paddingBottom: [cs.paddingBottom, "0px"],
+        borderBottomWidth: [cs.borderBottomWidth, "0px"], opacity: [1, 0],
+      }, { duration: time("--dur-reveal-out"), easing: EASE }).finished.then(gone);
     const token = host._token = (host._token || 0) + 1;
     host._anims = null;
     o.start();
