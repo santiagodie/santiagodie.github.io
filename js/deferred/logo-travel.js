@@ -10,7 +10,7 @@
 // which no sampled frame overlaps a word of the name or the role, 10px kept clear: the
 // text scrolls up 1:1, so the travel must end before the name reaches the header's row.
 // The header's navy slides down from the top in the same progress (CSS, --head). The
-// stroke turns from navy to gold as it crosses into the header. At the end the header's
+// stroke is gold over the header's navy band and navy over the hero, cut at its edge. At the end the header's
 // own logo (the real, focusable link) takes over in place. While it travels it has no
 // view-transition-name: changing language mid-way cross-fades it instead of moving it.
 (() => {
@@ -66,16 +66,29 @@
     const k = 1 + (g.k - 1) * up;
     const y = g.y0 + (g.by - g.y0) * up; // its top on screen
     // Gold as its middle crosses into the header (40px either side of the edge).
-    const gold = Math.min(1, Math.max(0, (g.head + 40 - (y + (g.h * k) / 2)) / 80));
     return {
       y,
       tx: (g.bx - g.x0) * side,
       ty: y - (g.y0 - s), // the monogram scrolls with the page: make up the rest
       k,
-      colour: `rgb(${NAVY.map((v, i) => Math.round(v + (GOLD[i] - v) * gold))})`,
       hand: p >= 0.98,
     };
   }
+
+  // The stroke's gradient: gold above the band's edge, navy below.
+  const SVG = "http://www.w3.org/2000/svg";
+  const grad = document.createElementNS(SVG, "linearGradient");
+  // In the viewBox's units, top to bottom of the whole drawing (the stroke included).
+  const vb = mark.viewBox.baseVal;
+  Object.entries({ id: "logo-edge", gradientUnits: "userSpaceOnUse", x1: 0, y1: vb.y, x2: 0, y2: vb.y + vb.height }).forEach(([k, v]) => grad.setAttribute(k, v));
+  const edge = [[0, GOLD], [0, GOLD], [0, NAVY], [1, NAVY]].map(([o, c]) => {
+    const st = document.createElementNS(SVG, "stop");
+    st.setAttribute("offset", o);
+    st.setAttribute("stop-color", `rgb(${c})`);
+    return grad.appendChild(st);
+  });
+  mark.prepend(Object.assign(document.createElementNS(SVG, "defs"), {}));
+  mark.firstChild.append(grad);
 
   let drawn = false;
   // Arrived from the other language mid-way (index.html, "vt-mid"): shown as arrived
@@ -99,7 +112,16 @@
     }
     const v = at(p);
     mark.style.transform = p > 0 ? `translate(${v.tx}px, ${v.ty}px) scale(${v.k})` : "";
-    path.style.stroke = p > 0 ? v.colour : "";
+    // Gold where it is over the sliding navy band, navy where it is still over the hero:
+    // a hard-edged gradient cut at the band's lower edge (head × p below the header's top).
+    if (p > 0) {
+      const band = Math.max(0, header.getBoundingClientRect().top) + g.head * p;
+      const r = mark.getBoundingClientRect();
+      const f = clamp((band - r.top) / Math.max(1, r.height)).toFixed(4);
+      edge[1].setAttribute("offset", f);
+      edge[2].setAttribute("offset", f);
+    }
+    path.style.stroke = p > 0 ? "url(#logo-edge)" : "";
     // Hand-off: the header's logo (the link) takes over exactly where the mark lands.
     mark.style.opacity = v.hand ? 0 : "";
     mark.style.viewTransitionName = p > 0 ? "none" : "";
