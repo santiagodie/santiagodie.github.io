@@ -1018,10 +1018,22 @@ html[data-menu-open] {
 /* Lot 10 (R4): while the monogram travels (js/deferred/logo-travel.js) it flies
    above the header, and the header's logo stays out of sight until it lands
    (--brand), except when it has keyboard focus or the menu is open. */
-/* The header's navy follows the same progress as the monogram (--head, 0 to 1). */
+/* The header's navy slides down from the top, solid, in the same progress as the
+   monogram (--head, 0 to 1): never a see-through tone over the hero. The contents stay
+   put; their colours switch half-way. With the menu open the header is navy as ever. */
 .logo-travels .site-header:not([data-menu-open]) {
-  background-color: rgb(11 31 58 / var(--head, 0)) !important;
+  background-color: transparent !important;
   transition: color var(--dur-press) var(--ease-out) !important;
+}
+
+.logo-travels .site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--navy);
+  transform: translateY(calc((var(--head, 0) - 1) * 100%));
+  pointer-events: none;
 }
 
 .logo-travels .hero__logo {

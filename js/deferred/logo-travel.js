@@ -3,10 +3,15 @@
 // GSAP's ScrollTrigger when it is there, otherwise (data saver, slow connection, GSAP
 // failed) with one update per frame; the path and timing are the same.
 //
-// Path: from the monogram's place to the header logo, over the first 30 % of the hero's
-// height; x eases out and y eases in, so it travels in an arc. The stroke turns from navy
-// to gold as it crosses into the (navy) header. At the end the header's own logo (the
-// real, focusable link) takes over in place. While it travels it has no
+// Path (fix L10 móvil): it never touches the hero's text. First it rises and shrinks in
+// its own column (on phones from the first pixel of scroll: it sits right above the
+// name), then, on wide screens, it slides along the header's row to the logo's place.
+// The range is the longest (up to 150px on phones, 30 % of the hero on wide screens) for
+// which no sampled frame overlaps a word of the name or the role, 10px kept clear: the
+// text scrolls up 1:1, so the travel must end before the name reaches the header's row.
+// The header's navy slides down from the top in the same progress (CSS, --head). The
+// stroke turns from navy to gold as it crosses into the header. At the end the header's
+// own logo (the real, focusable link) takes over in place. While it travels it has no
 // view-transition-name: changing language mid-way cross-fades it instead of moving it.
 (() => {
   const root = document.documentElement;
@@ -18,8 +23,10 @@
   if (!mark || !brand || !hero || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const NAVY = [11, 31, 58], GOLD = [201, 162, 39];
-  const easeX = (p) => 1 - (1 - p) ** 2; // out
-  const easeY = (p) => p * p; // in: with x, an arc
+  const out = (t) => 1 - (1 - t) ** 2;
+  const inOut = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+  const clamp = (t) => Math.min(1, Math.max(0, t));
+  const CLEAR = 10; // px kept between the monogram and the text
   let g; // geometry, measured at rest
 
   function measure() {
@@ -30,18 +37,39 @@
     mark.style.transform = t;
     // Where the logo sits once the header is stuck at the top.
     const stuckTop = b.top - header.getBoundingClientRect().top;
-    g = { x0: m.left, y0: m.top + scrollY, w: m.width, h: m.height, bx: b.left, by: stuckTop, k: b.width / m.width, range: innerWidth < 1024 ? 150 : hero.offsetHeight * 0.3, head: header.offsetHeight };
+    const lateral = Math.abs(b.left - m.left) > 4;
+    g = { x0: m.left, y0: m.top + scrollY, w: m.width, h: m.height, bx: b.left, by: stuckTop, k: b.width / m.width, head: header.offsetHeight, split: lateral ? 0.6 : 1 };
+    // The hero's text, in page coordinates.
+    const text = [...hero.querySelectorAll(".hero__w, .hero__role")].flatMap((el) => {
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      return [...r.getClientRects()].map((q) => ({ l: q.left, t: q.top + scrollY, r: q.right, b: q.bottom + scrollY }));
+    });
+    const clear = (range) => {
+      for (let i = 1; i <= 80; i++) {
+        const v = at(i / 80, range);
+        const top = v.y, left = g.x0 + v.tx, w = g.w * v.k, h = g.h * v.k, s = range * (i / 80);
+        if (text.some((q) => left < q.r + CLEAR && left + w > q.l - CLEAR && top < q.b - s + CLEAR && top + h > q.t - s - CLEAR)) return false;
+      }
+      return true;
+    };
+    let range = innerWidth < 1024 ? 150 : hero.offsetHeight * 0.3;
+    while (range > 24 && !clear(range)) range -= 2;
+    g.range = range;
   }
 
   // Everything at progress p (0 at the top, 1 at the end of the range).
-  function at(p) {
-    const s = g.range * p; // the scroll that brings it there
-    const k = 1 + (g.k - 1) * easeX(p);
-    const y = g.y0 + (g.by - g.y0) * easeY(p); // its top on screen
+  function at(p, range = g.range) {
+    const s = range * p; // the scroll that brings it there
+    const up = out(clamp(p / g.split)); // rise and shrink first...
+    const side = g.split < 1 ? inOut(clamp((p - g.split) / (1 - g.split))) : 1; // ...then sideways
+    const k = 1 + (g.k - 1) * up;
+    const y = g.y0 + (g.by - g.y0) * up; // its top on screen
     // Gold as its middle crosses into the header (40px either side of the edge).
     const gold = Math.min(1, Math.max(0, (g.head + 40 - (y + (g.h * k) / 2)) / 80));
     return {
-      tx: (g.bx - g.x0) * easeX(p),
+      y,
+      tx: (g.bx - g.x0) * side,
       ty: y - (g.y0 - s), // the monogram scrolls with the page: make up the rest
       k,
       colour: `rgb(${NAVY.map((v, i) => Math.round(v + (GOLD[i] - v) * gold))})`,
@@ -76,7 +104,7 @@
     mark.style.opacity = v.hand ? 0 : "";
     mark.style.viewTransitionName = p > 0 ? "none" : "";
     root.style.setProperty("--brand", v.hand ? 1 : 0);
-    // One progress for both (fix, phones): the header's navy comes in as the monogram
+    // One progress for both (fix, phones): the header's navy slides down as the monogram
     // travels and is whole when it lands; its colours switch half-way.
     root.style.setProperty("--head", Math.min(1, p).toFixed(3));
     header.toggleAttribute("data-scrolled", p >= 0.5);
@@ -92,6 +120,7 @@
     addEventListener("scroll", () => { frame ||= requestAnimationFrame(update); }, { passive: true });
     addEventListener("resize", () => { measure(); update(); });
     update();
+    return () => { measure(); update(); };
   }
 
   // GSAP: ScrollTrigger scrubs a 0→1 progress over the same range.
@@ -104,11 +133,15 @@
       p: 1,
       ease: "none",
       onUpdate: () => apply(state.p),
-      scrollTrigger: { start: 0, end: () => g.range, scrub: true, invalidateOnRefresh: true, onRefresh: measure },
+      scrollTrigger: { start: 0, end: () => g.range, scrub: true, invalidateOnRefresh: true, onRefreshInit: measure },
     });
+    return () => ScrollTrigger.refresh();
   }
 
   root.classList.add("logo-travels");
   measure();
-  (window.gsap && window.ScrollTrigger ? gsapEngine : native)();
+  const remeasure = (window.gsap && window.ScrollTrigger ? gsapEngine : native)();
+  // The text may still be rising into place (its entrance): measure again once it is.
+  const moving = hero.getAnimations({ subtree: true }).filter((an) => !mark.contains(an.effect?.target));
+  if (moving.length) Promise.allSettled(moving.map((an) => an.finished)).then(remeasure);
 })();
