@@ -80,6 +80,7 @@
   let top = 0; // svg top in document coordinates
   let ticking = false;
   let scrollTimeline = false;
+  let keyframesName = ""; // the scroll keyframes' current name (see timeline())
   const lit = new Set();
   let quiet = false; // the About chat animation is playing on screen: the line keeps still
   let menuOpen = false; // the mobile menu covers the page: nothing here reacts
@@ -226,7 +227,12 @@
       style.id = "progress-keyframes";
       document.head.append(style);
     }
-    style.textContent = `@keyframes progress-draw{0%{--len:${start.toFixed(1)}}${stops.join("")}100%{--len:${end.toFixed(1)}}}`;
+    // A running animation keeps the keyframes it started with even when the rule is
+    // rewritten (Chrome): after the page grew (a disclosure opened), the tip drew the
+    // old lengths, hundreds of px behind. A new name each time makes it start afresh.
+    keyframesName = keyframesName === "progress-draw-a" ? "progress-draw-b" : "progress-draw-a";
+    style.textContent = `@keyframes ${keyframesName}{0%{--len:${start.toFixed(1)}}${stops.join("")}100%{--len:${end.toFixed(1)}}}`;
+    svg.style.animationName = keyframesName;
   }
 
   function update() {
@@ -283,14 +289,21 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   // Every change of size in one frame (several observer calls) makes one measurement.
   let measuring = 0;
+  let measured = ""; // main's size at the last measurement from here
   const remeasure = () => {
     measuring ||= requestAnimationFrame(() => {
       measuring = 0;
+      // The observer and a "toggle" can both ask for the same change, a frame apart.
+      const size = `${main.offsetWidth}x${main.offsetHeight}`;
+      if (size === measured) return;
+      measured = size;
       geometry();
     });
   };
   if ("ResizeObserver" in window) new ResizeObserver(remeasure).observe(main);
   else window.addEventListener("resize", geometry);
+  // Any disclosure, now or later ("toggle" does not bubble: caught on the way down).
+  document.addEventListener("toggle", remeasure, true);
   if (document.fonts) document.fonts.ready.then(geometry);
   // The hero's featured projects settle in from 10px lower; measure again once they land.
   const featuredNav = document.querySelector(".hero__featured");
