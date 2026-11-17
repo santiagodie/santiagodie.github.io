@@ -53,13 +53,18 @@
 
   const isOpen = () => header.hasAttribute("data-menu-open");
 
-  function setMenu(open, { returnFocus = false } = {}) {
+  function setMenu(open, { returnFocus = false, instant = false } = {}) {
     open = open && compact.matches;
     if (open === isOpen()) {
       menu.inert = compact.matches && !open;
       return;
     }
     toggle.setAttribute("aria-expanded", String(open));
+    // Escape closes at once (lot 9): no 0.7 s exit after a key that means "away".
+    if (instant) {
+      header.setAttribute("data-menu-instant", "");
+      requestAnimationFrame(() => requestAnimationFrame(() => header.removeAttribute("data-menu-instant")));
+    }
     header.toggleAttribute("data-menu-open", open);
     root.toggleAttribute("data-menu-open", open);
     menu.inert = compact.matches && !open;
@@ -163,8 +168,30 @@
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (langSwitch.hasAttribute("data-open")) closeLang({ returnFocus: true });
-    else if (isOpen()) setMenu(false, { returnFocus: true });
+    else if (isOpen()) setMenu(false, { returnFocus: true, instant: true });
   });
+
+  // Changing language (lot 9): the page that leaves names its current section's number
+  // and title and stores where the title is, for the next page to land there (see the
+  // script in <head>). Hovering the selector prefetches the other languages.
+  addEventListener("pageswap", (event) => {
+    const section = event.viewTransition && document.getElementById(currentSection());
+    const title = section?.querySelector(".section__title");
+    if (!title) return;
+    try { sessionStorage.setItem("vt", JSON.stringify({ id: section.id, top: title.getBoundingClientRect().top })); } catch { return; }
+    [[title, "vt-title"], [section.querySelector(".section__num"), "vt-num"]].forEach(([el, name]) => {
+      el.style.viewTransitionName = name;
+      el.dataset.vt = "";
+    });
+  });
+  if (HTMLScriptElement.supports?.("speculationrules")) {
+    langButton.addEventListener("pointerenter", () => {
+      const rules = document.createElement("script");
+      rules.type = "speculationrules";
+      rules.textContent = JSON.stringify({ prefetch: [{ urls: langItems.filter((a) => !a.hasAttribute("aria-current")).map((a) => a.href), eagerness: "immediate" }] });
+      document.head.append(rules);
+    }, { once: true });
+  }
 
   // Current section: js/scroll.js marks it in the navigation, following the tip of
   // the progress line.
@@ -185,16 +212,34 @@
   if (suggestion && preferred !== lang) {
     suggestion.hidden = false;
     suggestion.querySelector("[data-suggest-dismiss]").addEventListener("click", () => {
-      suggestion.hidden = true;
-      delete document.documentElement.dataset.suggest;
       storage.set(DISMISS_KEY, "1");
+      // Focus goes to the header's first control in view (the logo, or on phones over
+      // the hero, where the logo is hidden, the menu button), not back to the page.
+      [...header.querySelectorAll("a[href], button")]
+        .find((el) => el.getClientRects().length && getComputedStyle(el).visibility !== "hidden")
+        ?.focus({ preventScroll: true });
+      const gone = () => {
+        suggestion.hidden = true;
+        delete document.documentElement.dataset.suggest;
+      };
+      if (!motionOk.matches) return gone();
+      // It gathers up rather than vanishing, so the page below rises instead of jumping.
+      const cs = getComputedStyle(suggestion);
+      suggestion.style.overflow = "hidden";
+      suggestion.animate({
+        height: [cs.height, "0px"], paddingTop: [cs.paddingTop, "0px"], paddingBottom: [cs.paddingBottom, "0px"],
+        borderBottomWidth: [cs.borderBottomWidth, "0px"], opacity: [1, 0],
+      }, { duration: time("--dur-reveal-out"), easing: EASE }).finished.then(gone);
     });
   }
 
   // Disclosures (lot 8), one engine for all; see DESIGN.md, Disclosure.
   const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
   const motionOk = matchMedia("(prefers-reduced-motion: no-preference)");
-  const STAGGER = [30, 60, 85, 105, 120, 130];
+  // Times from styles.css (--dur-reveal in, --dur-reveal-out out); the blocks start at
+  // these shares of the opening, each lasting 60 % of it: the last lands before it ends.
+  const STAGGER = [0.07, 0.16, 0.23, 0.29, 0.33, 0.36];
+  const time = (name) => parseFloat(getComputedStyle(root).getPropertyValue(name));
   const sum = (list) => list.reduce((a, b) => a + b, 0);
   const signal = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
   let moving = 0;
@@ -230,12 +275,13 @@
     root.style.overflowAnchor = "none";
     o.parts.forEach((p) => { p.inert = !open; });
     const to = o.parts.map((p) => (open ? p.scrollHeight : 0));
-    const ms = (open ? 260 : 180) * Math.max(0.35, Math.abs(sum(to) - sum(from)) / (sum(o.parts.map((p) => p.scrollHeight)) || 1));
+    const full = time(open ? "--dur-reveal" : "--dur-reveal-out");
+    const ms = full * Math.max(0.35, Math.abs(sum(to) - sum(from)) / (sum(o.parts.map((p) => p.scrollHeight)) || 1));
     const anims = host._anims = o.parts.map((p, i) => p.animate({ height: [`${from[i]}px`, `${to[i]}px`] }, { duration: ms, easing: EASE, fill: "forwards" }));
     o.kids.forEach((k, i) => anims.push(open
       ? k.animate({ opacity: [turning ? fade[i] : 0, 1], transform: ["translateY(8px)", "none"] },
-        { duration: 180, delay: turning ? 0 : STAGGER[Math.min(i, (o.cap || 6) - 1)], easing: EASE, fill: "backwards" })
-      : k.animate({ opacity: [fade[i], 0] }, { duration: Math.min(110, ms), easing: EASE, fill: "forwards" })));
+        { duration: full * 0.6, delay: turning ? 0 : full * STAGGER[Math.min(i, (o.cap || 6) - 1)], easing: EASE, fill: "backwards" })
+      : k.animate({ opacity: [fade[i], 0] }, { duration: Math.min(full / 2, ms), easing: EASE, fill: "forwards" })));
     const now = document.timeline.currentTime; // start now: a turn-back never stalls
     anims.forEach((a) => { a.startTime = now; });
     if (!open) {
@@ -267,8 +313,7 @@
   }
 
   // Featured cards on phones (lot 7): folded to title and technologies until "View
-  // details"; unfolded at once from the hero's index (#p-<id>). CSS folds them in one
-  // column only, so desktop is untouched.
+  // details". CSS folds them in one column only, so desktop is untouched.
   const features = [...document.querySelectorAll(".card--feature")];
   const foldCard = (card, open, animate) => {
     const button = card.querySelector(".card__toggle");
@@ -287,13 +332,6 @@
     const button = card.querySelector(".card__toggle");
     button?.addEventListener("click", () => foldCard(card, button.getAttribute("aria-expanded") === "false", true));
   });
-  const unfoldTarget = () => {
-    const card = features.find((c) => c.id === location.hash.slice(1));
-    if (card) {
-      foldCard(card, true, false);
-      card.scrollIntoView();
-    }
-  };
 
   // More projects and More skills: native <details> (as ever without JavaScript); the
   // summary's click is taken over, [open] still changes at once.
@@ -304,18 +342,66 @@
       parts: [body], kids: [...body.querySelectorAll(".more__list > li, .skills__group, .more__hide")],
       cap: body.querySelector(".more__list") ? 4 : 6, anchor: summary, shift: true, force,
       shown: () => details.open || details.hasAttribute("data-moving"),
-      start: () => { details.open = open; },
+      start: () => { details.open = details._mine = open; },
     });
+    details._go = go;
     summary.addEventListener("click", (event) => {
       event.preventDefault();
       go(!details.open);
     });
     details.querySelector("[data-more-hide]")?.addEventListener("click", () => go(false, true));
   });
-  window.addEventListener("hashchange", unfoldTarget);
-  unfoldTarget();
 
-  // More projects: a link to a card inside opens the disclosure; the arrows move one
+  // Arriving at a card (#p-<id>: the hero's index, a link, or on load; lot 9): first the
+  // scroll lands, then the card unfolds (its top stays put) and its frame traces. A card
+  // inside More projects opens it the same way, then comes into view in its row.
+  const landed = (el, then) => {
+    let done = false;
+    const go = () => {
+      if (done) return;
+      done = true;
+      removeEventListener("scrollend", go);
+      then();
+    };
+    addEventListener("scrollend", go);
+    setTimeout(go, 1200); // no scrollend in this browser, or it never fired
+    // Already where the scroll would leave it (under the header): nothing to wait for.
+    if (Math.abs(el.getBoundingClientRect().top - parseFloat(getComputedStyle(root).scrollPaddingTop)) < 2) go();
+  };
+  const arrive = () => {
+    const target = document.getElementById(location.hash.slice(1));
+    const details = target?.closest("details.more");
+    if (features.includes(target)) {
+      target.scrollIntoView();
+      landed(target, () => {
+        if (target.hasAttribute("data-collapsed")) foldCard(target, true, true);
+        target.removeAttribute("data-arrived");
+        void target.offsetWidth; // trace again on a second arrival
+        target.setAttribute("data-arrived", "");
+      });
+    } else if (details?._mine) {
+      target.scrollIntoView({ block: "nearest", inline: "nearest" });
+    } else if (details) {
+      // The browser would open it at once and scroll past its summary: the hash is set
+      // aside while the page lands on the summary, and put back when the card is shown.
+      const hash = location.hash;
+      history.replaceState(history.state, "", location.pathname + location.search);
+      details.open = false;
+      const summary = details.querySelector("summary");
+      summary.scrollIntoView();
+      landed(summary, () => {
+        details._go(true);
+        setTimeout(() => {
+          target.scrollIntoView({ block: "nearest", inline: "nearest" });
+          history.replaceState(history.state, "", hash);
+        }, motionOk.matches ? time("--dur-reveal") : 0);
+      });
+    }
+  };
+  window.addEventListener("hashchange", arrive);
+  arrive();
+
+  // More projects: the arrows move one
   // card and switch off at the ends, where the fades (without scroll timelines) go too.
   // (the one with a scrolling row: "More skills" uses the same component, without it)
   const more = document.querySelector(".more__row")?.closest(".more");
@@ -324,14 +410,6 @@
     const nav = more.querySelector(".more__nav");
     const fallback = !CSS.supports("animation-timeline: scroll()");
     let frame = 0;
-    const reveal = () => {
-      const target = document.getElementById(location.hash.slice(1));
-      if (target && more.contains(target)) {
-        // Opened at once (no growing), so the card is there to scroll to.
-        more.open = true;
-        target.scrollIntoView();
-      }
-    };
     const ends = () => {
       frame = 0;
       const x = row.scrollLeft, at = [x < 2, x > row.scrollWidth - row.clientWidth - 2];
@@ -347,8 +425,6 @@
     more.addEventListener("toggle", ends);
     // A card reached with Tab comes whole into view, clear of the fades (scroll-padding).
     row.addEventListener("focusin", ({ target }) => target.closest("li").scrollIntoView({ block: "nearest", inline: "nearest" }));
-    window.addEventListener("hashchange", reveal);
-    reveal();
     ends();
   }
 })();

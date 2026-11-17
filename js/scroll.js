@@ -27,7 +27,9 @@
   const TEXT = ".section__lead, .prose p, .subhead";
 
   function assemble() {
-    if (reduce.matches || !("IntersectionObserver" in window)) return;
+    // Arriving from the other language (lot 9), the page is already there: it came
+    // with the view transition, so it does not assemble again.
+    if (reduce.matches || root.classList.contains("vt-in") || !("IntersectionObserver" in window)) return;
     const pending = [];
     sections.forEach((section) => {
       section.querySelectorAll(`.section__num, .section__label, ${TEXT}, ${ITEMS}`).forEach((el) => {

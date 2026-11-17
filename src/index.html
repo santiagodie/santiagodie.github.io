@@ -49,7 +49,40 @@
         }
       } catch (e) { /* storage blocked: no suggestion */ }
     })(document.documentElement);
+    // Changing language (lot 9): a view transition between the two pages. The page that
+    // leaves stores its section and where its title was (main.js, "pageswap"); this one
+    // lands there at the same height, and that number and title carry across. It waits
+    // to paint until that section is parsed. Arriving so, the hero does not play again.
+    (function (root) {
+      if (!("onpagereveal" in window)) return;
+      var read = function () { try { return JSON.parse(sessionStorage.getItem("vt")); } catch (e) { return null; } };
+      var k = read();
+      if (k && k.id) {
+        root.classList.add("vt-in"); // arriving from the other language: nothing assembles again
+        var l = document.createElement("link");
+        l.rel = "expect";
+        l.href = "#" + k.id;
+        l.setAttribute("blocking", "render");
+        document.head.appendChild(l);
+      }
+      addEventListener("pagereveal", function (e) {
+        var k = read();
+        try { sessionStorage.removeItem("vt"); } catch (x) { /* nothing kept */ }
+        document.querySelectorAll("[data-vt]").forEach(function (el) { el.style.viewTransitionName = ""; el.removeAttribute("data-vt"); });
+        if (!e.viewTransition) return;
+        root.classList.add("vt-in");
+        var s = k && k.id && document.getElementById(k.id);
+        if (!s) return;
+        var t = s.querySelector(".section__title"), n = s.querySelector(".section__num");
+        if (!t || !n) return;
+        scrollTo({ top: scrollY + t.getBoundingClientRect().top - k.top, behavior: "instant" });
+        t.style.viewTransitionName = "vt-title";
+        n.style.viewTransitionName = "vt-num";
+        e.viewTransition.finished.finally(function () { t.style.viewTransitionName = n.style.viewTransitionName = ""; });
+      });
+    })(document.documentElement);
   </script>
+  <script type="speculationrules">{"prefetch": [{"where": {"selector_matches": "[data-lang-link]:not([aria-current])"}, "eagerness": "moderate"}]}</script>
   <script src="{{ @root }}js/main.js" defer></script>
   <script src="{{ @root }}js/chat.js" defer></script>
   <script src="{{ @root }}js/scroll.js" defer></script>
