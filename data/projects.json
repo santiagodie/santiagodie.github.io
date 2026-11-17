@@ -14,9 +14,9 @@
       },
       "featured": true,
       "description": {
-        "en": "A web application that estimates the expected salary of a recent graduate from their profile, with a scikit-learn Random Forest served through a Flask REST API.",
-        "es": "Aplicación web que estima el salario esperado de un recién graduado a partir de su perfil, con un Random Forest de scikit-learn servido mediante una API REST en Flask.",
-        "fr": "Application web qui estime le salaire attendu d’un jeune diplômé à partir de son profil, avec un Random Forest scikit-learn servi par une API REST Flask."
+        "en": "Estimates a new graduate's expected salary with a scikit-learn Random Forest, served by a Flask REST API that validates every request with Pydantic; the demo runs the same model in the browser with ONNX Runtime Web.",
+        "es": "Estima el salario esperado de un recién graduado con un Random Forest de scikit-learn, servido con una API REST en Flask que valida cada petición con Pydantic; la demo ejecuta el mismo modelo en el navegador con ONNX Runtime Web.",
+        "fr": "Estime le salaire attendu d’un jeune diplômé avec un Random Forest de scikit-learn, servi par une API REST Flask qui valide chaque requête avec Pydantic ; la démo exécute le même modèle dans le navigateur avec ONNX Runtime Web."
       },
       "todo": [],
       "metrics": [
@@ -75,9 +75,9 @@
       },
       "featured": true,
       "description": {
-        "en": "End-to-end face search over a 21,678-photo press archive: dlib CNN face detection, FaceNet embeddings and a VP-tree index, evaluated against brute-force search and calibrated with ROC and F1 analysis.",
-        "es": "Búsqueda de caras de principio a fin en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree, comparada con la búsqueda exhaustiva y calibrada con análisis ROC y F1.",
-        "fr": "Recherche de visages de bout en bout dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree, comparée à la recherche exhaustive et calibrée par analyse ROC et F1."
+        "en": "End-to-end face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index, compared with exhaustive search, calibrated with ROC and F1 analysis, and with a live demo.",
+        "es": "Búsqueda de caras de principio a fin en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree, comparada con la búsqueda exhaustiva, calibrada con análisis ROC y F1 y con una demo en vivo.",
+        "fr": "Recherche de visages de bout en bout dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree, comparée à la recherche exhaustive, calibrée par analyse ROC et F1, avec une démo en ligne."
       },
       "todo": [],
       "metrics": [
@@ -367,10 +367,7 @@
         "Layered architecture"
       ],
       "repo": "https://github.com/santiagodie/library-management-system",
-      "demo": {
-        "url": "https://github.com/santiagodie/library-management-system/releases/latest",
-        "type": "download"
-      }
+      "demo": null
     },
     {
       "id": "life-simulation",
@@ -386,9 +383,9 @@
       },
       "featured": true,
       "description": {
-        "en": "A team-built artificial-life simulation: a Spring Boot REST API queues cellular-automaton runs in RabbitMQ, five workers run them into MySQL, and a Thymeleaf web client replays them step by step.",
-        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola autómatas celulares en RabbitMQ, cinco workers los ejecutan y guardan en MySQL, y un cliente web en Thymeleaf los reproduce paso a paso.",
-        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les stockent dans MySQL, et un client web Thymeleaf les rejoue pas à pas."
+        "en": "A team-built artificial life simulation: a Spring Boot REST API queues cellular automata in RabbitMQ, five workers run them and store them in MySQL, everything starts with Docker Compose and is tested in CI with GitHub Actions, and a Thymeleaf web client replays them step by step.",
+        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola autómatas celulares en RabbitMQ, cinco workers los ejecutan y guardan en MySQL, todo se levanta con Docker Compose y se prueba en CI con GitHub Actions, y un cliente web en Thymeleaf los reproduce paso a paso.",
+        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les enregistrent dans MySQL, le tout démarre avec Docker Compose et est testé en CI avec GitHub Actions, et un client web Thymeleaf les rejoue pas à pas."
       },
       "todo": [],
       "metrics": [

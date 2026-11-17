@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Santiago Die Morejón · Computer Engineer, AI & MLOps",
-    "description": "Computer engineering student at the University of La Rioja focused on machine learning and MLOps. Projects in computer vision, NLP and distributed systems.",
+    "title": "Santiago Die Morejón · Junior ML & MLOps Engineer",
+    "description": "Final-year computer engineering student (University of La Rioja). Machine learning and MLOps with Python, PyTorch and Docker.",
     "ogLocale": "en_GB",
     "langName": "English",
-    "jobTitle": "Computer Engineer"
+    "jobTitle": "Computer engineering student, machine learning and MLOps"
   },
   "a11y": {
     "skip": "Skip to content",
@@ -32,7 +32,7 @@
     "dismiss": "Dismiss"
   },
   "hero": {
-    "role": "Computer Engineer · AI & ML · MLOps",
+    "role": "Machine learning & MLOps in Python",
     "ctaProjects": "View projects",
     "ctaCv": "Download CV",
     "ctaContact": "Get in touch"
@@ -95,16 +95,16 @@
         "title": "Intern",
         "org": "Encore Lab",
         "place": "Logroño, Spain",
-        "text": "Building a secure cloud client portal for a grant consultancy, synced from an on-premise system without exposing the internal network, with LLM-based document classification and a client assistant.",
-        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · DevOps · LLMs"
+        "text": "I build a secure cloud portal for the clients of a grant consultancy: it syncs from their on-premise system without exposing the internal network, and classifies documents and answers clients with LLM-based features.",
+        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLMs · legacy systems integration · software design"
       },
       {
         "period": "Apr 2026 – Present",
         "title": "Full-stack developer (freelance)",
         "org": "Islamontana Travel",
         "place": "Remote",
-        "text": "Design and development of the website of a nature travel agency in Ecuador, bilingual and SEO-optimised. In progress: an admin panel with 2FA and roles, a FastAPI API with PostgreSQL, and deployment to a VPS with Docker Compose and CI/CD with staging and tagged releases.",
-        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · PostgreSQL · Docker · GitHub Actions"
+        "text": "I designed and built the bilingual, SEO-optimised website of a nature travel agency in Ecuador. Still in development: an admin panel with roles, a FastAPI API on PostgreSQL, and deployment with Docker Compose and CI/CD with staging and tagged releases.",
+        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · Docker · GitHub Actions"
       }
     ]
   },
@@ -136,15 +136,51 @@
   "skills": {
     "groups": [
       {
-        "name": "AI & data",
+        "name": "ML & deep learning",
         "items": [
-          "Machine learning",
-          "deep learning",
+          "Python",
+          "PyTorch",
+          "scikit-learn",
+          "TensorFlow",
+          "Hugging Face",
+          "fastai",
+          "Gradio",
+          "machine learning",
+          "deep learning"
+        ]
+      },
+      {
+        "name": "MLOps & DevOps",
+        "items": [
+          "MLOps",
+          "Docker",
+          "GitHub Actions",
+          "CI/CD",
+          "JUnit",
+          "GitHub",
+          "RabbitMQ",
+          "Claude Code"
+        ]
+      },
+      {
+        "name": "Data",
+        "items": [
+          "pandas",
+          "NumPy",
+          "Matplotlib",
+          "SQL",
+          "PostgreSQL",
+          "MySQL",
+          "data mining"
+        ]
+      },
+      {
+        "name": "Vision, language & LLMs",
+        "items": [
           "computer vision",
+          "OpenCV",
           "NLP",
-          "LLMs",
-          "data mining",
-          "MLOps"
+          "LLMs"
         ]
       },
       {
@@ -156,51 +192,36 @@
         ]
       },
       {
-        "name": "Programming languages",
+        "name": "Backend & APIs",
         "items": [
-          "Python",
+          "Spring Boot",
+          "Spring MVC",
+          "Thymeleaf",
+          "Flask",
+          "FastAPI",
+          "Pydantic"
+        ]
+      },
+      {
+        "name": "Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "Tailwind CSS",
+          "AngularJS",
+          "Figma"
+        ]
+      },
+      {
+        "name": "Other languages",
+        "items": [
           "Java",
           "C++",
           "C#",
           "JavaScript",
           "TypeScript",
           "PHP",
-          "SQL",
           "R"
-        ]
-      },
-      {
-        "name": "Web & frameworks",
-        "items": [
-          "AngularJS",
-          "Spring MVC",
-          "Flask",
-          "Figma"
-        ]
-      },
-      {
-        "name": "Databases",
-        "items": [
-          "PostgreSQL",
-          "MySQL"
-        ]
-      },
-      {
-        "name": "DevOps",
-        "items": [
-          "Docker",
-          "CI/CD",
-          "GitHub",
-          "RabbitMQ",
-          "Claude Code"
-        ]
-      },
-      {
-        "name": "Quantum computing",
-        "items": [
-          "Qiskit",
-          "quantum circuits",
-          "quantum algorithms (Grover, Deutsch-Jozsa)"
         ]
       },
       {
@@ -211,7 +232,17 @@
           "network management",
           "requirements analysis",
           "UI design",
-          "prototyping"
+          "prototyping",
+          "legacy systems integration",
+          "software design"
+        ]
+      },
+      {
+        "name": "Quantum computing",
+        "items": [
+          "Qiskit",
+          "quantum circuits",
+          "quantum algorithms (Grover, Deutsch-Jozsa)"
         ]
       }
     ],
@@ -231,7 +262,8 @@
           "level": "full professional proficiency"
         }
       ]
-    }
+    },
+    "more": "More skills"
   },
   "contact": {
     "text": "Write to me by email or find me on GitHub and LinkedIn.",

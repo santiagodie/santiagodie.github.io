@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Santiago Die Morejón · Ingeniero informático, IA y MLOps",
-    "description": "Estudiante de Ingeniería Informática en la Universidad de La Rioja, centrado en machine learning y MLOps. Visión artificial, PLN y sistemas distribuidos.",
+    "title": "Santiago Die Morejón · Ingeniero junior de ML y MLOps",
+    "description": "Último curso de Ingeniería Informática (Universidad de La Rioja). Machine learning y MLOps con Python, PyTorch y Docker.",
     "ogLocale": "es_ES",
     "langName": "Español",
-    "jobTitle": "Ingeniero informático"
+    "jobTitle": "Estudiante de Ingeniería Informática, machine learning y MLOps"
   },
   "a11y": {
     "skip": "Saltar al contenido",
@@ -32,7 +32,7 @@
     "dismiss": "Cerrar aviso"
   },
   "hero": {
-    "role": "Ingeniero informático · IA y ML · MLOps",
+    "role": "Machine learning y MLOps con Python",
     "ctaProjects": "Ver proyectos",
     "ctaCv": "Descargar CV",
     "ctaContact": "Contactar"
@@ -95,16 +95,16 @@
         "title": "Estudiante en prácticas",
         "org": "Encore Lab",
         "place": "Logroño, España",
-        "text": "Desarrollo de un portal cloud seguro para los clientes de una consultora de subvenciones, sincronizado con un sistema on-premise sin exponer la red interna, con clasificación de documentos y un asistente para clientes basados en LLM.",
-        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · DevOps · LLM"
+        "text": "Desarrollo un portal cloud seguro para los clientes de una consultora de subvenciones: se sincroniza con su sistema on-premise sin exponer la red interna, y clasifica documentos y atiende a los clientes con funciones basadas en LLM.",
+        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLM · integración de sistemas heredados · diseño de software"
       },
       {
         "period": "Abr. 2026 – Actualidad",
         "title": "Desarrollador full-stack (freelance)",
         "org": "Islamontana Travel",
         "place": "Remoto",
-        "text": "Diseño y desarrollo de la web de una agencia de viajes de naturaleza en Ecuador, bilingüe y optimizada para SEO. En curso: panel de gestión con 2FA y roles, API en FastAPI con PostgreSQL, y despliegue en VPS con Docker Compose y CI/CD con staging y versiones etiquetadas.",
-        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · PostgreSQL · Docker · GitHub Actions"
+        "text": "Diseñé y desarrollé la web bilingüe y optimizada para SEO de una agencia de viajes de naturaleza en Ecuador. Sigue en desarrollo: panel de gestión con roles, API en FastAPI con PostgreSQL, y despliegue con Docker Compose y CI/CD con staging y versiones etiquetadas.",
+        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · Docker · GitHub Actions"
       }
     ]
   },
@@ -136,15 +136,51 @@
   "skills": {
     "groups": [
       {
-        "name": "IA y datos",
+        "name": "ML y deep learning",
         "items": [
-          "Machine learning",
-          "deep learning",
+          "Python",
+          "PyTorch",
+          "scikit-learn",
+          "TensorFlow",
+          "Hugging Face",
+          "fastai",
+          "Gradio",
+          "machine learning",
+          "deep learning"
+        ]
+      },
+      {
+        "name": "MLOps y DevOps",
+        "items": [
+          "MLOps",
+          "Docker",
+          "GitHub Actions",
+          "CI/CD",
+          "JUnit",
+          "GitHub",
+          "RabbitMQ",
+          "Claude Code"
+        ]
+      },
+      {
+        "name": "Datos",
+        "items": [
+          "pandas",
+          "NumPy",
+          "Matplotlib",
+          "SQL",
+          "PostgreSQL",
+          "MySQL",
+          "minería de datos"
+        ]
+      },
+      {
+        "name": "Visión, lenguaje y LLM",
+        "items": [
           "visión por computador",
+          "OpenCV",
           "PLN",
-          "LLM",
-          "minería de datos",
-          "MLOps"
+          "LLM"
         ]
       },
       {
@@ -156,51 +192,36 @@
         ]
       },
       {
-        "name": "Lenguajes",
+        "name": "Backend y API",
         "items": [
-          "Python",
+          "Spring Boot",
+          "Spring MVC",
+          "Thymeleaf",
+          "Flask",
+          "FastAPI",
+          "Pydantic"
+        ]
+      },
+      {
+        "name": "Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "Tailwind CSS",
+          "AngularJS",
+          "Figma"
+        ]
+      },
+      {
+        "name": "Otros lenguajes",
+        "items": [
           "Java",
           "C++",
           "C#",
           "JavaScript",
           "TypeScript",
           "PHP",
-          "SQL",
           "R"
-        ]
-      },
-      {
-        "name": "Web y frameworks",
-        "items": [
-          "AngularJS",
-          "Spring MVC",
-          "Flask",
-          "Figma"
-        ]
-      },
-      {
-        "name": "Bases de datos",
-        "items": [
-          "PostgreSQL",
-          "MySQL"
-        ]
-      },
-      {
-        "name": "DevOps",
-        "items": [
-          "Docker",
-          "CI/CD",
-          "GitHub",
-          "RabbitMQ",
-          "Claude Code"
-        ]
-      },
-      {
-        "name": "Computación cuántica",
-        "items": [
-          "Qiskit",
-          "circuitos cuánticos",
-          "algoritmos cuánticos (Grover, Deutsch-Jozsa)"
         ]
       },
       {
@@ -211,7 +232,17 @@
           "gestión de redes",
           "análisis de requisitos",
           "diseño de interfaces",
-          "prototipado"
+          "prototipado",
+          "integración de sistemas heredados",
+          "diseño de software"
+        ]
+      },
+      {
+        "name": "Computación cuántica",
+        "items": [
+          "Qiskit",
+          "circuitos cuánticos",
+          "algoritmos cuánticos (Grover, Deutsch-Jozsa)"
         ]
       }
     ],
@@ -231,7 +262,8 @@
           "level": "competencia profesional completa"
         }
       ]
-    }
+    },
+    "more": "Más habilidades"
   },
   "contact": {
     "text": "Escríbeme por correo o encuéntrame en GitHub y LinkedIn.",

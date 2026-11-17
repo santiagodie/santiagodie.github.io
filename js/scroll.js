@@ -104,21 +104,44 @@
     const start = featured
       ? featured.getBoundingClientRect().top + featured.offsetHeight / 2 - host.top
       : tops[0];
-    let d = `M${points[0].x} ${start}V${points[0].y}`;
+    // The path is written and, alongside, kept as its pieces (straight runs and
+    // quarter turns), so its samples come from plain arithmetic: sampling the SVG
+    // with getPointAtLength() walked the whole path thousands of times (~130 ms a
+    // call, every frame while "More projects" changed height).
+    let x = points[0].x;
+    let y = start;
+    let d = `M${x} ${y}`;
+    const pieces = [];
+    const run = (nx, ny) => {
+      pieces.push([x, y, nx, ny]);
+      d += nx === x ? `V${ny}` : `H${nx}`;
+      x = nx;
+      y = ny;
+    };
+    const turn = (cx, cy, nx, ny) => {
+      pieces.push([x, y, nx, ny, cx, cy]);
+      d += `Q${cx} ${cy} ${nx} ${ny}`;
+      x = nx;
+      y = ny;
+    };
+    run(x, points[0].y);
     for (let i = 1; i < points.length; i += 1) {
       const a = points[i - 1];
       const b = points[i];
       if (Math.abs(a.x - b.x) < 1) {
-        d += `V${b.y}`;
+        run(x, b.y);
         continue;
       }
       const band = tops[i] + Math.max(TURN * 2, (b.y - tops[i]) * 0.4);
       const dir = b.x > a.x ? 1 : -1;
-      d += `V${band - TURN}Q${a.x} ${band} ${a.x + dir * TURN} ${band}`
-        + `H${b.x - dir * TURN}Q${b.x} ${band} ${b.x} ${band + TURN}V${b.y}`;
+      run(x, band - TURN);
+      turn(a.x, band, a.x + dir * TURN, band);
+      run(b.x - dir * TURN, band);
+      turn(b.x, band, b.x, band + TURN);
+      run(b.x, b.y);
     }
     const last = sections[sections.length - 1].querySelector(".section__title").getBoundingClientRect();
-    d += `V${last.bottom - host.top}`;
+    run(x, last.bottom - host.top);
 
     line.setAttribute("d", d);
     trails.forEach((trail) => trail.setAttribute("d", d));
@@ -128,13 +151,38 @@
     svg.style.setProperty("--total", total);
     tip.style.offsetPath = `path("${d}")`;
 
+    // A point every ~6 px of length: straight runs are exact; a quarter turn is a
+    // quadratic curve, measured on 8 chords (under 0.1 px off for these radii). The
+    // lengths are then scaled to the browser's own total, which draws the dashes.
     samples = [];
     let maxY = -Infinity;
-    for (let len = 0; len <= total; len += 6) {
-      maxY = Math.max(maxY, line.getPointAtLength(len).y);
-      samples.push([len, maxY]);
+    let length = 0;
+    const bezier = (p, t) => (1 - t) * (1 - t) * p[0] + 2 * (1 - t) * t * p[1] + t * t * p[2];
+    for (const [x0, y0, x1, y1, cx, cy] of pieces) {
+      if (cx === undefined) {
+        const size = Math.hypot(x1 - x0, y1 - y0);
+        for (let s = 0; s < size; s += 6) {
+          maxY = Math.max(maxY, y0 + ((y1 - y0) * s) / size);
+          samples.push([length + s, maxY]);
+        }
+        length += size;
+      } else {
+        let px = x0;
+        let py = y0;
+        for (let k = 1; k <= 8; k += 1) {
+          const qx = bezier([x0, cx, x1], k / 8);
+          const qy = bezier([y0, cy, y1], k / 8);
+          length += Math.hypot(qx - px, qy - py);
+          maxY = Math.max(maxY, qy);
+          samples.push([length, maxY]);
+          px = qx;
+          py = qy;
+        }
+      }
     }
-    samples.push([total, Math.max(maxY, line.getPointAtLength(total).y)]);
+    samples.push([length, Math.max(maxY, y)]);
+    const scale = length > 0 ? total / length : 1;
+    samples.forEach((sample) => { sample[0] *= scale; });
     marks = points.map((p) => p.y);
 
     if (scrollTimeline) timeline();
@@ -233,7 +281,15 @@
   root.classList.add("has-progress");
 
   window.addEventListener("scroll", onScroll, { passive: true });
-  if ("ResizeObserver" in window) new ResizeObserver(() => requestAnimationFrame(geometry)).observe(main);
+  // Every change of size in one frame (several observer calls) makes one measurement.
+  let measuring = 0;
+  const remeasure = () => {
+    measuring ||= requestAnimationFrame(() => {
+      measuring = 0;
+      geometry();
+    });
+  };
+  if ("ResizeObserver" in window) new ResizeObserver(remeasure).observe(main);
   else window.addEventListener("resize", geometry);
   if (document.fonts) document.fonts.ready.then(geometry);
   // The hero's featured projects settle in from 10px lower; measure again once they land.

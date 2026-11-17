@@ -244,6 +244,7 @@ def render_jsonld(site, strings, lang):
         "address": {"@type": "PostalAddress", "addressLocality": address["locality"],
                     "addressRegion": address["region"], "addressCountry": address["country"]},
         "alumniOf": [thing(school) for school in person["alumniOf"]],
+        "knowsAbout": person.get("knowsAbout", []),
         # An internship is not employment: `affiliation` says he is linked to the
         # organisation without claiming, as `worksFor` would, that he is on its staff.
         "affiliation": thing(person["affiliation"]),
@@ -431,11 +432,19 @@ def demo_label(demo, s, short=False):
     return s["projects"]["demoShort" if short else "demo"]
 
 
+def live_demo(item):
+    """The secondary link of a card (owner's rule, lot 6): a live web demo, or a Colab
+    notebook as a discreet "Colab" link; never a download. The card itself always
+    opens its repository (`repo`)."""
+    demo = item.get("demo")
+    return demo if demo and demo.get("url") and demo.get("type") in ("web", "colab") else None
+
+
 def project_links(project, lang, s):
     title = project["title"][lang]
     links = [external(project["repo"], s["projects"]["code"], title, s)]
-    demo = project.get("demo")
-    if demo and demo.get("url"):
+    demo = live_demo(project)
+    if demo:
         links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
     return "".join(links)
 
@@ -450,8 +459,8 @@ def project_parts(project, lang, s):
         label = part["label"][lang]
         context = f"{label}, {title}"
         links = external(part["repo"], s["projects"]["code"], context, s)
-        demo = part.get("demo")
-        if demo and demo.get("url"):
+        demo = live_demo(part)
+        if demo:
             links = external(demo["url"], demo_label(demo, s), context, s) + links
         heading = f'{project["id"]}-part-{index}'
         groups.append(
@@ -517,6 +526,12 @@ def render_cv_profile(s):
     return f'          <p class="cv-only cv-profile" hidden>{label(s["cv"]["profile"])}</p>'
 
 
+def render_cv_hook(s):
+    """Print only, while the CV is not public: the first paragraph of the chat's answer."""
+    hook = TODO.sub("", s["chat"]["answer"]).split("\n\n")[0]
+    return f'          <p class="cv-only cv-profile" hidden>{esc(hook)}</p>'
+
+
 def render_cv_nationality(s):
     """Print only: nationality and the right to work, a CV detail the page does not show
     (and that stays out of the JSON-LD)."""
@@ -549,9 +564,9 @@ def render_projects(projects, lang, s):
         if project.get("featured"):
             continue
         title = project["title"][lang]
-        demo = project.get("demo")
+        demo = live_demo(project)
         extra = ""
-        if demo and demo.get("url"):
+        if demo:
             extra = (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(demo_label(demo, s, short=True))}{ARROW}'
                      f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
         foot = "card__foot"
@@ -560,7 +575,7 @@ def render_projects(projects, lang, s):
             extra = "".join(
                 f'<a class="card__demo" href="{esc(part["demo"]["url"])}" target="_blank" rel="noopener">{esc(part["label"][lang])}{ARROW}'
                 f'<span class="visually-hidden">: {esc(demo_label(part["demo"], s))}, {esc(title)} ({esc(new_tab)})</span></a>'
-                for part in project["parts"] if part.get("demo", {}).get("url"))
+                for part in project["parts"] if live_demo(part))
             foot += " card__foot--stacked"
             extra = f'<span class="card__more">{extra}</span>'
         cards.append(f'''            <li class="card card--mini" id="p-{project["id"]}">{FRAME}
@@ -641,16 +656,32 @@ def skill_groups(s):
     return groups
 
 
+SKILLS_SHOWN = 4  # groups shown before "More skills" (owner's decision, lot 6)
+
+
 def render_skills(s):
     """Each group as a row: its name, then its items in mono; then the spoken languages."""
+    # Owner's decision (lot 6): the first four groups show; the others sit in a "More
+    # skills" disclosure, the same component as More projects (without its scrolling
+    # row), closed at first and open on paper.
     rows = []
-    for name, items in skill_groups(s):
+    groups = skill_groups(s)
+    for name, items in groups:
         items = "".join(f"<li>{esc(item)}</li>" for item in items)
         rows.append(f'            <div class="skills__group"><dt class="skills__name">{text(name)}</dt>'
                     f'<dd><ul class="skills__items" role="list">{items}</ul></dd></div>')
     if not rows:
         return ""
-    out = '          <dl class="skills">\n' + "\n".join(rows) + "\n          </dl>"
+    out = '          <dl class="skills">\n' + "\n".join(rows[:SKILLS_SHOWN]) + "\n          </dl>"
+    if rows[SKILLS_SHOWN:]:
+        more = s["skills"]["more"]
+        count = sum(len(items) for _, items in groups[SKILLS_SHOWN:])
+        out += (f'\n          <h3 class="visually-hidden">{text(more)}</h3>\n'
+                f'          <details class="more more--skills">\n'
+                f'            <summary class="more__summary"><span class="more__title">{text(more)}</span>'
+                f'<span class="more__count">· {count}</span><span class="more__icon" aria-hidden="true"></span></summary>\n'
+                f'            <div class="more__body">\n          <dl class="skills">\n' + "\n".join(rows[SKILLS_SHOWN:])
+                + "\n          </dl>\n            </div>\n          </details>")
     languages = s["skills"]["languages"]
     if languages["items"]:
         items = "".join(f'<div class="langs__item"><dt>{esc(item["name"])}</dt><dd>{esc(item["level"])}</dd></div>'
@@ -744,7 +775,9 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         # CV-only lines are not in the page; the PDFs are still made and checked.
         "heroCv": lambda: render_hero_cv(s, lang, root) if cv_public else
             f'          <a class="button button--primary" href="#projects">{text(s["hero"]["ctaProjects"])}</a>',
-        "cvProfile": lambda: render_cv_profile(s) if cv_public else "",
+        # While the CV is not public, paper gets the chat answer's first paragraph (its
+        # hook) in place of the chat, rather than the CV profile.
+        "cvProfile": lambda: render_cv_profile(s) if cv_public else render_cv_hook(s),
         "cvNationality": lambda: render_cv_nationality(s) if cv_public else "",
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
