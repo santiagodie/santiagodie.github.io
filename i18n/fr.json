@@ -136,15 +136,51 @@
   "skills": {
     "groups": [
       {
-        "name": "IA et données",
+        "name": "TODO: ML et deep learning",
         "items": [
-          "Machine learning",
-          "deep learning",
+          "Python",
+          "PyTorch",
+          "scikit-learn",
+          "TensorFlow",
+          "Hugging Face",
+          "fastai",
+          "Gradio",
+          "machine learning",
+          "deep learning"
+        ]
+      },
+      {
+        "name": "TODO: MLOps et DevOps",
+        "items": [
+          "MLOps",
+          "Docker",
+          "GitHub Actions",
+          "CI/CD",
+          "JUnit",
+          "GitHub",
+          "RabbitMQ",
+          "Claude Code"
+        ]
+      },
+      {
+        "name": "TODO: Données",
+        "items": [
+          "pandas",
+          "NumPy",
+          "Matplotlib",
+          "SQL",
+          "PostgreSQL",
+          "MySQL",
+          "fouille de données"
+        ]
+      },
+      {
+        "name": "TODO: Vision, langage et LLM",
+        "items": [
           "vision par ordinateur",
+          "OpenCV",
           "TAL",
-          "LLM",
-          "fouille de données",
-          "MLOps"
+          "LLM"
         ]
       },
       {
@@ -156,51 +192,36 @@
         ]
       },
       {
-        "name": "Langages",
+        "name": "TODO: Backend et API",
         "items": [
-          "Python",
+          "Spring Boot",
+          "Spring MVC",
+          "Thymeleaf",
+          "Flask",
+          "FastAPI",
+          "Pydantic"
+        ]
+      },
+      {
+        "name": "TODO: Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "Tailwind CSS",
+          "AngularJS",
+          "Figma"
+        ]
+      },
+      {
+        "name": "TODO: Autres langages",
+        "items": [
           "Java",
           "C++",
           "C#",
           "JavaScript",
           "TypeScript",
           "PHP",
-          "SQL",
           "R"
-        ]
-      },
-      {
-        "name": "Web et frameworks",
-        "items": [
-          "AngularJS",
-          "Spring MVC",
-          "Flask",
-          "Figma"
-        ]
-      },
-      {
-        "name": "Bases de données",
-        "items": [
-          "PostgreSQL",
-          "MySQL"
-        ]
-      },
-      {
-        "name": "DevOps",
-        "items": [
-          "Docker",
-          "CI/CD",
-          "GitHub",
-          "RabbitMQ",
-          "Claude Code"
-        ]
-      },
-      {
-        "name": "Informatique quantique",
-        "items": [
-          "Qiskit",
-          "circuits quantiques",
-          "algorithmes quantiques (Grover, Deutsch-Jozsa)"
         ]
       },
       {
@@ -212,6 +233,14 @@
           "analyse des besoins",
           "conception d’interfaces",
           "prototypage"
+        ]
+      },
+      {
+        "name": "Informatique quantique",
+        "items": [
+          "Qiskit",
+          "circuits quantiques",
+          "algorithmes quantiques (Grover, Deutsch-Jozsa)"
         ]
       }
     ],
