@@ -1019,26 +1019,32 @@ html[data-menu-open] {
    above the header, and the header's logo stays out of sight until it lands
    (--brand), except when it has keyboard focus or the menu is open. */
 /* The header's navy slides down from the top, solid, in the same progress as the
-   monogram (--head, 0 to 1): never a see-through tone over the hero. The contents stay
-   put; their colours switch half-way. With the menu open the header is navy as ever. */
+   monogram (--head, 0 to 1): never a see-through tone over the hero. It is its own layer
+   (.head-band, added by js/deferred/logo-travel.js) under the travelling monogram, which
+   stays under the header and everything it opens (the language menu, the phone menu):
+   band 48, monogram 49, header 50. The contents stay put; their colours switch half-way.
+   With the menu open the header is navy as ever. */
 .logo-travels .site-header:not([data-menu-open]) {
   background-color: transparent !important;
   transition: color var(--dur-press) var(--ease-out) !important;
 }
 
-.logo-travels .site-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+.head-band {
+  position: fixed;
+  top: var(--head-top, 0px);
+  left: 0;
+  right: 0;
+  z-index: 48;
+  height: var(--head-h, 0px);
   background: var(--navy);
-  transform: translateY(calc((var(--head, 0) - 1) * 100%));
+  transform: scaleY(var(--head, 0)); /* a solid colour: growing from the top edge reads as sliding down */
+  transform-origin: top;
   pointer-events: none;
 }
 
 .logo-travels .hero__logo {
   position: relative;
-  z-index: 60;
+  z-index: 49;
   transform-origin: 0 0;
 }
 

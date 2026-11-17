@@ -6,12 +6,13 @@
 // Path (fix L10 móvil): it never touches the hero's text. First it rises and shrinks in
 // its own column (on phones from the first pixel of scroll: it sits right above the
 // name), then, on wide screens, it slides along the header's row to the logo's place.
-// The range is the longest (up to 150px on phones, 30 % of the hero on wide screens) for
-// which no sampled frame overlaps a word of the name or the role, 10px kept clear: the
-// text scrolls up 1:1, so the travel must end before the name reaches the header's row.
-// The header's navy slides down from the top in the same progress (CSS, --head). The
-// stroke is gold over the header's navy band and navy over the hero, cut at its edge. At the end the header's
-// own logo (the real, focusable link) takes over in place. While it travels it has no
+// The range is the longest (up to 150px on phones, 140 on wide screens) for which no
+// sampled frame overlaps a word of the name or the role (on wide screens: in sight, not
+// under the navy band, buttons included), 10px kept clear.
+// The header's navy slides down from the top in the same progress (.head-band, --head),
+// under the monogram, which stays under the header and its menus. The stroke is gold
+// over the band and navy over the hero, cut at its edge. At the end the header's own
+// logo (the real, focusable link) takes over in place. While it travels it has no
 // view-transition-name: changing language mid-way cross-fades it instead of moving it.
 (() => {
   const root = document.documentElement;
@@ -27,6 +28,7 @@
   const inOut = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
   const clamp = (t) => Math.min(1, Math.max(0, t));
   const CLEAR = 10; // px kept between the monogram and the text
+  const DESK = 140; // the travel's length on wide screens (shortened if the text needs it)
   let g; // geometry, measured at rest
 
   function measure() {
@@ -39,21 +41,28 @@
     const stuckTop = b.top - header.getBoundingClientRect().top;
     const lateral = Math.abs(b.left - m.left) > 4;
     g = { x0: m.left, y0: m.top + scrollY, w: m.width, h: m.height, bx: b.left, by: stuckTop, k: b.width / m.width, head: header.offsetHeight, split: lateral ? 0.6 : 1 };
-    // The hero's text, in page coordinates.
-    const text = [...hero.querySelectorAll(".hero__w, .hero__role")].flatMap((el) => {
+    // The hero's text, in page coordinates (on wide screens the buttons' labels too).
+    const text = [...hero.querySelectorAll(lateral ? ".hero__w, .hero__role, .hero__actions :is(a, button)" : ".hero__w, .hero__role")].flatMap((el) => {
       const r = document.createRange();
       r.selectNodeContents(el);
       return [...r.getClientRects()].map((q) => ({ l: q.left, t: q.top + scrollY, r: q.right, b: q.bottom + scrollY }));
     });
+    // On wide screens only the text still in sight counts: what the navy band has
+    // covered (from the header's top down to head × its share) is hidden.
+    const head0 = hero.getBoundingClientRect().top + scrollY - g.head; // the header's place at rest
     const clear = (range) => {
       for (let i = 1; i <= 80; i++) {
-        const v = at(i / 80, range);
-        const top = v.y, left = g.x0 + v.tx, w = g.w * v.k, h = g.h * v.k, s = range * (i / 80);
-        if (text.some((q) => left < q.r + CLEAR && left + w > q.l - CLEAR && top < q.b - s + CLEAR && top + h > q.t - s - CLEAR)) return false;
+        const p = i / 80, v = at(p, range);
+        const top = v.y, left = g.x0 + v.tx, w = g.w * v.k, h = g.h * v.k, s = range * p;
+        const hidden = lateral ? Math.max(0, head0 - s) + g.head * clamp(p / g.split) : -Infinity;
+        if (text.some((q) => {
+          const qt = Math.max(q.t - s, hidden), qb = q.b - s;
+          return qt < qb && left < q.r + CLEAR && left + w > q.l - CLEAR && top < qb + CLEAR && top + h > qt - CLEAR;
+        })) return false;
       }
       return true;
     };
-    let range = innerWidth < 1024 ? 150 : hero.offsetHeight * 0.3;
+    let range = innerWidth < 1024 ? 150 : DESK;
     while (range > 24 && !clear(range)) range -= 2;
     g.range = range;
   }
@@ -99,6 +108,8 @@
       mark.style.opacity = 0;
       root.style.setProperty("--brand", 1);
       root.style.setProperty("--head", 1);
+      root.style.setProperty("--head-top", `${Math.max(0, header.getBoundingClientRect().top)}px`);
+      root.style.setProperty("--head-h", `${g.head}px`);
       header.setAttribute("data-scrolled", "");
       return;
     }
@@ -111,11 +122,15 @@
       path.getAnimations().forEach((a) => a.finish()); // still drawing: complete it, then travel
     }
     const v = at(p);
+    // The band: with p on phones; on wide screens whole by the time the sideways part
+    // starts, so the name it covers is out of sight before the monogram crosses above it.
+    const head = clamp(p / g.split);
+    const top = Math.max(0, header.getBoundingClientRect().top);
     mark.style.transform = p > 0 ? `translate(${v.tx}px, ${v.ty}px) scale(${v.k})` : "";
     // Gold where it is over the sliding navy band, navy where it is still over the hero:
     // a hard-edged gradient cut at the band's lower edge (head × p below the header's top).
     if (p > 0) {
-      const band = Math.max(0, header.getBoundingClientRect().top) + g.head * p;
+      const band = top + g.head * head;
       const r = mark.getBoundingClientRect();
       const f = clamp((band - r.top) / Math.max(1, r.height)).toFixed(4);
       edge[1].setAttribute("offset", f);
@@ -128,8 +143,10 @@
     root.style.setProperty("--brand", v.hand ? 1 : 0);
     // One progress for both (fix, phones): the header's navy slides down as the monogram
     // travels and is whole when it lands; its colours switch half-way.
-    root.style.setProperty("--head", Math.min(1, p).toFixed(3));
-    header.toggleAttribute("data-scrolled", p >= 0.5);
+    root.style.setProperty("--head", head.toFixed(3));
+    root.style.setProperty("--head-top", `${top}px`);
+    root.style.setProperty("--head-h", `${g.head}px`);
+    header.toggleAttribute("data-scrolled", head >= 0.5);
   }
 
   // Native: one update per frame while scrolling.
@@ -160,6 +177,10 @@
     return () => ScrollTrigger.refresh();
   }
 
+  const bandEl = document.createElement("div");
+  bandEl.className = "head-band";
+  bandEl.setAttribute("aria-hidden", "true");
+  header.before(bandEl);
   root.classList.add("logo-travels");
   measure();
   const remeasure = (window.gsap && window.ScrollTrigger ? gsapEngine : native)();
