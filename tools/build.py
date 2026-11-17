@@ -551,6 +551,17 @@ def render_cv_nationality(s):
             f'            </li>')
 
 
+def render_hero_name():
+    """Lot 10 (R3): the name read once (visually hidden), and drawn as one span per
+    letter, words kept whole, for main.js to weight each letter by the pointer."""
+    def word(w):
+        return '<span class="hero__w">' + "".join(f'<span class="hero__l">{esc(c)}</span>' for c in w) + "</span>"
+    first, *rest = "Santiago Die Morejón".split()
+    return ('<span class="visually-hidden">Santiago Die Morejón</span>'
+            f'<span class="hero__letters" aria-hidden="true">{word(first)} '
+            f'<span class="hero__surname">{" ".join(word(w) for w in rest)}</span></span>')
+
+
 def render_hero_featured(projects, lang, s):
     """The hero's index of the featured projects: their titles, each a link to its card
     in Projects, strung on the start of the progress line (one lit node per title)."""
@@ -785,6 +796,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
         "heroFeatured": lambda: render_hero_featured(projects, lang, s),
+        "heroName": render_hero_name,
         # cv.public (data/site.json): while false, nothing links to the CV and its
         # CV-only lines are not in the page; the PDFs are still made and checked.
         "heroCv": lambda: render_hero_cv(s, lang, root) if cv_public else

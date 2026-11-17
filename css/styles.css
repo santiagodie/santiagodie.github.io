@@ -1188,6 +1188,17 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   margin-bottom: 0.25rem;
   color: var(--navy-2);
   font-size: var(--step-0);
+/* Lot 10 (R3): letters stay plain text until main.js has measured them; then each is a
+   box of its resting width, the glyph centred, so a lighter letter never moves another. */
+.hero__w {
+  white-space: nowrap;
+}
+
+.hero__name[data-weighted] .hero__l {
+  display: inline-block;
+  text-align: center;
+}
+
   font-weight: 600;
 }
 
