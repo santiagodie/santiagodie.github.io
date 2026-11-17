@@ -699,6 +699,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
     lang = language["code"]
     s = strings[lang]
     root = "../" * language["path"].count("/")
+    cv_public = site.get("cv", {}).get("public", True)
     values = {
         "lang": lang, "langCode": lang.upper(), "root": root, "year": date.today().year,
         "langs": ",".join(l["code"] for l in site["languages"]),
@@ -739,9 +740,12 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "about": lambda: render_about(s),
         "featured": lambda: render_featured(projects, lang, s),
         "heroFeatured": lambda: render_hero_featured(projects, lang, s),
-        "heroCv": lambda: render_hero_cv(s, lang, root),
-        "cvProfile": lambda: render_cv_profile(s),
-        "cvNationality": lambda: render_cv_nationality(s),
+        # cv.public (data/site.json): while false, nothing links to the CV and its
+        # CV-only lines are not in the page; the PDFs are still made and checked.
+        "heroCv": lambda: render_hero_cv(s, lang, root) if cv_public else
+            f'          <a class="button button--primary" href="#projects">{text(s["hero"]["ctaProjects"])}</a>',
+        "cvProfile": lambda: render_cv_profile(s) if cv_public else "",
+        "cvNationality": lambda: render_cv_nationality(s) if cv_public else "",
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),
         "education": lambda: render_entries(s, "education"),
@@ -750,7 +754,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         "contactLead": lambda: lead(s["contact"]["text"]),
         "email": lambda: render_email(site, s),
         "location": lambda: render_location(s),
-        "cv": lambda: render_cv(s, root, warnings),
+        "cv": lambda: render_cv(s, root, warnings) if cv_public else "",
     }
 
     def replace(match):
@@ -838,7 +842,8 @@ def build():
         css = sheet.read_text(encoding="utf-8").replace("__SITE__", host)  # print.css names the site
         sheet.write_text(minify_css(css), encoding="utf-8", newline="\n")
     (DIST / "sitemap.xml").write_text(render_sitemap(site), encoding="utf-8", newline="\n")
-    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}sitemap.xml\n", encoding="utf-8", newline="\n")
+    hide_cv = "" if site.get("cv", {}).get("public", True) else "Disallow: /cv/\n"
+    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n{hide_cv}\nSitemap: {site['url']}sitemap.xml\n", encoding="utf-8", newline="\n")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
 
     for warning in sorted(warnings):
