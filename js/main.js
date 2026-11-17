@@ -193,7 +193,8 @@
 
   // More projects: a link to a card inside opens the disclosure; the arrows move one
   // card and switch off at the ends, where the fades (without scroll timelines) go too.
-  const more = document.querySelector(".more");
+  // (the one with a scrolling row: "More skills" uses the same component, without it)
+  const more = document.querySelector(".more__row")?.closest(".more");
   if (more) {
     const row = more.querySelector(".more__row");
     const nav = more.querySelector(".more__nav");

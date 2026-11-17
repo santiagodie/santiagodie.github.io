@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Santiago Die Morejón · Ingeniero informático, IA y MLOps",
-    "description": "Estudiante de Ingeniería Informática en la Universidad de La Rioja, centrado en machine learning y MLOps. Visión artificial, PLN y sistemas distribuidos.",
+    "title": "Santiago Die Morejón · Ingeniero junior de ML y MLOps",
+    "description": "Último curso de Ingeniería Informática (Universidad de La Rioja). Machine learning y MLOps con Python, PyTorch y Docker. Disponible desde junio de 2027.",
     "ogLocale": "es_ES",
     "langName": "Español",
-    "jobTitle": "Ingeniero informático"
+    "jobTitle": "Estudiante de Ingeniería Informática, machine learning y MLOps"
   },
   "a11y": {
     "skip": "Saltar al contenido",
@@ -32,14 +32,14 @@
     "dismiss": "Cerrar aviso"
   },
   "hero": {
-    "role": "Ingeniero informático · IA y ML · MLOps",
+    "role": "Machine learning y MLOps con Python · Disponible como junior desde junio de 2027",
     "ctaProjects": "Ver proyectos",
     "ctaCv": "Descargar CV",
     "ctaContact": "Contactar"
   },
   "chat": {
-    "prompt": "¿Quién es Santiago Die?",
-    "answer": "Según mi análisis, Santiago es estudiante de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento, y su objetivo es trabajar como ingeniero de machine learning y MLOps. Ahora está de prácticas en Encore Lab, desarrollando una plataforma cloud segura con funciones basadas en LLM.\n\nAborda los problemas de forma empírica: en lugar de suponer cuál es la mejor solución, la mide, ya sea comparando cinco arquitecturas de CNN o evaluando un índice VP-tree frente a una búsqueda por fuerza bruta. Cuida los detalles que hacen que un sistema sea fiable, no solo que funcione.\n\nCreció en Quito, estudió en un liceo francés y ahora vive en España, así que se adapta rápido y trabaja con soltura en español, inglés y francés.",
+    "prompt": "Santiago, preséntate.",
+    "answer": "Estoy en el último curso de Ingeniería Informática en la Universidad de La Rioja y quiero trabajar como ingeniero de machine learning y MLOps. Mi búsqueda de caras indexa 38.299 rostros de 21.678 fotos de prensa y alcanza un F1 de 0,911 con el umbral calibrado.\n\nEstoy de prácticas en Encore Lab, en una plataforma cloud segura con funciones basadas en LLM. En mis proyectos mido antes de elegir: comparé cinco arquitecturas de CNN para clasificar imágenes de satélite, y la simulación de vida artificial que hicimos en equipo pasa 108 tests y vacía 220 solicitudes en 30 segundos con cinco workers.\n\nMe interesa lo que viene después del modelo. En mi predictor de salarios, el Random Forest se sirve con una API en Flask que valida cada petición con Pydantic, y la demo ejecuta el mismo modelo en el navegador con ONNX.\n\nDe la mención en Gestión del Conocimiento traigo ontologías e ingeniería del conocimiento, una base que quiero llevar a sistemas con LLM. Crecí en Quito, estudié en un liceo francés y vivo en España; trabajo en español, inglés y francés.\n\nAcabo las prácticas en mayo de 2027 y busco un puesto junior en ML o MLOps a partir de junio. Si encaja con tu equipo, escríbeme.",
     "send": "Enviar la pregunta",
     "skip": "Saltar",
     "replay": "Repetir",
@@ -95,16 +95,16 @@
         "title": "Estudiante en prácticas",
         "org": "Encore Lab",
         "place": "Logroño, España",
-        "text": "Desarrollo de un portal cloud seguro para los clientes de una consultora de subvenciones, sincronizado con un sistema on-premise sin exponer la red interna, con clasificación de documentos y un asistente para clientes basados en LLM.",
-        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · DevOps · LLM"
+        "text": "Desarrollo un portal cloud seguro para los clientes de una consultora de subvenciones: se sincroniza con su sistema on-premise sin exponer la red interna, y clasifica documentos y atiende a los clientes con funciones basadas en LLM.",
+        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLM"
       },
       {
         "period": "Abr. 2026 – Actualidad",
         "title": "Desarrollador full-stack (freelance)",
         "org": "Islamontana Travel",
         "place": "Remoto",
-        "text": "Diseño y desarrollo de la web de una agencia de viajes de naturaleza en Ecuador, bilingüe y optimizada para SEO. En curso: panel de gestión con 2FA y roles, API en FastAPI con PostgreSQL, y despliegue en VPS con Docker Compose y CI/CD con staging y versiones etiquetadas.",
-        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · PostgreSQL · Docker · GitHub Actions"
+        "text": "Diseñé y desarrollé la web bilingüe y optimizada para SEO de una agencia de viajes de naturaleza en Ecuador. Sigue en desarrollo: panel de gestión con 2FA y roles, API en FastAPI con PostgreSQL, y despliegue en VPS con Docker Compose y CI/CD con staging y versiones etiquetadas.",
+        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · Docker · GitHub Actions"
       }
     ]
   },
@@ -136,7 +136,7 @@
   "skills": {
     "groups": [
       {
-        "name": "TODO: ML y deep learning",
+        "name": "ML y deep learning",
         "items": [
           "Python",
           "PyTorch",
@@ -150,7 +150,7 @@
         ]
       },
       {
-        "name": "TODO: MLOps y DevOps",
+        "name": "MLOps y DevOps",
         "items": [
           "MLOps",
           "Docker",
@@ -163,7 +163,7 @@
         ]
       },
       {
-        "name": "TODO: Datos",
+        "name": "Datos",
         "items": [
           "pandas",
           "NumPy",
@@ -175,7 +175,7 @@
         ]
       },
       {
-        "name": "TODO: Visión, lenguaje y LLM",
+        "name": "Visión, lenguaje y LLM",
         "items": [
           "visión por computador",
           "OpenCV",
@@ -192,7 +192,7 @@
         ]
       },
       {
-        "name": "TODO: Backend y API",
+        "name": "Backend y API",
         "items": [
           "Spring Boot",
           "Spring MVC",
@@ -203,7 +203,7 @@
         ]
       },
       {
-        "name": "TODO: Frontend",
+        "name": "Frontend",
         "items": [
           "React",
           "Next.js",
@@ -213,7 +213,7 @@
         ]
       },
       {
-        "name": "TODO: Otros lenguajes",
+        "name": "Otros lenguajes",
         "items": [
           "Java",
           "C++",
@@ -260,7 +260,8 @@
           "level": "competencia profesional completa"
         }
       ]
-    }
+    },
+    "more": "Más habilidades"
   },
   "contact": {
     "text": "Escríbeme por correo o encuéntrame en GitHub y LinkedIn.",

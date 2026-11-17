@@ -30,7 +30,19 @@
     "affiliation": {
       "type": "Organization",
       "name": "Encore Lab"
-    }
+    },
+    "knowsAbout": [
+      "Machine learning",
+      "Deep learning",
+      "MLOps",
+      "Python",
+      "PyTorch",
+      "scikit-learn",
+      "Docker",
+      "Large language models",
+      "Computer vision",
+      "Knowledge management"
+    ]
   },
   "languages": [
     {

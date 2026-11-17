@@ -645,13 +645,6 @@ html[lang="en"] .portrait {
   display: block !important;
 }
 
-/* While the CV is not public (cv.public in data/site.json), the page has no CV
-   profile, and the printed CV leaves About out rather than print the chat's answer
-   (since lot 6, five paragraphs: a block of text, and a third page in French). */
-.section:has(.chat):not(:has(.cv-profile)) {
-  display: none !important;
-}
-
 /* Ten skill groups since lot 6: their rows, and the languages', a little tighter,
    so Contact still fits on page two. */
 .skills__group,
@@ -665,4 +658,20 @@ html[lang="en"] .portrait {
 .langs dt {
   font-size: 7.9pt !important;
   line-height: 1.3 !important;
+}
+
+/* While the CV is not public, About prints the chat answer's first paragraph (its
+   hook, see render_cv_hook): set like the rest of the text, a little tighter. */
+.cv-profile {
+  font-size: 8pt !important;
+  line-height: 1.35 !important;
+}
+
+/* On paper "More skills" is simply the rest of the groups: open, without its row. */
+.more--skills {
+  margin: 0 !important;
+}
+
+.more--skills .more__summary {
+  display: none !important;
 }
