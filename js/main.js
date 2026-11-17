@@ -323,6 +323,21 @@
   // GSAP fails). Nothing of it with reduced motion.
   const base = new URL(".", document.querySelector('script[src*="js/main.js"]').src);
   const later = (file) => new Promise((ok, ko) => document.head.append(Object.assign(document.createElement("script"), { src: new URL(file, base), onload: ok, onerror: ko })));
+  // The About chat's player (js/near/chat.js, maintenance lot) loads once the chat is a
+  // screen away, not with the page: until then the chat sits at rest (CSS); if it cannot
+  // load, the chat is shown finished, as without JavaScript.
+  const chatEl = document.querySelector("[data-chat]");
+  if (chatEl) {
+    const playChat = () => later("near/chat.js").catch(() => { chatEl.dataset.state = "done"; });
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        playChat();
+      }, { rootMargin: "100% 0px" });
+      io.observe(chatEl);
+    } else playChat();
+  }
   addEventListener("load", () => (window.requestIdleCallback || setTimeout)(() => {
     // R1: the chat's background, once the chat is a screen away (with reduced motion
     // too: then it draws one still frame).
@@ -332,7 +347,7 @@
       const near = new IntersectionObserver(([e]) => {
         if (!e.isIntersecting) return;
         near.disconnect();
-        later("deferred/chat-field.js").catch(() => {});
+        later("near/chat-field.js").catch(() => {});
       }, { rootMargin: "100% 0px" });
       near.observe(panel);
     }

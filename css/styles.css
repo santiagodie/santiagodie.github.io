@@ -1372,7 +1372,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
    notice are in the HTML (tools/build.py): without JavaScript this is the finished
    chat. With it, the chat starts with the question typed in the box; send plays
    the first token through the model's stages, then streams the rest of the answer
-   by words (js/chat.js, Web Animations, transform and opacity only). The panel is
+   by words (js/near/chat.js, Web Animations, transform and opacity only). The panel is
    as tall as the finished chat from the start, so nothing below it moves. The
    zoomed-in stages are drawn on .chat__stage at their real size, so they stay
    sharp while the camera (.chat__scene) is scaled. */
@@ -1405,7 +1405,7 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   container-type: inline-size;
 }
 
-/* Lot 10 (R1): the panel's living navy (js/deferred/chat-field.js), behind the scene,
+/* Lot 10 (R1): the panel's living navy (js/near/chat-field.js), behind the scene,
    which the camera zooms; it only ever draws the navy, a little lighter or darker. */
 .chat__field {
   position: absolute;

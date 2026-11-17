@@ -55,7 +55,8 @@
   let gen = 0;
   let running = false;
   let unannounced = false; // the run started by itself (reduced motion, on arrival)
-  let menuOpen = false; // the mobile menu covers the page (js/main.js)
+  // The mobile menu covers the page (js/main.js); it may already be open on arrival.
+  let menuOpen = !!document.querySelector("[data-header][data-menu-open]");
   const held = () => document.hidden || menuOpen;
   let keyboard = false;
 

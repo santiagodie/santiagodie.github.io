@@ -46,7 +46,8 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 BUDGET_GZIP_KB = 32.4
 # css/print.css only loads to print (media="print"), so it has a budget of its own.
 PRINT_BUDGET_GZIP_KB = 4
-DEFERRED_BUDGET_GZIP_KB = 60  # lot 10: modules loaded after the page (GSAP, the chat's background)
+DEFERRED_BUDGET_GZIP_KB = 60  # lot 10: modules loaded after the page (GSAP, the name, the logo's travel)
+NEAR_BUDGET_GZIP_KB = 20  # maintenance lot: loaded only when the About chat is a screen away (its player, its background)
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
@@ -335,7 +336,7 @@ def render_lang_suggest(site, strings, current, root):
 # The About chat -----------------------------------------------------------
 # The question, the answer and the message-limit notice are written into the HTML, so
 # the finished chat is what readers without JavaScript and search engines get.
-# js/chat.js animates it: the token ids (real, data/tokens.json), the illustrative
+# js/near/chat.js animates it: the token ids (real, data/tokens.json), the illustrative
 # attention weights and candidates (data/llm.json) and the notice's reset-time
 # sentences travel as a small JSON block for it.
 
@@ -364,7 +365,7 @@ def render_chat(s, tokens, model, lang):
     # Readers get the answer as paragraphs; the token spans are only drawn.
     paragraphs = "".join(f"<p>{esc(p)}</p>" for p in chat["answer"].split("\n\n"))
     # On narrow screens the conversation scrolls inside the panel, so it is a
-    # focusable region (js/chat.js drops the tab stop where it does not scroll).
+    # focusable region (js/near/chat.js drops the tab stop where it does not scroll).
     # data-nosnippet: the chat is still indexed, but search engines do not quote it
     # as the page's summary (meta.description is the summary).
     return f'''        <div class="chat" data-chat data-nosnippet>
@@ -967,6 +968,12 @@ def report_sizes():
     later = sorted([*DIST.glob("js/vendor/*.js"), *DIST.glob("js/deferred/*.js")])
     later_gz = sum(len(gzip.compress(f.read_bytes(), 9)) for f in later)
     print(f"  {'deferred (after load)':<16} {sum(f.stat().st_size for f in later) / 1024:7.1f} {later_gz / 1024:9.1f}  (budget {DEFERRED_BUDGET_GZIP_KB:.1f} KB gzip)")
+    # Maintenance lot: what loads only when the About chat is a screen away.
+    near = sorted(DIST.glob("js/near/*.js"))
+    near_gz = sum(len(gzip.compress(f.read_bytes(), 9)) for f in near)
+    print(f"  {'near the chat':<16} {sum(f.stat().st_size for f in near) / 1024:7.1f} {near_gz / 1024:9.1f}  (budget {NEAR_BUDGET_GZIP_KB:.1f} KB gzip)")
+    if near_gz / 1024 > NEAR_BUDGET_GZIP_KB:
+        raise BuildError(f"JS loaded near the chat weighs {near_gz / 1024:.1f} KB gzipped, over its {NEAR_BUDGET_GZIP_KB:.1f} KB budget")
     if later_gz / 1024 > DEFERRED_BUDGET_GZIP_KB:
         raise BuildError(f"Deferred JS weighs {later_gz / 1024:.1f} KB gzipped, over its {DEFERRED_BUDGET_GZIP_KB:.1f} KB budget")
     if total_gz / 1024 > BUDGET_GZIP_KB:
