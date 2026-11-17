@@ -625,7 +625,7 @@ html[lang="en"] .portrait {
   line-height: 1.45;
 }
 
-.chat,
+.cv-profile ~ .chat,
 .contact__cv {
   display: none !important;
 }
@@ -643,4 +643,15 @@ html[lang="en"] .portrait {
 
 .card__foot {
   display: block !important;
+}
+
+/* While the CV is not public (cv.public in data/site.json), About prints the chat's
+   answer, which is longer than the profile: a little tighter, so the CV stays on two pages. */
+.chat__answer {
+  font-size: 8pt !important;
+  line-height: 1.35 !important;
+}
+
+.chat__answer .t {
+  white-space: normal !important;
 }

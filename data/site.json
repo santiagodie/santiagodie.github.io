@@ -46,5 +46,8 @@
       "code": "fr",
       "path": "fr/"
     }
-  ]
+  ],
+  "cv": {
+    "public": false
+  }
 }
