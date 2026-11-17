@@ -1,9 +1,7 @@
 // Based on "Prismveil" by Originkit, adapted to vanilla JS.
 // The About chat's navy panel as slow, folded silk (lot 10, R1): a WebGL2 fragment
-// shader of domain-warped fbm noise, vertical bands and dark troughs. With the owner's
-// preset every colour is navy #0B1F3A, so the palette, tint, saturation, grain and
-// vignette of the original reduce to navy scaled by the sheen and darkened in the
-// troughs; the shader keeps only that (checked pixel for pixel against the original).
+// shader of domain-warped fbm noise, vertical bands and dark troughs, coloured by the
+// owner's preset (PRESET below: the brand's navy, bone and gold and their tints only).
 // Loaded by main.js when the chat is a screen away. It draws only while the chat is on
 // screen and the tab visible; at most 1.5 device pixels per CSS pixel; the pointer
 // pushes the folds only with a fine pointer. Reduced motion: one still frame. If the
@@ -14,13 +12,22 @@
   const scene = document.querySelector(".chat__panel"); // the navy panel, not the scene the camera zooms
   if (!scene) return;
   const OCT = 3; // octaves: 3 is not told apart from the original's 5 (≤ 4/255; .audit/l10)
+  // The owner's preset (fix L10 móvil): the brand's navy, bone and gold and their tints
+  // only (the troughs: a shade of the navy). Bone and gold text keep 4.5:1 on its lightest
+  // pixel (.audit/l10m/variants.json). 11 palette stops (the last repeats the first: the palette loops), the tint's
+  // base and accent, the troughs' colour, the sheen, the troughs' depth, the speed.
+  const PRESET = {"pal":["#0B1F3A","#132C4F","#0B1F3A","#173155","#132C4F","#0B1F3A","#132C4F","#173155","#132C4F","#0B1F3A","#0B1F3A"],"base":"#0B1F3A","accent":"#132C4F","bg":"#071323","sheen":0.45,"depth":0.9,"speed":0.88}; // provisional: variant (a), until the owner chooses
+  // Prismveil's fragment shader with the owner's settings as constants: the palette
+  // (sampled along the folds and drifting slowly), the sheen, the tint and the troughs.
+  // No grain, no vignette, saturation and brightness at 1 (they are identities).
   const FRAG = `#version 300 es
 precision highp float;
 uniform vec2 uRes, uMouse;
-uniform float uTime, uHover;
+uniform float uTime, uHover, uSheen, uDepth;
 uniform int uOct;
+uniform vec3 uPal[11], uBg, uBase, uAccent;
+uniform float uPS[11];
 out vec4 o;
-const vec3 NAVY = vec3(11.0, 31.0, 58.0) / 255.0;
 float hash2(vec2 c) {
   uvec2 q = uvec2(ivec2(floor(c)) + ivec2(65536)) * uvec2(1597334673u, 3812015801u);
   uint n = (q.x ^ q.y) * 1597334673u;
@@ -41,6 +48,12 @@ float fbmN(vec2 p, int oct) {
   }
   return s / max(n, 1e-4);
 }
+vec3 palette(float s) {
+  s = fract(s);
+  vec3 col = uPal[0];
+  for (int i = 1; i < 11; i++) col = mix(col, uPal[i], smoothstep(uPS[i - 1], uPS[i], s));
+  return col;
+}
 void main() {
   float H = max(uRes.y, 1.0);
   vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / H;
@@ -50,17 +63,21 @@ void main() {
   float fall = exp(-dot(d, d) / 0.09);
   p.x -= uHover * 0.5 * d.x * fall;
   float travel = 0.29 * (t + 0.15 * 3.0 / 6.2832 * sin(6.2832 * t / 3.0));
-  vec2 q = vec2((p.x - travel) * 3.0, p.y * 3.0 / 3.0) + vec2(7.0 * 17.3, 7.0 * 9.1);
+  vec2 q = vec2((p.x - travel) * 3.0, p.y) + vec2(121.1, 63.7);
   float tm = t * 0.9;
   vec2 k = vec2(2.0, 0.3);
   vec2 w1 = vec2(fbmN(q + vec2(tm * 0.6, 0.0), uOct), fbmN(q + vec2(5.2, 1.3) + vec2(-tm * 0.45, tm * 0.05), uOct));
   vec2 q1 = q + k * (w1 - 0.5) * 2.0;
   vec2 w2 = vec2(fbmN(q1 + vec2(1.7, 9.2) + vec2(-tm * 0.4, 0.0), uOct), fbmN(q1 + vec2(8.3, 2.8) + vec2(tm * 0.3, -tm * 0.05), uOct));
   vec2 wq = q + k * (w2 - 0.5) * 2.0;
-  vec3 col = NAVY * (1.0 + 0.85 * 0.25 * (w2.x - 0.5) * 1.2);
+  float f = fbmN(wq, uOct);
+  vec3 col = palette(f * 1.6 + 0.4 * (p.x - travel) + t * 0.35);
+  col *= 1.0 + uSheen * (w2.x - 0.5) * 1.2;
+  float g2 = vnoise(q * 0.35 + vec2(31.0, 17.0) + vec2(tm * 0.15, 0.0));
+  col = mix(col, mix(uBase, uAccent, smoothstep(0.3, 0.7, g2)), 0.15);
   float g = fbmN(vec2(wq.x * 1.3, wq.y * 2.6) + vec2(13.7, 4.1) + vec2(0.0, tm * 0.1), 3);
   float shade = smoothstep(0.29, 0.47, g);
-  col = mix(col, mix(NAVY, col, 0.22), (1.0 - shade) * 0.8);
+  col = mix(col, mix(uBg, col, 0.22), (1.0 - shade) * uDepth);
   col *= 1.0 + 0.12 * uHover * fall;
   o = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`;
@@ -132,7 +149,16 @@ void main() {
     gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
     u = {};
     for (const n of ["uRes", "uMouse", "uTime", "uHover", "uOct"]) u[n] = gl.getUniformLocation(prog, n);
+    const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+    const set = (n, f, ...v) => gl[f](gl.getUniformLocation(prog, n), ...v);
     gl.uniform1i(u.uOct, OCT);
+    set("uPal", "uniform3fv", PRESET.pal.flatMap(rgb));
+    set("uPS", "uniform1fv", [0, 0.11, 0.22, 0.34, 0.45, 0.53, 0.61, 0.7, 0.79, 0.88, 1]); // the original's stops
+    set("uBg", "uniform3fv", rgb(PRESET.bg));
+    set("uBase", "uniform3fv", rgb(PRESET.base));
+    set("uAccent", "uniform3fv", rgb(PRESET.accent));
+    set("uSheen", "uniform1f", PRESET.sheen);
+    set("uDepth", "uniform1f", PRESET.depth);
     return (ok = true);
   }
 
@@ -145,7 +171,7 @@ void main() {
     if (!ok) return;
     const dt = last < 0 ? 0 : Math.min((now - last) / 1000, 1 / 20);
     last = now;
-    clock = (clock + dt * 0.64) % 3600; // the original's speed, 32 of 50; real time
+    clock = (clock + dt * PRESET.speed) % 3600; // real time
     const k = 1 - Math.exp(-dt * 6);
     mx += (tx - mx) * k; my += (ty - my) * k; hov += (over - hov) * k;
     gl.viewport(0, 0, canvas.width, canvas.height);
