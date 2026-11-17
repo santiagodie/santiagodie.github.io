@@ -1516,12 +1516,20 @@ html[data-suggest="fr"] .lang-suggest[data-suggest="fr"] {
   font: 500 0.75rem/1 var(--font-mono);
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: color 150ms ease, background-color 150ms ease;
+  transition: color 150ms ease, background-color 150ms ease, opacity var(--dur-press) ease, display var(--dur-press) allow-discrete;
   touch-action: manipulation;
+}
+
+/* Skip and Replay share one place: one fades out as the other fades in (lot 9). */
+@starting-style {
+  .chat__ctl {
+    opacity: 0;
+  }
 }
 
 .chat__ctl[hidden] {
   display: none;
+  opacity: 0;
 }
 
 .chat__ctl svg {
