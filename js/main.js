@@ -191,6 +191,32 @@
     });
   }
 
+  // Featured cards on phones (lot 7): folded to title and technologies until "View
+  // details"; unfolded at once when reached from the hero's index (#p-<id>). Not kept
+  // between visits. Folding is CSS for one column only, so desktop is untouched.
+  const features = [...document.querySelectorAll(".card--feature")];
+  const fold = (card, open, animate) => {
+    card.toggleAttribute("data-collapsed", !open);
+    card.querySelector(".card__toggle")?.setAttribute("aria-expanded", String(open));
+    if (open && animate) {
+      card.setAttribute("data-opening", "");
+      setTimeout(() => card.removeAttribute("data-opening"), 260);
+    }
+  };
+  features.forEach((card) => {
+    fold(card, false, false);
+    card.querySelector(".card__toggle")?.addEventListener("click", () => fold(card, card.hasAttribute("data-collapsed"), true));
+  });
+  const unfoldTarget = () => {
+    const card = features.find((c) => c.id === location.hash.slice(1));
+    if (card) {
+      fold(card, true, false);
+      card.scrollIntoView();
+    }
+  };
+  window.addEventListener("hashchange", unfoldTarget);
+  unfoldTarget();
+
   // More projects: a link to a card inside opens the disclosure; the arrows move one
   // card and switch off at the ends, where the fades (without scroll timelines) go too.
   // (the one with a scrolling row: "More skills" uses the same component, without it)
