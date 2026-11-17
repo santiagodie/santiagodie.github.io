@@ -53,13 +53,18 @@
 
   const isOpen = () => header.hasAttribute("data-menu-open");
 
-  function setMenu(open, { returnFocus = false } = {}) {
+  function setMenu(open, { returnFocus = false, instant = false } = {}) {
     open = open && compact.matches;
     if (open === isOpen()) {
       menu.inert = compact.matches && !open;
       return;
     }
     toggle.setAttribute("aria-expanded", String(open));
+    // Escape closes at once (lot 9): no 0.7 s exit after a key that means "away".
+    if (instant) {
+      header.setAttribute("data-menu-instant", "");
+      requestAnimationFrame(() => requestAnimationFrame(() => header.removeAttribute("data-menu-instant")));
+    }
     header.toggleAttribute("data-menu-open", open);
     root.toggleAttribute("data-menu-open", open);
     menu.inert = compact.matches && !open;
@@ -163,7 +168,7 @@
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (langSwitch.hasAttribute("data-open")) closeLang({ returnFocus: true });
-    else if (isOpen()) setMenu(false, { returnFocus: true });
+    else if (isOpen()) setMenu(false, { returnFocus: true, instant: true });
   });
 
   // Current section: js/scroll.js marks it in the navigation, following the tip of
@@ -194,7 +199,10 @@
   // Disclosures (lot 8), one engine for all; see DESIGN.md, Disclosure.
   const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
   const motionOk = matchMedia("(prefers-reduced-motion: no-preference)");
-  const STAGGER = [30, 60, 85, 105, 120, 130];
+  // Times from styles.css (--dur-reveal in, --dur-reveal-out out); the blocks start at
+  // these shares of the opening, each lasting 60 % of it: the last lands before it ends.
+  const STAGGER = [0.07, 0.16, 0.23, 0.29, 0.33, 0.36];
+  const time = (name) => parseFloat(getComputedStyle(root).getPropertyValue(name));
   const sum = (list) => list.reduce((a, b) => a + b, 0);
   const signal = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
   let moving = 0;
@@ -230,12 +238,13 @@
     root.style.overflowAnchor = "none";
     o.parts.forEach((p) => { p.inert = !open; });
     const to = o.parts.map((p) => (open ? p.scrollHeight : 0));
-    const ms = (open ? 260 : 180) * Math.max(0.35, Math.abs(sum(to) - sum(from)) / (sum(o.parts.map((p) => p.scrollHeight)) || 1));
+    const full = time(open ? "--dur-reveal" : "--dur-reveal-out");
+    const ms = full * Math.max(0.35, Math.abs(sum(to) - sum(from)) / (sum(o.parts.map((p) => p.scrollHeight)) || 1));
     const anims = host._anims = o.parts.map((p, i) => p.animate({ height: [`${from[i]}px`, `${to[i]}px`] }, { duration: ms, easing: EASE, fill: "forwards" }));
     o.kids.forEach((k, i) => anims.push(open
       ? k.animate({ opacity: [turning ? fade[i] : 0, 1], transform: ["translateY(8px)", "none"] },
-        { duration: 180, delay: turning ? 0 : STAGGER[Math.min(i, (o.cap || 6) - 1)], easing: EASE, fill: "backwards" })
-      : k.animate({ opacity: [fade[i], 0] }, { duration: Math.min(110, ms), easing: EASE, fill: "forwards" })));
+        { duration: full * 0.6, delay: turning ? 0 : full * STAGGER[Math.min(i, (o.cap || 6) - 1)], easing: EASE, fill: "backwards" })
+      : k.animate({ opacity: [fade[i], 0] }, { duration: Math.min(full / 2, ms), easing: EASE, fill: "forwards" })));
     const now = document.timeline.currentTime; // start now: a turn-back never stalls
     anims.forEach((a) => { a.startTime = now; });
     if (!open) {
