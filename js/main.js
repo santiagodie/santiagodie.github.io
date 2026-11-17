@@ -312,6 +312,22 @@
     }, () => {});
   }
 
+  // Lot 10: what is not needed for the first paint loads once the page has, when the
+  // browser is idle: the name's response to the pointer (R3) and the logo's travel (R4,
+  // with GSAP; the native engine where data is saved or the connection is slow, or if
+  // GSAP fails). Nothing of it with reduced motion.
+  const base = new URL(".", document.querySelector('script[src*="js/main.js"]').src);
+  const later = (file) => new Promise((ok, ko) => document.head.append(Object.assign(document.createElement("script"), { src: new URL(file, base), onload: ok, onerror: ko })));
+  addEventListener("load", () => (window.requestIdleCallback || setTimeout)(() => {
+    if (!motionOk.matches) return;
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) later("deferred/name-weight.js").catch(() => {});
+    const net = navigator.connection;
+    const light = net?.saveData || /2g/.test(net?.effectiveType || "");
+    (light ? Promise.reject() : later("vendor/gsap.min.js").then(() => later("vendor/ScrollTrigger.min.js")))
+      .catch(() => { delete window.gsap; })
+      .then(() => later("deferred/logo-travel.js"), () => {});
+  }));
+
   // Featured cards on phones (lot 7): folded to title and technologies until "View
   // details". CSS folds them in one column only, so desktop is untouched.
   const features = [...document.querySelectorAll(".card--feature")];

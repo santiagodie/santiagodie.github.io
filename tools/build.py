@@ -46,6 +46,7 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 BUDGET_GZIP_KB = 32.4
 # css/print.css only loads to print (media="print"), so it has a budget of its own.
 PRINT_BUDGET_GZIP_KB = 4
+DEFERRED_BUDGET_GZIP_KB = 60  # lot 10: modules loaded after the page (GSAP, the chat's background)
 # Lists whose length legitimately differs per language.
 VARIABLE_LENGTH = set()
 
@@ -961,6 +962,13 @@ def report_sizes():
 
 def serve(port):
     handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(DIST))
+    # Lot 10: what loads after the page (vendor libraries, deferred modules) has a budget
+    # of its own; it never blocks the first paint.
+    later = sorted([*DIST.glob("js/vendor/*.js"), *DIST.glob("js/deferred/*.js")])
+    later_gz = sum(len(gzip.compress(f.read_bytes(), 9)) for f in later)
+    print(f"  {'deferred (after load)':<16} {sum(f.stat().st_size for f in later) / 1024:7.1f} {later_gz / 1024:9.1f}  (budget {DEFERRED_BUDGET_GZIP_KB:.1f} KB gzip)")
+    if later_gz / 1024 > DEFERRED_BUDGET_GZIP_KB:
+        raise BuildError(f"Deferred JS weighs {later_gz / 1024:.1f} KB gzipped, over its {DEFERRED_BUDGET_GZIP_KB:.1f} KB budget")
     with http.server.ThreadingHTTPServer(("127.0.0.1", port), handler) as server:
         print(f"serving dist/ on http://localhost:{port}/  (Ctrl+C to stop)")
         try:
