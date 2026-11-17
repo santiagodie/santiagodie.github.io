@@ -171,6 +171,28 @@
     else if (isOpen()) setMenu(false, { returnFocus: true, instant: true });
   });
 
+  // Changing language (lot 9): the page that leaves names its current section's number
+  // and title and stores where the title is, for the next page to land there (see the
+  // script in <head>). Hovering the selector prefetches the other languages.
+  addEventListener("pageswap", (event) => {
+    const section = event.viewTransition && document.getElementById(currentSection());
+    const title = section?.querySelector(".section__title");
+    if (!title) return;
+    try { sessionStorage.setItem("vt", JSON.stringify({ id: section.id, top: title.getBoundingClientRect().top })); } catch { return; }
+    [[title, "vt-title"], [section.querySelector(".section__num"), "vt-num"]].forEach(([el, name]) => {
+      el.style.viewTransitionName = name;
+      el.dataset.vt = "";
+    });
+  });
+  if (HTMLScriptElement.supports?.("speculationrules")) {
+    langButton.addEventListener("pointerenter", () => {
+      const rules = document.createElement("script");
+      rules.type = "speculationrules";
+      rules.textContent = JSON.stringify({ prefetch: [{ urls: langItems.filter((a) => !a.hasAttribute("aria-current")).map((a) => a.href), eagerness: "immediate" }] });
+      document.head.append(rules);
+    }, { once: true });
+  }
+
   // Current section: js/scroll.js marks it in the navigation, following the tip of
   // the progress line.
 
@@ -191,6 +213,18 @@
     suggestion.hidden = false;
     suggestion.querySelector("[data-suggest-dismiss]").addEventListener("click", () => {
       storage.set(DISMISS_KEY, "1");
+      const gone = () => {
+        suggestion.hidden = true;
+        delete document.documentElement.dataset.suggest;
+      };
+      if (!motionOk.matches) return gone();
+      // It gathers up rather than vanishing, so the page below rises instead of jumping.
+      const cs = getComputedStyle(suggestion);
+      suggestion.style.overflow = "hidden";
+      suggestion.animate({
+        height: [cs.height, "0px"], paddingTop: [cs.paddingTop, "0px"], paddingBottom: [cs.paddingBottom, "0px"],
+        borderBottomWidth: [cs.borderBottomWidth, "0px"], opacity: [1, 0],
+      }, { duration: time("--dur-reveal-out"), easing: EASE }).finished.then(gone);
     });
   }
 
@@ -213,18 +247,6 @@
     const from = o.parts.map((p) => (o.shown?.() === false ? 0 : p.getBoundingClientRect().height));
     const fade = o.kids.map((k) => +getComputedStyle(k).opacity);
     host._anims?.forEach((a) => a.cancel());
-      const gone = () => {
-        suggestion.hidden = true;
-        delete document.documentElement.dataset.suggest;
-      };
-      if (!motionOk.matches) return gone();
-      // It gathers up rather than vanishing, so the page below rises instead of jumping.
-      const cs = getComputedStyle(suggestion);
-      suggestion.style.overflow = "hidden";
-      suggestion.animate({
-        height: [cs.height, "0px"], paddingTop: [cs.paddingTop, "0px"], paddingBottom: [cs.paddingBottom, "0px"],
-        borderBottomWidth: [cs.borderBottomWidth, "0px"], opacity: [1, 0],
-      }, { duration: time("--dur-reveal-out"), easing: EASE }).finished.then(gone);
     const token = host._token = (host._token || 0) + 1;
     host._anims = null;
     o.start();

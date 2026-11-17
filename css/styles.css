@@ -3278,12 +3278,39 @@ main {
 
 /* Motion ---------------------------------------------------------------- */
 
+/* Changing language (lot 9): one page turns into the other. The header, the monogram
+   and the current section's number and title (named by script) carry across; the rest
+   cross-fades. The arriving page skips the hero's entrance (.vt-in). Firefox and reduced
+   motion reload as before. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  .site-header { view-transition-name: site-header; }
+  .hero__logo { view-transition-name: hero-mark; }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: var(--dur-reveal-out);
+    animation-timing-function: var(--ease-out);
+  }
+
+  .vt-in .hero *,
+  .vt-in .hero *::before,
+  .vt-in .hero *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   /* 1. The monogram draws itself once, as one continuous stroke. */
   .js .hero__logo path {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    animation: draw 1600ms var(--ease-in-out) 150ms forwards;
+    animation: draw 800ms var(--ease-in-out) forwards;
   }
 
   /* 2. The name, the role and the actions settle in behind it. The name is the
