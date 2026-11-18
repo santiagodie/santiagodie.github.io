@@ -134,7 +134,7 @@ Optional About text under the chat is set as display copy (Hubot Sans 500, up to
 
 ## Budgets
 
-- **Critical** (the CSS and JavaScript every page loads before anything else): at most 32.4 KB gzip; `tools/build.py` fails over it.
+- **Critical** (the CSS and JavaScript every page loads before anything else): at most 28 KB gzip (32.4 until the chat's player moved to "near the chat"); `tools/build.py` fails over it.
 - **Deferred** (lot 10): what loads after the page, when the browser is idle (`js/vendor/`: GSAP 3.15.0 and ScrollTrigger, under the GSAP Standard License, see `js/vendor/GSAP-LICENSE.txt`; `js/deferred/`: the name, the logo's travel, the `?debug=bg` box): at most 60 KB gzip, its own line in the build's report, which fails over it. It never blocks the first paint (LCP, TBT unchanged).
 - **Near the chat** (maintenance lot, after lot 10): what loads only when the About chat is a screen away (`js/near/`: the chat's player `chat.js`, and its living background `chat-field.js`, this one after the page has loaded): at most 20 KB gzip, its own line in the build's report, which fails over it. Until the player arrives the chat sits at rest (CSS); if it cannot load, the chat is shown finished, as without JavaScript. Moving the player here took about 9 KB off the critical budget.
 

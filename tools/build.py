@@ -43,7 +43,7 @@ TODO = re.compile(r"^TODO\s*:?\s*")
 # 3 KB more for new work. Raise it only on purpose, in its own commit, saying why.
 # 2026-11-16, lot 3: briefly 33.4 KB for "More projects" (about 1.7 KB); back to 32.4 KB
 # on 2026-11-17 once the CSS ships minified (minify_css), at about 26 KB in all.
-BUDGET_GZIP_KB = 32.4
+BUDGET_GZIP_KB = 28
 # css/print.css only loads to print (media="print"), so it has a budget of its own.
 PRINT_BUDGET_GZIP_KB = 4
 DEFERRED_BUDGET_GZIP_KB = 60  # lot 10: modules loaded after the page (GSAP, the name, the logo's travel)
