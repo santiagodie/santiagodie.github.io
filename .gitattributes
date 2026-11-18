@@ -1,0 +1,13 @@
+# Text files: LF in the repository and in every working copy (Windows too), so a local
+# build measures the same as the one on GitHub (gzip sizes, budgets in tools/build.py).
+* text=auto eol=lf
+
+# Binary: never converted.
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.pdf binary
