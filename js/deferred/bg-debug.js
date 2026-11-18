@@ -1,5 +1,5 @@
 // ?debug=bg only (main.js loads it for that URL, nobody else gets it): a small box in a
-// corner of the chat saying what the living background (chat-field.js) is doing, so the
+// corner of the chat saying what the living background (js/near/chat-field.js) is doing, so the
 // owner can check it on a phone. chat-field.js reports through window.__bg(key, value).
 (() => {
   const panel = document.querySelector(".chat__panel");

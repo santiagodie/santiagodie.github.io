@@ -59,7 +59,8 @@ data/tokens.json           # Real cl100k_base token ids of the About chat's ques
 data/llm.json              # Illustrative values of the About chat: attention weights, next-token candidates
 css/styles.css             # All styles: tokens, layout, components, motion
 js/main.js                 # Behaviour only: header, the full-screen mobile menu (dialog, focus), language menu, language suggestion
-js/chat.js                 # Plays the About chat (Web Animations; the text is already in the HTML)
+js/near/chat.js            # Plays the About chat (Web Animations; the text is already in the HTML); loaded when the chat is a screen away
+js/near/chat-field.js      # The chat panel's living navy (WebGL), loaded when the chat is a screen away
 js/scroll.js               # Progress line, current section, sections assembling on scroll
 img/                       # SD logos (unmodified)
 fonts/                     # Hubot Sans, Mona Sans, JetBrains Mono (woff2 subsets) with their OFL licences

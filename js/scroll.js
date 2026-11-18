@@ -22,7 +22,7 @@
   // 1. Section assembly ----------------------------------------------------------
 
   // Number and node first, then the title, the text, and the cards, entries or the
-  // About chat (js/chat.js starts typing only once the chat is in place).
+  // About chat (js/near/chat.js starts typing only once the chat is in place).
   const ITEMS = ".chat, .card, .portrait, .entry, .skills__group, .langs__item, .certs > li, .contact > li";
   const TEXT = ".section__lead, .prose p, .subhead";
 
