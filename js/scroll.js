@@ -188,7 +188,7 @@
     samples.forEach((sample) => { sample[0] *= scale; });
     marks = points.map((p) => p.y);
 
-    if (scrollTimeline) timeline();
+    if (scrollTimeline && !folding) timeline();
     update();
   }
 
@@ -331,12 +331,26 @@
     update();
   });
 
-  // Lot 8: while a disclosure moves the line keeps its geometry, measuring once at the
-  // end; when the fold scrolls the page it is drawn from here, in that same frame.
+  // Lot 8: while a disclosure moves, the line is drawn from here (when the fold scrolls
+  // the page, in that same frame). Fix 19: it follows the moving page, measured again
+  // every ~80 ms (without the scroll keyframes), instead of holding until the end;
+  // once it ends, one full measurement as before.
   const timed = () => svg.classList.toggle("is-timeline", scrollTimeline && !quiet && !folding && !reduce.matches);
+  let followAt = 0;
+  const follow = (now) => {
+    if (!folding) return;
+    if (now - followAt >= 80) {
+      followAt = now;
+      geometry();
+    }
+    requestAnimationFrame(follow);
+  };
   document.addEventListener("disclosure:motion", (event) => {
     folding = event.detail;
-    if (!folding) {
+    if (folding) {
+      followAt = performance.now();
+      requestAnimationFrame(follow);
+    } else {
       measured = "";
       remeasure();
     }

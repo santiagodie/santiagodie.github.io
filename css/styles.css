@@ -142,6 +142,22 @@ html {
   text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+
+/* Landing (fix 19, index.html): until the visitor first scrolls, taps or types, the
+   jump to the anchor or the restored scroll is instant and the header takes its state
+   at once, without fading through. */
+html.landing {
+  scroll-behavior: auto;
+}
+
+.landing .site-header,
+.landing .site-header *,
+.landing .head-band {
+  transition: none !important;
+}
+
+html {
   background: var(--white);
   color-scheme: light;
 }
@@ -2041,6 +2057,12 @@ html:not(.js) .chat__placeholder,
   visibility: hidden;
 }
 
+/* Before the chat's player arrives, a sample reset time (index build, fix 19) holds the
+   line the real one will take. */
+.js .chat:not([data-state]) [data-chat-reset]::before {
+  content: attr(data-hold);
+}
+
 /* Buttons --------------------------------------------------------------- */
 
 .button {
@@ -3696,7 +3718,7 @@ main {
     overflow: clip;
   }
 
-  .card--feature[data-collapsed] .card__detail {
+  .js .card--feature[data-collapsed] .card__detail {
     display: none;
   }
 }
