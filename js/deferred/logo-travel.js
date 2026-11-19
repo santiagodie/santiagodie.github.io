@@ -168,11 +168,13 @@
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.config({ ignoreMobileResize: true }); // iOS: the address bar must not refresh it mid-scroll
     const state = { p: 0 };
+    // A refresh sends the progress to 0 with events and back without them (fix 19):
+    // the state is applied again from where the page is once it ends.
     gsap.to(state, {
       p: 1,
       ease: "none",
       onUpdate: () => apply(state.p),
-      scrollTrigger: { start: 0, end: () => g.range, scrub: true, invalidateOnRefresh: true, onRefreshInit: measure },
+      scrollTrigger: { start: 0, end: () => g.range, scrub: true, invalidateOnRefresh: true, onRefreshInit: measure, onRefresh: (st) => apply(st.progress) },
     });
     return () => ScrollTrigger.refresh();
   }
@@ -181,8 +183,13 @@
   bandEl.className = "head-band";
   bandEl.setAttribute("aria-hidden", "true");
   header.before(bandEl);
-  root.classList.add("logo-travels");
   measure();
+  // Arriving mid-way through the range (fix 19): the header was already navy with its
+  // logo (index.html); it stays so until the top, like coming from the other language.
+  arrived ||= scrollY > 0 && scrollY < g.range;
+  // Taken over in the same frame, from where the page is (fix 19): never from 0.
+  root.classList.add("logo-travels");
+  apply(clamp(scrollY / g.range));
   const remeasure = (window.gsap && window.ScrollTrigger ? gsapEngine : native)();
   // The text may still be rising into place (its entrance): measure again once it is.
   const moving = hero.getAnimations({ subtree: true }).filter((an) => !mark.contains(an.effect?.target));

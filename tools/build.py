@@ -357,6 +357,9 @@ def render_chat(s, tokens, model, lang):
         "stages": chat["stages"],
         "reset": [chat["limit"]["reset"], chat["limit"]["resetOne"]],
     }
+    # The reset time is written by js/near/chat.js; until then (fix 19) a sample of it
+    # holds its line, so the panel does not grow when the chat's player arrives.
+    hold = " " + chat["limit"]["reset"].replace("{time}", {"en": "10:00 PM", "fr": "23 h"}.get(lang, "23:00"))
     # The arrow stays with the last word when the link wraps.
     *words, last = chat["limit"]["cta"].split(" ")
     cta = esc(" ".join(words + [""])) + f'<span class="nowrap">{esc(last)}&nbsp;{FORWARD}</span>'
@@ -378,7 +381,7 @@ def render_chat(s, tokens, model, lang):
                 <p class="chat__answer" aria-hidden="true">{answer}</p>
               </div>
               <div class="chat__limit" data-chat-limit>
-                <p class="chat__limit-body">{CLOCK}<span class="chat__limit-text">{esc(chat["limit"]["text"])}<span data-chat-reset></span></span><a class="chat__limit-link" href="#contact">{cta}</a></p>
+                <p class="chat__limit-body">{CLOCK}<span class="chat__limit-text">{esc(chat["limit"]["text"])}<span data-chat-reset data-hold="{esc(hold)}"></span></span><a class="chat__limit-link" href="#contact">{cta}</a></p>
               </div>
               <div class="chat__composer" role="group" aria-label="{esc(chat["placeholder"])}" aria-disabled="true">
                 <span class="chat__input" aria-hidden="true"><span class="chat__typed">{esc(chat["prompt"])}</span><span class="chat__placeholder">{esc(chat["placeholder"])}</span></span>
@@ -507,9 +510,11 @@ def render_featured(projects, lang, s):
         # Lot 7: on phones (one column) a card shows its title and technologies, and
         # "View details" unfolds the rest. What folds sits in two `card__detail`
         # wrappers (display: contents, so the desktop subgrid sees their children);
-        # main.js collapses the cards, so without JavaScript and on paper all shows.
+        # they come folded (fix 19: nothing moves when main.js starts, even landing on an
+        # anchor below), but the fold is CSS under .js, so without JavaScript and on
+        # paper all shows.
         pid = project["id"]
-        cards.append(f'''            <li class="card card--feature" id="p-{pid}">{FRAME}
+        cards.append(f'''            <li class="card card--feature" id="p-{pid}" data-collapsed>{FRAME}
               <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(project["title"][lang])}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <div class="card__detail" id="p-{pid}-about">
               <p class="card__subject">{esc(project["subject"][lang])}</p>
@@ -517,7 +522,7 @@ def render_featured(projects, lang, s):
               </div>
               {tags(project, s)}
               <div class="card__detail" id="p-{pid}-links">{links}</div>
-              <button class="card__toggle" type="button" aria-expanded="true" aria-controls="p-{pid}-about p-{pid}-links"><span>{text(s["projects"]["details"])}</span><span class="more__icon" aria-hidden="true"></span></button>
+              <button class="card__toggle" type="button" aria-expanded="false" aria-controls="p-{pid}-about p-{pid}-links"><span>{text(s["projects"]["details"])}</span><span class="more__icon" aria-hidden="true"></span></button>
             </li>''')
     return "\n".join(cards)
 

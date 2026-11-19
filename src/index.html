@@ -36,8 +36,36 @@
     // Before the first paint, so nothing moves when the scripts start: mark that
     // JavaScript runs, whether motion is allowed, and which language to suggest.
     (function (root) {
-      root.classList.add("js");
+      root.classList.add("js", "landing");
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("motion");
+      // The header's state from the first paint (fix 19): navy anywhere but the very top,
+      // set on every scroll, so also when the browser restores the scroll or jumps to the
+      // anchor. Until the visitor acts (landed, below) it switches at once and jumps are not
+      // smooth. Once the logo's travel runs (js/deferred/logo-travel.js), it sets it.
+      var hd, head = function () {
+        if (!root.classList.contains("logo-travels") && (hd = hd || document.querySelector("[data-header]"))) hd.toggleAttribute("data-scrolled", scrollY > 0);
+      };
+      addEventListener("scroll", head, { passive: true });
+      // The jump to the anchor happens in layout and is painted before its "scroll"
+      // event: while landing, the state is also read after every layout (a resize
+      // observation, delivered before the paint), observed again each frame.
+      var loaded = 0;
+      if (window.ResizeObserver) {
+        var ro = new ResizeObserver(function () {
+          head();
+          ro.disconnect();
+          if (loaded < 2) ro.observe(root);
+        });
+        ro.observe(root);
+      }
+      addEventListener("load", function () { loaded = 1; setTimeout(function () { loaded = 2; }, 500); });
+      // Only a scroll the visitor makes fades the header (and is smooth): restoring the
+      // scroll or jumping to the anchor, even after load, switches it at once.
+      var landed = function () {
+        root.classList.remove("landing");
+        ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (t) { removeEventListener(t, landed, true); });
+      };
+      ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (t) { addEventListener(t, landed, { capture: true, passive: true }); });
       try {
         if (localStorage.getItem("lang-suggest-dismissed")) return;
         var offered = "{{ @langs }}".split(",");

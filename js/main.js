@@ -26,12 +26,8 @@
     },
   };
 
-  // Header: transparent over the hero, navy once the page scrolls -------------
-
-  // With the logo's travel running (lot 10), the travel sets the header's state instead.
-  const onScroll = () => document.documentElement.classList.contains("logo-travels") || header.toggleAttribute("data-scrolled", window.scrollY > 16);
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  // Header: transparent over the hero, navy once the page scrolls: set from the first
+  // paint by the inline script in index.html (fix 19), then by the logo's travel (lot 10).
 
   // Mobile menu: a full-screen modal dialog below 64em -------------------------
   // On desktop the same element is the navigation bar, so it only becomes a dialog
@@ -175,7 +171,11 @@
   // Changing language (lot 9): the page that leaves names its current section's number
   // and title and stores where the title is, for the next page to land there (see the
   // script in <head>). Hovering the selector prefetches the other languages.
+  // With the logo's travel the header's navy is a layer of its own (.head-band): for the
+  // header's snapshot to carry it across, it gets it back while the page leaves (fix 19).
+  addEventListener("pageshow", () => header.style.removeProperty("background-color"));
   addEventListener("pageswap", (event) => {
+    if (event.viewTransition && header.hasAttribute("data-scrolled")) header.style.setProperty("background-color", "var(--navy)", "important");
     const section = event.viewTransition && document.getElementById(currentSection());
     const title = section?.querySelector(".section__title");
     if (!title) {
