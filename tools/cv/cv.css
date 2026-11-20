@@ -1,0 +1,166 @@
+/* The CV, one A4 page per language, in the layout of the Harvard template (midudev):
+   centred name and contact line over a hairline, an italic summary, then sections whose
+   capitalised title sits on a hairline. Each entry: organisation and place in bold on
+   one line (place right-aligned), role and dates under it (dates right-aligned, italic),
+   then bullets. One column, real text, no layout tables: an ATS reads it in order.
+
+   Only for tools/make_cv.py, which inlines this file and the fonts into a temporary page
+   and prints it with Chrome. css/print.css (printing the site) is separate.
+
+   Type: the template's face is STIX Two Text, not a standard Office font, so the CV uses
+   the site's print fonts (SD Print Sans, static instances of Mona Sans in fonts/print/).
+   They have no italic face; Chrome slants the regular, which for a sans reads as an
+   oblique. Black and greys; navy only on the name. Body text never below 9.5 pt. */
+
+@page {
+  size: A4;
+  margin: 10mm 12mm 8mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 10pt;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: #000;
+  font-family: "SD Print Sans", sans-serif;
+  font-weight: 400;
+  line-height: 1.25;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+b,
+strong {
+  font-weight: 600;
+}
+
+/* Head: name and contact line, centred; with the photo (es, fr), centred in the space
+   the photo leaves. The hairline under it is the template's. */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 5mm;
+  padding-bottom: 5pt;
+  border-bottom: 0.5pt solid #000;
+}
+
+.head__text {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.name {
+  margin: 0;
+  color: #0b1f3a;
+  font-size: 22pt;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+
+.contact {
+  margin: 4pt 0 0;
+  font-size: 9.5pt;
+  line-height: 1.4;
+}
+
+.contact span {
+  white-space: nowrap;
+}
+
+.contact .sep {
+  color: #555;
+}
+
+.photo {
+  flex: none;
+  width: 21mm;
+  height: 26.25mm;
+  object-fit: cover;
+  border-radius: 1.5pt;
+}
+
+.summary {
+  margin: 6pt 0 0;
+  color: #111;
+  font-style: italic;
+}
+
+/* Sections */
+h2 {
+  margin: 8pt 0 3.5pt;
+  padding-bottom: 1.5pt;
+  border-bottom: 0.5pt solid #000;
+  font-size: 11pt;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  break-after: avoid;
+}
+
+.entry {
+  margin: 0 0 5pt;
+  break-inside: avoid;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6mm;
+}
+
+.row > :last-child {
+  flex: none;
+  text-align: right;
+}
+
+.date {
+  color: #222;
+  padding-right: 0.15em; /* the slanted last letter would touch the margin */
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.link {
+  color: #333;
+}
+
+ul {
+  margin: 2pt 0 0;
+  padding-left: 4.5mm;
+}
+
+li {
+  margin: 0 0 1.5pt;
+  padding-left: 0.5mm;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+li::marker {
+  color: #333;
+}
+
+.skills li {
+  margin-bottom: 1pt;
+}

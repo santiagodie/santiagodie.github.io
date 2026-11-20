@@ -92,6 +92,7 @@
   "experience": {
     "items": [
       {
+        "id": "encore-lab",
         "period": "Sep 2026 – Present",
         "title": "Intern",
         "org": "Encore Lab",
@@ -100,6 +101,7 @@
         "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLMs · legacy systems integration · software design"
       },
       {
+        "id": "islamontana",
         "period": "Apr 2026 – Present",
         "title": "Full-stack developer (freelance)",
         "org": "Islamontana Travel",
@@ -276,10 +278,45 @@
     "location": "Logroño, La Rioja, Spain",
     "photoAlt": "Santiago Die Morejón",
     "cv": "CV (PDF)",
-    "cvFile": "cv/cv-santiago-die-en.pdf"
+    "cvFile": "cv/CV-SantiagoDie-EN.pdf"
   },
   "cv": {
     "profile": "I am a computer engineering student at the University of La Rioja, specialising in knowledge management, aiming to become a machine learning and MLOps engineer. I am currently an intern at Encore Lab, building a secure cloud platform with LLM features. I approach problems empirically: rather than assuming which solution is best, I measure it. I work comfortably in Spanish, English and French.",
+    "summary": "",
+    "experience": {
+      "encore-lab": {
+        "bullets": []
+      },
+      "islamontana": {
+        "bullets": []
+      }
+    },
+    "projects": {
+      "graduate-salary-predictor": {
+        "bullets": []
+      },
+      "face-similarity-search-pipeline": {
+        "bullets": []
+      },
+      "life-simulation": {
+        "bullets": []
+      }
+    },
+    "education": {
+      "honors": "",
+      "places": [
+        "Logroño, Spain",
+        "Quito, Ecuador"
+      ],
+      "expected": "expected"
+    },
+    "labels": {
+      "experience": "Professional experience",
+      "projects": "Projects",
+      "education": "Education",
+      "skills": "Additional skills",
+      "honors": "Honours"
+    },
     "nationalityLabel": "Nationality",
     "nationality": "Spanish, French and Ecuadorian · EU citizen, free to work in the EU"
   },

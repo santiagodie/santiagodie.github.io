@@ -92,6 +92,7 @@
   "experience": {
     "items": [
       {
+        "id": "encore-lab",
         "period": "Sept. 2026 – Actualidad",
         "title": "Estudiante en prácticas",
         "org": "Encore Lab",
@@ -100,6 +101,7 @@
         "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLM · integración de sistemas heredados · diseño de software"
       },
       {
+        "id": "islamontana",
         "period": "Abr. 2026 – Actualidad",
         "title": "Desarrollador full-stack (freelance)",
         "org": "Islamontana Travel",
@@ -276,10 +278,60 @@
     "location": "Logroño, La Rioja, España",
     "photoAlt": "Santiago Die Morejón",
     "cv": "CV (PDF)",
-    "cvFile": "cv/cv-santiago-die-es.pdf"
+    "cvFile": "cv/CV-SantiagoDie-ES.pdf"
   },
   "cv": {
     "profile": "Soy estudiante de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento, y mi objetivo es trabajar como ingeniero de machine learning y MLOps. Ahora estoy de prácticas en Encore Lab, desarrollando una plataforma cloud segura con funciones basadas en LLM. Abordo los problemas de forma empírica: en lugar de suponer cuál es la mejor solución, la mido. Trabajo con soltura en español, inglés y francés.",
+    "summary": "TODO: Estudiante de último curso de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento. Busco un puesto de ingeniero junior de machine learning o MLOps desde junio de 2027. En la carrera he entrenado y servido modelos: un Random Forest con R² de 0,919 detrás de una API en Flask y una búsqueda de caras sobre 38.299 embeddings con un F1 de 0,911. Hago las prácticas en Encore Lab, en un portal cloud con funciones basadas en LLM.",
+    "experience": {
+      "encore-lab": {
+        "bullets": [
+          "TODO: Desarrollo un portal cloud para los clientes de una consultora de subvenciones, sincronizado con su sistema on-premise sin exponer la red interna.",
+          "TODO: Integro funciones basadas en LLM que clasifican documentos y atienden a los clientes."
+        ]
+      },
+      "islamontana": {
+        "bullets": [
+          "TODO: Diseñé y desarrollé la web bilingüe y optimizada para SEO de una agencia de viajes de naturaleza en Ecuador.",
+          "TODO: Desarrollo ahora el panel de gestión con roles y la API en FastAPI con PostgreSQL; el despliegue usa Docker Compose y CI/CD con staging y versiones etiquetadas."
+        ]
+      }
+    },
+    "projects": {
+      "graduate-salary-predictor": {
+        "bullets": [
+          "TODO: Entrené un Random Forest de scikit-learn que estima el salario de un recién graduado: R² de 0,919 y MAE de unos 4.122 en un conjunto de prueba de 200 filas.",
+          "TODO: Lo serví con una API REST en Flask que valida cada petición con Pydantic y lo exporté a ONNX para que la demo lo ejecute en el navegador."
+        ]
+      },
+      "face-similarity-search-pipeline": {
+        "bullets": [
+          "TODO: Monté una búsqueda de caras sobre un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet y un índice VP-tree de 38.299 caras.",
+          "TODO: Comparé el índice con la búsqueda exhaustiva y calibré el umbral con análisis ROC; con el umbral elegido, el F1 es 0,911."
+        ]
+      },
+      "life-simulation": {
+        "bullets": [
+          "TODO: Desarrollamos en equipo una API REST en Spring Boot que encola autómatas celulares en RabbitMQ; cinco workers los ejecutan y guardan el resultado en MySQL.",
+          "TODO: Lo levantamos con Docker Compose y lo probamos en CI con GitHub Actions: 108 tests en 3 módulos Maven. En la demo, 5 workers vacían 220 solicitudes en 30 s."
+        ]
+      }
+    },
+    "education": {
+      "honors": "",
+      "places": [
+        "Logroño, España",
+        "Quito, Ecuador"
+      ],
+      "expected": "previsto"
+    },
+    "labels": {
+      "experience": "Experiencia profesional",
+      "projects": "Proyectos",
+      "education": "Educación",
+      "skills": "Habilidades adicionales",
+      "honors": "Honores"
+    },
     "nationalityLabel": "Nacionalidad",
     "nationality": "Española, francesa y ecuatoriana · ciudadano de la UE, con libertad para trabajar en la UE"
   },

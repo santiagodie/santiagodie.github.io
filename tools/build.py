@@ -530,7 +530,7 @@ def render_featured(projects, lang, s):
 def render_hero_cv(s, lang, root):
     """The hero's main button: the CV of this language, made at every deploy
     (tools/make_cv.py writes dist/cv/ after the build), downloaded."""
-    name = f"cv-santiago-die-{lang}.pdf"
+    name = f"CV-SantiagoDie-{lang.upper()}.pdf"
     return (f'          <a class="button button--primary" href="/cv/{name}" download="{name}" type="application/pdf" hreflang="{lang}">'
             f'{DOWNLOAD}{label(s["hero"]["ctaCv"])}<span class="visually-hidden"> (PDF)</span></a>')
 
