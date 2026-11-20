@@ -474,12 +474,14 @@ def qpdf_check(pdf_path):
     if not tool:
         return None
     done = subprocess.run([tool, "--check", str(pdf_path)], capture_output=True, timeout=60)
+    # The exit code decides: 0 is clean, 3 is warnings, 2 is errors. The text is only
+    # quoted; its closing note ("...the file may still contain errors that qpdf cannot
+    # detect", wrapped over two lines) is not a warning.
+    if done.returncode == 0:
+        return []
     lines = (done.stdout + done.stderr).decode("utf-8", errors="replace").splitlines()
-    found = [line.strip() for line in lines if re.search(r"warning|error", line, re.I)
-             and "No syntax or stream encoding errors" not in line]
-    if done.returncode != 0 and not found:
-        found = [f"qpdf exited with {done.returncode}"]
-    return found
+    found = [line.strip() for line in lines if re.match(r"\s*(WARNING|ERROR)|.*: (warning|error)", line, re.I)]
+    return found or [f"qpdf exited with {done.returncode}"]
 
 
 def pdf_uris(data):
