@@ -251,7 +251,7 @@ def render_jsonld(site, strings, lang):
         # organisation without claiming, as `worksFor` would, that he is on its staff.
         "affiliation": thing(person["affiliation"]),
         "knowsLanguage": [language["code"] for language in site["languages"]],
-        "sameAs": [person["github"], person["linkedin"]] + person.get("otherProfiles", []),
+        "sameAs": [person["github"], person["linkedin"], person["huggingface"]] + person.get("otherProfiles", []),
     }
     # "@" and "." escaped as JSON unicode escapes (same value for any JSON parser),
     # so the address is not in the page source as plain text either.
@@ -451,6 +451,8 @@ def project_links(project, lang, s):
     demo = live_demo(project)
     if demo:
         links.insert(0, external(demo["url"], demo_label(demo, s), title, s))
+    if project.get("model"):  # lot 22: the model published on the Hugging Face Hub, after Code
+        links.append(external(project["model"], s["projects"]["model"], title, s))
     return "".join(links)
 
 
@@ -536,15 +538,10 @@ def render_hero_cv(s, lang, root):
 
 
 def render_cv_profile(s):
-    """Print only (css/print.css): the CV's profile, in the first person, in place of
-    the chat; hidden on the screen, where the chat says it."""
-    return f'          <p class="cv-only cv-profile" hidden>{label(s["cv"]["profile"])}</p>'
-
-
-def render_cv_hook(s):
-    """Print only, while the CV is not public: the first paragraph of the chat's answer."""
-    hook = TODO.sub("", s["chat"]["answer"]).split("\n\n")[0]
-    return f'          <p class="cv-only cv-profile" hidden>{esc(hook)}</p>'
+    """Print only (css/print.css): the CV's summary (cv.summary, the same text as the PDF),
+    in the first person, in place of the chat; hidden on the screen, where the chat says
+    it. Lot 22: also while the CV is not public, so paper never gets the chat's AI voice."""
+    return f'          <p class="cv-only cv-profile" hidden>{label(s["cv"]["summary"])}</p>'
 
 
 def render_cv_nationality(s):
@@ -655,8 +652,10 @@ def render_entries(s, name):
             parts.append(f'<p class="entry__org">{text(item["org"])}{place}</p>')
         if published(item.get("text")):
             parts.append(f'<p class="entry__text">{text(item["text"])}</p>')
-        if published(item.get("details")):
-            parts.append(f'<p class="entry__details">{esc(item["details"])}</p>')
+        # Lot 22: Education's thesis and honours, each one more line like the subjects.
+        for key in ("details", "thesis", "honors"):
+            if published(item.get(key)):
+                parts.append(f'<p class="entry__details">{esc(item[key])}</p>')
         if published(item.get("stack")):
             parts.append(stack(item["stack"], s))
         rows.append("            <li class=\"entry\">" + "".join(parts) + "</div></li>")
@@ -682,12 +681,12 @@ def skill_groups(s):
     return groups
 
 
-SKILLS_SHOWN = 4  # groups shown before "More skills" (owner's decision, lot 6)
+SKILLS_SHOWN = 6  # groups shown before "More skills" (lot 6: 4; lot 22: 6, the CV's groups)
 
 
 def render_skills(s):
     """Each group as a row: its name, then its items in mono; then the spoken languages."""
-    # Owner's decision (lot 6): the first four groups show; the others sit in a "More
+    # Owner's decision (lot 6; six since lot 22): the first SKILLS_SHOWN groups show; the others sit in a "More
     # skills" disclosure, the same component as More projects (without its scrolling
     # row), closed at first and open on paper.
     rows = []
@@ -769,6 +768,7 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         # Each language has its own link preview, English as fallback.
         "ogImage": site["url"] + (f"og-image-{lang}.png" if (ROOT / f"og-image-{lang}.png").exists() else "og-image.png"),
         "github": site["person"]["github"], "linkedin": site["person"]["linkedin"],
+        "huggingface": site["person"]["huggingface"],
     }
     # A section without published content is left out, with its menu link (and so its
     # point on the progress line); the rest are numbered 01, 02... without gaps and
@@ -807,9 +807,8 @@ def render_page(template, site, strings, projects, tokens, model, language, warn
         # CV-only lines are not in the page; the PDFs are still made and checked.
         "heroCv": lambda: render_hero_cv(s, lang, root) if cv_public else
             f'          <a class="button button--primary" href="#projects">{text(s["hero"]["ctaProjects"])}</a>',
-        # While the CV is not public, paper gets the chat answer's first paragraph (its
-        # hook) in place of the chat, rather than the CV profile.
-        "cvProfile": lambda: render_cv_profile(s) if cv_public else render_cv_hook(s),
+        # Paper gets the CV's summary in place of the chat, public CV or not (lot 22).
+        "cvProfile": lambda: render_cv_profile(s),
         "cvNationality": lambda: render_cv_nationality(s) if cv_public else "",
         "projects": lambda: render_projects(projects, lang, s),
         "experience": lambda: render_entries(s, "experience"),

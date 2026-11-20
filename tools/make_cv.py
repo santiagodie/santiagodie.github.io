@@ -12,15 +12,17 @@ so a change on the site reaches the CV at the next deploy:
   the CV's own texts               i18n/<lang>.json under cv.*: summary, the bullets of
                                    each experience (cv.experience.<id>.bullets) and
                                    project (cv.projects.<id>.bullets), cv.education
-                                   (honours, places), cv.nationality, section labels.
+                                   (places), cv.nationality, section labels. The
+                                   thesis and honours come from the site's Education
+                                   entry (education.items[].thesis, .honors).
                                    A missing or empty one falls back to the site's text.
                                    A leading "TODO:" (wording not yet approved) is
                                    printed without the marker and listed in the log.
 
 The phone number is only in the CV: it comes from the CV_PHONE environment variable
 (locally, Santiago's environment; in CI, the GitHub Actions secret CV_PHONE, passed only
-to the "Make the CV (PDF)" step). Without it the CV goes without a phone and the log
-says so. The intermediate page, the only file with the number besides the PDFs, is
+to the "Make the CV (PDF)" step), and a Spanish number is printed as +34 ddd dd dd dd.
+Without it the CV goes without a phone and the log says so. The intermediate page, the only file with the number besides the PDFs, is
 written to a temporary folder outside dist/ and deleted when the script ends.
 
 Each page is a self-contained HTML file (fonts and photo inlined), printed by Chrome
@@ -37,7 +39,8 @@ and the dictionary closed, each field as written); with CV_PHONE, the number app
 no other file of dist/. When pdftotext is installed, the text layer is read back too
 (name, email and the section titles in order), as an ATS would read it. When qpdf is
 installed, `qpdf --check` must report 0 warnings (without it the check is skipped and
-the log says so).
+the log says so). In CI (the CI variable set) both tools are required: the workflows
+install qpdf and poppler-utils, and a missing one fails the run.
 
 Usage: python tools/make_cv.py [--chrome PATH] [--only LANG]
 """
@@ -71,10 +74,14 @@ PRODUCER = "Skia/PDF (Chrome headless), Info by make_cv.py"
 MAX_KB = 300
 PAGES = 1
 WITH_PHOTO = {"es", "fr"}  # owner's decision: the English CV goes without the photo
-# Skill groups on the CV, by position in i18n skills.groups (the site's order): ML and
-# deep learning, MLOps and DevOps, data, vision/language/LLM, other languages. The rest
-# (knowledge management, backend, frontend, other, quantum) stay on the site only.
-SKILL_GROUPS = [0, 1, 2, 3, 7]
+# Skill groups on the CV, by position in i18n skills.groups (the site's order; lot 22):
+# language and LLMs, computer vision, ML and data, backend and deployment, other
+# languages, AI-assisted development: the six the site shows before "More skills". The
+# rest (frontend, models and demos, knowledge management, coursework languages, other,
+# quantum) stay on the site only.
+SKILL_GROUPS = [0, 1, 2, 3, 4, 5]
+# Lot 22: the Hugging Face profile in the head, only while the head keeps to two lines.
+HEAD_HUGGINGFACE = True
 TODO = re.compile(r"^TODO\s*:?\s*")
 CHROMES = [
     "google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "chrome",
@@ -150,10 +157,23 @@ def contact_items(site, s, lang, phone):
              (page, short_url(site["url"])),
              (person["linkedin"], short_url(person["linkedin"])),
              (person["github"], short_url(person["github"]))]
+    if HEAD_HUGGINGFACE and person.get("huggingface"):
+        items.append((person["huggingface"], short_url(person["huggingface"])))
     if phone:
-        items.append(("tel:" + re.sub(r"[^\d+]", "", phone), phone))
+        items.append(("tel:" + re.sub(r"[^\d+]", "", phone), format_phone(phone)))
     items.append(("mailto:" + person["email"], person["email"]))
     return items
+
+
+def format_phone(phone):
+    """A Spanish number (9 digits, with or without +34) as "+34 ddd dd dd dd"; any other
+    number as given."""
+    raw = re.sub(r"[\s().-]", "", phone)
+    match = re.fullmatch(r"(?:\+34|0034)?(\d{9})", raw)
+    if not match:
+        return phone
+    d = match.group(1)
+    return f"+34 {d[:3]} {d[3:5]} {d[5:7]} {d[7:]}"
 
 
 def project_link(project):
@@ -182,7 +202,7 @@ def render_html(site, s, projects, lang, phone, t):
         photo = f'<img class="photo" src="data:image/jpeg;base64,{data}" alt="{esc(s["contact"]["photoAlt"])}">'
     out.append(f'<header class="head"><div class="head__text"><h1 class="name">{esc(site["person"]["name"])}</h1>'
                f'<p class="contact">{contact}</p></div>{photo}</header>')
-    summary = t.take(cv.get("summary"), "cv.summary") or t.take(cv.get("profile"), "cv.profile")
+    summary = t.take(cv.get("summary"), "cv.summary")
     out.append(f'<p class="summary">{esc(summary)}</p>')
 
     # Experience
@@ -226,12 +246,13 @@ def render_html(site, s, projects, lang, phone, t):
         if ":" in item.get("text", ""):  # "Mención en Gestión del Conocimiento: ..."
             track = item["text"].split(":")[0].strip()
             title += ", " + track[:1].lower() + track[1:]
-        period = years(item["period"])
-        end = re.findall(r"\d{4}", period)
-        if end and int(end[-1]) > date.today().year - (date.today().month < 7):
-            period += f' ({cv["education"]["expected"]})'
-        honors = t.take(cv["education"].get("honors"), "cv.education.honors") if index == 0 else ""
-        extra = f'<div class="row"><span>{esc(labels["honors"])}{colon}{esc(honors)}</span><span></span></div>' if honors else ""
+        period = years(item["period"])  # lot 22: no "(expected)" after the end year
+        # Lot 22: the thesis and the honours, from the site's own Education entry.
+        thesis = t.take(item.get("thesis"), f"education.items[{index}].thesis")
+        honors = t.take(item.get("honors"), f"education.items[{index}].honors")
+        extra = f'<div class="row"><span>{esc(thesis)}</span><span></span></div>' if thesis else ""
+        if honors:
+            extra += f'<div class="row"><span>{esc(labels["honors"])}{colon}{esc(honors)}</span><span></span></div>'
         rows.append(f'<div class="entry"><div class="row"><b>{esc(org)}</b><b>{esc(place)}</b></div>'
                     f'<div class="row"><span>{esc(title)}</span><span class="date">{esc(period)}</span></div>{extra}</div>')
     out.append(f'<section><h2>{esc(labels["education"])}</h2>{"".join(rows)}</section>')
@@ -517,7 +538,10 @@ def check(pdf_path, lang, links, headings, name, email):
         problems.append(f"Info dictionary: {error}")
         info_note = "Info broken"
     qpdf = qpdf_check(pdf_path)
-    if qpdf is None:
+    if qpdf is None and os.environ.get("CI"):
+        problems.append("qpdf is not installed, and in CI its check must run (the workflow installs it)")
+        qpdf_note = "qpdf missing"
+    elif qpdf is None:
         qpdf_note = "qpdf not installed (check skipped)"
     elif qpdf:
         problems.append(f"qpdf --check: {len(qpdf)} warning(s): " + " | ".join(qpdf[:5]))
@@ -526,6 +550,8 @@ def check(pdf_path, lang, links, headings, name, email):
         qpdf_note = "qpdf 0 warnings"
     text = read_text(pdf_path)
     reading = "text layer not read (no pdftotext)"
+    if text is None and os.environ.get("CI"):
+        problems.append("pdftotext is not installed, and in CI the text layer must be read (the workflow installs poppler-utils)")
     if text is not None:
         flat = re.sub(r"\s+", " ", text)
         for needed in (name, email):

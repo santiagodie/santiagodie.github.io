@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Santiago Die Morejón · Junior ML & MLOps Engineer",
-    "description": "Final-year computer engineering student (University of La Rioja). Machine learning and MLOps with Python, PyTorch and Docker.",
+    "title": "Santiago Die Morejón · Applied AI: language and computer vision",
+    "description": "Final-year computer engineering student (University of La Rioja). Applied AI for language models and computer vision, with Python, PyTorch and Hugging Face.",
     "ogLocale": "en_GB",
     "langName": "English",
-    "jobTitle": "Computer engineering student, machine learning and MLOps"
+    "jobTitle": "Computer engineering student, applied AI for language and computer vision"
   },
   "a11y": {
     "skip": "Skip to content",
@@ -32,14 +32,14 @@
     "dismiss": "Dismiss"
   },
   "hero": {
-    "role": "Machine learning & MLOps in Python",
+    "role": "Applied AI: language models and computer vision",
     "ctaProjects": "View projects",
     "ctaCv": "Download CV",
     "ctaContact": "Get in touch"
   },
   "chat": {
     "prompt": "Who is Santiago Die?",
-    "answer": "Based on my analysis, Santiago is a computer engineering student at the University of La Rioja, specialising in knowledge management, and he is aiming to become a machine learning and MLOps engineer. He is currently an intern at Encore Lab, building a secure cloud platform with LLM features.\n\nHe approaches problems empirically: rather than assuming which solution is best, he measures it, whether that means comparing five CNN architectures or benchmarking a VP-tree index against brute-force search. He cares about the details that make a system reliable, not just functional.\n\nHe grew up in Quito, studied at a French lycée and now lives in Spain, so he adapts quickly and works comfortably in Spanish, English and French.",
+    "answer": "Based on my analysis, Santiago is a final-year computer engineering student at the University of La Rioja, specialising in knowledge management, and he wants to work in applied AI: language models and computer vision. He is currently an intern at Encore Lab, where he is building, on his own, a cloud portal for the clients of a grant consultancy, which is also his final-year project.\n\nHe measures a model against others before choosing it. He compared five CNN architectures to classify satellite images and pitted DistilBERT against ULMFiT to classify prompts. In his face search he timed the VP-tree index against a linear search, and when the index came out slower, he wrote it down.\n\nHe grew up in Quito, studied at a French lycée and now lives in Spain, so he adapts quickly and works comfortably in Spanish, English and French.",
     "send": "Send the question",
     "skip": "Skip",
     "replay": "Replay",
@@ -87,18 +87,19 @@
     "demoShort": "Demo",
     "colabShort": "Colab",
     "downloadShort": "Download",
-    "details": "View details"
+    "details": "View details",
+    "model": "Model"
   },
   "experience": {
     "items": [
       {
         "id": "encore-lab",
         "period": "Sep 2026 – Present",
-        "title": "Intern",
+        "title": "Full-stack developer intern",
         "org": "Encore Lab",
         "place": "Logroño, Spain",
-        "text": "I build a secure cloud portal for the clients of a grant consultancy: it syncs from their on-premise system without exposing the internal network, and classifies documents and answers clients with LLM-based features.",
-        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLMs · legacy systems integration · software design"
+        "text": "I am the only developer, under my managers' supervision, of a cloud portal for the clients of a grant consultancy, and it is also my final-year project. I built the synchronisation end to end. In the legacy internal system (PHP and MySQL) I capture changes inside the same transaction as each operation and send them every 5 minutes over HTTPS, one way and with retries, so its network is never opened from outside. On the portal, a NestJS API on PostgreSQL receives them, and documents of up to 512 MiB go through quarantine and an antivirus scan before they become available. The next phases will add users with access to several companies, document requests, tracking of financial returns and LLM features.",
+        "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
         "id": "islamontana",
@@ -106,8 +107,8 @@
         "title": "Full-stack developer (freelance)",
         "org": "Islamontana Travel",
         "place": "Remote",
-        "text": "I designed and built the bilingual, SEO-optimised website of a nature travel agency in Ecuador. Still in development: an admin panel with roles, a FastAPI API on PostgreSQL, and deployment with Docker Compose and CI/CD with staging and tagged releases.",
-        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · Docker · GitHub Actions"
+        "text": "I am building the website of an Ecuadorian agency that sells trips, mostly to the Galápagos, and uses the site as its shop window. The public part, static and bilingual, is nearly finished: it deploys automatically with GitHub Actions to a test environment and is waiting to launch on the client's domain. The FastAPI and PostgreSQL backend is written and tested, but not yet connected to the site or deployed. Still to do: the API connection, the form, the server, deploying the backend with Docker Compose, the admin panel, email and backups.",
+        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · GitHub Actions"
       }
     ]
   },
@@ -118,7 +119,9 @@
         "title": "BSc in Computer Engineering",
         "org": "University of La Rioja",
         "text": "Specialisation in Knowledge Management: turning complex information into usable knowledge for organisations through knowledge engineering and intelligent systems.",
-        "details": "AI, machine learning, computer vision, NLP, MLOps, ontologies, semantic web, data mining"
+        "details": "AI, machine learning, computer vision, NLP, MLOps, ontologies, semantic web, data mining",
+        "thesis": "Final-year project: cloud platform for project portfolio management with LLMs (Encore Lab)",
+        "honors": "Matrícula de Honor (highest distinction) in User Interface Development and in Cross-disciplinary Workshop I"
       },
       {
         "period": "Graduated 2020",
@@ -130,60 +133,94 @@
     ],
     "certifications": {
       "title": "Certifications",
-      "items": [
-        "Introduction to Quantum Computing (Basic & Advanced Levels)",
-        "DELF B2"
-      ]
+      "items": []
     }
   },
   "skills": {
     "groups": [
       {
-        "name": "ML & deep learning",
+        "name": "Language & LLMs",
+        "items": [
+          "Hugging Face Transformers",
+          "Hugging Face Datasets",
+          "DistilBERT",
+          "ULMFiT (fastai)"
+        ]
+      },
+      {
+        "name": "Computer vision",
+        "items": [
+          "OpenCV",
+          "dlib",
+          "DeepFace (FaceNet)",
+          "timm",
+          "Tesseract OCR"
+        ]
+      },
+      {
+        "name": "ML & data",
         "items": [
           "Python",
           "PyTorch",
           "scikit-learn",
-          "TensorFlow",
-          "Hugging Face",
           "fastai",
-          "Gradio",
-          "machine learning",
-          "deep learning"
-        ]
-      },
-      {
-        "name": "MLOps & DevOps",
-        "items": [
-          "MLOps",
-          "Docker",
-          "GitHub Actions",
-          "CI/CD",
-          "JUnit",
-          "GitHub",
-          "RabbitMQ",
-          "Claude Code"
-        ]
-      },
-      {
-        "name": "Data",
-        "items": [
+          "TensorFlow",
           "pandas",
           "NumPy",
-          "Matplotlib",
-          "SQL",
-          "PostgreSQL",
-          "MySQL",
-          "data mining"
+          "ONNX Runtime Web"
         ]
       },
       {
-        "name": "Vision, language & LLMs",
+        "name": "Backend & deployment",
         "items": [
-          "computer vision",
-          "OpenCV",
-          "NLP",
-          "LLMs"
+          "FastAPI",
+          "Pydantic",
+          "Flask",
+          "NestJS",
+          "TypeORM",
+          "zod",
+          "Spring Boot",
+          "RabbitMQ",
+          "Docker",
+          "GitHub Actions",
+          "PostgreSQL",
+          "MySQL"
+        ]
+      },
+      {
+        "name": "Other languages",
+        "items": [
+          "Java",
+          "TypeScript",
+          "JavaScript",
+          "PHP",
+          "C#",
+          "SQL"
+        ]
+      },
+      {
+        "name": "AI-assisted development",
+        "items": [
+          "Claude Code (CLI agents)"
+        ]
+      },
+      {
+        "name": "Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "Tailwind CSS",
+          "Angular",
+          "Thymeleaf",
+          "Spring MVC",
+          "Figma"
+        ]
+      },
+      {
+        "name": "Models & demos",
+        "items": [
+          "Hugging Face Hub",
+          "Gradio"
         ]
       },
       {
@@ -195,49 +232,16 @@
         ]
       },
       {
-        "name": "Backend & APIs",
+        "name": "Other languages (coursework)",
         "items": [
-          "Spring Boot",
-          "Spring MVC",
-          "Thymeleaf",
-          "Flask",
-          "FastAPI",
-          "Pydantic"
-        ]
-      },
-      {
-        "name": "Frontend",
-        "items": [
-          "React",
-          "Next.js",
-          "Tailwind CSS",
-          "AngularJS",
-          "Figma"
-        ]
-      },
-      {
-        "name": "Other languages",
-        "items": [
-          "Java",
           "C++",
-          "C#",
-          "JavaScript",
-          "TypeScript",
-          "PHP",
           "R"
         ]
       },
       {
         "name": "Other",
         "items": [
-          "Concurrent programming",
-          "operating systems",
-          "network management",
-          "requirements analysis",
-          "UI design",
-          "prototyping",
-          "legacy systems integration",
-          "software design"
+          "Concurrent programming"
         ]
       },
       {
@@ -245,7 +249,8 @@
         "items": [
           "Qiskit",
           "quantum circuits",
-          "quantum algorithms (Grover, Deutsch-Jozsa)"
+          "quantum algorithms (Grover, Deutsch-Jozsa)",
+          "Introduction to Quantum Computing course (Basic & Advanced Levels)"
         ]
       }
     ],
@@ -257,12 +262,12 @@
           "level": "native"
         },
         {
-          "name": "English",
-          "level": "full professional proficiency"
+          "name": "French",
+          "level": "bilingual, French lycée from age 3 and Baccalauréat"
         },
         {
-          "name": "French",
-          "level": "full professional proficiency"
+          "name": "English",
+          "level": "B2 certified, preparing for C1 in 2027"
         }
       ]
     },
@@ -270,9 +275,10 @@
     "hide": "Hide skills"
   },
   "contact": {
-    "text": "Write to me by email or find me on GitHub and LinkedIn.",
+    "text": "Write to me by email or find me on GitHub, LinkedIn and Hugging Face.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
+    "huggingface": "Hugging Face",
     "emailLabel": "Email",
     "locationLabel": "Location",
     "location": "Logroño, La Rioja, Spain",
@@ -281,49 +287,46 @@
     "cvFile": "cv/CV-SantiagoDie-EN.pdf"
   },
   "cv": {
-"profile": "I am a computer engineering student at the University of La Rioja, specialising in knowledge management, and I want to work as a machine learning and MLOps engineer. I am an intern at Encore Lab, where I build a secure cloud platform with LLM features. Before I choose a solution, I measure the alternatives. I work comfortably in Spanish, English and French.",
-    "summary": "TODO: Final-year Computer Engineering student at the University of La Rioja, specialising in Knowledge Management. I am looking for a junior machine learning or MLOps engineer role from June 2027. During my degree I have trained and served models: a Random Forest with an R² of 0.919 behind a Flask API, and a face search over 38,299 embeddings with an F1 of 0.911. At Encore Lab, where I am an intern, I work on a cloud portal with LLM-based features.",
+    "summary": "Final-year Computer Engineering student at the University of La Rioja. I want to work in applied AI, on language models and computer vision. I have trained, evaluated and served models with Python, scikit-learn and PyTorch. At Encore Lab I am building, on my own, a cloud portal for the clients of a grant consultancy, which is also my final-year project. Available from June 2027.",
     "experience": {
       "encore-lab": {
         "bullets": [
-          "TODO: Build a cloud portal for the clients of a grant consultancy that syncs with their on-premise system without exposing the internal network.",
-          "TODO: Integrate LLM-based features that classify documents and answer clients."
+          "Built on my own the synchronisation between a consultancy's legacy system (PHP, MySQL) and a cloud portal (NestJS, PostgreSQL): transactional change capture and one-way delivery over HTTPS with retries, without opening its network.",
+          "Secured the intake of documents of up to 512 MiB with streaming, quarantine and ClamAV antivirus scans with retries, and covered the portal with about 470 unit and integration tests."
         ]
       },
       "islamontana": {
         "bullets": [
-          "TODO: Designed and built the bilingual, SEO-optimised website of a nature travel agency in Ecuador.",
-          "TODO: Now building the admin panel with roles and the FastAPI API on PostgreSQL. Deployment uses Docker Compose and CI/CD with staging and tagged releases."
+          "Building the static, bilingual website of a Galápagos travel agency: nearly finished, deployed with GitHub Actions to a test environment.",
+          "Wrote its FastAPI and PostgreSQL backend, with tests; it still has to be connected and deployed."
         ]
       }
     },
     "projects": {
-      "graduate-salary-predictor": {
-        "bullets": [
-          "TODO: Trained a scikit-learn Random Forest that estimates a new graduate's salary: R² of 0.919 and MAE of about 4,122 on a 200-row test set.",
-          "TODO: Served it with a Flask REST API that validates every request with Pydantic, and exported it to ONNX so the demo runs it in the browser."
-        ]
-      },
       "face-similarity-search-pipeline": {
         "bullets": [
-          "TODO: Built a face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index of 38,299 faces.",
-          "TODO: Compared the index with exhaustive search and calibrated the threshold with ROC analysis. At the chosen threshold, F1 is 0.911."
+          "Built a face search over 21,678 press photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index of 38,299 faces.",
+          "Calibrated the similarity threshold with a ROC curve and an F1 sweep to an F1 of 0.911. Compared the VP-tree index with a linear NumPy search, which at this scale was 8 to 11 times faster."
         ]
       },
-      "life-simulation": {
+      "satellite-image-classifier": {
         "bullets": [
-          "TODO: Built, as a team, a Spring Boot REST API that queues cellular automata in RabbitMQ; five workers run them and store the results in MySQL.",
-          "TODO: Ran it with Docker Compose and tested it in CI with GitHub Actions: 108 tests across 3 Maven modules. In the demo, 5 workers process 220 requests sent over 30 s and empty the queue at 83 s."
+          "Fine-tuned a ResNet18 in fastai to classify satellite images into 4 classes: 0.9982 test accuracy.",
+          "Compared five CNN architectures under the same conditions: ResNet34 tied ConvNeXt Tiny on validation (1.0000) and trained 2.6 times faster."
+        ]
+      },
+      "prompt-topic-classifier": {
+        "bullets": [
+          "Classified LLM prompts into 10 topics with a fine-tuned DistilBERT: 67.35% accuracy and a weighted F1 of 0.667 on a 1,550-prompt test set.",
+          "Compared it with a fastai ULMFiT (57.81%) and an ensemble of both (66.77%), which did not beat it."
         ]
       }
     },
     "education": {
-      "honors": "",
       "places": [
         "Logroño, Spain",
         "Quito, Ecuador"
-      ],
-      "expected": "expected"
+      ]
     },
     "labels": {
       "experience": "Professional experience",

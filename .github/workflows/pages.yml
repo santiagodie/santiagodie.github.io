@@ -36,6 +36,12 @@ jobs:
           python tools/build.py
           find dist -type f | sort
 
+      # qpdf (`qpdf --check` must report 0 warnings) and poppler-utils (pdftotext reads
+      # the text layer back, as an ATS would) for make_cv.py's checks; in CI it fails if
+      # either is missing instead of skipping the check.
+      - name: Install the PDF checkers
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends qpdf poppler-utils
+
       # The CV in PDF, one A4 page per language (Harvard layout, tools/cv/cv.css),
       # printed by the runner's Chrome from the same i18n/ and data/ as the site, so it
       # can never fall behind it. make_cv.py checks each PDF (one page, under 300 KB,

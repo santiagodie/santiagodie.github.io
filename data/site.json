@@ -6,10 +6,10 @@
     "image": "img/portrait-320.jpg",
     "github": "https://github.com/santiagodie",
     "linkedin": "https://www.linkedin.com/in/santiago-die-morejon",
-    "alternateName": ["Santiago Die Morejon", "Santiago Die"],
-    "otherProfiles": [
-      "https://huggingface.co/santiagodie",
-      "https://www.instagram.com/santiago_die/"
+    "huggingface": "https://huggingface.co/santiagodie",
+    "alternateName": [
+      "Santiago Die Morejon",
+      "Santiago Die"
     ],
     "address": {
       "locality": "Logroño",
@@ -32,16 +32,16 @@
       "name": "Encore Lab"
     },
     "knowsAbout": [
+      "Applied AI",
+      "Large language models",
+      "Natural language processing",
+      "Computer vision",
       "Machine learning",
-      "Deep learning",
-      "MLOps",
       "Python",
       "PyTorch",
       "scikit-learn",
-      "Docker",
-      "Large language models",
-      "Computer vision",
-      "Knowledge management"
+      "Hugging Face Transformers",
+      "Docker"
     ]
   },
   "languages": [

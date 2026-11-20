@@ -12,7 +12,7 @@
         "es": "Profesión de Ingeniero Informático",
         "fr": "Métier d’ingénieur informatique"
       },
-      "featured": true,
+      "featured": false,
       "description": {
         "en": "Estimates a new graduate's expected salary with a scikit-learn Random Forest, served by a Flask REST API that validates every request with Pydantic; the demo runs the same model in the browser with ONNX Runtime Web.",
         "es": "Estima el salario esperado de un recién graduado con un Random Forest de scikit-learn, servido con una API REST en Flask que valida cada petición con Pydantic; la demo ejecuta el mismo modelo en el navegador con ONNX Runtime Web.",
@@ -75,9 +75,9 @@
       },
       "featured": true,
       "description": {
-        "en": "Face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index. The index is compared with exhaustive search, and the threshold is calibrated with ROC and F1 analysis. There is a live demo.",
-        "es": "Búsqueda de caras en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree. El índice se compara con la búsqueda exhaustiva y el umbral se calibra con análisis ROC y F1. Tiene demo en vivo.",
-        "fr": "Recherche de visages dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree. L’index est comparé à la recherche exhaustive et le seuil est calibré par analyse ROC et F1. Une démo est en ligne."
+        "en": "Face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index. The index was timed against linear search and turned out slower (110–174 ms per query against 13.5–16.4 ms); the threshold is calibrated with ROC and F1 analysis. There is a live demo.",
+        "es": "Búsqueda de caras en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree. El índice se midió contra la búsqueda lineal y resultó más lento (110–174 ms por consulta frente a 13,5–16,4 ms); el umbral se calibra con análisis ROC y F1. Tiene demo en vivo.",
+        "fr": "Recherche de visages dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree. L’index a été chronométré face à la recherche linéaire et s’est révélé plus lent (110–174 ms par requête contre 13,5–16,4 ms) ; le seuil est calibré par analyse ROC et F1. Une démo est en ligne."
       },
       "todo": [],
       "metrics": [
@@ -194,13 +194,41 @@
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
       },
-      "featured": false,
+      "featured": true,
       "description": {
-        "en": "Satellite image classification with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment.",
-        "es": "Clasificación de imágenes de satélite con transfer learning en fastai (ResNet18), más una comparación de cinco arquitecturas CNN, un estudio de tiempos en CPU frente a GPU y un experimento con el buscador de learning rate.",
-        "fr": "Classification d’images satellite par transfer learning avec fastai (ResNet18), complétée par une comparaison de cinq architectures CNN, une étude des temps CPU et GPU et une expérience avec le learning rate finder."
+        "en": "Satellite image classification into 4 classes with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment. In an informal test on five images from outside the dataset, it got two right.",
+        "es": "Clasificación de imágenes de satélite en 4 clases con transfer learning en fastai (ResNet18), más una comparación de cinco arquitecturas CNN, un estudio de tiempos en CPU frente a GPU y un experimento con el buscador de learning rate. En una prueba informal con cinco imágenes de fuera del dataset acertó dos.",
+        "fr": "Classification d’images satellite en 4 classes par transfer learning avec fastai (ResNet18), complétée par une comparaison de cinq architectures CNN, une étude des temps CPU et GPU et une expérience avec le learning rate finder. Lors d’un test informel sur cinq images extérieures au jeu de données, il en a reconnu deux."
       },
       "todo": [],
+      "metrics": [
+        {
+          "value": {
+            "en": "0.9982",
+            "es": "0,9982",
+            "fr": "0,9982"
+          },
+          "label": {
+            "en": "test accuracy (ResNet18)",
+            "es": "accuracy en test (ResNet18)",
+            "fr": "accuracy en test (ResNet18)"
+          },
+          "source": "https://github.com/santiagodie/satellite-image-classifier#results"
+        },
+        {
+          "value": {
+            "en": "5 CNNs",
+            "es": "5 CNN",
+            "fr": "5 CNN"
+          },
+          "label": {
+            "en": "architectures compared",
+            "es": "arquitecturas comparadas",
+            "fr": "architectures comparées"
+          },
+          "source": "https://github.com/santiagodie/satellite-image-classifier#results"
+        }
+      ],
       "tech": [
         "Python",
         "fastai",
@@ -211,7 +239,8 @@
         "Gradio"
       ],
       "repo": "https://github.com/santiagodie/satellite-image-classifier",
-      "demo": null
+      "demo": null,
+      "model": "https://huggingface.co/santiagodie/satellite"
     },
     {
       "id": "prompt-topic-classifier",
@@ -225,13 +254,41 @@
         "es": "Inteligencia Artificial",
         "fr": "Intelligence artificielle"
       },
-      "featured": false,
+      "featured": true,
       "description": {
         "en": "Text classification of LLM prompts into 10 topics. It compares a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer and adds an LR finder study and a simple ensemble.",
         "es": "Clasificación de prompts para LLM en 10 temas. Compara un modelo ULMFiT (AWD-LSTM) de fastai con un transformer DistilBERT de Hugging Face, e incluye un estudio del buscador de learning rate y un ensemble sencillo.",
         "fr": "Classification de prompts pour LLM en 10 thèmes. Le projet compare un modèle ULMFiT (AWD-LSTM) de fastai à un transformer DistilBERT de Hugging Face, avec une étude du learning rate finder et un ensemble simple."
       },
       "todo": [],
+      "metrics": [
+        {
+          "value": {
+            "en": "67.35%",
+            "es": "67,35 %",
+            "fr": "67,35 %"
+          },
+          "label": {
+            "en": "test accuracy, 10 classes",
+            "es": "accuracy en test, 10 clases",
+            "fr": "accuracy en test, 10 classes"
+          },
+          "source": "https://github.com/santiagodie/prompt-topic-classifier#results"
+        },
+        {
+          "value": {
+            "en": "F1 0.667",
+            "es": "F1 0,667",
+            "fr": "F1 0,667"
+          },
+          "label": {
+            "en": "weighted, 1,550 test prompts",
+            "es": "ponderado, 1.550 prompts de test",
+            "fr": "pondéré, 1 550 prompts de test"
+          },
+          "source": "https://github.com/santiagodie/prompt-topic-classifier#results"
+        }
+      ],
       "tech": [
         "Python",
         "fastai",
@@ -241,7 +298,8 @@
         "Gradio"
       ],
       "repo": "https://github.com/santiagodie/prompt-topic-classifier",
-      "demo": null
+      "demo": null,
+      "model": "https://huggingface.co/santiagodie/E3-classifier"
     },
     {
       "id": "human-activity-classification",
@@ -381,11 +439,11 @@
         "es": "Taller Transversal I: Programación y Proceso de Información",
         "fr": "Atelier transversal I : programmation et traitement de l’information"
       },
-      "featured": true,
+      "featured": false,
       "description": {
-        "en": "A team-built artificial life simulation: a Spring Boot REST API queues cellular automata in RabbitMQ, five workers run them and store them in MySQL, everything starts with Docker Compose and is tested in CI with GitHub Actions, and a Thymeleaf web client replays them step by step.",
-        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola autómatas celulares en RabbitMQ, cinco workers los ejecutan y guardan en MySQL, todo se levanta con Docker Compose y se prueba en CI con GitHub Actions, y un cliente web en Thymeleaf los reproduce paso a paso.",
-        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les enregistrent dans MySQL, le tout démarre avec Docker Compose et est testé en CI avec GitHub Actions, et un client web Thymeleaf les rejoue pas à pas."
+        "en": "A team-built artificial life simulation: a Spring Boot REST API queues cellular automata in RabbitMQ, five workers run them and store them in MySQL, everything starts with Docker Compose and is tested in CI with GitHub Actions, and a Thymeleaf web client replays them step by step. The course awarded it a Matrícula de Honor (highest distinction).",
+        "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola autómatas celulares en RabbitMQ, cinco workers los ejecutan y guardan en MySQL, todo se levanta con Docker Compose y se prueba en CI con GitHub Actions, y un cliente web en Thymeleaf los reproduce paso a paso. Matrícula de Honor en la asignatura.",
+        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les enregistrent dans MySQL, le tout démarre avec Docker Compose et est testé en CI avec GitHub Actions, et un client web Thymeleaf les rejoue pas à pas. La matière lui a valu une Matrícula de Honor (plus haute mention)."
       },
       "todo": [],
       "metrics": [
@@ -409,9 +467,9 @@
             "fr": "220 requêtes"
           },
           "label": {
-            "en": "sent over 30 s, processed by 5 workers",
-            "es": "enviadas en 30 s, procesadas por 5 workers",
-            "fr": "envoyées en 30 s, traitées par 5 workers"
+            "en": "sent over 30 s; the queue is empty at 83 s",
+            "es": "enviadas en 30 s; la cola se vacía a los 83 s",
+            "fr": "envoyées en 30 s ; la file est vide à 83 s"
           },
           "source": "https://github.com/santiagodie/life-simulation-service#live-demo"
         }

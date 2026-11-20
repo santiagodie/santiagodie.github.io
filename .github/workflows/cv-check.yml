@@ -27,6 +27,9 @@ jobs:
       - name: Build site
         run: python tools/build.py
 
+      - name: Install the PDF checkers
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends qpdf poppler-utils
+
       - name: Make the CV (PDF)
         run: |
           google-chrome --version
