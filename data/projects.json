@@ -77,7 +77,7 @@
       "description": {
         "en": "Face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index. The index was timed against linear search and turned out slower (110–174 ms per query against 13.5–16.4 ms); the threshold is calibrated with ROC and F1 analysis. There is a live demo.",
         "es": "Búsqueda de caras en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree. El índice se midió contra la búsqueda lineal y resultó más lento (110–174 ms por consulta frente a 13,5–16,4 ms); el umbral se calibra con análisis ROC y F1. Tiene demo en vivo.",
-        "fr": "Recherche de visages dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree. L’index a été chronométré face à la recherche linéaire et s’est révélé plus lent (110–174 ms par requête contre 13,5–16,4 ms) ; le seuil est calibré par analyse ROC et F1. Une démo est en ligne."
+        "fr": "Recherche de visages dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree. L’index a été chronométré face à la recherche linéaire et s’est révélé plus lent (de 110 à 174 ms par requête, contre 13,5 à 16,4 ms) ; le seuil est calibré par analyse ROC et F1. Une démo est en ligne."
       },
       "todo": [],
       "metrics": [
@@ -198,15 +198,15 @@
       "description": {
         "en": "Satellite image classification into 4 classes with fastai transfer learning (ResNet18), plus a comparison of five CNN architectures, a CPU vs GPU timing study and a learning rate finder experiment. In an informal test on five images from outside the dataset, it got two right.",
         "es": "Clasificación de imágenes de satélite en 4 clases con transfer learning en fastai (ResNet18), más una comparación de cinco arquitecturas CNN, un estudio de tiempos en CPU frente a GPU y un experimento con el buscador de learning rate. En una prueba informal con cinco imágenes de fuera del dataset acertó dos.",
-        "fr": "Classification d’images satellite en 4 classes par transfer learning avec fastai (ResNet18), complétée par une comparaison de cinq architectures CNN, une étude des temps CPU et GPU et une expérience avec le learning rate finder. Lors d’un test informel sur cinq images extérieures au jeu de données, il en a reconnu deux."
+        "fr": "Classification d’images satellite en 4 classes par apprentissage par transfert avec fastai (ResNet18), complétée par une comparaison de cinq architectures CNN, une étude des temps CPU et GPU et une expérience avec le learning rate finder. Lors d’un test informel sur cinq images extérieures au jeu de données, le modèle en a reconnu deux."
       },
       "todo": [],
       "metrics": [
         {
           "value": {
-            "en": "0.9982",
-            "es": "0,9982",
-            "fr": "0,9982"
+            "en": "99.82%",
+            "es": "99,82 %",
+            "fr": "99,82 %"
           },
           "label": {
             "en": "test accuracy (ResNet18)",
@@ -314,7 +314,7 @@
       },
       "featured": false,
       "description": {
-        "en": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualization, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction.",
+        "en": "Classification of the activity a person is doing from five physiological signals, with exploratory analysis, visualisation, a benchmark of eight classifiers, hyperparameter tuning, statistical comparison of models and dimensionality reduction.",
         "es": "Clasificación de la actividad que realiza una persona a partir de cinco señales fisiológicas, con análisis exploratorio, visualización, comparativa de ocho clasificadores, ajuste de hiperparámetros, comparación estadística de modelos y reducción de dimensionalidad.",
         "fr": "Reconnaissance de l’activité d’une personne à partir de cinq signaux physiologiques, avec analyse exploratoire, visualisation, comparaison de huit classifieurs, réglage des hyperparamètres, comparaison statistique des modèles et réduction de dimension."
       },
@@ -414,7 +414,7 @@
       "description": {
         "en": "A team project: a Windows desktop application for a library, built in C# WinForms with a layered architecture: members, staff roles, documents and copies, loans and returns.",
         "es": "Proyecto en equipo: aplicación de escritorio para Windows que gestiona una biblioteca, hecha en C# WinForms con arquitectura en capas: usuarios, roles del personal, documentos y ejemplares, préstamos y devoluciones.",
-        "fr": "Projet d’équipe : application de bureau Windows pour une bibliothèque, en C# WinForms avec une architecture en couches : usagers, rôles du personnel, documents et exemplaires, prêts et retours."
+        "fr": "Projet d’équipe : application de bureau Windows pour une bibliothèque, en C# WinForms avec une architecture en couches : usagers, rôles du personnel, documents et exemplaires, prêts et retours."
       },
       "todo": [],
       "tech": [
@@ -431,18 +431,18 @@
       "title": {
         "en": "Life Simulation: service and web client",
         "es": "Simulación de vida: servicio y cliente web",
-        "fr": "Simulation de vie : service et client web"
+        "fr": "Simulation de vie : service et client web"
       },
       "subject": {
         "en": "Cross-disciplinary Workshop I: Programming and Information Processing",
         "es": "Taller Transversal I: Programación y Proceso de Información",
-        "fr": "Atelier transversal I : programmation et traitement de l’information"
+        "fr": "Atelier transversal I : programmation et traitement de l’information"
       },
       "featured": false,
       "description": {
-        "en": "A team-built artificial life simulation: a Spring Boot REST API queues cellular automata in RabbitMQ, five workers run them and store them in MySQL, everything starts with Docker Compose and is tested in CI with GitHub Actions, and a Thymeleaf web client replays them step by step. The course awarded it a Matrícula de Honor (highest distinction).",
+        "en": "A team-built artificial life simulation: a Spring Boot REST API queues cellular automata in RabbitMQ, five workers run them and store them in MySQL, everything starts with Docker Compose and is tested in CI with GitHub Actions, and a Thymeleaf web client replays them step by step. Matrícula de Honor in the course (highest grade, limited to the top 5% of each class).",
         "es": "Simulación de vida artificial hecha en equipo: una API REST en Spring Boot encola autómatas celulares en RabbitMQ, cinco workers los ejecutan y guardan en MySQL, todo se levanta con Docker Compose y se prueba en CI con GitHub Actions, y un cliente web en Thymeleaf los reproduce paso a paso. Matrícula de Honor en la asignatura.",
-        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les enregistrent dans MySQL, le tout démarre avec Docker Compose et est testé en CI avec GitHub Actions, et un client web Thymeleaf les rejoue pas à pas. La matière lui a valu une Matrícula de Honor (plus haute mention)."
+        "fr": "Simulation de vie artificielle réalisée en équipe : une API REST Spring Boot met en file des automates cellulaires dans RabbitMQ, cinq workers les exécutent et les enregistrent dans MySQL, le tout démarre avec Docker Compose et est testé en CI avec GitHub Actions, et un client web Thymeleaf les rejoue pas à pas. Matrícula de Honor dans la matière (note la plus haute, limitée à 5 % des étudiants)."
       },
       "todo": [],
       "metrics": [

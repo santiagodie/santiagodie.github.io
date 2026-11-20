@@ -187,8 +187,14 @@ def lookup(strings, path, lang):
     return node
 
 
+def colon(s):
+    """The colon of the accessible suffixes ("Code: ..."): French puts a no-break space
+    before it, as everywhere else in i18n/fr.json."""
+    return " : " if s["meta"]["ogLocale"].startswith("fr") else ": "
+
+
 def external(href, label, context, s):
-    hidden = f": {context} ({s['a11y']['newTab']})" if context else f" ({s['a11y']['newTab']})"
+    hidden = f"{colon(s)}{context} ({s['a11y']['newTab']})" if context else f" ({s['a11y']['newTab']})"
     return (f'<a href="{esc(href)}" target="_blank" rel="noopener">{text(label)}{ARROW}'
             f'<span class="visually-hidden">{esc(hidden)}</span></a>')
 
@@ -385,7 +391,7 @@ def render_chat(s, tokens, model, lang):
               </div>
               <div class="chat__composer" role="group" aria-label="{esc(chat["placeholder"])}" aria-disabled="true">
                 <span class="chat__input" aria-hidden="true"><span class="chat__typed">{esc(chat["prompt"])}</span><span class="chat__placeholder">{esc(chat["placeholder"])}</span></span>
-                <button class="chat__send" type="button" disabled aria-label="{esc(chat["send"])}: {esc(chat["prompt"])}"><span class="chat__ring"></span>{SEND}</button>
+                <button class="chat__send" type="button" disabled aria-label="{esc(chat["send"])}{colon(s)}{esc(chat["prompt"])}"><span class="chat__ring"></span>{SEND}</button>
               </div>
             </div>
             <div class="chat__stage" aria-hidden="true"></div>
@@ -488,7 +494,7 @@ def metric_value(metric, lang, s):
     if not metric.get("source"):
         return value
     return (f'<a class="card__metric-link" href="{esc(metric["source"])}" target="_blank" rel="noopener">{value}'
-            f'<span class="visually-hidden">: {esc(metric["label"][lang])} ({esc(s["a11y"]["newTab"])})</span></a>')
+            f'<span class="visually-hidden">{colon(s)}{esc(metric["label"][lang])} ({esc(s["a11y"]["newTab"])})</span></a>')
 
 
 def render_featured(projects, lang, s):
@@ -517,7 +523,7 @@ def render_featured(projects, lang, s):
         # paper all shows.
         pid = project["id"]
         cards.append(f'''            <li class="card card--feature" id="p-{pid}" data-collapsed>{FRAME}
-              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(project["title"][lang])}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(project["title"][lang])}<span class="visually-hidden">{colon(s)}{esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <div class="card__detail" id="p-{pid}-about">
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {project_text(project, lang, s)}{metrics}
@@ -591,18 +597,18 @@ def render_projects(projects, lang, s):
         extra = ""
         if demo:
             extra = (f'<a class="card__demo" href="{esc(demo["url"])}" target="_blank" rel="noopener">{esc(demo_label(demo, s, short=True))}{ARROW}'
-                     f'<span class="visually-hidden">: {esc(title)} ({esc(new_tab)})</span></a>')
+                     f'<span class="visually-hidden">{colon(s)}{esc(title)} ({esc(new_tab)})</span></a>')
         foot = "card__foot"
         if project.get("parts"):
             # One demo link per part, named after it; the repository name gets its own line
             extra = "".join(
                 f'<a class="card__demo" href="{esc(part["demo"]["url"])}" target="_blank" rel="noopener">{esc(part["label"][lang])}{ARROW}'
-                f'<span class="visually-hidden">: {esc(demo_label(part["demo"], s))}, {esc(title)} ({esc(new_tab)})</span></a>'
+                f'<span class="visually-hidden">{colon(s)}{esc(demo_label(part["demo"], s))}, {esc(title)} ({esc(new_tab)})</span></a>'
                 for part in project["parts"] if live_demo(part))
             foot += " card__foot--stacked"
             extra = f'<span class="card__more">{extra}</span>'
         cards.append(f'''            <li class="card card--mini" id="p-{project["id"]}">{FRAME}
-              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">: {esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
+              <h4 class="card__title"><a class="card__link" href="{esc(project["repo"])}" target="_blank" rel="noopener">{esc(title)}<span class="visually-hidden">{colon(s)}{esc(s["projects"]["code"])} ({esc(new_tab)})</span></a></h4>
               <p class="card__subject">{esc(project["subject"][lang])}</p>
               {tags(project, s)}
               <p class="{foot}"><span class="card__repo" translate="no" aria-hidden="true"><span class="card__repo-name">{repo_html(project["repo"], ARROW)}</span></span>{extra}</p>

@@ -1,10 +1,10 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · IA appliquée : langage et vision par ordinateur",
-    "description": "Dernière année de génie informatique à l’Université de La Rioja. IA appliquée aux modèles de langage et à la vision par ordinateur, avec Python, PyTorch et Hugging Face.",
+    "description": "Étudiant en dernière année d’ingénierie informatique (Bac+4) à l’Université de La Rioja. IA appliquée aux modèles de langage et à la vision par ordinateur, avec Python, PyTorch et Hugging Face.",
     "ogLocale": "fr_FR",
     "langName": "Français",
-    "jobTitle": "Étudiant en génie informatique, IA appliquée au langage et à la vision par ordinateur"
+    "jobTitle": "Étudiant en ingénierie informatique, IA appliquée au langage et à la vision par ordinateur"
   },
   "a11y": {
     "skip": "Aller au contenu",
@@ -38,8 +38,8 @@
     "ctaContact": "Me contacter"
   },
   "chat": {
-    "prompt": "Qui est Santiago Die ?",
-    "answer": "D’après mon analyse, Santiago est étudiant en dernière année de génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et il veut travailler dans l’IA appliquée : modèles de langage et vision par ordinateur. Il est actuellement stagiaire chez Encore Lab, où il développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi son projet de fin d’études.\n\nAvant de choisir un modèle, il le mesure face à d’autres. Il a comparé cinq architectures de CNN pour classer des images satellite et opposé DistilBERT à ULMFiT pour classer des prompts. Dans sa recherche de visages, il a chronométré l’index VP-tree face à une recherche linéaire, et comme l’index s’est révélé plus lent, il l’a écrit.\n\nIl a grandi à Quito, a étudié dans un lycée français et vit aujourd’hui en Espagne : il s’adapte vite et travaille aisément en espagnol, en anglais et en français.",
+    "prompt": "Qui est Santiago Die ?",
+    "answer": "D’après mon analyse, Santiago est étudiant en dernière année d’ingénierie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et il veut travailler dans l’IA appliquée : modèles de langage et vision par ordinateur. Il est actuellement stagiaire chez Encore Lab, où il développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi son projet de fin d’études.\n\nAvant de choisir un modèle, il le mesure face à d’autres. Il a comparé cinq architectures de CNN pour classer des images satellite et opposé DistilBERT à ULMFiT pour classer des prompts. Dans sa recherche de visages, il a chronométré l’index VP-tree face à une recherche linéaire, et comme l’index s’est révélé plus lent, il l’a documenté.\n\nIl a grandi à Quito, a été scolarisé dans le système français et vit aujourd’hui en Espagne : il s’adapte vite et travaille aisément en espagnol, en anglais et en français.",
     "send": "Envoyer la question",
     "skip": "Passer",
     "replay": "Rejouer",
@@ -56,7 +56,7 @@
       "attention",
       "softmax"
     ],
-    "description": "Animation : la question est envoyée, découpée en tokens avec leurs vrais identifiants, transformée en vecteurs, passée par des couches d’attention puis évaluée ; le token suivant le plus probable est choisi et la réponse s’écrit token après token.",
+    "description": "Animation : la question est envoyée, découpée en tokens avec leurs vrais identifiants, transformée en vecteurs, passée par des couches d’attention puis évaluée ; le token suivant le plus probable est choisi et la réponse s’écrit token après token.",
     "log": "Conversation"
   },
   "sections": {
@@ -83,7 +83,7 @@
     "download": "Télécharger",
     "stack": "Technologies",
     "metrics": "Résultats",
-    "translationPending": "TODO : traduire la description",
+    "translationPending": "TODO : traduire la description",
     "demoShort": "Démo",
     "colabShort": "Colab",
     "downloadShort": "Télécharger",
@@ -94,20 +94,20 @@
     "items": [
       {
         "id": "encore-lab",
-        "period": "Sept. 2026 – Aujourd’hui",
-        "title": "Développeur full-stack (stage)",
+        "period": "sept. 2026 – aujourd’hui",
+        "title": "Stagiaire développeur full-stack",
         "org": "Encore Lab S.L.",
         "place": "Logroño, Espagne",
-        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne hérité (PHP et MySQL), je capture les changements dans la même transaction que chaque opération et je les envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, si bien que son réseau n’est jamais ouvert de l’extérieur. Côté portail, une API NestJS sur PostgreSQL les reçoit, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. J’ai aussi conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus) et la sécurité de l’API de synchronisation, qui vérifie chaque requête et valide strictement son contrat. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retours financiers et des fonctionnalités à base de LLM.",
+        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne historique du cabinet (PHP et MySQL), je capture chaque modification dans la même transaction que l’opération et je l’envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, sans jamais exposer son réseau interne. Côté portail, une API NestJS sur PostgreSQL reçoit les données, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. J’ai aussi conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus) et la sécurité de l’API de synchronisation, qui vérifie chaque requête et valide strictement son contrat. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retombées financières et des fonctionnalités à base de LLM.",
         "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
         "id": "islamontana",
-        "period": "Avr. 2026 – Aujourd’hui",
+        "period": "avr. 2026 – aujourd’hui",
         "title": "Développeur full-stack (freelance)",
         "org": "Islamontana Travel",
         "place": "À distance",
-        "text": "Je développe le site d’une agence de voyages équatorienne qui vend surtout des voyages aux Galápagos. Les deux parties sont encore en développement : le frontend, bilingue et en Next.js, et le backend en FastAPI et PostgreSQL, qui a déjà ses tests. Pour l’instant, une version statique est publiée. GitHub Actions la déploie automatiquement, et le produit final sera hébergé sur un serveur dédié et déployé avec Docker, frontend et backend connectés.",
+        "text": "Je développe le site d’une agence de voyages équatorienne qui vend surtout des voyages aux Galápagos. Les deux parties sont encore en développement : le frontend, bilingue et en Next.js, et le backend en FastAPI et PostgreSQL, déjà couvert par des tests. Pour l’instant, une version statique est publiée. GitHub Actions la déploie automatiquement, et le produit final sera hébergé sur un serveur dédié et déployé avec Docker, frontend et backend connectés.",
         "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · GitHub Actions"
       }
     ]
@@ -116,19 +116,19 @@
     "items": [
       {
         "period": "2021 – 2027",
-        "title": "Licence en Génie informatique (Grado)",
+        "title": "Grado en ingénierie informatique (diplôme espagnol, Bac+4, 240 ECTS)",
         "org": "Université de La Rioja",
-        "text": "Spécialisation en Gestion des connaissances : exploitation d’informations complexes comme connaissance au service de l’entreprise, grâce à l’ingénierie des connaissances et aux systèmes intelligents.",
+        "text": "Spécialisation Gestion des connaissances : exploitation d’informations complexes comme connaissance au service de l’entreprise, grâce à l’ingénierie des connaissances et aux systèmes intelligents.",
         "details": "IA, apprentissage automatique, vision par ordinateur, TAL, MLOps, ontologies, web sémantique, fouille de données",
         "thesis": "Projet de fin d’études : plateforme cloud de gestion de portefeuille de projets avec LLM (Encore Lab)",
-        "honors": "Matrícula de Honor (plus haute mention) en Développement d’interfaces utilisateur et en Atelier transversal I"
+        "honors": "Matrícula de Honor (note la plus haute, limitée à 5 % des étudiants de chaque matière) en Développement d’interfaces utilisateur et en Atelier transversal I"
       },
       {
         "period": "Promotion 2020",
-        "title": "Baccalauréat Général & Bachillerato équatorien",
+        "title": "Baccalauréat français et Bachillerato équatorien",
         "org": "Lycée franco-équatorien La Condamine, Quito",
         "text": "",
-        "details": "Série ES, spécialité mathématiques · Bachiller en Ciencias"
+        "details": "Série ES, spécialité mathématiques · Bachillerato équatorien en sciences"
       }
     ],
     "certifications": {
@@ -183,7 +183,7 @@
         ]
       },
       {
-        "name": "Autres langages",
+        "name": "Autres langages de programmation",
         "items": [
           "Java",
           "TypeScript",
@@ -235,7 +235,7 @@
         ]
       },
       {
-        "name": "Autres langages (cours)",
+        "name": "Autres langages de programmation (cursus)",
         "items": [
           "C++",
           "R"
@@ -266,7 +266,7 @@
         },
         {
           "name": "Français",
-          "level": "bilingue, lycée français dès 3 ans et Baccalauréat"
+          "level": "bilingue (scolarité dans le système français dès 3 ans ; baccalauréat)"
         },
         {
           "name": "Anglais",
@@ -290,12 +290,12 @@
     "cvFile": "cv/CV-SantiagoDie-FR.pdf"
   },
   "cv": {
-    "summary": "Étudiant en dernière année de génie informatique à l’Université de La Rioja. Je veux travailler dans l’IA appliquée, sur les modèles de langage et la vision par ordinateur. J’ai entraîné, évalué et servi des modèles avec Python, scikit-learn et PyTorch. Chez Encore Lab, je développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi mon projet de fin d’études. Disponible à partir de juin 2027.",
+    "summary": "Étudiant en dernière année d’ingénierie informatique (Bac+4) à l’Université de La Rioja. Je souhaite travailler dans l’IA appliquée, sur les modèles de langage et la vision par ordinateur. J’ai entraîné, évalué et déployé des modèles avec Python, scikit-learn et PyTorch. Chez Encore Lab, je suis le seul développeur d’un portail cloud destiné aux clients d’un cabinet de conseil en subventions, qui est aussi mon projet de fin d’études. Disponible à partir de juin 2027.",
     "experience": {
       "encore-lab": {
         "bullets": [
-          "J’ai développé le système de synchronisation entre le système hérité d’un cabinet de conseil (PHP, MySQL) et un portail cloud (NestJS, PostgreSQL) : capture transactionnelle des changements et envoi en HTTPS dans un seul sens, selon un protocole de communication interne, sans exposer son réseau.",
-          "J’ai conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus ClamAV) et la sécurité de l’API de synchronisation : vérification de chaque requête, validation stricte du contrat et quarantaine des documents."
+          "J’ai développé la synchronisation entre le système historique d’un cabinet de conseil (PHP, MySQL) et un portail cloud (NestJS, PostgreSQL) : capture transactionnelle des modifications et envoi unidirectionnel en HTTPS, selon un protocole de communication interne, sans exposer son réseau interne.",
+          "J’ai monté l’infrastructure Docker du portail (conteneurs, volumes, PostgreSQL, sauvegardes, antivirus ClamAV) et sécurisé l’API de synchronisation : requêtes vérifiées, contrat strictement validé, documents en quarantaine."
         ]
       },
       "islamontana": {
@@ -307,19 +307,19 @@
     "projects": {
       "face-similarity-search-pipeline": {
         "bullets": [
-          "Recherche de visages sur 21 678 photos de presse : CNN de dlib, FaceNet et un index VP-tree de 38 299 visages.",
+          "J’ai construit un moteur de recherche de visages sur 21 678 photos de presse : détection avec le CNN de dlib, embeddings FaceNet et un index VP-tree de 38 299 visages.",
           "J’ai calibré le seuil de similarité avec une courbe ROC et un balayage du F1 jusqu’à un F1 de 0,911. J’ai comparé l’index VP-tree à une recherche linéaire avec NumPy, qui à cette échelle s’est révélée de 8 à 11 fois plus rapide."
         ]
       },
       "satellite-image-classifier": {
         "bullets": [
-          "J’ai affiné un ResNet18 avec fastai pour classer des images satellite en 4 classes : 0,9982 d’accuracy en test.",
-          "J’ai comparé cinq architectures de CNN (ResNet18 et 34, EfficientNet-B0, MobileNetV3 Small et ConvNeXt Tiny) dans les mêmes conditions."
+          "J’ai fine-tuné un ResNet18 avec fastai pour classer des images satellite en 4 classes : 99,82 % d’accuracy en test.",
+          "J’ai comparé 5 CNN à conditions égales : ResNet18/34, EfficientNet-B0, MobileNetV3 Small, ConvNeXt Tiny."
         ]
       },
       "prompt-topic-classifier": {
         "bullets": [
-          "J’ai classé des prompts de LLM en 10 thèmes avec un DistilBERT affiné : 67,35 % d’accuracy et un F1 pondéré de 0,667 sur un test de 1 550 prompts."
+          "J’ai classé des prompts de LLM en 10 thèmes avec un DistilBERT fine-tuné : 67,35 % d’accuracy et un F1 pondéré de 0,667 sur un jeu de test de 1 550 prompts."
         ]
       }
     },
@@ -327,17 +327,21 @@
       "places": [
         "Logroño, Espagne",
         "Quito, Équateur"
+      ],
+      "titles": [
+        "",
+        "Baccalauréat ES (spécialité mathématiques) et Bachillerato équatorien"
       ]
     },
     "labels": {
       "experience": "Expérience professionnelle",
       "projects": "Projets",
       "education": "Formation",
-      "skills": "Compétences complémentaires",
+      "skills": "Compétences",
       "honors": "Distinctions"
     },
-    "nationalityLabel": "Nationalité",
-    "nationality": "Espagnole, française et équatorienne"
+    "nationalityLabel": "Nationalités",
+    "nationality": "espagnole, française et équatorienne"
   },
   "footer": {
     "rights": "Santiago Die Morejón",
