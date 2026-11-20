@@ -25,14 +25,19 @@ written to a temporary folder outside dist/ and deleted when the script ends.
 
 Each page is a self-contained HTML file (fonts and photo inlined), printed by Chrome
 headless (A4, no header or footer) to dist/cv/CV-SantiagoDie-{EN,ES,FR}.pdf. The PDF's
-title is set with an incremental update (Chrome's own bytes are left untouched).
+Info dictionary (title, author, subject, creator, producer, dates) is written from scratch
+in an incremental update (Chrome's own bytes are left untouched; its Info, whose Creator
+is a user agent full of parentheses, is not reused).
 
 Checks, any failure exits non-zero and fails the deploy: exactly one page; under 300 KB;
 a photo in the Spanish and French CVs and none in the English one; the title and the
 language set; the links present (site, LinkedIn, GitHub, email, projects, and the phone
-when there is one); with CV_PHONE, the number appears in no other file of dist/. When
-pdftotext is installed, the text layer is read back too (name, email and the section
-titles in order), as an ATS would read it.
+when there is one); the last Info dictionary read back by a small parser (every string
+and the dictionary closed, each field as written); with CV_PHONE, the number appears in
+no other file of dist/. When pdftotext is installed, the text layer is read back too
+(name, email and the section titles in order), as an ATS would read it. When qpdf is
+installed, `qpdf --check` must report 0 warnings (without it the check is skipped and
+the log says so).
 
 Usage: python tools/make_cv.py [--chrome PATH] [--only LANG]
 """
@@ -46,7 +51,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,6 +64,10 @@ FONTS = [  # (family, weight, style, file in fonts/print/): STIX Two Text, the t
     ("STIX Two Text", "700", "normal", "stix-two-text-bold.woff2"),
 ]
 TITLE = "Santiago Die Morejón · CV"
+AUTHOR = "Santiago Die Morejón"
+SUBJECT = {"en": "Curriculum vitae", "es": "Currículum vítae", "fr": "Curriculum vitae"}
+CREATOR = "santiagodie.com · make_cv.py"
+PRODUCER = "Skia/PDF (Chrome headless), Info by make_cv.py"
 MAX_KB = 300
 PAGES = 1
 WITH_PHOTO = {"es", "fr"}  # owner's decision: the English CV goes without the photo
@@ -269,31 +278,190 @@ def pdf_text_string(value):
     return "<FEFF" + value.encode("utf-16-be").hex().upper() + ">"
 
 
-def set_title(pdf_path, title):
-    """Append an incremental update: a new Info dictionary with the title (keeping
-    Chrome's creator, producer and dates). Readers use the last trailer."""
+def pdf_literal(value):
+    """A PDF literal string, with backslash and both parentheses escaped. Plain ASCII
+    only; anything else goes as a hex UTF-16 string (pdf_text_string)."""
+    if not value.isascii():
+        return pdf_text_string(value)
+    return "(" + value.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)") + ")"
+
+
+def pdf_date(moment):
+    return moment.strftime("D:%Y%m%d%H%M%SZ")
+
+
+def info_fields(lang, created):
+    """The whole Info dictionary, written from scratch: nothing of Chrome's is copied
+    (its Creator, a user agent full of parentheses, is what broke the dictionary)."""
+    now = pdf_date(datetime.now(timezone.utc))
+    return {
+        "Title": TITLE,
+        "Author": AUTHOR,
+        "Subject": SUBJECT[lang],
+        "Creator": CREATOR,
+        "Producer": PRODUCER,
+        "CreationDate": created or now,
+        "ModDate": now,
+    }
+
+
+def set_info(pdf_path, lang):
+    """Append an incremental update with a new Info dictionary (Chrome's bytes are left
+    untouched; readers use the last trailer). It takes the number of Chrome's Info
+    object, so that one is superseded and the file holds a single live Info. Chrome's
+    creation date is kept if it can be read cleanly."""
     data = pdf_path.read_bytes()
     trailer = data[data.rfind(b"trailer"):]
     size = int(re.search(rb"/Size (\d+)", trailer).group(1))
     root = re.search(rb"/Root (\d+) 0 R", trailer).group(1).decode()
-    info = re.search(rb"/Info (\d+) 0 R", trailer)
-    old_info = {}
-    if info:
-        m = re.search(rb"\n" + info.group(1) + rb" 0 obj\s*<<(.*?)>>\s*endobj", data, re.S)
-        if m:
-            for key in (b"Creator", b"Producer", b"CreationDate", b"ModDate"):
-                v = re.search(rb"/" + key + rb"\s*(\([^)]*\)|<[0-9A-Fa-f]*>)", m.group(1))
-                if v:
-                    old_info[key.decode()] = v.group(1).decode("latin-1")
+    chrome_info = re.search(rb"/Info (\d+) 0 R", trailer)
+    number = int(chrome_info.group(1)) if chrome_info else size
+    created = None
+    try:
+        old = read_info(data)
+        if re.fullmatch(r"D:\d{4,14}.*", old.get("CreationDate", "")):
+            created = old["CreationDate"]
+    except CVError:
+        pass  # Chrome's dictionary is replaced anyway
     xref_prev = int(re.findall(rb"startxref\s+(\d+)", data)[-1])
-    body = [f"/Title {pdf_text_string(title)}"] + [f"/{k} {v}" for k, v in old_info.items()]
-    obj = f"{size} 0 obj\n<< {' '.join(body)} >>\nendobj\n".encode("latin-1")
+    body = [f"/{key} {pdf_literal(value)}" for key, value in info_fields(lang, created).items()]
+    obj = f"{number} 0 obj\n<< {' '.join(body)} >>\nendobj\n".encode("ascii")
     offset = len(data) + 1  # after the newline below
-    xref = f"xref\n{size} 1\n{offset:010d} 00000 n \n".encode()
+    xref = f"xref\n{number} 1\n{offset:010d} 00000 n \n".encode()
     xref_at = offset + len(obj)
-    tail = (f"trailer\n<< /Size {size + 1} /Root {root} 0 R /Info {size} 0 R /Prev {xref_prev} >>\n"
+    tail = (f"trailer\n<< /Size {max(size, number + 1)} /Root {root} 0 R /Info {number} 0 R /Prev {xref_prev} >>\n"
             f"startxref\n{xref_at}\n%%EOF\n").encode()
     pdf_path.write_bytes(data + b"\n" + obj + xref + tail)
+
+
+# A minimal reader for the Info dictionary, standard library only. It walks the last
+# /Info object token by token, so an unclosed string or dictionary is an error here
+# instead of a PdfStreamError in the ATS that reads the CV.
+
+DELIMS = b"()<>[]{}/%"
+SPACE = b" \t\r\n\f\0"
+ESCAPES = {ord("n"): b"\n", ord("r"): b"\r", ord("t"): b"\t", ord("b"): b"\b", ord("f"): b"\f"}
+
+
+def _literal(data, i):
+    """data[i] is "(": returns (bytes, index after the closing ")")."""
+    out, depth, i = bytearray(), 1, i + 1
+    while i < len(data):
+        c = data[i]
+        if c == 0x5C:  # backslash
+            i += 1
+            if i >= len(data):
+                break
+            e = data[i]
+            if e in ESCAPES:
+                out += ESCAPES[e]
+            elif 0x30 <= e <= 0x37:
+                j = i
+                while j < len(data) and j < i + 3 and 0x30 <= data[j] <= 0x37:
+                    j += 1
+                out.append(int(data[i:j], 8) & 0xFF)
+                i = j - 1
+            elif e in b"\r\n":  # line continuation
+                if e == 0x0D and data[i + 1:i + 2] == b"\n":
+                    i += 1
+            else:
+                out.append(e)
+        elif c == 0x28:
+            depth += 1
+            out.append(c)
+        elif c == 0x29:
+            depth -= 1
+            if depth == 0:
+                return bytes(out), i + 1
+            out.append(c)
+        else:
+            out.append(c)
+        i += 1
+    raise CVError("an Info string opens and never closes")
+
+
+def _decode(raw):
+    if raw[:2] == b"\xfe\xff":
+        return raw[2:].decode("utf-16-be")
+    return raw.decode("latin-1")
+
+
+def read_info(data):
+    """The last trailer's Info dictionary as {key: text}. Raises CVError when its strings
+    or the dictionary itself are not closed, or when a key has no value."""
+    trailer = data[data.rfind(b"trailer"):]
+    ref = re.search(rb"/Info\s+(\d+)\s+(\d+)\s+R", trailer)
+    if not ref:
+        raise CVError("the trailer has no /Info")
+    starts = list(re.finditer(rb"(?<![0-9])" + ref.group(1) + rb"\s+" + ref.group(2) + rb"\s+obj", data))
+    if not starts:
+        raise CVError(f"the Info object {ref.group(1).decode()} is not in the file")
+    i = starts[-1].end()
+    while i < len(data) and data[i] in SPACE:
+        i += 1
+    if data[i:i + 2] != b"<<":
+        raise CVError("the Info object is not a dictionary")
+    i += 2
+    fields, key = {}, None
+    while True:
+        while i < len(data) and data[i] in SPACE:
+            i += 1
+        if i >= len(data):
+            raise CVError("the Info dictionary opens and never closes")
+        if data[i:i + 2] == b">>":
+            i += 2
+            break
+        c = data[i]
+        if c == 0x28:
+            value, i = _literal(data, i)
+            value = _decode(value)
+        elif c == 0x3C:
+            end = data.find(b">", i)
+            if end < 0:
+                raise CVError("an Info hex string opens and never closes")
+            hexes = re.sub(rb"\s", b"", data[i + 1:end])
+            if not re.fullmatch(rb"[0-9A-Fa-f]*", hexes):
+                raise CVError("an Info hex string has non-hex bytes")
+            value, i = _decode(bytes.fromhex((hexes + b"0" * (len(hexes) % 2)).decode())), end + 1
+        elif c == 0x2F:
+            j = i + 1
+            while j < len(data) and data[j] not in SPACE and data[j] not in DELIMS:
+                j += 1
+            name, i = data[i + 1:j].decode("latin-1"), j
+            if key is None:
+                key = name
+                continue
+            value = "/" + name
+        elif c == 0x29:
+            raise CVError("the Info dictionary has a stray ')'")
+        else:  # number, reference or keyword
+            m = re.match(rb"(\d+\s+\d+\s+R|[^\s()<>\[\]{}/%]+)", data[i:])
+            if not m:
+                raise CVError(f"the Info dictionary has an unexpected byte at {i}")
+            value, i = m.group(1).decode("latin-1"), i + m.end()
+        if key is None:
+            raise CVError("the Info dictionary has a value without a key")
+        fields[key], key = value, None
+    if key is not None:
+        raise CVError(f"the Info key /{key} has no value")
+    if not re.match(rb"\s*endobj", data[i:]):
+        raise CVError("the Info dictionary is not followed by endobj")
+    return fields
+
+
+def qpdf_check(pdf_path):
+    """qpdf --check, when qpdf is installed: None if it is not, else the list of its
+    warnings and errors (empty when the file is clean)."""
+    tool = shutil.which("qpdf")
+    if not tool:
+        return None
+    done = subprocess.run([tool, "--check", str(pdf_path)], capture_output=True, timeout=60)
+    lines = (done.stdout + done.stderr).decode("utf-8", errors="replace").splitlines()
+    found = [line.strip() for line in lines if re.search(r"warning|error", line, re.I)
+             and "No syntax or stream encoding errors" not in line]
+    if done.returncode != 0 and not found:
+        found = [f"qpdf exited with {done.returncode}"]
+    return found
 
 
 def pdf_uris(data):
@@ -337,6 +505,25 @@ def check(pdf_path, lang, links, headings, name, email):
     missing = [link for link in links if link not in pdf_uris(data)]
     if missing:
         problems.append("links missing: " + ", ".join(missing))
+    try:
+        info = read_info(data)
+        wrong = [k for k, v in info_fields(lang, None).items()
+                 if k not in ("CreationDate", "ModDate") and info.get(k) != v]
+        wrong += [k for k in ("CreationDate", "ModDate") if not str(info.get(k, "")).startswith("D:")]
+        if wrong:
+            problems.append("Info dictionary: wrong or missing " + ", ".join(wrong))
+        info_note = "Info parsed"
+    except CVError as error:
+        problems.append(f"Info dictionary: {error}")
+        info_note = "Info broken"
+    qpdf = qpdf_check(pdf_path)
+    if qpdf is None:
+        qpdf_note = "qpdf not installed (check skipped)"
+    elif qpdf:
+        problems.append(f"qpdf --check: {len(qpdf)} warning(s): " + " | ".join(qpdf[:5]))
+        qpdf_note = "qpdf failed"
+    else:
+        qpdf_note = "qpdf 0 warnings"
     text = read_text(pdf_path)
     reading = "text layer not read (no pdftotext)"
     if text is not None:
@@ -354,7 +541,7 @@ def check(pdf_path, lang, links, headings, name, email):
     if problems:
         raise CVError(f"{pdf_path.name}: " + "; ".join(problems))
     return (f"{pdf_path.relative_to(ROOT).as_posix()}  {kb:.0f} KB, {pages} page, {images} image(s), "
-            f"lang {lang}, {len(links)} links, {reading}")
+            f"lang {lang}, {len(links)} links, {reading}, {info_note}, {qpdf_note}")
 
 
 def phone_elsewhere(phone, written):
@@ -419,7 +606,7 @@ def main():
             if done.returncode != 0 or not out.exists():
                 raise CVError(f"Chrome could not print the {code} CV (exit {done.returncode}): "
                               + done.stderr.decode(errors="replace")[-400:])
-            set_title(out, TITLE)
+            set_info(out, code)
             written.add(out)
             labels = s["cv"]["labels"]
             headings = [labels[k] for k in ("experience", "projects", "education", "skills")]
