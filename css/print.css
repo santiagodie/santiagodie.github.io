@@ -687,3 +687,61 @@ html[lang="en"] .portrait {
 .more--skills .more__summary {
   display: none !important;
 }
+
+/* Lot 22: the Experience entries grew longer and Contact gained a row (Hugging Face);
+   so that Contact, kept whole with its photo, stays on page two, entry text, section
+   titles, subheads, contact rows and skill rows are set a little tighter. */
+.entry__org,
+.entry__text,
+.entry__details {
+  font-size: 8pt !important;
+  line-height: 1.3 !important;
+  margin-top: 0.2mm !important;
+}
+
+.skills__items,
+.skills__group dt,
+.langs dd,
+.langs dt {
+  line-height: 1.2 !important;
+}
+
+.section__title {
+  margin: 1.6mm 0 0.6mm !important;
+}
+
+.contact__row,
+.contact__link {
+  padding: 0.3mm 0 !important;
+}
+
+.skills__group,
+.langs__item {
+  padding-block: 0.15mm !important;
+}
+
+.subhead {
+  margin: 1.5mm 0 0.4mm !important;
+}
+
+.entry {
+  padding-block: 0.4mm !important;
+}
+
+.section__lead {
+  margin: 0 0 1mm !important;
+}
+
+/* In a skill or language row the value no longer drops 0.4mm below its name. */
+.skills__items,
+.langs dd {
+  margin-top: 0 !important;
+}
+
+/* The name on paper: plain text, without the box widths and weights the name's script
+   (js/deferred/name-weight.js) sets for the screen, which spread the letters apart. */
+.hero__name .hero__l {
+  display: inline !important;
+  width: auto !important;
+  font-weight: inherit !important;
+}

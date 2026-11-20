@@ -3,7 +3,7 @@
  "tokenizer": "cl100k_base",
  "en": {
   "prompt": "Santiago, introduce yourself.",
-  "answer": "I am in the final year of computer engineering at the University of La Rioja and I want to work as a machine learning and MLOps engineer. My face search indexes 38,299 faces from 21,678 press photos and reaches an F1 of 0.911 at the calibrated threshold.\n\nI am an intern at Encore Lab, on a secure cloud platform with LLM features. In my projects I measure before I choose: I compared five CNN architectures for classifying satellite images, and the artificial life simulation we built as a team passes 108 tests and processes 220 requests sent over 30 seconds with five workers.\n\nWhat interests me is what comes after the model. In my salary predictor, the Random Forest is served by a Flask API that validates every request with Pydantic, and the demo runs the same model in the browser with ONNX.\n\nMy specialisation in knowledge management gave me ontologies and knowledge engineering, a grounding I want to bring to LLM systems. I grew up in Quito, went to a French lycée and live in Spain; I work in Spanish, English and French.\n\nI finish my internship in May 2027 and I am looking for a junior ML or MLOps role from June. If that fits your team, write to me.",
+  "answer": "I am in the final year of computer engineering at the University of La Rioja and I want to work in applied AI, on language models and computer vision. My face search indexes 38,299 faces from 21,678 press photos and reaches an F1 of 0.911 at the calibrated threshold.\n\nAt Encore Lab I am building, on my own, a cloud portal for the clients of a grant consultancy, which is also my final-year project. The synchronisation with the consultancy's legacy internal system is already programmed at both ends: changes go out every 5 minutes over HTTPS, one way, and its network is never opened from outside.\n\nI measure before I choose. To sort prompts into 10 topics, DistilBERT beat ULMFiT by about 9.5 points of accuracy on the same test set. For the satellite images I compared five CNNs. And in the face search the VP-tree came out 8 to 11 times slower than a linear NumPy search, which I wrote down in the README.\n\nFrom my specialisation in knowledge management I bring ontologies and knowledge engineering. I grew up in Quito, went to a French lycée from the age of 3 and live in Spain; I work in Spanish, French and English.\n\nI finish my degree in 2027 and I am looking for a junior applied AI role from June. If that fits your team, write to me.",
   "tokens": {
    "prompt": [
     {
@@ -117,40 +117,44 @@
      "id": 990
     },
     {
-     "t": " as",
-     "id": 439
+     "t": " in",
+     "id": 304
     },
     {
-     "t": " a",
-     "id": 264
+     "t": " applied",
+     "id": 9435
     },
     {
-     "t": " machine",
-     "id": 5780
+     "t": " AI",
+     "id": 15592
     },
     {
-     "t": " learning",
-     "id": 6975
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " on",
+     "id": 389
+    },
+    {
+     "t": " language",
+     "id": 4221
+    },
+    {
+     "t": " models",
+     "id": 4211
     },
     {
      "t": " and",
      "id": 323
     },
     {
-     "t": " M",
-     "id": 386
+     "t": " computer",
+     "id": 6500
     },
     {
-     "t": "LO",
-     "id": 1623
-    },
-    {
-     "t": "ps",
-     "id": 1725
-    },
-    {
-     "t": " engineer",
-     "id": 24490
+     "t": " vision",
+     "id": 11376
     },
     {
      "t": ".",
@@ -281,24 +285,8 @@
      "id": 382
     },
     {
-     "t": "I",
-     "id": 40
-    },
-    {
-     "t": " am",
-     "id": 1097
-    },
-    {
-     "t": " an",
-     "id": 459
-    },
-    {
-     "t": " intern",
-     "id": 2655
-    },
-    {
-     "t": " at",
-     "id": 520
+     "t": "At",
+     "id": 1688
     },
     {
      "t": " Encore",
@@ -309,6 +297,18 @@
      "id": 11868
     },
     {
+     "t": " I",
+     "id": 358
+    },
+    {
+     "t": " am",
+     "id": 1097
+    },
+    {
+     "t": " building",
+     "id": 4857
+    },
+    {
      "t": ",",
      "id": 11
     },
@@ -317,56 +317,252 @@
      "id": 389
     },
     {
-     "t": " a",
-     "id": 264
+     "t": " my",
+     "id": 856
     },
     {
-     "t": " secure",
-     "id": 9966
+     "t": " own",
+     "id": 1866
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " a",
+     "id": 264
     },
     {
      "t": " cloud",
      "id": 9624
     },
     {
-     "t": " platform",
-     "id": 5452
+     "t": " portal",
+     "id": 24007
     },
     {
-     "t": " with",
-     "id": 449
+     "t": " for",
+     "id": 369
     },
     {
-     "t": " L",
-     "id": 445
+     "t": " the",
+     "id": 279
     },
     {
-     "t": "LM",
-     "id": 11237
+     "t": " clients",
+     "id": 8403
     },
     {
-     "t": " features",
-     "id": 4519
+     "t": " of",
+     "id": 315
     },
     {
-     "t": ".",
-     "id": 13
+     "t": " a",
+     "id": 264
     },
     {
-     "t": " In",
-     "id": 763
+     "t": " grant",
+     "id": 13500
+    },
+    {
+     "t": " consultancy",
+     "id": 74379
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " which",
+     "id": 902
+    },
+    {
+     "t": " is",
+     "id": 374
+    },
+    {
+     "t": " also",
+     "id": 1101
     },
     {
      "t": " my",
      "id": 856
     },
     {
-     "t": " projects",
-     "id": 7224
+     "t": " final",
+     "id": 1620
     },
     {
-     "t": " I",
-     "id": 358
+     "t": "-year",
+     "id": 4771
+    },
+    {
+     "t": " project",
+     "id": 2447
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " The",
+     "id": 578
+    },
+    {
+     "t": " synchron",
+     "id": 14453
+    },
+    {
+     "t": "isation",
+     "id": 8082
+    },
+    {
+     "t": " with",
+     "id": 449
+    },
+    {
+     "t": " the",
+     "id": 279
+    },
+    {
+     "t": " consultancy",
+     "id": 74379
+    },
+    {
+     "t": "'s",
+     "id": 596
+    },
+    {
+     "t": " legacy",
+     "id": 20160
+    },
+    {
+     "t": " internal",
+     "id": 5419
+    },
+    {
+     "t": " system",
+     "id": 1887
+    },
+    {
+     "t": " is",
+     "id": 374
+    },
+    {
+     "t": " already",
+     "id": 2736
+    },
+    {
+     "t": " programmed",
+     "id": 56168
+    },
+    {
+     "t": " at",
+     "id": 520
+    },
+    {
+     "t": " both",
+     "id": 2225
+    },
+    {
+     "t": " ends",
+     "id": 10548
+    },
+    {
+     "t": ":",
+     "id": 25
+    },
+    {
+     "t": " changes",
+     "id": 4442
+    },
+    {
+     "t": " go",
+     "id": 733
+    },
+    {
+     "t": " out",
+     "id": 704
+    },
+    {
+     "t": " every",
+     "id": 1475
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "5",
+     "id": 20
+    },
+    {
+     "t": " minutes",
+     "id": 4520
+    },
+    {
+     "t": " over",
+     "id": 927
+    },
+    {
+     "t": " HTTPS",
+     "id": 62144
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " one",
+     "id": 832
+    },
+    {
+     "t": " way",
+     "id": 1648
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " and",
+     "id": 323
+    },
+    {
+     "t": " its",
+     "id": 1202
+    },
+    {
+     "t": " network",
+     "id": 4009
+    },
+    {
+     "t": " is",
+     "id": 374
+    },
+    {
+     "t": " never",
+     "id": 2646
+    },
+    {
+     "t": " opened",
+     "id": 9107
+    },
+    {
+     "t": " from",
+     "id": 505
+    },
+    {
+     "t": " outside",
+     "id": 4994
+    },
+    {
+     "t": ".\n\n",
+     "id": 382
+    },
+    {
+     "t": "I",
+     "id": 40
     },
     {
      "t": " measure",
@@ -385,8 +581,148 @@
      "id": 5268
     },
     {
-     "t": ":",
-     "id": 25
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " To",
+     "id": 2057
+    },
+    {
+     "t": " sort",
+     "id": 3460
+    },
+    {
+     "t": " prompts",
+     "id": 52032
+    },
+    {
+     "t": " into",
+     "id": 1139
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "10",
+     "id": 605
+    },
+    {
+     "t": " topics",
+     "id": 13650
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " Dist",
+     "id": 28704
+    },
+    {
+     "t": "il",
+     "id": 321
+    },
+    {
+     "t": "BERT",
+     "id": 62537
+    },
+    {
+     "t": " beat",
+     "id": 9567
+    },
+    {
+     "t": " U",
+     "id": 549
+    },
+    {
+     "t": "LM",
+     "id": 11237
+    },
+    {
+     "t": "Fi",
+     "id": 23550
+    },
+    {
+     "t": "T",
+     "id": 51
+    },
+    {
+     "t": " by",
+     "id": 555
+    },
+    {
+     "t": " about",
+     "id": 922
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "9",
+     "id": 24
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": "5",
+     "id": 20
+    },
+    {
+     "t": " points",
+     "id": 3585
+    },
+    {
+     "t": " of",
+     "id": 315
+    },
+    {
+     "t": " accuracy",
+     "id": 13708
+    },
+    {
+     "t": " on",
+     "id": 389
+    },
+    {
+     "t": " the",
+     "id": 279
+    },
+    {
+     "t": " same",
+     "id": 1890
+    },
+    {
+     "t": " test",
+     "id": 1296
+    },
+    {
+     "t": " set",
+     "id": 743
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " For",
+     "id": 1789
+    },
+    {
+     "t": " the",
+     "id": 279
+    },
+    {
+     "t": " satellite",
+     "id": 24088
+    },
+    {
+     "t": " images",
+     "id": 5448
     },
     {
      "t": " I",
@@ -405,304 +741,16 @@
      "id": 20352
     },
     {
-     "t": " architectures",
-     "id": 78335
-    },
-    {
-     "t": " for",
-     "id": 369
-    },
-    {
-     "t": " class",
-     "id": 538
-    },
-    {
-     "t": "ifying",
-     "id": 7922
-    },
-    {
-     "t": " satellite",
-     "id": 24088
-    },
-    {
-     "t": " images",
-     "id": 5448
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " and",
-     "id": 323
-    },
-    {
-     "t": " the",
-     "id": 279
-    },
-    {
-     "t": " artificial",
-     "id": 21075
-    },
-    {
-     "t": " life",
-     "id": 2324
-    },
-    {
-     "t": " simulation",
-     "id": 19576
-    },
-    {
-     "t": " we",
-     "id": 584
-    },
-    {
-     "t": " built",
-     "id": 5918
-    },
-    {
-     "t": " as",
-     "id": 439
-    },
-    {
-     "t": " a",
-     "id": 264
-    },
-    {
-     "t": " team",
-     "id": 2128
-    },
-    {
-     "t": " passes",
-     "id": 16609
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "108",
-     "id": 6640
-    },
-    {
-     "t": " tests",
-     "id": 7177
-    },
-    {
-     "t": " and",
-     "id": 323
-    },
-    {
-     "t": " processes",
-     "id": 11618
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "220",
-     "id": 8610
-    },
-    {
-     "t": " requests",
-     "id": 7540
-    },
-    {
-     "t": " sent",
-     "id": 3288
-    },
-    {
-     "t": " over",
-     "id": 927
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "30",
-     "id": 966
-    },
-    {
-     "t": " seconds",
-     "id": 6622
-    },
-    {
-     "t": " with",
-     "id": 449
-    },
-    {
-     "t": " five",
-     "id": 4330
-    },
-    {
-     "t": " workers",
-     "id": 7487
-    },
-    {
-     "t": ".\n\n",
-     "id": 382
-    },
-    {
-     "t": "What",
-     "id": 3923
-    },
-    {
-     "t": " interests",
-     "id": 12034
-    },
-    {
-     "t": " me",
-     "id": 757
-    },
-    {
-     "t": " is",
-     "id": 374
-    },
-    {
-     "t": " what",
-     "id": 1148
-    },
-    {
-     "t": " comes",
-     "id": 4131
-    },
-    {
-     "t": " after",
-     "id": 1306
-    },
-    {
-     "t": " the",
-     "id": 279
-    },
-    {
-     "t": " model",
-     "id": 1646
+     "t": "s",
+     "id": 82
     },
     {
      "t": ".",
      "id": 13
     },
     {
-     "t": " In",
-     "id": 763
-    },
-    {
-     "t": " my",
-     "id": 856
-    },
-    {
-     "t": " salary",
-     "id": 16498
-    },
-    {
-     "t": " predictor",
-     "id": 62254
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " the",
-     "id": 279
-    },
-    {
-     "t": " Random",
-     "id": 10836
-    },
-    {
-     "t": " Forest",
-     "id": 20585
-    },
-    {
-     "t": " is",
-     "id": 374
-    },
-    {
-     "t": " served",
-     "id": 10434
-    },
-    {
-     "t": " by",
-     "id": 555
-    },
-    {
-     "t": " a",
-     "id": 264
-    },
-    {
-     "t": " Flask",
-     "id": 29273
-    },
-    {
-     "t": " API",
-     "id": 5446
-    },
-    {
-     "t": " that",
-     "id": 430
-    },
-    {
-     "t": " validates",
-     "id": 27353
-    },
-    {
-     "t": " every",
-     "id": 1475
-    },
-    {
-     "t": " request",
-     "id": 1715
-    },
-    {
-     "t": " with",
-     "id": 449
-    },
-    {
-     "t": " Py",
-     "id": 5468
-    },
-    {
-     "t": "d",
-     "id": 67
-    },
-    {
-     "t": "antic",
-     "id": 8322
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " and",
-     "id": 323
-    },
-    {
-     "t": " the",
-     "id": 279
-    },
-    {
-     "t": " demo",
-     "id": 17074
-    },
-    {
-     "t": " runs",
-     "id": 8640
-    },
-    {
-     "t": " the",
-     "id": 279
-    },
-    {
-     "t": " same",
-     "id": 1890
-    },
-    {
-     "t": " model",
-     "id": 1646
+     "t": " And",
+     "id": 1628
     },
     {
      "t": " in",
@@ -713,28 +761,128 @@
      "id": 279
     },
     {
-     "t": " browser",
-     "id": 7074
+     "t": " face",
+     "id": 3663
     },
     {
-     "t": " with",
-     "id": 449
+     "t": " search",
+     "id": 2778
     },
     {
-     "t": " ON",
-     "id": 6328
+     "t": " the",
+     "id": 279
     },
     {
-     "t": "NX",
-     "id": 44404
+     "t": " VP",
+     "id": 37110
+    },
+    {
+     "t": "-tree",
+     "id": 41538
+    },
+    {
+     "t": " came",
+     "id": 3782
+    },
+    {
+     "t": " out",
+     "id": 704
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "8",
+     "id": 23
+    },
+    {
+     "t": " to",
+     "id": 311
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "11",
+     "id": 806
+    },
+    {
+     "t": " times",
+     "id": 3115
+    },
+    {
+     "t": " slower",
+     "id": 29493
+    },
+    {
+     "t": " than",
+     "id": 1109
+    },
+    {
+     "t": " a",
+     "id": 264
+    },
+    {
+     "t": " linear",
+     "id": 13790
+    },
+    {
+     "t": " Num",
+     "id": 16610
+    },
+    {
+     "t": "Py",
+     "id": 14149
+    },
+    {
+     "t": " search",
+     "id": 2778
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " which",
+     "id": 902
+    },
+    {
+     "t": " I",
+     "id": 358
+    },
+    {
+     "t": " wrote",
+     "id": 6267
+    },
+    {
+     "t": " down",
+     "id": 1523
+    },
+    {
+     "t": " in",
+     "id": 304
+    },
+    {
+     "t": " the",
+     "id": 279
+    },
+    {
+     "t": " README",
+     "id": 63045
     },
     {
      "t": ".\n\n",
      "id": 382
     },
     {
-     "t": "My",
-     "id": 5159
+     "t": "From",
+     "id": 3915
+    },
+    {
+     "t": " my",
+     "id": 856
     },
     {
      "t": " special",
@@ -757,12 +905,12 @@
      "id": 6373
     },
     {
-     "t": " gave",
-     "id": 6688
+     "t": " I",
+     "id": 358
     },
     {
-     "t": " me",
-     "id": 757
+     "t": " bring",
+     "id": 4546
     },
     {
      "t": " ont",
@@ -783,50 +931,6 @@
     {
      "t": " engineering",
      "id": 15009
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " a",
-     "id": 264
-    },
-    {
-     "t": " grounding",
-     "id": 95841
-    },
-    {
-     "t": " I",
-     "id": 358
-    },
-    {
-     "t": " want",
-     "id": 1390
-    },
-    {
-     "t": " to",
-     "id": 311
-    },
-    {
-     "t": " bring",
-     "id": 4546
-    },
-    {
-     "t": " to",
-     "id": 311
-    },
-    {
-     "t": " L",
-     "id": 445
-    },
-    {
-     "t": "LM",
-     "id": 11237
-    },
-    {
-     "t": " systems",
-     "id": 6067
     },
     {
      "t": ".",
@@ -889,6 +993,30 @@
      "id": 8047
     },
     {
+     "t": " from",
+     "id": 505
+    },
+    {
+     "t": " the",
+     "id": 279
+    },
+    {
+     "t": " age",
+     "id": 4325
+    },
+    {
+     "t": " of",
+     "id": 315
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "3",
+     "id": 18
+    },
+    {
      "t": " and",
      "id": 323
     },
@@ -929,16 +1057,16 @@
      "id": 11
     },
     {
-     "t": " English",
-     "id": 6498
+     "t": " French",
+     "id": 8753
     },
     {
      "t": " and",
      "id": 323
     },
     {
-     "t": " French",
-     "id": 8753
+     "t": " English",
+     "id": 6498
     },
     {
      "t": ".\n\n",
@@ -957,16 +1085,12 @@
      "id": 856
     },
     {
-     "t": " internship",
-     "id": 60859
+     "t": " degree",
+     "id": 8547
     },
     {
      "t": " in",
      "id": 304
-    },
-    {
-     "t": " May",
-     "id": 3297
     },
     {
      "t": " ",
@@ -1009,24 +1133,12 @@
      "id": 27144
     },
     {
-     "t": " ML",
-     "id": 20187
+     "t": " applied",
+     "id": 9435
     },
     {
-     "t": " or",
-     "id": 477
-    },
-    {
-     "t": " M",
-     "id": 386
-    },
-    {
-     "t": "LO",
-     "id": 1623
-    },
-    {
-     "t": "ps",
-     "id": 1725
+     "t": " AI",
+     "id": 15592
     },
     {
      "t": " role",
@@ -1121,7 +1233,7 @@
  },
  "es": {
   "prompt": "Santiago, preséntate.",
-  "answer": "Estoy en el último curso de Ingeniería Informática en la Universidad de La Rioja y quiero trabajar como ingeniero de machine learning y MLOps. Mi búsqueda de caras indexa 38.299 rostros de 21.678 fotos de prensa y alcanza un F1 de 0,911 con el umbral calibrado.\n\nEstoy de prácticas en Encore Lab, en una plataforma cloud segura con funciones basadas en LLM. En mis proyectos mido antes de elegir: comparé cinco arquitecturas de CNN para clasificar imágenes de satélite, y la simulación de vida artificial que hicimos en equipo pasa 108 tests y procesa 220 solicitudes enviadas en 30 segundos con cinco workers.\n\nMe interesa lo que viene después del modelo. En mi predictor de salarios, el Random Forest se sirve con una API en Flask que valida cada petición con Pydantic, y la demo ejecuta el mismo modelo en el navegador con ONNX.\n\nDe la mención en Gestión del Conocimiento traigo ontologías e ingeniería del conocimiento, una base que quiero llevar a sistemas con LLM. Crecí en Quito, estudié en un liceo francés y vivo en España; trabajo en español, inglés y francés.\n\nAcabo las prácticas en mayo de 2027 y busco un puesto junior en ML o MLOps a partir de junio. Si encaja con tu equipo, escríbeme.",
+  "answer": "Estoy en el último curso de Ingeniería Informática en la Universidad de La Rioja y quiero dedicarme a la IA aplicada, en modelos de lenguaje y visión por computador. Mi búsqueda de caras indexa 38.299 rostros de 21.678 fotos de prensa y llega a un F1 de 0,911 con el umbral calibrado.\n\nEn Encore Lab desarrollo yo solo un portal cloud para los clientes de una consultora de subvenciones, que es también mi TFG. La sincronización con el sistema interno heredado de la consultora ya está programada en los dos extremos: los cambios salen cada 5 minutos por HTTPS, en un solo sentido, y su red no se abre desde fuera.\n\nMido antes de elegir. Para clasificar prompts en 10 temas, DistilBERT sacó unos 9,5 puntos de accuracy a ULMFiT en el mismo test. Para las imágenes de satélite comparé cinco CNN. Y en la búsqueda de caras el VP-tree salió entre 8 y 11 veces más lento que una búsqueda lineal con NumPy, y lo dejé escrito en el README.\n\nDe la mención en Gestión del Conocimiento traigo ontologías e ingeniería del conocimiento. Crecí en Quito, estudié en un liceo francés desde los 3 años y vivo en España; trabajo en español, francés e inglés.\n\nTermino la carrera en 2027 y busco un puesto junior en IA aplicada a partir de junio. Si encaja con tu equipo, escríbeme.",
   "tokens": {
    "prompt": [
     {
@@ -1243,48 +1355,84 @@
      "id": 92820
     },
     {
-     "t": " trabajar",
-     "id": 95665
+     "t": " dedic",
+     "id": 57766
     },
     {
-     "t": " como",
-     "id": 8112
+     "t": "arme",
+     "id": 74960
     },
     {
-     "t": " ingen",
-     "id": 46492
+     "t": " a",
+     "id": 264
     },
     {
-     "t": "iero",
-     "id": 44688
+     "t": " la",
+     "id": 1208
+    },
+    {
+     "t": " IA",
+     "id": 44190
+    },
+    {
+     "t": " aplic",
+     "id": 30540
+    },
+    {
+     "t": "ada",
+     "id": 2649
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " en",
+     "id": 665
+    },
+    {
+     "t": " modelos",
+     "id": 83742
     },
     {
      "t": " de",
      "id": 409
     },
     {
-     "t": " machine",
-     "id": 5780
+     "t": " l",
+     "id": 326
     },
     {
-     "t": " learning",
-     "id": 6975
+     "t": "engu",
+     "id": 28102
+    },
+    {
+     "t": "aje",
+     "id": 11305
     },
     {
      "t": " y",
      "id": 379
     },
     {
-     "t": " M",
-     "id": 386
+     "t": " vis",
+     "id": 2145
     },
     {
-     "t": "LO",
-     "id": 1623
+     "t": "ión",
+     "id": 3739
     },
     {
-     "t": "ps",
-     "id": 1725
+     "t": " por",
+     "id": 4247
+    },
+    {
+     "t": " comput",
+     "id": 3801
+    },
+    {
+     "t": "ador",
+     "id": 5477
     },
     {
      "t": ".",
@@ -1391,12 +1539,16 @@
      "id": 379
     },
     {
-     "t": " alcan",
-     "id": 76871
+     "t": " lleg",
+     "id": 33602
     },
     {
-     "t": "za",
-     "id": 4458
+     "t": "a",
+     "id": 64
+    },
+    {
+     "t": " a",
+     "id": 264
     },
     {
      "t": " un",
@@ -1463,32 +1615,8 @@
      "id": 382
     },
     {
-     "t": "Est",
-     "id": 14101
-    },
-    {
-     "t": "oy",
-     "id": 2303
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " prá",
-     "id": 64267
-    },
-    {
-     "t": "ct",
-     "id": 302
-    },
-    {
-     "t": "icas",
-     "id": 15540
-    },
-    {
-     "t": " en",
-     "id": 665
+     "t": "En",
+     "id": 1737
     },
     {
      "t": " Encore",
@@ -1499,6 +1627,254 @@
      "id": 11868
     },
     {
+     "t": " desarrollo",
+     "id": 63716
+    },
+    {
+     "t": " yo",
+     "id": 30596
+    },
+    {
+     "t": " solo",
+     "id": 13839
+    },
+    {
+     "t": " un",
+     "id": 653
+    },
+    {
+     "t": " portal",
+     "id": 24007
+    },
+    {
+     "t": " cloud",
+     "id": 9624
+    },
+    {
+     "t": " para",
+     "id": 3429
+    },
+    {
+     "t": " los",
+     "id": 2537
+    },
+    {
+     "t": " clientes",
+     "id": 45745
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " una",
+     "id": 5203
+    },
+    {
+     "t": " consult",
+     "id": 8666
+    },
+    {
+     "t": "ora",
+     "id": 6347
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " sub",
+     "id": 1207
+    },
+    {
+     "t": "v",
+     "id": 85
+    },
+    {
+     "t": "enc",
+     "id": 967
+    },
+    {
+     "t": "iones",
+     "id": 11685
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " que",
+     "id": 1744
+    },
+    {
+     "t": " es",
+     "id": 1560
+    },
+    {
+     "t": " también",
+     "id": 29571
+    },
+    {
+     "t": " mi",
+     "id": 9686
+    },
+    {
+     "t": " T",
+     "id": 350
+    },
+    {
+     "t": "FG",
+     "id": 12270
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " La",
+     "id": 5034
+    },
+    {
+     "t": " sinc",
+     "id": 27336
+    },
+    {
+     "t": "ron",
+     "id": 2298
+    },
+    {
+     "t": "ización",
+     "id": 42600
+    },
+    {
+     "t": " con",
+     "id": 390
+    },
+    {
+     "t": " el",
+     "id": 658
+    },
+    {
+     "t": " sistema",
+     "id": 29928
+    },
+    {
+     "t": " inter",
+     "id": 958
+    },
+    {
+     "t": "no",
+     "id": 2201
+    },
+    {
+     "t": " her",
+     "id": 1077
+    },
+    {
+     "t": "ed",
+     "id": 291
+    },
+    {
+     "t": "ado",
+     "id": 2172
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " la",
+     "id": 1208
+    },
+    {
+     "t": " consult",
+     "id": 8666
+    },
+    {
+     "t": "ora",
+     "id": 6347
+    },
+    {
+     "t": " ya",
+     "id": 13835
+    },
+    {
+     "t": " está",
+     "id": 15833
+    },
+    {
+     "t": " program",
+     "id": 2068
+    },
+    {
+     "t": "ada",
+     "id": 2649
+    },
+    {
+     "t": " en",
+     "id": 665
+    },
+    {
+     "t": " los",
+     "id": 2537
+    },
+    {
+     "t": " dos",
+     "id": 8924
+    },
+    {
+     "t": " extrem",
+     "id": 6000
+    },
+    {
+     "t": "os",
+     "id": 437
+    },
+    {
+     "t": ":",
+     "id": 25
+    },
+    {
+     "t": " los",
+     "id": 2537
+    },
+    {
+     "t": " cambios",
+     "id": 83362
+    },
+    {
+     "t": " sal",
+     "id": 4371
+    },
+    {
+     "t": "en",
+     "id": 268
+    },
+    {
+     "t": " cada",
+     "id": 19394
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "5",
+     "id": 20
+    },
+    {
+     "t": " minutos",
+     "id": 52762
+    },
+    {
+     "t": " por",
+     "id": 4247
+    },
+    {
+     "t": " HTTPS",
+     "id": 62144
+    },
+    {
      "t": ",",
      "id": 11
     },
@@ -1507,76 +1883,64 @@
      "id": 665
     },
     {
-     "t": " una",
-     "id": 5203
+     "t": " un",
+     "id": 653
     },
     {
-     "t": " plataforma",
-     "id": 92308
+     "t": " solo",
+     "id": 13839
     },
     {
-     "t": " cloud",
-     "id": 9624
+     "t": " sentido",
+     "id": 65484
     },
     {
-     "t": " seg",
-     "id": 4915
+     "t": ",",
+     "id": 11
     },
     {
-     "t": "ura",
-     "id": 5808
+     "t": " y",
+     "id": 379
     },
     {
-     "t": " con",
-     "id": 390
+     "t": " su",
+     "id": 924
     },
     {
-     "t": " funciones",
-     "id": 84512
+     "t": " red",
+     "id": 2579
     },
     {
-     "t": " bas",
-     "id": 3122
+     "t": " no",
+     "id": 912
     },
     {
-     "t": "adas",
-     "id": 11354
+     "t": " se",
+     "id": 513
     },
     {
-     "t": " en",
-     "id": 665
+     "t": " abre",
+     "id": 67441
     },
     {
-     "t": " L",
-     "id": 445
+     "t": " desde",
+     "id": 23553
     },
     {
-     "t": "LM",
-     "id": 11237
+     "t": " fuera",
+     "id": 70775
     },
     {
-     "t": ".",
-     "id": 13
+     "t": ".\n\n",
+     "id": 382
     },
     {
-     "t": " En",
-     "id": 2998
+     "t": "M",
+     "id": 44
     },
     {
-     "t": " mis",
-     "id": 5906
-    },
-    {
-     "t": " proyectos",
-     "id": 89843
-    },
-    {
-     "t": " mid",
-     "id": 5209
-    },
-    {
-     "t": "o",
-     "id": 78
+     "t": "ido",
+     "id": 5362
     },
     {
      "t": " antes",
@@ -1595,48 +1959,12 @@
      "id": 404
     },
     {
-     "t": ":",
-     "id": 25
+     "t": ".",
+     "id": 13
     },
     {
-     "t": " compar",
-     "id": 7809
-    },
-    {
-     "t": "é",
-     "id": 978
-    },
-    {
-     "t": " cinco",
-     "id": 71427
-    },
-    {
-     "t": " ar",
-     "id": 802
-    },
-    {
-     "t": "qu",
-     "id": 447
-    },
-    {
-     "t": "itect",
-     "id": 8525
-    },
-    {
-     "t": "uras",
-     "id": 19879
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " CNN",
-     "id": 20352
-    },
-    {
-     "t": " para",
-     "id": 3429
+     "t": " Para",
+     "id": 23850
     },
     {
      "t": " clas",
@@ -1645,6 +1973,130 @@
     {
      "t": "ificar",
      "id": 24123
+    },
+    {
+     "t": " prompts",
+     "id": 52032
+    },
+    {
+     "t": " en",
+     "id": 665
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "10",
+     "id": 605
+    },
+    {
+     "t": " temas",
+     "id": 85006
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " Dist",
+     "id": 28704
+    },
+    {
+     "t": "il",
+     "id": 321
+    },
+    {
+     "t": "BERT",
+     "id": 62537
+    },
+    {
+     "t": " sac",
+     "id": 11347
+    },
+    {
+     "t": "ó",
+     "id": 1832
+    },
+    {
+     "t": " unos",
+     "id": 53998
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "9",
+     "id": 24
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": "5",
+     "id": 20
+    },
+    {
+     "t": " puntos",
+     "id": 61989
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " accuracy",
+     "id": 13708
+    },
+    {
+     "t": " a",
+     "id": 264
+    },
+    {
+     "t": " U",
+     "id": 549
+    },
+    {
+     "t": "LM",
+     "id": 11237
+    },
+    {
+     "t": "Fi",
+     "id": 23550
+    },
+    {
+     "t": "T",
+     "id": 51
+    },
+    {
+     "t": " en",
+     "id": 665
+    },
+    {
+     "t": " el",
+     "id": 658
+    },
+    {
+     "t": " mismo",
+     "id": 36994
+    },
+    {
+     "t": " test",
+     "id": 1296
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " Para",
+     "id": 23850
+    },
+    {
+     "t": " las",
+     "id": 5252
     },
     {
      "t": " imágenes",
@@ -1667,288 +2119,144 @@
      "id": 635
     },
     {
-     "t": ",",
-     "id": 11
+     "t": " compar",
+     "id": 7809
     },
     {
-     "t": " y",
-     "id": 379
-    },
-    {
-     "t": " la",
-     "id": 1208
-    },
-    {
-     "t": " simul",
-     "id": 76773
-    },
-    {
-     "t": "ación",
-     "id": 5840
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " vida",
-     "id": 25994
-    },
-    {
-     "t": " artificial",
-     "id": 21075
-    },
-    {
-     "t": " que",
-     "id": 1744
-    },
-    {
-     "t": " hic",
-     "id": 79007
-    },
-    {
-     "t": "imos",
-     "id": 25075
-    },
-    {
-     "t": " en",
-     "id": 665
-    },
-    {
-     "t": " equipo",
-     "id": 49012
-    },
-    {
-     "t": " pasa",
-     "id": 87776
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "108",
-     "id": 6640
-    },
-    {
-     "t": " tests",
-     "id": 7177
-    },
-    {
-     "t": " y",
-     "id": 379
-    },
-    {
-     "t": " proces",
-     "id": 29394
-    },
-    {
-     "t": "a",
-     "id": 64
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "220",
-     "id": 8610
-    },
-    {
-     "t": " solic",
-     "id": 30844
-    },
-    {
-     "t": "itudes",
-     "id": 21237
-    },
-    {
-     "t": " envi",
-     "id": 50364
-    },
-    {
-     "t": "adas",
-     "id": 11354
-    },
-    {
-     "t": " en",
-     "id": 665
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "30",
-     "id": 966
-    },
-    {
-     "t": " segundos",
-     "id": 90716
-    },
-    {
-     "t": " con",
-     "id": 390
+     "t": "é",
+     "id": 978
     },
     {
      "t": " cinco",
      "id": 71427
     },
     {
-     "t": " workers",
-     "id": 7487
-    },
-    {
-     "t": ".\n\n",
-     "id": 382
-    },
-    {
-     "t": "Me",
-     "id": 7979
-    },
-    {
-     "t": " inter",
-     "id": 958
-    },
-    {
-     "t": "esa",
-     "id": 23174
-    },
-    {
-     "t": " lo",
-     "id": 781
-    },
-    {
-     "t": " que",
-     "id": 1744
-    },
-    {
-     "t": " viene",
-     "id": 56504
-    },
-    {
-     "t": " después",
-     "id": 50649
-    },
-    {
-     "t": " del",
-     "id": 1624
-    },
-    {
-     "t": " modelo",
-     "id": 37042
+     "t": " CNN",
+     "id": 20352
     },
     {
      "t": ".",
      "id": 13
     },
     {
-     "t": " En",
-     "id": 2998
-    },
-    {
-     "t": " mi",
-     "id": 9686
-    },
-    {
-     "t": " predictor",
-     "id": 62254
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " sal",
-     "id": 4371
-    },
-    {
-     "t": "arios",
-     "id": 10308
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " el",
-     "id": 658
-    },
-    {
-     "t": " Random",
-     "id": 10836
-    },
-    {
-     "t": " Forest",
-     "id": 20585
-    },
-    {
-     "t": " se",
-     "id": 513
-    },
-    {
-     "t": " sir",
-     "id": 28146
-    },
-    {
-     "t": "ve",
-     "id": 588
-    },
-    {
-     "t": " con",
-     "id": 390
-    },
-    {
-     "t": " una",
-     "id": 5203
-    },
-    {
-     "t": " API",
-     "id": 5446
+     "t": " Y",
+     "id": 816
     },
     {
      "t": " en",
      "id": 665
     },
     {
-     "t": " Flask",
-     "id": 29273
+     "t": " la",
+     "id": 1208
+    },
+    {
+     "t": " búsqueda",
+     "id": 99599
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " car",
+     "id": 1841
+    },
+    {
+     "t": "as",
+     "id": 300
+    },
+    {
+     "t": " el",
+     "id": 658
+    },
+    {
+     "t": " VP",
+     "id": 37110
+    },
+    {
+     "t": "-tree",
+     "id": 41538
+    },
+    {
+     "t": " sal",
+     "id": 4371
+    },
+    {
+     "t": "ió",
+     "id": 35994
+    },
+    {
+     "t": " entre",
+     "id": 9465
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "8",
+     "id": 23
+    },
+    {
+     "t": " y",
+     "id": 379
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "11",
+     "id": 806
+    },
+    {
+     "t": " veces",
+     "id": 57429
+    },
+    {
+     "t": " más",
+     "id": 11158
+    },
+    {
+     "t": " l",
+     "id": 326
+    },
+    {
+     "t": "ento",
+     "id": 17996
     },
     {
      "t": " que",
      "id": 1744
     },
     {
-     "t": " valida",
-     "id": 92787
+     "t": " una",
+     "id": 5203
     },
     {
-     "t": " cada",
-     "id": 19394
+     "t": " búsqueda",
+     "id": 99599
     },
     {
-     "t": " pet",
-     "id": 6896
+     "t": " line",
+     "id": 1584
     },
     {
-     "t": "ición",
-     "id": 26826
+     "t": "al",
+     "id": 278
     },
     {
      "t": " con",
      "id": 390
     },
     {
-     "t": " Py",
-     "id": 5468
+     "t": " Num",
+     "id": 16610
     },
     {
-     "t": "d",
-     "id": 67
-    },
-    {
-     "t": "antic",
-     "id": 8322
+     "t": "Py",
+     "id": 14149
     },
     {
      "t": ",",
@@ -1959,32 +2267,24 @@
      "id": 379
     },
     {
-     "t": " la",
-     "id": 1208
+     "t": " lo",
+     "id": 781
     },
     {
-     "t": " demo",
-     "id": 17074
+     "t": " dej",
+     "id": 34063
     },
     {
-     "t": " ejec",
-     "id": 50271
+     "t": "é",
+     "id": 978
     },
     {
-     "t": "uta",
-     "id": 16382
+     "t": " esc",
+     "id": 3920
     },
     {
-     "t": " el",
-     "id": 658
-    },
-    {
-     "t": " mismo",
-     "id": 36994
-    },
-    {
-     "t": " modelo",
-     "id": 37042
+     "t": "rito",
+     "id": 29141
     },
     {
      "t": " en",
@@ -1995,20 +2295,8 @@
      "id": 658
     },
     {
-     "t": " navegador",
-     "id": 96510
-    },
-    {
-     "t": " con",
-     "id": 390
-    },
-    {
-     "t": " ON",
-     "id": 6328
-    },
-    {
-     "t": "NX",
-     "id": 44404
+     "t": " README",
+     "id": 63045
     },
     {
      "t": ".\n\n",
@@ -2107,50 +2395,6 @@
      "id": 16721
     },
     {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " una",
-     "id": 5203
-    },
-    {
-     "t": " base",
-     "id": 2385
-    },
-    {
-     "t": " que",
-     "id": 1744
-    },
-    {
-     "t": " quiero",
-     "id": 92820
-    },
-    {
-     "t": " llevar",
-     "id": 70680
-    },
-    {
-     "t": " a",
-     "id": 264
-    },
-    {
-     "t": " sistemas",
-     "id": 89249
-    },
-    {
-     "t": " con",
-     "id": 390
-    },
-    {
-     "t": " L",
-     "id": 445
-    },
-    {
-     "t": "LM",
-     "id": 11237
-    },
-    {
      "t": ".",
      "id": 13
     },
@@ -2223,6 +2467,26 @@
      "id": 5512
     },
     {
+     "t": " desde",
+     "id": 23553
+    },
+    {
+     "t": " los",
+     "id": 2537
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "3",
+     "id": 18
+    },
+    {
+     "t": " años",
+     "id": 27846
+    },
+    {
      "t": " y",
      "id": 379
     },
@@ -2259,20 +2523,20 @@
      "id": 11
     },
     {
-     "t": " ingl",
-     "id": 98925
+     "t": " franc",
+     "id": 44579
     },
     {
      "t": "és",
      "id": 5512
     },
     {
-     "t": " y",
-     "id": 379
+     "t": " e",
+     "id": 384
     },
     {
-     "t": " franc",
-     "id": 44579
+     "t": " ingl",
+     "id": 98925
     },
     {
      "t": "és",
@@ -2283,40 +2547,24 @@
      "id": 382
     },
     {
-     "t": "Ac",
-     "id": 11916
+     "t": "Ter",
+     "id": 21902
     },
     {
-     "t": "abo",
-     "id": 48521
+     "t": "mino",
+     "id": 32924
     },
     {
-     "t": " las",
-     "id": 5252
+     "t": " la",
+     "id": 1208
     },
     {
-     "t": " prá",
-     "id": 64267
-    },
-    {
-     "t": "ct",
-     "id": 302
-    },
-    {
-     "t": "icas",
-     "id": 15540
+     "t": " carrera",
+     "id": 90976
     },
     {
      "t": " en",
      "id": 665
-    },
-    {
-     "t": " mayo",
-     "id": 74431
-    },
-    {
-     "t": " de",
-     "id": 409
     },
     {
      "t": " ",
@@ -2359,24 +2607,16 @@
      "id": 665
     },
     {
-     "t": " ML",
-     "id": 20187
+     "t": " IA",
+     "id": 44190
     },
     {
-     "t": " o",
-     "id": 297
+     "t": " aplic",
+     "id": 30540
     },
     {
-     "t": " M",
-     "id": 386
-    },
-    {
-     "t": "LO",
-     "id": 1623
-    },
-    {
-     "t": "ps",
-     "id": 1725
+     "t": "ada",
+     "id": 2649
     },
     {
      "t": " a",
@@ -2497,7 +2737,7 @@
  },
  "fr": {
   "prompt": "Santiago, présente-toi.",
-  "answer": "Je suis en dernière année de génie informatique à l’Université de La Rioja et je veux devenir ingénieur en machine learning et MLOps. Ma recherche de visages indexe 38 299 visages tirés de 21 678 photos de presse et atteint un F1 de 0,911 avec le seuil calibré.\n\nJe suis stagiaire chez Encore Lab, sur une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM. Dans mes projets, je mesure avant de choisir : j’ai comparé cinq architectures de CNN pour classer des images satellite, et la simulation de vie artificielle réalisée en équipe passe 108 tests et traite 220 requêtes envoyées en 30 secondes avec cinq workers.\n\nCe qui m’intéresse, c’est ce qui vient après le modèle. Dans mon prédicteur de salaires, le Random Forest est servi par une API Flask qui valide chaque requête avec Pydantic, et la démo exécute le même modèle dans le navigateur avec ONNX.\n\nMa spécialisation en gestion des connaissances m’a apporté les ontologies et l’ingénierie des connaissances, une base que je veux appliquer aux systèmes à base de LLM. J’ai grandi à Quito, j’ai étudié dans un lycée français et je vis en Espagne ; je travaille en espagnol, en anglais et en français.\n\nJe termine mon stage en mai 2027 et je cherche un poste junior en ML ou MLOps à partir de juin. Si cela correspond à votre équipe, écrivez-moi.",
+  "answer": "Je suis en dernière année de génie informatique à l’Université de La Rioja et je veux travailler dans l’IA appliquée, sur les modèles de langage et la vision par ordinateur. Ma recherche de visages indexe 38 299 visages issus de 21 678 photos de presse et atteint un F1 de 0,911 au seuil calibré.\n\nChez Encore Lab, je développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi mon projet de fin d’études. La synchronisation avec le système interne hérité du cabinet est déjà programmée aux deux bouts : les changements partent toutes les 5 minutes en HTTPS, dans un seul sens, et son réseau n’est jamais ouvert de l’extérieur.\n\nJe mesure avant de choisir. Pour classer des prompts en 10 thèmes, DistilBERT a devancé ULMFiT d’environ 9,5 points d’accuracy sur le même test. Pour les images satellite, j’ai comparé cinq CNN. Et dans la recherche de visages, le VP-tree s’est révélé de 8 à 11 fois plus lent qu’une recherche linéaire avec NumPy, ce que j’ai écrit dans le README.\n\nDe ma spécialisation en gestion des connaissances, je garde les ontologies et l’ingénierie des connaissances. J’ai grandi à Quito, je suis allé dans un lycée français dès l’âge de 3 ans et je vis en Espagne ; je travaille en espagnol, en français et en anglais.\n\nJe termine mes études en 2027 et je cherche un poste junior en IA appliquée à partir de juin. Si cela correspond à votre équipe, écrivez-moi.",
   "tokens": {
    "prompt": [
     {
@@ -2627,52 +2867,100 @@
      "id": 2249
     },
     {
+     "t": " trava",
+     "id": 58673
+    },
+    {
+     "t": "iller",
+     "id": 15610
+    },
+    {
+     "t": " dans",
+     "id": 7010
+    },
+    {
+     "t": " l",
+     "id": 326
+    },
+    {
+     "t": "’",
+     "id": 529
+    },
+    {
+     "t": "IA",
+     "id": 5987
+    },
+    {
+     "t": " appl",
+     "id": 17537
+    },
+    {
+     "t": "iqu",
+     "id": 5118
+    },
+    {
+     "t": "ée",
+     "id": 8047
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " sur",
+     "id": 1765
+    },
+    {
+     "t": " les",
+     "id": 3625
+    },
+    {
+     "t": " mod",
+     "id": 1491
+    },
+    {
+     "t": "èles",
+     "id": 85798
+    },
+    {
      "t": " de",
      "id": 409
     },
     {
-     "t": "venir",
-     "id": 43406
+     "t": " lang",
+     "id": 8859
     },
     {
-     "t": " ing",
-     "id": 6892
-    },
-    {
-     "t": "én",
-     "id": 10610
-    },
-    {
-     "t": "ieur",
-     "id": 62005
-    },
-    {
-     "t": " en",
-     "id": 665
-    },
-    {
-     "t": " machine",
-     "id": 5780
-    },
-    {
-     "t": " learning",
-     "id": 6975
+     "t": "age",
+     "id": 425
     },
     {
      "t": " et",
      "id": 1880
     },
     {
-     "t": " M",
-     "id": 386
+     "t": " la",
+     "id": 1208
     },
     {
-     "t": "LO",
-     "id": 1623
+     "t": " vision",
+     "id": 11376
     },
     {
-     "t": "ps",
-     "id": 1725
+     "t": " par",
+     "id": 1370
+    },
+    {
+     "t": " ord",
+     "id": 6141
+    },
+    {
+     "t": "inate",
+     "id": 3357
+    },
+    {
+     "t": "ur",
+     "id": 324
     },
     {
      "t": ".",
@@ -2731,12 +3019,12 @@
      "id": 1154
     },
     {
-     "t": " tir",
-     "id": 45712
+     "t": " iss",
+     "id": 2425
     },
     {
-     "t": "és",
-     "id": 5512
+     "t": "us",
+     "id": 355
     },
     {
      "t": " de",
@@ -2819,12 +3107,8 @@
      "id": 17000
     },
     {
-     "t": " avec",
-     "id": 9952
-    },
-    {
-     "t": " le",
-     "id": 514
+     "t": " au",
+     "id": 8065
     },
     {
      "t": " seu",
@@ -2851,28 +3135,12 @@
      "id": 382
     },
     {
-     "t": "Je",
-     "id": 30854
+     "t": "Che",
+     "id": 27941
     },
     {
-     "t": " suis",
-     "id": 36731
-    },
-    {
-     "t": " stag",
-     "id": 77536
-    },
-    {
-     "t": "ia",
-     "id": 689
-    },
-    {
-     "t": "ire",
-     "id": 556
-    },
-    {
-     "t": " chez",
-     "id": 46206
+     "t": "z",
+     "id": 89
     },
     {
      "t": " Encore",
@@ -2887,108 +3155,352 @@
      "id": 11
     },
     {
-     "t": " sur",
-     "id": 1765
+     "t": " je",
+     "id": 4864
     },
     {
-     "t": " une",
-     "id": 6316
+     "t": " dévelop",
+     "id": 52895
     },
     {
-     "t": " plate",
-     "id": 12235
+     "t": "pe",
+     "id": 375
     },
     {
-     "t": "forme",
-     "id": 76701
+     "t": " seul",
+     "id": 74206
+    },
+    {
+     "t": " un",
+     "id": 653
+    },
+    {
+     "t": " port",
+     "id": 2700
+    },
+    {
+     "t": "ail",
+     "id": 607
     },
     {
      "t": " cloud",
      "id": 9624
     },
     {
-     "t": " sécur",
-     "id": 65461
+     "t": " pour",
+     "id": 5019
     },
     {
-     "t": "is",
-     "id": 285
+     "t": " les",
+     "id": 3625
     },
     {
-     "t": "ée",
-     "id": 8047
+     "t": " clients",
+     "id": 8403
     },
     {
-     "t": " avec",
-     "id": 9952
+     "t": " d",
+     "id": 294
     },
     {
-     "t": " des",
-     "id": 951
+     "t": "’un",
+     "id": 29719
     },
     {
-     "t": " fonction",
-     "id": 34501
+     "t": " cabinet",
+     "id": 22685
     },
     {
-     "t": "nal",
-     "id": 43078
+     "t": " de",
+     "id": 409
     },
     {
-     "t": "ités",
-     "id": 35933
+     "t": " conse",
+     "id": 31025
     },
     {
-     "t": " bas",
-     "id": 3122
+     "t": "il",
+     "id": 321
     },
     {
-     "t": "ées",
-     "id": 14014
+     "t": " en",
+     "id": 665
     },
     {
-     "t": " sur",
-     "id": 1765
+     "t": " sub",
+     "id": 1207
     },
     {
-     "t": " des",
-     "id": 951
-    },
-    {
-     "t": " L",
-     "id": 445
-    },
-    {
-     "t": "LM",
-     "id": 11237
-    },
-    {
-     "t": ".",
-     "id": 13
-    },
-    {
-     "t": " Dans",
-     "id": 46706
-    },
-    {
-     "t": " mes",
-     "id": 11083
-    },
-    {
-     "t": " proj",
-     "id": 22040
-    },
-    {
-     "t": "ets",
-     "id": 1441
+     "t": "ventions",
+     "id": 31759
     },
     {
      "t": ",",
      "id": 11
     },
     {
-     "t": " je",
-     "id": 4864
+     "t": " qui",
+     "id": 7930
+    },
+    {
+     "t": " est",
+     "id": 1826
+    },
+    {
+     "t": " aussi",
+     "id": 28463
+    },
+    {
+     "t": " mon",
+     "id": 1647
+    },
+    {
+     "t": " projet",
+     "id": 46494
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " fin",
+     "id": 1913
+    },
+    {
+     "t": " d",
+     "id": 294
+    },
+    {
+     "t": "’ét",
+     "id": 67282
+    },
+    {
+     "t": "udes",
+     "id": 29246
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " La",
+     "id": 5034
+    },
+    {
+     "t": " synchron",
+     "id": 14453
+    },
+    {
+     "t": "isation",
+     "id": 8082
+    },
+    {
+     "t": " avec",
+     "id": 9952
+    },
+    {
+     "t": " le",
+     "id": 514
+    },
+    {
+     "t": " système",
+     "id": 72601
+    },
+    {
+     "t": " inter",
+     "id": 958
+    },
+    {
+     "t": "ne",
+     "id": 818
+    },
+    {
+     "t": " hé",
+     "id": 89023
+    },
+    {
+     "t": "rit",
+     "id": 1018
+    },
+    {
+     "t": "é",
+     "id": 978
+    },
+    {
+     "t": " du",
+     "id": 3930
+    },
+    {
+     "t": " cabinet",
+     "id": 22685
+    },
+    {
+     "t": " est",
+     "id": 1826
+    },
+    {
+     "t": " déjà",
+     "id": 46939
+    },
+    {
+     "t": " programm",
+     "id": 56586
+    },
+    {
+     "t": "ée",
+     "id": 8047
+    },
+    {
+     "t": " aux",
+     "id": 10253
+    },
+    {
+     "t": " deux",
+     "id": 26633
+    },
+    {
+     "t": " bouts",
+     "id": 96271
+    },
+    {
+     "t": " ",
+     "id": 4194
+    },
+    {
+     "t": ":",
+     "id": 25
+    },
+    {
+     "t": " les",
+     "id": 3625
+    },
+    {
+     "t": " chang",
+     "id": 2609
+    },
+    {
+     "t": "ements",
+     "id": 3808
+    },
+    {
+     "t": " part",
+     "id": 961
+    },
+    {
+     "t": "ent",
+     "id": 306
+    },
+    {
+     "t": " toutes",
+     "id": 40744
+    },
+    {
+     "t": " les",
+     "id": 3625
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "5",
+     "id": 20
+    },
+    {
+     "t": " minutes",
+     "id": 4520
+    },
+    {
+     "t": " en",
+     "id": 665
+    },
+    {
+     "t": " HTTPS",
+     "id": 62144
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " dans",
+     "id": 7010
+    },
+    {
+     "t": " un",
+     "id": 653
+    },
+    {
+     "t": " seul",
+     "id": 74206
+    },
+    {
+     "t": " sens",
+     "id": 6225
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " et",
+     "id": 1880
+    },
+    {
+     "t": " son",
+     "id": 4538
+    },
+    {
+     "t": " réseau",
+     "id": 98947
+    },
+    {
+     "t": " n",
+     "id": 308
+    },
+    {
+     "t": "’est",
+     "id": 22117
+    },
+    {
+     "t": " jamais",
+     "id": 56316
+    },
+    {
+     "t": " ou",
+     "id": 6033
+    },
+    {
+     "t": "vert",
+     "id": 1653
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " l",
+     "id": 326
+    },
+    {
+     "t": "’",
+     "id": 529
+    },
+    {
+     "t": "ext",
+     "id": 428
+    },
+    {
+     "t": "érieur",
+     "id": 57663
+    },
+    {
+     "t": ".\n\n",
+     "id": 382
+    },
+    {
+     "t": "Je",
+     "id": 30854
     },
     {
      "t": " mesure",
@@ -3007,12 +3519,180 @@
      "id": 90194
     },
     {
-     "t": " ",
-     "id": 4194
+     "t": ".",
+     "id": 13
     },
     {
-     "t": ":",
-     "id": 25
+     "t": " Pour",
+     "id": 27058
+    },
+    {
+     "t": " class",
+     "id": 538
+    },
+    {
+     "t": "er",
+     "id": 261
+    },
+    {
+     "t": " des",
+     "id": 951
+    },
+    {
+     "t": " prompts",
+     "id": 52032
+    },
+    {
+     "t": " en",
+     "id": 665
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "10",
+     "id": 605
+    },
+    {
+     "t": " th",
+     "id": 270
+    },
+    {
+     "t": "èmes",
+     "id": 66474
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " Dist",
+     "id": 28704
+    },
+    {
+     "t": "il",
+     "id": 321
+    },
+    {
+     "t": "BERT",
+     "id": 62537
+    },
+    {
+     "t": " a",
+     "id": 264
+    },
+    {
+     "t": " dev",
+     "id": 3567
+    },
+    {
+     "t": "anc",
+     "id": 1149
+    },
+    {
+     "t": "é",
+     "id": 978
+    },
+    {
+     "t": " U",
+     "id": 549
+    },
+    {
+     "t": "LM",
+     "id": 11237
+    },
+    {
+     "t": "Fi",
+     "id": 23550
+    },
+    {
+     "t": "T",
+     "id": 51
+    },
+    {
+     "t": " d",
+     "id": 294
+    },
+    {
+     "t": "’en",
+     "id": 52289
+    },
+    {
+     "t": "viron",
+     "id": 2842
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "9",
+     "id": 24
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": "5",
+     "id": 20
+    },
+    {
+     "t": " points",
+     "id": 3585
+    },
+    {
+     "t": " d",
+     "id": 294
+    },
+    {
+     "t": "’",
+     "id": 529
+    },
+    {
+     "t": "accuracy",
+     "id": 33829
+    },
+    {
+     "t": " sur",
+     "id": 1765
+    },
+    {
+     "t": " le",
+     "id": 514
+    },
+    {
+     "t": " même",
+     "id": 27584
+    },
+    {
+     "t": " test",
+     "id": 1296
+    },
+    {
+     "t": ".",
+     "id": 13
+    },
+    {
+     "t": " Pour",
+     "id": 27058
+    },
+    {
+     "t": " les",
+     "id": 3625
+    },
+    {
+     "t": " images",
+     "id": 5448
+    },
+    {
+     "t": " satellite",
+     "id": 24088
+    },
+    {
+     "t": ",",
+     "id": 11
     },
     {
      "t": " j",
@@ -3039,416 +3719,172 @@
      "id": 6009
     },
     {
-     "t": " architectures",
-     "id": 78335
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
      "t": " CNN",
      "id": 20352
-    },
-    {
-     "t": " pour",
-     "id": 5019
-    },
-    {
-     "t": " class",
-     "id": 538
-    },
-    {
-     "t": "er",
-     "id": 261
-    },
-    {
-     "t": " des",
-     "id": 951
-    },
-    {
-     "t": " images",
-     "id": 5448
-    },
-    {
-     "t": " satellite",
-     "id": 24088
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " et",
-     "id": 1880
-    },
-    {
-     "t": " la",
-     "id": 1208
-    },
-    {
-     "t": " simulation",
-     "id": 19576
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " vie",
-     "id": 17536
-    },
-    {
-     "t": " art",
-     "id": 1989
-    },
-    {
-     "t": "ific",
-     "id": 1104
-    },
-    {
-     "t": "i",
-     "id": 72
-    },
-    {
-     "t": "elle",
-     "id": 6853
-    },
-    {
-     "t": " réalis",
-     "id": 86595
-    },
-    {
-     "t": "ée",
-     "id": 8047
-    },
-    {
-     "t": " en",
-     "id": 665
-    },
-    {
-     "t": " é",
-     "id": 4046
-    },
-    {
-     "t": "quipe",
-     "id": 61673
-    },
-    {
-     "t": " passe",
-     "id": 39904
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "108",
-     "id": 6640
-    },
-    {
-     "t": " tests",
-     "id": 7177
-    },
-    {
-     "t": " et",
-     "id": 1880
-    },
-    {
-     "t": " tra",
-     "id": 9781
-    },
-    {
-     "t": "ite",
-     "id": 635
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "220",
-     "id": 8610
-    },
-    {
-     "t": " requ",
-     "id": 6016
-    },
-    {
-     "t": "êtes",
-     "id": 90276
-    },
-    {
-     "t": " envoy",
-     "id": 60630
-    },
-    {
-     "t": "ées",
-     "id": 14014
-    },
-    {
-     "t": " en",
-     "id": 665
-    },
-    {
-     "t": " ",
-     "id": 220
-    },
-    {
-     "t": "30",
-     "id": 966
-    },
-    {
-     "t": " second",
-     "id": 2132
-    },
-    {
-     "t": "es",
-     "id": 288
-    },
-    {
-     "t": " avec",
-     "id": 9952
-    },
-    {
-     "t": " c",
-     "id": 272
-    },
-    {
-     "t": "inq",
-     "id": 6009
-    },
-    {
-     "t": " workers",
-     "id": 7487
-    },
-    {
-     "t": ".\n\n",
-     "id": 382
-    },
-    {
-     "t": "Ce",
-     "id": 43270
-    },
-    {
-     "t": " qui",
-     "id": 7930
-    },
-    {
-     "t": " m",
-     "id": 296
-    },
-    {
-     "t": "’int",
-     "id": 60656
-    },
-    {
-     "t": "é",
-     "id": 978
-    },
-    {
-     "t": "resse",
-     "id": 22550
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " c",
-     "id": 272
-    },
-    {
-     "t": "’est",
-     "id": 22117
-    },
-    {
-     "t": " ce",
-     "id": 3846
-    },
-    {
-     "t": " qui",
-     "id": 7930
-    },
-    {
-     "t": " vient",
-     "id": 86100
-    },
-    {
-     "t": " après",
-     "id": 42138
-    },
-    {
-     "t": " le",
-     "id": 514
-    },
-    {
-     "t": " modèle",
-     "id": 83597
     },
     {
      "t": ".",
      "id": 13
     },
     {
-     "t": " Dans",
-     "id": 46706
+     "t": " Et",
+     "id": 19421
     },
     {
-     "t": " mon",
-     "id": 1647
-    },
-    {
-     "t": " pr",
-     "id": 550
-    },
-    {
-     "t": "éd",
-     "id": 15433
-    },
-    {
-     "t": "ic",
-     "id": 292
-    },
-    {
-     "t": "te",
-     "id": 668
-    },
-    {
-     "t": "ur",
-     "id": 324
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " sal",
-     "id": 4371
-    },
-    {
-     "t": "aires",
-     "id": 17724
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " le",
-     "id": 514
-    },
-    {
-     "t": " Random",
-     "id": 10836
-    },
-    {
-     "t": " Forest",
-     "id": 20585
-    },
-    {
-     "t": " est",
-     "id": 1826
-    },
-    {
-     "t": " servi",
-     "id": 55505
-    },
-    {
-     "t": " par",
-     "id": 1370
-    },
-    {
-     "t": " une",
-     "id": 6316
-    },
-    {
-     "t": " API",
-     "id": 5446
-    },
-    {
-     "t": " Flask",
-     "id": 29273
-    },
-    {
-     "t": " qui",
-     "id": 7930
-    },
-    {
-     "t": " valide",
-     "id": 99856
-    },
-    {
-     "t": " chaque",
-     "id": 46777
-    },
-    {
-     "t": " requ",
-     "id": 6016
-    },
-    {
-     "t": "ête",
-     "id": 37093
-    },
-    {
-     "t": " avec",
-     "id": 9952
-    },
-    {
-     "t": " Py",
-     "id": 5468
-    },
-    {
-     "t": "d",
-     "id": 67
-    },
-    {
-     "t": "antic",
-     "id": 8322
-    },
-    {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " et",
-     "id": 1880
+     "t": " dans",
+     "id": 7010
     },
     {
      "t": " la",
      "id": 1208
     },
     {
-     "t": " dé",
-     "id": 7591
+     "t": " recherche",
+     "id": 38317
     },
     {
-     "t": "mo",
-     "id": 6489
+     "t": " de",
+     "id": 409
     },
     {
-     "t": " ex",
-     "id": 506
+     "t": " vis",
+     "id": 2145
     },
     {
-     "t": "éc",
-     "id": 20243
+     "t": "ages",
+     "id": 1154
     },
     {
-     "t": "ute",
-     "id": 1088
+     "t": ",",
+     "id": 11
     },
     {
      "t": " le",
      "id": 514
     },
     {
-     "t": " même",
-     "id": 27584
+     "t": " VP",
+     "id": 37110
     },
     {
-     "t": " modèle",
-     "id": 83597
+     "t": "-tree",
+     "id": 41538
+    },
+    {
+     "t": " s",
+     "id": 274
+    },
+    {
+     "t": "’est",
+     "id": 22117
+    },
+    {
+     "t": " ré",
+     "id": 9517
+    },
+    {
+     "t": "v",
+     "id": 85
+    },
+    {
+     "t": "élé",
+     "id": 29982
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "8",
+     "id": 23
+    },
+    {
+     "t": " à",
+     "id": 3869
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "11",
+     "id": 806
+    },
+    {
+     "t": " fois",
+     "id": 37291
+    },
+    {
+     "t": " plus",
+     "id": 5636
+    },
+    {
+     "t": " lent",
+     "id": 48907
+    },
+    {
+     "t": " qu",
+     "id": 934
+    },
+    {
+     "t": "’une",
+     "id": 36577
+    },
+    {
+     "t": " recherche",
+     "id": 38317
+    },
+    {
+     "t": " lin",
+     "id": 10006
+    },
+    {
+     "t": "é",
+     "id": 978
+    },
+    {
+     "t": "aire",
+     "id": 12267
+    },
+    {
+     "t": " avec",
+     "id": 9952
+    },
+    {
+     "t": " Num",
+     "id": 16610
+    },
+    {
+     "t": "Py",
+     "id": 14149
+    },
+    {
+     "t": ",",
+     "id": 11
+    },
+    {
+     "t": " ce",
+     "id": 3846
+    },
+    {
+     "t": " que",
+     "id": 1744
+    },
+    {
+     "t": " j",
+     "id": 503
+    },
+    {
+     "t": "’ai",
+     "id": 50808
+    },
+    {
+     "t": " écrit",
+     "id": 89532
     },
     {
      "t": " dans",
@@ -3459,32 +3895,20 @@
      "id": 514
     },
     {
-     "t": " navigate",
-     "id": 21546
-    },
-    {
-     "t": "ur",
-     "id": 324
-    },
-    {
-     "t": " avec",
-     "id": 9952
-    },
-    {
-     "t": " ON",
-     "id": 6328
-    },
-    {
-     "t": "NX",
-     "id": 44404
+     "t": " README",
+     "id": 63045
     },
     {
      "t": ".\n\n",
      "id": 382
     },
     {
-     "t": "Ma",
-     "id": 30635
+     "t": "De",
+     "id": 1951
+    },
+    {
+     "t": " ma",
+     "id": 7643
     },
     {
      "t": " spécial",
@@ -3519,24 +3943,20 @@
      "id": 3095
     },
     {
-     "t": " m",
-     "id": 296
+     "t": ",",
+     "id": 11
     },
     {
-     "t": "’a",
-     "id": 40753
+     "t": " je",
+     "id": 4864
     },
     {
-     "t": " ap",
-     "id": 1469
+     "t": " gar",
+     "id": 7515
     },
     {
-     "t": "port",
-     "id": 403
-    },
-    {
-     "t": "é",
-     "id": 978
+     "t": "de",
+     "id": 451
     },
     {
      "t": " les",
@@ -3595,74 +4015,6 @@
      "id": 3095
     },
     {
-     "t": ",",
-     "id": 11
-    },
-    {
-     "t": " une",
-     "id": 6316
-    },
-    {
-     "t": " base",
-     "id": 2385
-    },
-    {
-     "t": " que",
-     "id": 1744
-    },
-    {
-     "t": " je",
-     "id": 4864
-    },
-    {
-     "t": " ve",
-     "id": 5320
-    },
-    {
-     "t": "ux",
-     "id": 2249
-    },
-    {
-     "t": " appl",
-     "id": 17537
-    },
-    {
-     "t": "iquer",
-     "id": 72684
-    },
-    {
-     "t": " aux",
-     "id": 10253
-    },
-    {
-     "t": " syst",
-     "id": 42345
-    },
-    {
-     "t": "èmes",
-     "id": 66474
-    },
-    {
-     "t": " à",
-     "id": 3869
-    },
-    {
-     "t": " base",
-     "id": 2385
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " L",
-     "id": 445
-    },
-    {
-     "t": "LM",
-     "id": 11237
-    },
-    {
      "t": ".",
      "id": 13
     },
@@ -3695,20 +4047,16 @@
      "id": 11
     },
     {
-     "t": " j",
-     "id": 503
+     "t": " je",
+     "id": 4864
     },
     {
-     "t": "’ai",
-     "id": 50808
+     "t": " suis",
+     "id": 36731
     },
     {
-     "t": " ét",
-     "id": 14240
-    },
-    {
-     "t": "udi",
-     "id": 21178
+     "t": " all",
+     "id": 682
     },
     {
      "t": "é",
@@ -3737,6 +4085,42 @@
     {
      "t": " français",
      "id": 55467
+    },
+    {
+     "t": " dès",
+     "id": 87451
+    },
+    {
+     "t": " l",
+     "id": 326
+    },
+    {
+     "t": "’",
+     "id": 529
+    },
+    {
+     "t": "â",
+     "id": 9011
+    },
+    {
+     "t": "ge",
+     "id": 713
+    },
+    {
+     "t": " de",
+     "id": 409
+    },
+    {
+     "t": " ",
+     "id": 220
+    },
+    {
+     "t": "3",
+     "id": 18
+    },
+    {
+     "t": " ans",
+     "id": 8261
     },
     {
      "t": " et",
@@ -3807,8 +4191,8 @@
      "id": 665
     },
     {
-     "t": " anglais",
-     "id": 76185
+     "t": " français",
+     "id": 55467
     },
     {
      "t": " et",
@@ -3819,8 +4203,8 @@
      "id": 665
     },
     {
-     "t": " français",
-     "id": 55467
+     "t": " anglais",
+     "id": 76185
     },
     {
      "t": ".\n\n",
@@ -3839,20 +4223,20 @@
      "id": 483
     },
     {
-     "t": " mon",
-     "id": 1647
+     "t": " mes",
+     "id": 11083
     },
     {
-     "t": " stage",
-     "id": 6566
+     "t": " ét",
+     "id": 14240
+    },
+    {
+     "t": "udes",
+     "id": 29246
     },
     {
      "t": " en",
      "id": 665
-    },
-    {
-     "t": " mai",
-     "id": 17154
     },
     {
      "t": " ",
@@ -3895,24 +4279,20 @@
      "id": 665
     },
     {
-     "t": " ML",
-     "id": 20187
+     "t": " IA",
+     "id": 44190
     },
     {
-     "t": " ou",
-     "id": 6033
+     "t": " appl",
+     "id": 17537
     },
     {
-     "t": " M",
-     "id": 386
+     "t": "iqu",
+     "id": 5118
     },
     {
-     "t": "LO",
-     "id": 1623
-    },
-    {
-     "t": "ps",
-     "id": 1725
+     "t": "ée",
+     "id": 8047
     },
     {
      "t": " à",

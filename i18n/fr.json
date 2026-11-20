@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Santiago Die Morejón · Ingénieur ML et MLOps junior",
-    "description": "Dernière année de génie informatique à l’Université de La Rioja. Machine learning et MLOps avec Python, PyTorch et Docker.",
+    "title": "Santiago Die Morejón · IA appliquée : langage et vision par ordinateur",
+    "description": "Dernière année de génie informatique à l’Université de La Rioja. IA appliquée aux modèles de langage et à la vision par ordinateur, avec Python, PyTorch et Hugging Face.",
     "ogLocale": "fr_FR",
     "langName": "Français",
-    "jobTitle": "Étudiant en génie informatique, machine learning et MLOps"
+    "jobTitle": "Étudiant en génie informatique, IA appliquée au langage et à la vision par ordinateur"
   },
   "a11y": {
     "skip": "Aller au contenu",
@@ -32,14 +32,14 @@
     "dismiss": "Masquer ce message"
   },
   "hero": {
-    "role": "Machine learning et MLOps en Python",
+    "role": "IA appliquée : langage et vision par ordinateur",
     "ctaProjects": "Voir les projets",
     "ctaCv": "Télécharger le CV",
     "ctaContact": "Me contacter"
   },
   "chat": {
     "prompt": "Qui est Santiago Die ?",
-    "answer": "D’après mon analyse, Santiago est étudiant en génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et il vise un poste d’ingénieur en machine learning et MLOps. Il est actuellement stagiaire chez Encore Lab, où il développe une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM.\n\nIl aborde les problèmes de manière empirique : plutôt que de supposer quelle solution est la meilleure, il la mesure, qu’il s’agisse de comparer cinq architectures de CNN ou d’évaluer un index VP-tree face à une recherche exhaustive. Il soigne les détails qui rendent un système fiable, et pas seulement fonctionnel.\n\nIl a grandi à Quito, a étudié dans un lycée français et vit aujourd’hui en Espagne : il s’adapte vite et travaille aisément en espagnol, en anglais et en français.",
+    "answer": "D’après mon analyse, Santiago est étudiant en dernière année de génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et il veut travailler dans l’IA appliquée : modèles de langage et vision par ordinateur. Il est actuellement stagiaire chez Encore Lab, où il développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi son projet de fin d’études.\n\nAvant de choisir un modèle, il le mesure face à d’autres. Il a comparé cinq architectures de CNN pour classer des images satellite et opposé DistilBERT à ULMFiT pour classer des prompts. Dans sa recherche de visages, il a chronométré l’index VP-tree face à une recherche linéaire, et comme l’index s’est révélé plus lent, il l’a écrit.\n\nIl a grandi à Quito, a étudié dans un lycée français et vit aujourd’hui en Espagne : il s’adapte vite et travaille aisément en espagnol, en anglais et en français.",
     "send": "Envoyer la question",
     "skip": "Passer",
     "replay": "Rejouer",
@@ -87,25 +87,28 @@
     "demoShort": "Démo",
     "colabShort": "Colab",
     "downloadShort": "Télécharger",
-    "details": "Voir les détails"
+    "details": "Voir les détails",
+    "model": "Modèle"
   },
   "experience": {
     "items": [
       {
+        "id": "encore-lab",
         "period": "Sept. 2026 – Aujourd’hui",
-        "title": "Stagiaire",
-        "org": "Encore Lab",
+        "title": "Développeur full-stack (stage)",
+        "org": "Encore Lab S.L.",
         "place": "Logroño, Espagne",
-        "text": "Je développe un portail cloud sécurisé pour les clients d’un cabinet de conseil en subventions : il se synchronise avec leur système on-premise sans exposer le réseau interne, et classe les documents et répond aux clients grâce à des fonctionnalités basées sur des LLM.",
-        "stack": "TypeScript · AngularJS · PHP · PostgreSQL · MySQL · Docker · DevOps · LLM · intégration de systèmes hérités · conception logicielle"
+        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne hérité (PHP et MySQL), je capture les changements dans la même transaction que chaque opération et je les envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, si bien que son réseau n’est jamais ouvert de l’extérieur. Côté portail, une API NestJS sur PostgreSQL les reçoit, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. J’ai aussi conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus) et la sécurité de l’API de synchronisation, qui vérifie chaque requête et valide strictement son contrat. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retours financiers et des fonctionnalités à base de LLM.",
+        "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
+        "id": "islamontana",
         "period": "Avr. 2026 – Aujourd’hui",
         "title": "Développeur full-stack (freelance)",
         "org": "Islamontana Travel",
         "place": "À distance",
-        "text": "J’ai conçu et développé le site bilingue et optimisé pour le SEO d’une agence de voyages nature en Équateur. Toujours en développement : un back-office avec rôles, une API FastAPI avec PostgreSQL, et un déploiement avec Docker Compose et une CI/CD avec préproduction et versions étiquetées.",
-        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · Docker · GitHub Actions"
+        "text": "Je développe le site d’une agence de voyages équatorienne qui vend surtout des voyages aux Galápagos. Les deux parties sont encore en développement : le frontend, bilingue et en Next.js, et le backend en FastAPI et PostgreSQL, qui a déjà ses tests. Pour l’instant, une version statique est publiée. GitHub Actions la déploie automatiquement, et le produit final sera hébergé sur un serveur dédié et déployé avec Docker, frontend et backend connectés.",
+        "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · GitHub Actions"
       }
     ]
   },
@@ -116,7 +119,9 @@
         "title": "Licence en Génie informatique (Grado)",
         "org": "Université de La Rioja",
         "text": "Spécialisation en Gestion des connaissances : exploitation d’informations complexes comme connaissance au service de l’entreprise, grâce à l’ingénierie des connaissances et aux systèmes intelligents.",
-        "details": "IA, apprentissage automatique, vision par ordinateur, TAL, MLOps, ontologies, web sémantique, fouille de données"
+        "details": "IA, apprentissage automatique, vision par ordinateur, TAL, MLOps, ontologies, web sémantique, fouille de données",
+        "thesis": "Projet de fin d’études : plateforme cloud de gestion de portefeuille de projets avec LLM (Encore Lab)",
+        "honors": "Matrícula de Honor (plus haute mention) en Développement d’interfaces utilisateur et en Atelier transversal I"
       },
       {
         "period": "Promotion 2020",
@@ -128,60 +133,97 @@
     ],
     "certifications": {
       "title": "Certifications",
-      "items": [
-        "Introduction to Quantum Computing (Basic & Advanced Levels)",
-        "DELF B2"
-      ]
+      "items": []
     }
   },
   "skills": {
     "groups": [
       {
-        "name": "ML et deep learning",
+        "name": "Langage et LLM",
+        "items": [
+          "Hugging Face Transformers et Datasets",
+          "fine-tuning de modèles de langage (DistilBERT, ULMFiT)"
+        ]
+      },
+      {
+        "name": "Vision par ordinateur",
+        "items": [
+          "OpenCV",
+          "dlib",
+          "DeepFace (FaceNet)",
+          "timm",
+          "Tesseract OCR"
+        ]
+      },
+      {
+        "name": "ML et données",
         "items": [
           "Python",
           "PyTorch",
           "scikit-learn",
-          "TensorFlow",
-          "Hugging Face",
           "fastai",
-          "Gradio",
-          "machine learning",
-          "deep learning"
-        ]
-      },
-      {
-        "name": "MLOps et DevOps",
-        "items": [
-          "MLOps",
-          "Docker",
-          "GitHub Actions",
-          "CI/CD",
-          "JUnit",
-          "GitHub",
-          "RabbitMQ",
-          "Claude Code"
-        ]
-      },
-      {
-        "name": "Données",
-        "items": [
+          "TensorFlow",
           "pandas",
           "NumPy",
-          "Matplotlib",
-          "SQL",
-          "PostgreSQL",
-          "MySQL",
-          "fouille de données"
+          "ONNX Runtime Web"
         ]
       },
       {
-        "name": "Vision, langage et LLM",
+        "name": "Backend et déploiement",
         "items": [
-          "vision par ordinateur",
-          "OpenCV",
-          "TAL",
-          "LLM"
+          "FastAPI",
+          "Flask",
+          "NestJS",
+          "Spring Boot",
+          "RabbitMQ",
+          "Docker",
+          "GitHub Actions",
+          "PostgreSQL",
+          "MySQL"
+        ]
+      },
+      {
+        "name": "Autres langages",
+        "items": [
+          "Java",
+          "TypeScript",
+          "JavaScript",
+          "PHP",
+          "C#",
+          "SQL"
+        ]
+      },
+      {
+        "name": "Développement assisté par IA",
+        "items": [
+          "Claude Code (agents en CLI)"
+        ]
+      },
+      {
+        "name": "Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "Tailwind CSS",
+          "Angular",
+          "Thymeleaf",
+          "Spring MVC",
+          "Figma"
+        ]
+      },
+      {
+        "name": "Backend : bibliothèques",
+        "items": [
+          "Pydantic",
+          "TypeORM",
+          "zod"
+        ]
+      },
+      {
+        "name": "Modèles et démos",
+        "items": [
+          "Hugging Face Hub",
+          "Gradio"
         ]
       },
       {
@@ -193,49 +235,16 @@
         ]
       },
       {
-        "name": "Backend et API",
+        "name": "Autres langages (cours)",
         "items": [
-          "Spring Boot",
-          "Spring MVC",
-          "Thymeleaf",
-          "Flask",
-          "FastAPI",
-          "Pydantic"
-        ]
-      },
-      {
-        "name": "Frontend",
-        "items": [
-          "React",
-          "Next.js",
-          "Tailwind CSS",
-          "AngularJS",
-          "Figma"
-        ]
-      },
-      {
-        "name": "Autres langages",
-        "items": [
-          "Java",
           "C++",
-          "C#",
-          "JavaScript",
-          "TypeScript",
-          "PHP",
           "R"
         ]
       },
       {
         "name": "Autres",
         "items": [
-          "Programmation concurrente",
-          "systèmes d’exploitation",
-          "administration réseau",
-          "analyse des besoins",
-          "conception d’interfaces",
-          "prototypage",
-          "intégration de systèmes hérités",
-          "conception logicielle"
+          "Programmation concurrente"
         ]
       },
       {
@@ -243,7 +252,8 @@
         "items": [
           "Qiskit",
           "circuits quantiques",
-          "algorithmes quantiques (Grover, Deutsch-Jozsa)"
+          "algorithmes quantiques (Grover, Deutsch-Jozsa)",
+          "cours Introduction to Quantum Computing (niveaux de base et avancé)"
         ]
       }
     ],
@@ -255,12 +265,12 @@
           "level": "langue maternelle"
         },
         {
-          "name": "Anglais",
-          "level": "compétence professionnelle complète"
+          "name": "Français",
+          "level": "bilingue, lycée français dès 3 ans et Baccalauréat"
         },
         {
-          "name": "Français",
-          "level": "compétence professionnelle complète"
+          "name": "Anglais",
+          "level": "B2 certifié, C1 en préparation pour 2027"
         }
       ]
     },
@@ -268,20 +278,66 @@
     "hide": "Masquer les compétences"
   },
   "contact": {
-    "text": "Écrivez-moi par e-mail ou retrouvez-moi sur GitHub et LinkedIn.",
+    "text": "Écrivez-moi par e-mail ou retrouvez-moi sur GitHub, LinkedIn et Hugging Face.",
     "github": "GitHub",
     "linkedin": "LinkedIn",
+    "huggingface": "Hugging Face",
     "emailLabel": "E-mail",
     "locationLabel": "Lieu",
     "location": "Logroño, La Rioja, Espagne",
     "photoAlt": "Santiago Die Morejón",
     "cv": "CV (PDF)",
-    "cvFile": "cv/cv-santiago-die-fr.pdf"
+    "cvFile": "cv/CV-SantiagoDie-FR.pdf"
   },
   "cv": {
-    "profile": "Je suis étudiant en génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et je vise un poste d’ingénieur en machine learning et MLOps. Je suis actuellement stagiaire chez Encore Lab, où je développe une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM. J’aborde les problèmes de manière empirique : plutôt que de supposer quelle solution est la meilleure, je la mesure. Je travaille aisément en espagnol, en anglais et en français.",
+    "summary": "Étudiant en dernière année de génie informatique à l’Université de La Rioja. Je veux travailler dans l’IA appliquée, sur les modèles de langage et la vision par ordinateur. J’ai entraîné, évalué et servi des modèles avec Python, scikit-learn et PyTorch. Chez Encore Lab, je développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi mon projet de fin d’études. Disponible à partir de juin 2027.",
+    "experience": {
+      "encore-lab": {
+        "bullets": [
+          "J’ai développé le système de synchronisation entre le système hérité d’un cabinet de conseil (PHP, MySQL) et un portail cloud (NestJS, PostgreSQL) : capture transactionnelle des changements et envoi en HTTPS dans un seul sens, selon un protocole de communication interne, sans exposer son réseau.",
+          "J’ai conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus ClamAV) et la sécurité de l’API de synchronisation : vérification de chaque requête, validation stricte du contrat et quarantaine des documents."
+        ]
+      },
+      "islamontana": {
+        "bullets": [
+          "Je développe le site bilingue (Next.js) et le backend (FastAPI, PostgreSQL, avec des tests) d’une agence de voyages équatorienne centrée sur les Galápagos."
+        ]
+      }
+    },
+    "projects": {
+      "face-similarity-search-pipeline": {
+        "bullets": [
+          "Recherche de visages sur 21 678 photos de presse : CNN de dlib, FaceNet et un index VP-tree de 38 299 visages.",
+          "J’ai calibré le seuil de similarité avec une courbe ROC et un balayage du F1 jusqu’à un F1 de 0,911. J’ai comparé l’index VP-tree à une recherche linéaire avec NumPy, qui à cette échelle s’est révélée de 8 à 11 fois plus rapide."
+        ]
+      },
+      "satellite-image-classifier": {
+        "bullets": [
+          "J’ai affiné un ResNet18 avec fastai pour classer des images satellite en 4 classes : 0,9982 d’accuracy en test.",
+          "J’ai comparé cinq architectures de CNN (ResNet18 et 34, EfficientNet-B0, MobileNetV3 Small et ConvNeXt Tiny) dans les mêmes conditions."
+        ]
+      },
+      "prompt-topic-classifier": {
+        "bullets": [
+          "J’ai classé des prompts de LLM en 10 thèmes avec un DistilBERT affiné : 67,35 % d’accuracy et un F1 pondéré de 0,667 sur un test de 1 550 prompts."
+        ]
+      }
+    },
+    "education": {
+      "places": [
+        "Logroño, Espagne",
+        "Quito, Équateur"
+      ]
+    },
+    "labels": {
+      "experience": "Expérience professionnelle",
+      "projects": "Projets",
+      "education": "Formation",
+      "skills": "Compétences complémentaires",
+      "honors": "Distinctions"
+    },
     "nationalityLabel": "Nationalité",
-    "nationality": "Espagnole, française et équatorienne · citoyen de l’UE, libre de travailler dans l’UE"
+    "nationality": "Espagnole, française et équatorienne"
   },
   "footer": {
     "rights": "Santiago Die Morejón",

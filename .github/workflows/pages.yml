@@ -36,11 +36,22 @@ jobs:
           python tools/build.py
           find dist -type f | sort
 
-      # The CV in PDF, one per language, printed by the runner's Chrome from the pages
-      # just built (css/print.css), so it can never fall behind the site. make_cv.py
-      # checks each PDF (under 300 KB, at most two pages, the photo where it belongs)
-      # and fails the deploy rather than publish a broken CV.
+      # qpdf (`qpdf --check` must report 0 warnings) and poppler-utils (pdftotext reads
+      # the text layer back, as an ATS would) for make_cv.py's checks; in CI it fails if
+      # either is missing instead of skipping the check.
+      - name: Install the PDF checkers
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends qpdf poppler-utils
+
+      # The CV in PDF, one A4 page per language (Harvard layout, tools/cv/cv.css),
+      # printed by the runner's Chrome from the same i18n/ and data/ as the site, so it
+      # can never fall behind it. make_cv.py checks each PDF (one page, under 300 KB,
+      # the photo where it belongs, links, title, language) and fails the deploy rather
+      # than publish a broken CV. The phone number exists only here: the CV_PHONE secret
+      # reaches this step alone, and make_cv.py fails if it shows up anywhere else in
+      # dist/. Without the secret the CV goes without a phone (a warning, not a failure).
       - name: Make the CV (PDF)
+        env:
+          CV_PHONE: ${{ secrets.CV_PHONE }}
         run: python tools/make_cv.py
 
       - name: Configure Pages

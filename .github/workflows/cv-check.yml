@@ -1,12 +1,13 @@
 name: CV check (no deploy)
 
 # Builds the site and the CV PDFs on the runner, exactly as the Pages workflow does,
-# and keeps the PDFs as an artifact to compare with a local run. It never deploys.
+# and keeps the PDFs as an artifact to compare with a local run. It never deploys, and
+# it never gets the CV_PHONE secret: these PDFs are made without the phone number.
 on:
   workflow_dispatch:
   push:
     branches: ["mejoras/**"]
-    paths: ["css/print.css", "fonts/print/**", "tools/make_cv.py", "tools/build.py", "src/index.html", "i18n/**", "data/**"]
+    paths: ["tools/cv/**", "fonts/print/**", "tools/make_cv.py", "tools/build.py", "i18n/**", "data/**"]
 
 permissions:
   contents: read
@@ -25,6 +26,9 @@ jobs:
 
       - name: Build site
         run: python tools/build.py
+
+      - name: Install the PDF checkers
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends qpdf poppler-utils
 
       - name: Make the CV (PDF)
         run: |
