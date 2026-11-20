@@ -60,6 +60,6 @@
     }
   ],
   "cv": {
-    "public": false
+    "public": true
   }
 }
