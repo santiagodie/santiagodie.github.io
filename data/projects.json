@@ -409,9 +409,9 @@
             "fr": "220 requêtes"
           },
           "label": {
-            "en": "in 30 s, drained by 5 workers",
-            "es": "en 30 s, vaciadas por 5 workers",
-            "fr": "en 30 s, traitées par 5 workers"
+            "en": "sent over 30 s, processed by 5 workers",
+            "es": "enviadas en 30 s, procesadas por 5 workers",
+            "fr": "envoyées en 30 s, traitées par 5 workers"
           },
           "source": "https://github.com/santiagodie/life-simulation-service#live-demo"
         }
