@@ -1,10 +1,10 @@
 {
   "meta": {
     "title": "Santiago Die Morejón · Applied AI: language and computer vision",
-    "description": "Final-year computer engineering student (University of La Rioja). Applied AI for language models and computer vision, with Python, PyTorch and Hugging Face.",
+    "description": "Final-year Computer Engineering student (University of La Rioja). Applied AI for language models and computer vision, with Python, PyTorch and Hugging Face.",
     "ogLocale": "en_GB",
     "langName": "English",
-    "jobTitle": "Computer engineering student, applied AI for language and computer vision"
+    "jobTitle": "Computer Engineering student, applied AI for language and computer vision"
   },
   "a11y": {
     "skip": "Skip to content",
@@ -39,7 +39,7 @@
   },
   "chat": {
     "prompt": "Who is Santiago Die?",
-    "answer": "Based on my analysis, Santiago is a final-year computer engineering student at the University of La Rioja, specialising in knowledge management, and he wants to work in applied AI: language models and computer vision. He is currently an intern at Encore Lab, where he is building, on his own, a cloud portal for the clients of a grant consultancy, which is also his final-year project.\n\nHe measures a model against others before choosing it. He compared five CNN architectures to classify satellite images and pitted DistilBERT against ULMFiT to classify prompts. In his face search he timed the VP-tree index against a linear search, and when the index came out slower, he wrote it down.\n\nHe grew up in Quito, studied at a French lycée and now lives in Spain, so he adapts quickly and works comfortably in Spanish, English and French.",
+    "answer": "Based on my analysis, Santiago is a final-year Computer Engineering student at the University of La Rioja, specialising in knowledge management, and he wants to work in applied AI: language models and computer vision. He is currently an intern at Encore Lab, where he is building, on his own, a cloud portal for the clients of a grant consultancy, which is also his bachelor's thesis.\n\nHe measures a model against others before choosing it. He compared five CNN architectures to classify satellite images and pitted DistilBERT against ULMFiT to classify prompts. In his face search he timed the VP-tree index against a linear search, and when the index came out slower, he documented it.\n\nHe grew up in Quito, went to a French school and now lives in Spain, so he adapts quickly and works comfortably in Spanish, English and French.",
     "send": "Send the question",
     "skip": "Skip",
     "replay": "Replay",
@@ -71,7 +71,7 @@
     "paragraphs": []
   },
   "projects": {
-    "intro": "Coursework from the University of La Rioja, each with its code and, where there is one, a live demo.",
+    "intro": "University of La Rioja coursework, each project with its source code and, where available, a live demo.",
     "featured": "Featured",
     "more": "More projects",
     "moreRegion": "More projects, scrollable",
@@ -98,7 +98,7 @@
         "title": "Full-stack developer intern",
         "org": "Encore Lab S.L.",
         "place": "Logroño, Spain",
-        "text": "I am the only developer, under my managers' supervision, of a cloud portal for the clients of a grant consultancy, and it is also my final-year project. I built the synchronisation end to end. In the legacy internal system (PHP and MySQL) I capture changes inside the same transaction as each operation and send them every 5 minutes over HTTPS, one way and with retries, so its network is never opened from outside. On the portal, a NestJS API on PostgreSQL receives them, and documents of up to 512 MiB go through quarantine and an antivirus scan before they become available. I also designed and built the portal's infrastructure with Docker (containers, volumes, PostgreSQL, backups and antivirus) and the security of the sync API, which verifies every request and strictly validates its contract. The next phases will add users with access to several companies, document requests, tracking of financial returns and LLM features.",
+        "text": "I am the sole developer of a cloud portal for the clients of a grant consultancy, working under my managers' supervision; it is also my bachelor's thesis. I built the synchronisation end to end. In the consultancy's legacy internal system (PHP and MySQL), I capture each change in the same transaction as the operation and send it every 5 minutes over HTTPS, one way and with retries, so the internal network is never exposed. On the portal side, a NestJS API on PostgreSQL receives the data, and documents of up to 512 MiB go through quarantine and an antivirus scan before they become available. I also designed and built the portal's infrastructure with Docker (containers, volumes, PostgreSQL, backups and antivirus) and secured the sync API: every request is verified and strictly validated against the contract. The next phases will add users with access to several companies, document requests, tracking of financial returns and LLM features.",
         "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
@@ -107,7 +107,7 @@
         "title": "Full-stack developer (freelance)",
         "org": "Islamontana Travel",
         "place": "Remote",
-        "text": "I am building the website of an Ecuadorian travel agency that mostly sells trips to the Galápagos. Both parts are still in development: the frontend, bilingual and in Next.js, and the backend in FastAPI and PostgreSQL, which already has tests. For now a static version is published. GitHub Actions deploys it automatically, and the final product will run on its own server and be deployed with Docker, with frontend and backend connected.",
+        "text": "I am building the website of an Ecuadorian travel agency that mostly sells trips to the Galápagos. Both parts are still in development: the frontend, bilingual and in Next.js, and the backend in FastAPI and PostgreSQL, which already has tests. For now a static version is published. GitHub Actions deploys it automatically, and the final product will run on a dedicated server and be deployed with Docker, with frontend and backend connected.",
         "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · GitHub Actions"
       }
     ]
@@ -116,19 +116,19 @@
     "items": [
       {
         "period": "2021 – 2027",
-        "title": "BSc in Computer Engineering",
+        "title": "Bachelor's Degree in Computer Engineering (4 years, 240 ECTS)",
         "org": "University of La Rioja",
-        "text": "Specialisation in Knowledge Management: turning complex information into usable knowledge for organisations through knowledge engineering and intelligent systems.",
+        "text": "Knowledge Management specialisation: turning complex information into usable knowledge for organisations through knowledge engineering and intelligent systems.",
         "details": "AI, machine learning, computer vision, NLP, MLOps, ontologies, semantic web, data mining",
-        "thesis": "Final-year project: cloud platform for project portfolio management with LLMs (Encore Lab)",
-        "honors": "Matrícula de Honor (highest distinction) in User Interface Development and in Cross-disciplinary Workshop I"
+        "thesis": "Bachelor's thesis: cloud platform for project portfolio management with LLMs (Encore Lab)",
+        "honors": "Matrícula de Honor (highest grade, limited to the top 5% of each class) in User Interface Development and Cross-disciplinary Workshop I"
       },
       {
         "period": "Graduated 2020",
-        "title": "French Baccalauréat & Ecuadorian Bachillerato",
+        "title": "French Baccalauréat and Ecuadorian Bachillerato",
         "org": "Lycée franco-équatorien La Condamine, Quito",
         "text": "",
-        "details": "Economics and Social Sciences track, mathematics specialisation · Bachiller en Ciencias"
+        "details": "Baccalauréat ES (Economics and Social Sciences), Mathematics specialism · Ecuadorian Bachillerato in Sciences"
       }
     ],
     "certifications": {
@@ -183,7 +183,7 @@
         ]
       },
       {
-        "name": "Other languages",
+        "name": "Other programming languages",
         "items": [
           "Java",
           "TypeScript",
@@ -235,7 +235,7 @@
         ]
       },
       {
-        "name": "Other languages (coursework)",
+        "name": "Other programming languages (coursework)",
         "items": [
           "C++",
           "R"
@@ -266,7 +266,7 @@
         },
         {
           "name": "French",
-          "level": "bilingual, French lycée from age 3 and Baccalauréat"
+          "level": "bilingual (educated in the French system from age 3; French Baccalauréat)"
         },
         {
           "name": "English",
@@ -290,11 +290,11 @@
     "cvFile": "cv/CV-SantiagoDie-EN.pdf"
   },
   "cv": {
-    "summary": "Final-year Computer Engineering student at the University of La Rioja. I want to work in applied AI, on language models and computer vision. I have trained, evaluated and served models with Python, scikit-learn and PyTorch. At Encore Lab I am building, on my own, a cloud portal for the clients of a grant consultancy, which is also my final-year project. Available from June 2027.",
+    "summary": "Final-year Computer Engineering student at the University of La Rioja. I want to work in applied AI, on language models and computer vision. I have trained, evaluated and served models with Python, scikit-learn and PyTorch. At Encore Lab I am the sole developer of a cloud portal for the clients of a grant consultancy, which is also my bachelor's thesis. Available from June 2027.",
     "experience": {
       "encore-lab": {
         "bullets": [
-          "Built the synchronisation system between a consultancy's legacy system (PHP, MySQL) and a cloud portal (NestJS, PostgreSQL): transactional change capture and one-way delivery over HTTPS, following an internal communication protocol, without exposing its network.",
+          "Built the sync mechanism between a consultancy's legacy system (PHP, MySQL) and a cloud portal (NestJS, PostgreSQL): transactional change capture and one-way delivery over HTTPS, following an internal communication protocol, without exposing the consultancy's internal network.",
           "Designed and implemented the portal's infrastructure with Docker (containers, volumes, PostgreSQL, backups and ClamAV antivirus) and the security of the sync API: verification of every request, strict contract validation and document quarantine."
         ]
       },
@@ -313,7 +313,7 @@
       },
       "satellite-image-classifier": {
         "bullets": [
-          "Fine-tuned a ResNet18 in fastai to classify satellite images into 4 classes: 0.9982 test accuracy.",
+          "Fine-tuned a ResNet18 with fastai to classify satellite images into 4 classes: 99.82% test accuracy.",
           "Compared five CNN architectures (ResNet18 and 34, EfficientNet-B0, MobileNetV3 Small and ConvNeXt Tiny) under the same conditions."
         ]
       },
@@ -327,14 +327,18 @@
       "places": [
         "Logroño, Spain",
         "Quito, Ecuador"
+      ],
+      "titles": [
+        "",
+        "French Baccalauréat (Economics and Social Sciences, Mathematics specialism) and Ecuadorian Bachillerato"
       ]
     },
     "labels": {
       "experience": "Professional experience",
       "projects": "Projects",
       "education": "Education",
-      "skills": "Additional skills",
-      "honors": "Honours"
+      "skills": "Skills",
+      "honors": "Awards"
     },
     "nationalityLabel": "Nationality",
     "nationality": "Spanish, French and Ecuadorian"

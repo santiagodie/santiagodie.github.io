@@ -94,7 +94,7 @@
     "items": [
       {
         "id": "encore-lab",
-        "period": "Sept. 2026 – Actualidad",
+        "period": "sept. 2026 – actualidad",
         "title": "Desarrollador full-stack en prácticas",
         "org": "Encore Lab S.L.",
         "place": "Logroño, España",
@@ -103,7 +103,7 @@
       },
       {
         "id": "islamontana",
-        "period": "Abr. 2026 – Actualidad",
+        "period": "abr. 2026 – actualidad",
         "title": "Desarrollador full-stack (freelance)",
         "org": "Islamontana Travel",
         "place": "Remoto",
@@ -121,7 +121,7 @@
         "text": "Mención en Gestión del Conocimiento: gestión de información compleja para su explotación como conocimiento en la empresa, mediante ingeniería del conocimiento y sistemas inteligentes.",
         "details": "IA, aprendizaje automático, visión por computador, PLN, MLOps, ontologías, web semántica, minería de datos",
         "thesis": "TFG: plataforma cloud de gestión de porfolio de proyectos con LLM (Encore Lab)",
-        "honors": "Matrícula de Honor en Desarrollo de Interfaces de Usuario y en Taller Transversal I"
+        "honors": "Matrícula de Honor en Desarrollo de Interfaces para Usuarios y en Taller Transversal I"
       },
       {
         "period": "Promoción 2020",
@@ -183,7 +183,7 @@
         ]
       },
       {
-        "name": "Otros lenguajes",
+        "name": "Otros lenguajes de programación",
         "items": [
           "Java",
           "TypeScript",
@@ -235,7 +235,7 @@
         ]
       },
       {
-        "name": "Otros lenguajes (asignaturas)",
+        "name": "Otros lenguajes de programación (asignaturas)",
         "items": [
           "C++",
           "R"
@@ -266,7 +266,7 @@
         },
         {
           "name": "Francés",
-          "level": "bilingüe, liceo francés desde los 3 años y Baccalauréat"
+          "level": "bilingüe (escolarizado en el sistema francés desde los 3 años; Baccalauréat)"
         },
         {
           "name": "Inglés",
@@ -313,7 +313,7 @@
       },
       "satellite-image-classifier": {
         "bullets": [
-          "Ajusté una ResNet18 en fastai para clasificar imágenes de satélite en 4 clases: 0,9982 de accuracy en test.",
+          "Ajusté una ResNet18 en fastai para clasificar imágenes de satélite en 4 clases: 99,82 % de accuracy en test.",
           "Comparé cinco arquitecturas de CNN (ResNet18 y 34, EfficientNet-B0, MobileNetV3 Small y ConvNeXt Tiny) en las mismas condiciones."
         ]
       },
@@ -327,17 +327,21 @@
       "places": [
         "Logroño, España",
         "Quito, Ecuador"
+      ],
+      "titles": [
+        "",
+        "Baccalauréat francés (serie ES, especialidad Matemáticas) y Bachillerato ecuatoriano"
       ]
     },
     "labels": {
       "experience": "Experiencia profesional",
       "projects": "Proyectos",
       "education": "Educación",
-      "skills": "Habilidades adicionales",
-      "honors": "Honores"
+      "skills": "Habilidades",
+      "honors": "Distinciones"
     },
     "nationalityLabel": "Nacionalidad",
-    "nationality": "Española, francesa y ecuatoriana"
+    "nationality": "española, francesa y ecuatoriana"
   },
   "footer": {
     "rights": "Santiago Die Morejón",

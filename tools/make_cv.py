@@ -12,7 +12,8 @@ so a change on the site reaches the CV at the next deploy:
   the CV's own texts               i18n/<lang>.json under cv.*: summary, the bullets of
                                    each experience (cv.experience.<id>.bullets) and
                                    project (cv.projects.<id>.bullets), cv.education
-                                   (places), cv.nationality, section labels. The
+                                   (places; titles, where the CV names an entry
+                                   otherwise), cv.nationality, section labels. The
                                    thesis and honours come from the site's Education
                                    entry (education.items[].thesis, .honors).
                                    A missing or empty one falls back to the site's text.
@@ -233,16 +234,21 @@ def render_html(site, s, projects, lang, phone, t):
     # Education
     rows = []
     places = cv["education"]["places"]
+    # Lot 23: cv.education.titles, where a CV entry names its title otherwise than the
+    # site (the Baccalauréat with its series); an empty string keeps the site's title.
+    titles = cv["education"].get("titles", [])
     for index, item in enumerate(s["education"]["items"]):
         place = places[index] if index < len(places) else ""
         org = item["org"]
         city = place.split(",")[0].strip()
         if city and org.endswith(", " + city):
             org = org[: -len(", " + city)]
-        title = item["title"]
+        title = (titles[index] if index < len(titles) else "") or item["title"]
         if ":" in item.get("text", ""):  # "Mención en Gestión del Conocimiento: ..."
             track = item["text"].split(":")[0].strip()
-            title += ", " + track[:1].lower() + track[1:]
+            # In English the specialisation keeps its capitals ("Knowledge Management
+            # specialisation"); in Spanish and French it follows the comma in lower case.
+            title += ", " + (track if lang == "en" else track[:1].lower() + track[1:])
         period = years(item["period"])  # lot 22: no "(expected)" after the end year
         # Lot 22: the thesis and the honours, from the site's own Education entry.
         thesis = t.take(item.get("thesis"), f"education.items[{index}].thesis")
@@ -254,7 +260,7 @@ def render_html(site, s, projects, lang, phone, t):
                     f'<div class="row"><span>{esc(title)}</span><span class="date">{esc(period)}</span></div>{extra}</div>')
     out.append(f'<section><h2>{esc(labels["education"])}</h2>{"".join(rows)}</section>')
 
-    # Additional skills: technical groups, languages, certifications, nationality
+    # Skills: technical groups, languages, certifications, nationality
     groups = s["skills"]["groups"]
     lines = []
     for index in SKILL_GROUPS:
@@ -264,7 +270,17 @@ def render_html(site, s, projects, lang, phone, t):
             if items:
                 lines.append(f'{group["name"]}{colon}{", ".join(items)}')
     spoken = s["skills"]["languages"]
-    lines.append(f'{spoken["title"]}{colon}' + ", ".join(f'{l["name"]} ({l["level"]})' for l in spoken["items"]))
+    # Lot 23: on one line, "Languages: Spanish (native), French (...)". A level that
+    # brings its own note, "bilingual (educated in ...)", loses those parentheses here
+    # ("French (bilingual, educated in ...)"), so they do not nest. In Spanish and
+    # French a language name is lower case after the colon.
+    def spoken_item(l):
+        name = l["name"] if lang == "en" else l["name"][:1].lower() + l["name"][1:]
+        level = l["level"]
+        if level.endswith(")") and " (" in level:
+            level = level[:-1].replace(" (", ", ", 1)
+        return f"{name} ({level})"
+    lines.append(f'{spoken["title"]}{colon}' + ", ".join(spoken_item(l) for l in spoken["items"]))
     certs = s["education"]["certifications"]
     if certs["items"]:
         lines.append(f'{certs["title"]}{colon}' + (" ; " if lang == "fr" else "; ").join(certs["items"]))

@@ -3,7 +3,7 @@
  "tokenizer": "cl100k_base",
  "en": {
   "prompt": "Santiago, introduce yourself.",
-  "answer": "I am in the final year of computer engineering at the University of La Rioja and I want to work in applied AI, on language models and computer vision. My face search indexes 38,299 faces from 21,678 press photos and reaches an F1 of 0.911 at the calibrated threshold.\n\nAt Encore Lab I am building, on my own, a cloud portal for the clients of a grant consultancy, which is also my final-year project. The synchronisation with the consultancy's legacy internal system is already programmed at both ends: changes go out every 5 minutes over HTTPS, one way, and its network is never opened from outside.\n\nI measure before I choose. To sort prompts into 10 topics, DistilBERT beat ULMFiT by about 9.5 points of accuracy on the same test set. For the satellite images I compared five CNNs. And in the face search the VP-tree came out 8 to 11 times slower than a linear NumPy search, which I wrote down in the README.\n\nFrom my specialisation in knowledge management I bring ontologies and knowledge engineering. I grew up in Quito, went to a French lycée from the age of 3 and live in Spain; I work in Spanish, French and English.\n\nI finish my degree in 2027 and I am looking for a junior applied AI role from June. If that fits your team, write to me.",
+  "answer": "I am in the final year of Computer Engineering at the University of La Rioja and I want to work in applied AI, on language models and computer vision. My face search indexes 38,299 faces from 21,678 press photos and reaches an F1 of 0.911 at the calibrated threshold.\n\nAt Encore Lab I am building, on my own, a cloud portal for the clients of a grant consultancy, which is also my bachelor's thesis. The synchronisation with the consultancy's legacy internal system is already programmed at both ends: changes go out every 5 minutes over HTTPS, one way, and the consultancy's internal network is never exposed.\n\nI measure before I choose. To sort prompts into 10 topics, DistilBERT beat ULMFiT by about 9.5 points of accuracy on the same test set. For the satellite images I compared five CNNs. And in the face search the VP-tree came out 8 to 11 times slower than a linear NumPy search, which I documented in the README.\n\nFrom my specialisation in knowledge management I bring ontologies and knowledge engineering. I grew up in Quito, went to a French school from the age of 3 and live in Spain; I work in Spanish, French and English.\n\nI finish my degree in 2027 and I am looking for a junior applied AI role from June. If that fits your team, write to me.",
   "tokens": {
    "prompt": [
     {
@@ -61,12 +61,12 @@
      "id": 315
     },
     {
-     "t": " computer",
-     "id": 6500
+     "t": " Computer",
+     "id": 17863
     },
     {
-     "t": " engineering",
-     "id": 15009
+     "t": " Engineering",
+     "id": 17005
     },
     {
      "t": " at",
@@ -389,16 +389,16 @@
      "id": 856
     },
     {
-     "t": " final",
-     "id": 1620
+     "t": " bachelor",
+     "id": 49683
     },
     {
-     "t": "-year",
-     "id": 4771
+     "t": "'s",
+     "id": 596
     },
     {
-     "t": " project",
-     "id": 2447
+     "t": " thesis",
+     "id": 17850
     },
     {
      "t": ".",
@@ -529,8 +529,20 @@
      "id": 323
     },
     {
-     "t": " its",
-     "id": 1202
+     "t": " the",
+     "id": 279
+    },
+    {
+     "t": " consultancy",
+     "id": 74379
+    },
+    {
+     "t": "'s",
+     "id": 596
+    },
+    {
+     "t": " internal",
+     "id": 5419
     },
     {
      "t": " network",
@@ -545,16 +557,8 @@
      "id": 2646
     },
     {
-     "t": " opened",
-     "id": 9107
-    },
-    {
-     "t": " from",
-     "id": 505
-    },
-    {
-     "t": " outside",
-     "id": 4994
+     "t": " exposed",
+     "id": 15246
     },
     {
      "t": ".\n\n",
@@ -853,12 +857,8 @@
      "id": 358
     },
     {
-     "t": " wrote",
-     "id": 6267
-    },
-    {
-     "t": " down",
-     "id": 1523
+     "t": " documented",
+     "id": 27470
     },
     {
      "t": " in",
@@ -981,16 +981,8 @@
      "id": 8753
     },
     {
-     "t": " l",
-     "id": 326
-    },
-    {
-     "t": "yc",
-     "id": 3418
-    },
-    {
-     "t": "ée",
-     "id": 8047
+     "t": " school",
+     "id": 2978
     },
     {
      "t": " from",
@@ -2737,7 +2729,7 @@
  },
  "fr": {
   "prompt": "Santiago, présente-toi.",
-  "answer": "Je suis en dernière année de génie informatique à l’Université de La Rioja et je veux travailler dans l’IA appliquée, sur les modèles de langage et la vision par ordinateur. Ma recherche de visages indexe 38 299 visages issus de 21 678 photos de presse et atteint un F1 de 0,911 au seuil calibré.\n\nChez Encore Lab, je développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi mon projet de fin d’études. La synchronisation avec le système interne hérité du cabinet est déjà programmée aux deux bouts : les changements partent toutes les 5 minutes en HTTPS, dans un seul sens, et son réseau n’est jamais ouvert de l’extérieur.\n\nJe mesure avant de choisir. Pour classer des prompts en 10 thèmes, DistilBERT a devancé ULMFiT d’environ 9,5 points d’accuracy sur le même test. Pour les images satellite, j’ai comparé cinq CNN. Et dans la recherche de visages, le VP-tree s’est révélé de 8 à 11 fois plus lent qu’une recherche linéaire avec NumPy, ce que j’ai écrit dans le README.\n\nDe ma spécialisation en gestion des connaissances, je garde les ontologies et l’ingénierie des connaissances. J’ai grandi à Quito, je suis allé dans un lycée français dès l’âge de 3 ans et je vis en Espagne ; je travaille en espagnol, en français et en anglais.\n\nJe termine mes études en 2027 et je cherche un poste junior en IA appliquée à partir de juin. Si cela correspond à votre équipe, écrivez-moi.",
+  "answer": "Je suis en dernière année d’ingénierie informatique à l’Université de La Rioja et je veux travailler dans l’IA appliquée, sur les modèles de langage et la vision par ordinateur. Ma recherche de visages indexe 38 299 visages issus de 21 678 photos de presse et atteint un F1 de 0,911 au seuil calibré.\n\nChez Encore Lab, je développe seul un portail cloud pour les clients d’un cabinet de conseil en subventions, qui est aussi mon projet de fin d’études. La synchronisation avec le système interne historique du cabinet est déjà programmée aux deux bouts : les modifications partent toutes les 5 minutes en HTTPS, dans un seul sens, sans jamais exposer son réseau interne.\n\nJe mesure avant de choisir. Pour classer des prompts en 10 thèmes, DistilBERT a devancé ULMFiT d’environ 9,5 points d’accuracy sur le même jeu de test. Pour les images satellite, j’ai comparé cinq CNN. Et dans la recherche de visages, le VP-tree s’est révélé de 8 à 11 fois plus lent qu’une recherche linéaire avec NumPy, ce que j’ai documenté dans le README.\n\nDe ma spécialisation en gestion des connaissances, je garde les ontologies et l’ingénierie des connaissances. J’ai grandi à Quito, j’ai été scolarisé dans le système français dès l’âge de 3 ans et je vis en Espagne ; je travaille en espagnol, en français et en anglais.\n\nJe termine mes études en 2027 et je cherche un poste junior en IA appliquée à partir de juin. Si cela correspond à votre équipe, écrivez-moi.",
   "tokens": {
    "prompt": [
     {
@@ -2795,12 +2787,24 @@
      "id": 76132
     },
     {
-     "t": " de",
-     "id": 409
+     "t": " d",
+     "id": 294
     },
     {
-     "t": " gén",
-     "id": 78422
+     "t": "’",
+     "id": 529
+    },
+    {
+     "t": "ing",
+     "id": 287
+    },
+    {
+     "t": "én",
+     "id": 10610
+    },
+    {
+     "t": "ier",
+     "id": 1291
     },
     {
      "t": "ie",
@@ -3315,16 +3319,12 @@
      "id": 818
     },
     {
-     "t": " hé",
-     "id": 89023
+     "t": " histor",
+     "id": 7135
     },
     {
-     "t": "rit",
-     "id": 1018
-    },
-    {
-     "t": "é",
-     "id": 978
+     "t": "ique",
+     "id": 2428
     },
     {
      "t": " du",
@@ -3375,12 +3375,8 @@
      "id": 3625
     },
     {
-     "t": " chang",
-     "id": 2609
-    },
-    {
-     "t": "ements",
-     "id": 3808
+     "t": " modifications",
+     "id": 29882
     },
     {
      "t": " part",
@@ -3443,8 +3439,20 @@
      "id": 11
     },
     {
-     "t": " et",
-     "id": 1880
+     "t": " sans",
+     "id": 15878
+    },
+    {
+     "t": " jamais",
+     "id": 56316
+    },
+    {
+     "t": " ex",
+     "id": 506
+    },
+    {
+     "t": "poser",
+     "id": 20672
     },
     {
      "t": " son",
@@ -3455,44 +3463,12 @@
      "id": 98947
     },
     {
-     "t": " n",
-     "id": 308
+     "t": " inter",
+     "id": 958
     },
     {
-     "t": "’est",
-     "id": 22117
-    },
-    {
-     "t": " jamais",
-     "id": 56316
-    },
-    {
-     "t": " ou",
-     "id": 6033
-    },
-    {
-     "t": "vert",
-     "id": 1653
-    },
-    {
-     "t": " de",
-     "id": 409
-    },
-    {
-     "t": " l",
-     "id": 326
-    },
-    {
-     "t": "’",
-     "id": 529
-    },
-    {
-     "t": "ext",
-     "id": 428
-    },
-    {
-     "t": "érieur",
-     "id": 57663
+     "t": "ne",
+     "id": 818
     },
     {
      "t": ".\n\n",
@@ -3665,6 +3641,14 @@
     {
      "t": " même",
      "id": 27584
+    },
+    {
+     "t": " jeu",
+     "id": 51655
+    },
+    {
+     "t": " de",
+     "id": 409
     },
     {
      "t": " test",
@@ -3883,8 +3867,12 @@
      "id": 50808
     },
     {
-     "t": " écrit",
-     "id": 89532
+     "t": " document",
+     "id": 2246
+    },
+    {
+     "t": "é",
+     "id": 978
     },
     {
      "t": " dans",
@@ -4047,40 +4035,40 @@
      "id": 11
     },
     {
-     "t": " je",
-     "id": 4864
+     "t": " j",
+     "id": 503
     },
     {
-     "t": " suis",
-     "id": 36731
+     "t": "’ai",
+     "id": 50808
     },
     {
-     "t": " all",
-     "id": 682
+     "t": " été",
+     "id": 24560
     },
     {
-     "t": "é",
-     "id": 978
+     "t": " sc",
+     "id": 1156
+    },
+    {
+     "t": "olar",
+     "id": 7569
+    },
+    {
+     "t": "isé",
+     "id": 69068
     },
     {
      "t": " dans",
      "id": 7010
     },
     {
-     "t": " un",
-     "id": 653
+     "t": " le",
+     "id": 514
     },
     {
-     "t": " l",
-     "id": 326
-    },
-    {
-     "t": "yc",
-     "id": 3418
-    },
-    {
-     "t": "ée",
-     "id": 8047
+     "t": " système",
+     "id": 72601
     },
     {
      "t": " français",
