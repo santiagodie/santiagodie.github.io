@@ -298,8 +298,7 @@
         "Gradio"
       ],
       "repo": "https://github.com/santiagodie/prompt-topic-classifier",
-      "demo": null,
-      "model": "https://huggingface.co/santiagodie/E3-classifier"
+      "demo": null
     },
     {
       "id": "human-activity-classification",

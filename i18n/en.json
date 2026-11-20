@@ -32,7 +32,7 @@
     "dismiss": "Dismiss"
   },
   "hero": {
-    "role": "Applied AI: language models and computer vision",
+    "role": "Applied AI: language and computer vision",
     "ctaProjects": "View projects",
     "ctaCv": "Download CV",
     "ctaContact": "Get in touch"
@@ -107,7 +107,7 @@
         "title": "Full-stack developer (freelance)",
         "org": "Islamontana Travel",
         "place": "Remote",
-        "text": "I am building the website of an Ecuadorian agency that sells trips, mostly to the Galápagos, and uses the site as its shop window. The public part, static and bilingual, is nearly finished: it deploys automatically with GitHub Actions to a test environment and is waiting to launch on the client's domain. The FastAPI and PostgreSQL backend is written and tested, but not yet connected to the site or deployed. Still to do: the API connection, the form, the server, deploying the backend with Docker Compose, the admin panel, email and backups.",
+        "text": "I am building the website of an Ecuadorian travel agency that mostly sells trips to the Galápagos. Both parts are still in development: the frontend, bilingual and in Next.js, and the backend in FastAPI and PostgreSQL, which already has tests. For now a static version is published. GitHub Actions deploys it automatically, and the final product will run on its own server and be deployed with Docker, with frontend and backend connected.",
         "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · GitHub Actions"
       }
     ]
@@ -174,11 +174,8 @@
         "name": "Backend & deployment",
         "items": [
           "FastAPI",
-          "Pydantic",
           "Flask",
           "NestJS",
-          "TypeORM",
-          "zod",
           "Spring Boot",
           "RabbitMQ",
           "Docker",
@@ -214,6 +211,14 @@
           "Thymeleaf",
           "Spring MVC",
           "Figma"
+        ]
+      },
+      {
+        "name": "Backend: libraries",
+        "items": [
+          "Pydantic",
+          "TypeORM",
+          "zod"
         ]
       },
       {
@@ -297,8 +302,7 @@
       },
       "islamontana": {
         "bullets": [
-          "Building the static, bilingual website of a Galápagos travel agency: nearly finished, deployed with GitHub Actions to a test environment.",
-          "Wrote its FastAPI and PostgreSQL backend, with tests; it still has to be connected and deployed."
+          "Building the bilingual website (Next.js) and the backend (FastAPI, PostgreSQL, with tests) of an Ecuadorian travel agency focused on the Galápagos."
         ]
       }
     },

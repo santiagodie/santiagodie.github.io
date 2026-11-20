@@ -32,7 +32,7 @@
     "dismiss": "Cerrar aviso"
   },
   "hero": {
-    "role": "IA aplicada: modelos de lenguaje y visión por computador",
+    "role": "IA aplicada: lenguaje y visión por computador",
     "ctaProjects": "Ver proyectos",
     "ctaCv": "Descargar CV",
     "ctaContact": "Contactar"
@@ -107,7 +107,7 @@
         "title": "Desarrollador full-stack (freelance)",
         "org": "Islamontana Travel",
         "place": "Remoto",
-        "text": "Desarrollo la web de una agencia de Ecuador que vende viajes, sobre todo a Galápagos, y que usa la web como escaparate. La parte pública, estática y bilingüe, está casi terminada: se despliega automáticamente con GitHub Actions en un entorno de pruebas y está pendiente de lanzarse con el dominio del cliente. El backend en FastAPI y PostgreSQL ya está escrito y tiene tests, pero todavía no está conectado con la web ni desplegado. Quedan la conexión con la API, el formulario, el servidor, el despliegue del backend con Docker Compose, el panel de gestión, el correo y las copias de seguridad.",
+        "text": "Desarrollo la web de una agencia de viajes de Ecuador que vende sobre todo viajes a Galápagos. Las dos partes siguen en desarrollo: el frontend, bilingüe y en Next.js, y el backend en FastAPI y PostgreSQL, que ya tiene tests. De momento se publica una versión estática. La despliega GitHub Actions automáticamente, y el producto final se alojará en un servidor propio y se desplegará con Docker, con el frontend y el backend conectados.",
         "stack": "Next.js · React · TypeScript · Tailwind CSS · FastAPI · Pydantic · PostgreSQL · GitHub Actions"
       }
     ]
@@ -174,11 +174,8 @@
         "name": "Backend y despliegue",
         "items": [
           "FastAPI",
-          "Pydantic",
           "Flask",
           "NestJS",
-          "TypeORM",
-          "zod",
           "Spring Boot",
           "RabbitMQ",
           "Docker",
@@ -214,6 +211,14 @@
           "Thymeleaf",
           "Spring MVC",
           "Figma"
+        ]
+      },
+      {
+        "name": "Backend: librerías",
+        "items": [
+          "Pydantic",
+          "TypeORM",
+          "zod"
         ]
       },
       {
@@ -297,8 +302,7 @@
       },
       "islamontana": {
         "bullets": [
-          "Desarrollo la web estática y bilingüe de una agencia de viajes a Galápagos: casi terminada, se despliega con GitHub Actions en un entorno de pruebas.",
-          "Escribí su backend en FastAPI y PostgreSQL, con tests; falta conectarlo y desplegarlo."
+          "Desarrollo la web bilingüe (Next.js) y el backend (FastAPI, PostgreSQL, con tests) de una agencia de viajes de Ecuador centrada en Galápagos."
         ]
       }
     },
