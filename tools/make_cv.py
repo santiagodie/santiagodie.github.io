@@ -53,9 +53,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 OUT = DIST / "cv"
 CSS = ROOT / "tools" / "cv" / "cv.css"
-FONTS = [  # (family, weight, file in fonts/print/)
-    ("SD Print Sans", "400", "sd-print-sans-regular.woff2"),
-    ("SD Print Sans", "600 700", "sd-print-sans-semibold.woff2"),
+FONTS = [  # (family, weight, style, file in fonts/print/): STIX Two Text, the template's face
+    ("STIX Two Text", "400", "normal", "stix-two-text-regular.woff2"),
+    ("STIX Two Text", "400", "italic", "stix-two-text-italic.woff2"),
+    ("STIX Two Text", "700", "normal", "stix-two-text-bold.woff2"),
 ]
 TITLE = "Santiago Die Morejón · CV"
 MAX_KB = 300
@@ -159,6 +160,7 @@ def project_link(project):
 def render_html(site, s, projects, lang, phone, t):
     cv = s["cv"]
     labels = cv["labels"]
+    colon = " : " if lang == "fr" else ": "  # French puts a space before the colon
     out = []
 
     # Head
@@ -220,7 +222,7 @@ def render_html(site, s, projects, lang, phone, t):
         if end and int(end[-1]) > date.today().year - (date.today().month < 7):
             period += f' ({cv["education"]["expected"]})'
         honors = t.take(cv["education"].get("honors"), "cv.education.honors") if index == 0 else ""
-        extra = f'<div class="row"><span>{esc(labels["honors"])}: {esc(honors)}</span><span></span></div>' if honors else ""
+        extra = f'<div class="row"><span>{esc(labels["honors"])}{colon}{esc(honors)}</span><span></span></div>' if honors else ""
         rows.append(f'<div class="entry"><div class="row"><b>{esc(org)}</b><b>{esc(place)}</b></div>'
                     f'<div class="row"><span>{esc(title)}</span><span class="date">{esc(period)}</span></div>{extra}</div>')
     out.append(f'<section><h2>{esc(labels["education"])}</h2>{"".join(rows)}</section>')
@@ -233,22 +235,22 @@ def render_html(site, s, projects, lang, phone, t):
             group = groups[index]
             items = [i for i in group["items"] if i and not TODO.match(i)]
             if items:
-                lines.append(f'{group["name"]}: {", ".join(items)}')
+                lines.append(f'{group["name"]}{colon}{", ".join(items)}')
     spoken = s["skills"]["languages"]
-    lines.append(f'{spoken["title"]}: ' + ", ".join(f'{l["name"]} ({l["level"]})' for l in spoken["items"]))
+    lines.append(f'{spoken["title"]}{colon}' + ", ".join(f'{l["name"]} ({l["level"]})' for l in spoken["items"]))
     certs = s["education"]["certifications"]
     if certs["items"]:
-        lines.append(f'{certs["title"]}: ' + "; ".join(certs["items"]))
+        lines.append(f'{certs["title"]}{colon}' + (" ; " if lang == "fr" else "; ").join(certs["items"]))
     nationality = t.take(cv.get("nationality"), "cv.nationality")
     if nationality:
-        lines.append(f'{cv["nationalityLabel"]}: {nationality}')
+        lines.append(f'{cv["nationalityLabel"]}{colon}{nationality}')
     out.append(f'<section class="skills"><h2>{esc(labels["skills"])}</h2><ul>'
                + "".join(f"<li>{esc(line)}</li>" for line in lines) + "</ul></section>")
 
     faces = "\n".join(
-        f'@font-face {{ font-family: "{family}"; font-weight: {weight}; '
+        f'@font-face {{ font-family: "{family}"; font-weight: {weight}; font-style: {style}; '
         f'src: url(data:font/woff2;base64,{base64.b64encode((ROOT / "fonts" / "print" / name).read_bytes()).decode()}) format("woff2"); }}'
-        for family, weight, name in FONTS)
+        for family, weight, style, name in FONTS)
     css = CSS.read_text(encoding="utf-8")
     return (f'<!doctype html>\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n<title>{esc(TITLE)}</title>\n'
             f'<style>\n{faces}\n{css}</style>\n</head>\n<body>\n<main>\n' + "\n".join(out) + "\n</main>\n</body>\n</html>\n")

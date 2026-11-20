@@ -293,7 +293,7 @@
       "islamontana": {
         "bullets": [
           "TODO: Diseñé y desarrollé la web bilingüe y optimizada para SEO de una agencia de viajes de naturaleza en Ecuador.",
-          "TODO: Desarrollo ahora el panel de gestión con roles y la API en FastAPI con PostgreSQL; el despliegue usa Docker Compose y CI/CD con staging y versiones etiquetadas."
+          "TODO: Desarrollo ahora el panel de gestión con roles y la API en FastAPI con PostgreSQL. El despliegue usa Docker Compose y CI/CD con staging y versiones etiquetadas."
         ]
       }
     },
@@ -307,13 +307,13 @@
       "face-similarity-search-pipeline": {
         "bullets": [
           "TODO: Monté una búsqueda de caras sobre un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet y un índice VP-tree de 38.299 caras.",
-          "TODO: Comparé el índice con la búsqueda exhaustiva y calibré el umbral con análisis ROC; con el umbral elegido, el F1 es 0,911."
+          "TODO: Comparé el índice con la búsqueda exhaustiva y calibré el umbral con análisis ROC. Con el umbral elegido, el F1 es 0,911."
         ]
       },
       "life-simulation": {
         "bullets": [
           "TODO: Desarrollamos en equipo una API REST en Spring Boot que encola autómatas celulares en RabbitMQ; cinco workers los ejecutan y guardan el resultado en MySQL.",
-          "TODO: Lo levantamos con Docker Compose y lo probamos en CI con GitHub Actions: 108 tests en 3 módulos Maven. En la demo, 5 workers vacían 220 solicitudes en 30 s."
+          "TODO: Lo levantamos con Docker Compose y lo probamos en CI con GitHub Actions: 108 tests en 3 módulos Maven. En la demo, 5 workers procesan 220 solicitudes enviadas en 30 s y vacían la cola a los 83 s."
         ]
       }
     },
@@ -333,7 +333,7 @@
       "honors": "Honores"
     },
     "nationalityLabel": "Nacionalidad",
-    "nationality": "Española, francesa y ecuatoriana · ciudadano de la UE, con libertad para trabajar en la UE"
+    "nationality": "TODO: Española, francesa y ecuatoriana (ciudadano de la UE, puedo trabajar en la UE sin permiso)"
   },
   "footer": {
     "rights": "Santiago Die Morejón",

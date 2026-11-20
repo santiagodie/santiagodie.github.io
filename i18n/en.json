@@ -282,24 +282,39 @@
   },
   "cv": {
     "profile": "I am a computer engineering student at the University of La Rioja, specialising in knowledge management, aiming to become a machine learning and MLOps engineer. I am currently an intern at Encore Lab, building a secure cloud platform with LLM features. I approach problems empirically: rather than assuming which solution is best, I measure it. I work comfortably in Spanish, English and French.",
-    "summary": "",
+    "summary": "TODO: Final-year Computer Engineering student at the University of La Rioja, specialising in Knowledge Management. I am looking for a junior machine learning or MLOps engineer role from June 2027. During my degree I have trained and served models: a Random Forest with an R² of 0.919 behind a Flask API, and a face search over 38,299 embeddings with an F1 of 0.911. At Encore Lab, where I am an intern, I work on a cloud portal with LLM-based features.",
     "experience": {
       "encore-lab": {
-        "bullets": []
+        "bullets": [
+          "TODO: Build a cloud portal for the clients of a grant consultancy that syncs with their on-premise system without exposing the internal network.",
+          "TODO: Integrate LLM-based features that classify documents and answer clients."
+        ]
       },
       "islamontana": {
-        "bullets": []
+        "bullets": [
+          "TODO: Designed and built the bilingual, SEO-optimised website of a nature travel agency in Ecuador.",
+          "TODO: Now building the admin panel with roles and the FastAPI API on PostgreSQL. Deployment uses Docker Compose and CI/CD with staging and tagged releases."
+        ]
       }
     },
     "projects": {
       "graduate-salary-predictor": {
-        "bullets": []
+        "bullets": [
+          "TODO: Trained a scikit-learn Random Forest that estimates a new graduate's salary: R² of 0.919 and MAE of about 4,122 on a 200-row test set.",
+          "TODO: Served it with a Flask REST API that validates every request with Pydantic, and exported it to ONNX so the demo runs it in the browser."
+        ]
       },
       "face-similarity-search-pipeline": {
-        "bullets": []
+        "bullets": [
+          "TODO: Built a face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index of 38,299 faces.",
+          "TODO: Compared the index with exhaustive search and calibrated the threshold with ROC analysis. At the chosen threshold, F1 is 0.911."
+        ]
       },
       "life-simulation": {
-        "bullets": []
+        "bullets": [
+          "TODO: Built, as a team, a Spring Boot REST API that queues cellular automata in RabbitMQ; five workers run them and store the results in MySQL.",
+          "TODO: Ran it with Docker Compose and tested it in CI with GitHub Actions: 108 tests across 3 Maven modules. In the demo, 5 workers process 220 requests sent over 30 s and empty the queue at 83 s."
+        ]
       }
     },
     "education": {
@@ -318,7 +333,7 @@
       "honors": "Honours"
     },
     "nationalityLabel": "Nationality",
-    "nationality": "Spanish, French and Ecuadorian · EU citizen, free to work in the EU"
+    "nationality": "TODO: Spanish, French and Ecuadorian (EU citizen, free to work in the EU without a permit)"
   },
   "footer": {
     "rights": "Santiago Die Morejón",

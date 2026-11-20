@@ -282,24 +282,39 @@
   },
   "cv": {
     "profile": "Je suis étudiant en génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et je vise un poste d’ingénieur en machine learning et MLOps. Je suis actuellement stagiaire chez Encore Lab, où je développe une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM. J’aborde les problèmes de manière empirique : plutôt que de supposer quelle solution est la meilleure, je la mesure. Je travaille aisément en espagnol, en anglais et en français.",
-    "summary": "",
+    "summary": "TODO: Étudiant en dernière année de génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances. Je cherche un poste d’ingénieur junior en machine learning ou MLOps à partir de juin 2027. Pendant mes études, j’ai entraîné et servi des modèles : un Random Forest avec un R² de 0,919 derrière une API Flask, et une recherche de visages sur 38 299 embeddings avec un F1 de 0,911. Je suis stagiaire chez Encore Lab, sur un portail cloud avec des fonctionnalités basées sur des LLM.",
     "experience": {
       "encore-lab": {
-        "bullets": []
+        "bullets": [
+          "TODO: Je développe un portail cloud pour les clients d’un cabinet de conseil en subventions, synchronisé avec leur système on-premise sans exposer le réseau interne.",
+          "TODO: J’intègre des fonctionnalités basées sur des LLM qui classent les documents et répondent aux clients."
+        ]
       },
       "islamontana": {
-        "bullets": []
+        "bullets": [
+          "TODO: J’ai conçu et développé le site bilingue et optimisé pour le SEO d’une agence de voyages nature en Équateur.",
+          "TODO: Je développe maintenant le back-office avec rôles et l’API FastAPI avec PostgreSQL. Le déploiement passe par Docker Compose et une CI/CD avec préproduction et versions étiquetées."
+        ]
       }
     },
     "projects": {
       "graduate-salary-predictor": {
-        "bullets": []
+        "bullets": [
+          "TODO: J’ai entraîné un Random Forest de scikit-learn qui estime le salaire d’un jeune diplômé : R² de 0,919 et MAE d’environ 4 122 sur un jeu de test de 200 lignes.",
+          "TODO: Je l’ai servi avec une API REST Flask qui valide chaque requête avec Pydantic, puis exporté en ONNX pour que la démo l’exécute dans le navigateur."
+        ]
       },
       "face-similarity-search-pipeline": {
-        "bullets": []
+        "bullets": [
+          "TODO: J’ai construit une recherche de visages dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et un index VP-tree de 38 299 visages.",
+          "TODO: J’ai comparé l’index à la recherche exhaustive et calibré le seuil par analyse ROC. Au seuil retenu, le F1 est de 0,911."
+        ]
       },
       "life-simulation": {
-        "bullets": []
+        "bullets": [
+          "TODO: Nous avons développé en équipe une API REST Spring Boot qui met en file des automates cellulaires dans RabbitMQ ; cinq workers les exécutent et enregistrent le résultat dans MySQL.",
+          "TODO: Le tout démarre avec Docker Compose et passe en CI avec GitHub Actions : 108 tests sur 3 modules Maven. Dans la démo, 5 workers traitent 220 requêtes envoyées en 30 s et vident la file à 83 s."
+        ]
       }
     },
     "education": {
@@ -318,7 +333,7 @@
       "honors": "Distinctions"
     },
     "nationalityLabel": "Nationalité",
-    "nationality": "Espagnole, française et équatorienne · citoyen de l’UE, libre de travailler dans l’UE"
+    "nationality": "TODO: Espagnole, française et équatorienne (citoyen de l’UE, je peux travailler dans l’UE sans permis)"
   },
   "footer": {
     "rights": "Santiago Die Morejón",
