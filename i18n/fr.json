@@ -281,7 +281,7 @@
     "cvFile": "cv/CV-SantiagoDie-FR.pdf"
   },
   "cv": {
-    "profile": "Je suis étudiant en génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et je vise un poste d’ingénieur en machine learning et MLOps. Je suis actuellement stagiaire chez Encore Lab, où je développe une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM. J’aborde les problèmes de manière empirique : plutôt que de supposer quelle solution est la meilleure, je la mesure. Je travaille aisément en espagnol, en anglais et en français.",
+"profile": "Je suis étudiant en génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances, et je vise un poste d’ingénieur en machine learning et MLOps. Je suis stagiaire chez Encore Lab, où je développe une plateforme cloud sécurisée avec des fonctionnalités basées sur des LLM. Avant de choisir une solution, je mesure les alternatives. Je travaille aisément en espagnol, en anglais et en français.",
     "summary": "TODO: Étudiant en dernière année de génie informatique à l’Université de La Rioja, spécialisé en gestion des connaissances. Je cherche un poste d’ingénieur junior en machine learning ou MLOps à partir de juin 2027. Pendant mes études, j’ai entraîné et servi des modèles : un Random Forest avec un R² de 0,919 derrière une API Flask, et une recherche de visages sur 38 299 embeddings avec un F1 de 0,911. Je suis stagiaire chez Encore Lab, sur un portail cloud avec des fonctionnalités basées sur des LLM.",
     "experience": {
       "encore-lab": {

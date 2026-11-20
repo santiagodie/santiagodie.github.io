@@ -281,7 +281,7 @@
     "cvFile": "cv/CV-SantiagoDie-EN.pdf"
   },
   "cv": {
-    "profile": "I am a computer engineering student at the University of La Rioja, specialising in knowledge management, aiming to become a machine learning and MLOps engineer. I am currently an intern at Encore Lab, building a secure cloud platform with LLM features. I approach problems empirically: rather than assuming which solution is best, I measure it. I work comfortably in Spanish, English and French.",
+"profile": "I am a computer engineering student at the University of La Rioja, specialising in knowledge management, and I want to work as a machine learning and MLOps engineer. I am an intern at Encore Lab, where I build a secure cloud platform with LLM features. Before I choose a solution, I measure the alternatives. I work comfortably in Spanish, English and French.",
     "summary": "TODO: Final-year Computer Engineering student at the University of La Rioja, specialising in Knowledge Management. I am looking for a junior machine learning or MLOps engineer role from June 2027. During my degree I have trained and served models: a Random Forest with an R² of 0.919 behind a Flask API, and a face search over 38,299 embeddings with an F1 of 0.911. At Encore Lab, where I am an intern, I work on a cloud portal with LLM-based features.",
     "experience": {
       "encore-lab": {

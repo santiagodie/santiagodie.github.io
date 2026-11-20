@@ -75,9 +75,9 @@
       },
       "featured": true,
       "description": {
-        "en": "End-to-end face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index, compared with exhaustive search, calibrated with ROC and F1 analysis, and with a live demo.",
-        "es": "Búsqueda de caras de principio a fin en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree, comparada con la búsqueda exhaustiva, calibrada con análisis ROC y F1 y con una demo en vivo.",
-        "fr": "Recherche de visages de bout en bout dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree, comparée à la recherche exhaustive, calibrée par analyse ROC et F1, avec une démo en ligne."
+        "en": "Face search over a press archive of 21,678 photos: detection with dlib's CNN, FaceNet embeddings and a VP-tree index. The index is compared with exhaustive search, and the threshold is calibrated with ROC and F1 analysis. There is a live demo.",
+        "es": "Búsqueda de caras en un archivo de prensa de 21.678 fotos: detección con la CNN de dlib, embeddings de FaceNet e índice VP-tree. El índice se compara con la búsqueda exhaustiva y el umbral se calibra con análisis ROC y F1. Tiene demo en vivo.",
+        "fr": "Recherche de visages dans une archive de presse de 21 678 photos : détection par le CNN de dlib, embeddings FaceNet et index VP-tree. L’index est comparé à la recherche exhaustive et le seuil est calibré par analyse ROC et F1. Une démo est en ligne."
       },
       "todo": [],
       "metrics": [
@@ -227,9 +227,9 @@
       },
       "featured": false,
       "description": {
-        "en": "Text classification of LLM prompts into 10 topics, comparing a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer, plus an LR finder study and a simple ensemble.",
-        "es": "Clasificación de prompts para LLM en 10 temas, comparando un modelo ULMFiT (AWD-LSTM) de fastai con un transformer DistilBERT de Hugging Face, más un estudio del buscador de learning rate y un ensemble sencillo.",
-        "fr": "Classification de prompts pour LLM en 10 thèmes, en comparant un modèle ULMFiT (AWD-LSTM) de fastai à un transformer DistilBERT de Hugging Face, avec une étude du learning rate finder et un ensemble simple."
+        "en": "Text classification of LLM prompts into 10 topics. It compares a fastai ULMFiT (AWD-LSTM) model with a Hugging Face DistilBERT transformer and adds an LR finder study and a simple ensemble.",
+        "es": "Clasificación de prompts para LLM en 10 temas. Compara un modelo ULMFiT (AWD-LSTM) de fastai con un transformer DistilBERT de Hugging Face, e incluye un estudio del buscador de learning rate y un ensemble sencillo.",
+        "fr": "Classification de prompts pour LLM en 10 thèmes. Le projet compare un modèle ULMFiT (AWD-LSTM) de fastai à un transformer DistilBERT de Hugging Face, avec une étude du learning rate finder et un ensemble simple."
       },
       "todo": [],
       "tech": [
@@ -355,7 +355,7 @@
       },
       "featured": false,
       "description": {
-        "en": "A team project: a Windows desktop application for a library, built in C# WinForms with a layered architecture, covering members, staff roles, documents and copies, loans and returns.",
+        "en": "A team project: a Windows desktop application for a library, built in C# WinForms with a layered architecture: members, staff roles, documents and copies, loans and returns.",
         "es": "Proyecto en equipo: aplicación de escritorio para Windows que gestiona una biblioteca, hecha en C# WinForms con arquitectura en capas: usuarios, roles del personal, documentos y ejemplares, préstamos y devoluciones.",
         "fr": "Projet d’équipe : application de bureau Windows pour une bibliothèque, en C# WinForms avec une architecture en couches : usagers, rôles du personnel, documents et exemplaires, prêts et retours."
       },
@@ -409,9 +409,9 @@
             "fr": "220 requêtes"
           },
           "label": {
-            "en": "in 30 s, drained by 5 workers",
-            "es": "en 30 s, vaciadas por 5 workers",
-            "fr": "en 30 s, traitées par 5 workers"
+            "en": "sent over 30 s, processed by 5 workers",
+            "es": "enviadas en 30 s, procesadas por 5 workers",
+            "fr": "envoyées en 30 s, traitées par 5 workers"
           },
           "source": "https://github.com/santiagodie/life-simulation-service#live-demo"
         }

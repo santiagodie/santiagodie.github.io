@@ -58,7 +58,7 @@ Career moment (confirmed 2026-10-17): Santiago is doing the degree internship an
 ## Evidence on Hand
 
 - Eleven public repositories with READMEs behind ten projects (descriptions and "Built With" lists are the source for `data/projects.json`).
-- Metrics stated in the READMEs, usable on cards: Graduate Salary Predictor R² = 0.919 and MAE ≈ 4,122 on a 200-row test set (indicative, small training sample); Face Similarity Search 38,299 indexed face embeddings, F1 0.911 at the calibrated threshold, 94.4% self-retrieval; Life Simulation 108 tests passing across 3 Maven modules, 220 requests in 30 s drained by 5 workers; WordHive TCP (7777) and HTTP (7070) modes from one entry point, 31 daily puzzles.
+- Metrics stated in the READMEs, usable on cards: Graduate Salary Predictor R² = 0.919 and MAE ≈ 4,122 on a 200-row test set (indicative, small training sample); Face Similarity Search 38,299 indexed face embeddings, F1 0.911 at the calibrated threshold, 94.4% self-retrieval; Life Simulation 108 tests passing across 3 Maven modules, 220 requests sent over 30 s and processed by 5 workers (the queue is empty at 83 s); WordHive TCP (7777) and HTTP (7070) modes from one entry point, 31 daily puzzles.
 - Live demos: wordhive-socket-server, electrosa-fullstack-ecommerce, face-similarity-search-pipeline, graduate-salary-predictor, life-simulation-service, life-simulation-web-client (GitHub Pages); sudoku-vision-solver (Colab notebook). Download: library-management-system (latest GitHub release).
 - GitHub: https://github.com/santiagodie · LinkedIn: https://www.linkedin.com/in/santiago-die-morejon
 - Absent, must not be fabricated: work history beyond the two Experience entries, dates, grades, skills levels, testimonials, metrics beyond what the READMEs state.

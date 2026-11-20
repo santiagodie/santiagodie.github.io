@@ -281,7 +281,7 @@
     "cvFile": "cv/CV-SantiagoDie-ES.pdf"
   },
   "cv": {
-    "profile": "Soy estudiante de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento, y mi objetivo es trabajar como ingeniero de machine learning y MLOps. Ahora estoy de prácticas en Encore Lab, desarrollando una plataforma cloud segura con funciones basadas en LLM. Abordo los problemas de forma empírica: en lugar de suponer cuál es la mejor solución, la mido. Trabajo con soltura en español, inglés y francés.",
+"profile": "Soy estudiante de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento, y mi objetivo es trabajar como ingeniero de machine learning y MLOps. Ahora hago prácticas en Encore Lab, donde desarrollo una plataforma cloud segura con funciones basadas en LLM. Antes de elegir una solución, mido las alternativas. Trabajo con soltura en español, inglés y francés.",
     "summary": "TODO: Estudiante de último curso de Ingeniería Informática en la Universidad de La Rioja, con mención en Gestión del Conocimiento. Busco un puesto de ingeniero junior de machine learning o MLOps desde junio de 2027. En la carrera he entrenado y servido modelos: un Random Forest con R² de 0,919 detrás de una API en Flask y una búsqueda de caras sobre 38.299 embeddings con un F1 de 0,911. Hago las prácticas en Encore Lab, en un portal cloud con funciones basadas en LLM.",
     "experience": {
       "encore-lab": {
