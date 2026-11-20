@@ -33,8 +33,8 @@ is a user agent full of parentheses, is not reused).
 
 Checks, any failure exits non-zero and fails the deploy: exactly one page; under 300 KB;
 a photo in the Spanish and French CVs and none in the English one; the title and the
-language set; the links present (site, LinkedIn, GitHub, email, projects, and the phone
-when there is one); the last Info dictionary read back by a small parser (every string
+language set; the links present (site, LinkedIn, email, projects, and the phone when
+there is one; with a phone, the text layer must carry it, logged as yes/no only); the last Info dictionary read back by a small parser (every string
 and the dictionary closed, each field as written); with CV_PHONE, the number appears in
 no other file of dist/. When pdftotext is installed, the text layer is read back too
 (name, email and the section titles in order), as an ATS would read it. When qpdf is
@@ -80,8 +80,6 @@ WITH_PHOTO = {"es", "fr"}  # owner's decision: the English CV goes without the p
 # rest (frontend, models and demos, knowledge management, coursework languages, other,
 # quantum) stay on the site only.
 SKILL_GROUPS = [0, 1, 2, 3, 4, 5]
-# Lot 22: the Hugging Face profile in the head, only while the head keeps to two lines.
-HEAD_HUGGINGFACE = True
 TODO = re.compile(r"^TODO\s*:?\s*")
 CHROMES = [
     "google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "chrome",
@@ -153,12 +151,11 @@ def contact_items(site, s, lang, phone):
     parts = [p.strip() for p in s["contact"]["location"].split(",")]
     location = ", ".join([parts[0], parts[-1]]) if len(parts) > 1 else parts[0]
     page = site["url"] + next(l["path"] for l in site["languages"] if l["code"] == lang)
+    # Lot 22 (owner): the head keeps the site and LinkedIn; GitHub and Hugging Face stay
+    # on the site (Contact, sameAs) and in the projects' links.
     items = [(None, location),
              (page, short_url(site["url"])),
-             (person["linkedin"], short_url(person["linkedin"])),
-             (person["github"], short_url(person["github"]))]
-    if HEAD_HUGGINGFACE and person.get("huggingface"):
-        items.append((person["huggingface"], short_url(person["huggingface"])))
+             (person["linkedin"], short_url(person["linkedin"]))]
     if phone:
         items.append(("tel:" + re.sub(r"[^\d+]", "", phone), format_phone(phone)))
     items.append(("mailto:" + person["email"], person["email"]))
@@ -500,7 +497,7 @@ def read_text(pdf_path):
     return done.stdout.decode("utf-8", errors="replace") if done.returncode == 0 else None
 
 
-def check(pdf_path, lang, links, headings, name, email):
+def check(pdf_path, lang, links, headings, name, email, phone=""):
     """The checks that fail the deploy. Returns a one-line summary."""
     if not pdf_path.exists():
         raise CVError(f"{pdf_path.name}: not written")
@@ -564,6 +561,11 @@ def check(pdf_path, lang, links, headings, name, email):
                 problems.append("the section titles are not in the text layer in order")
                 break
         reading = "text layer in order"
+        if phone:  # said as yes/no: the number itself never reaches the log
+            present = format_phone(phone) in flat
+            if not present:
+                problems.append("the phone is not in the text layer")
+            reading += f", phone present: {'yes' if present else 'no'}"
     if problems:
         raise CVError(f"{pdf_path.name}: " + "; ".join(problems))
     return (f"{pdf_path.relative_to(ROOT).as_posix()}  {kb:.0f} KB, {pages} page, {images} image(s), "
@@ -637,7 +639,7 @@ def main():
             labels = s["cv"]["labels"]
             headings = [labels[k] for k in ("experience", "projects", "education", "skills")]
             print(check(out, code, expected_links(site, s, projects, code, phone), headings,
-                        site["person"]["name"], site["person"]["email"]))
+                        site["person"]["name"], site["person"]["email"], phone))
             if t.pending:
                 print(f"  {code}: wording still marked TODO (printed as is): {', '.join(t.pending)}")
         if phone:

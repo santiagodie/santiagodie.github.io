@@ -96,9 +96,9 @@
         "id": "encore-lab",
         "period": "Sept. 2026 – Actualidad",
         "title": "Desarrollador full-stack en prácticas",
-        "org": "Encore Lab",
+        "org": "Encore Lab S.L.",
         "place": "Logroño, España",
-        "text": "Soy el único desarrollador, con la supervisión de mis responsables, de un portal cloud para los clientes de una consultora de subvenciones, y es también mi TFG. He programado la sincronización de extremo a extremo. En el sistema interno heredado (PHP y MySQL) capturo los cambios dentro de la misma transacción que cada operación y los envío cada 5 minutos por HTTPS, en un solo sentido y con reintentos, así que su red nunca se abre desde fuera. En el portal los recibe una API en NestJS con PostgreSQL, y los documentos, de hasta 512 MiB, pasan por cuarentena y antivirus antes de quedar disponibles. Las siguientes fases añadirán usuarios con acceso a varias empresas, solicitudes de documentación, seguimiento de retornos económicos y funciones con LLM.",
+        "text": "Soy el único desarrollador, con la supervisión de mis responsables, de un portal cloud para los clientes de una consultora de subvenciones, y es también mi TFG. He programado la sincronización de extremo a extremo. En el sistema interno heredado (PHP y MySQL) capturo los cambios dentro de la misma transacción que cada operación y los envío cada 5 minutos por HTTPS, en un solo sentido y con reintentos, así que su red nunca se abre desde fuera. En el portal los recibe una API en NestJS con PostgreSQL, y los documentos, de hasta 512 MiB, pasan por cuarentena y antivirus antes de quedar disponibles. También diseñé e implementé la infraestructura del portal con Docker (contenedores, volúmenes, PostgreSQL, copias de seguridad y antivirus) y la seguridad de la API de sincronización, que verifica cada petición y valida su contrato de forma estricta. Las siguientes fases añadirán usuarios con acceso a varias empresas, solicitudes de documentación, seguimiento de retornos económicos y funciones con LLM.",
         "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
@@ -141,10 +141,8 @@
       {
         "name": "Lenguaje y LLM",
         "items": [
-          "Hugging Face Transformers",
-          "Hugging Face Datasets",
-          "DistilBERT",
-          "ULMFiT (fastai)"
+          "Hugging Face Transformers y Datasets",
+          "fine-tuning de modelos de lenguaje (DistilBERT, ULMFiT)"
         ]
       },
       {
@@ -296,8 +294,8 @@
     "experience": {
       "encore-lab": {
         "bullets": [
-          "Programé yo solo la sincronización entre el sistema heredado de una consultora (PHP, MySQL) y un portal cloud (NestJS, PostgreSQL): captura de cambios transaccional y envío por HTTPS en un solo sentido, con reintentos, sin abrir su red.",
-          "Aseguré la recepción de documentos de hasta 512 MiB con procesamiento en flujo, cuarentena y antivirus ClamAV con reintentos, y cubrí el portal con unas 470 pruebas unitarias y de integración."
+          "Desarrollé el sistema de sincronización entre el sistema heredado de una consultora (PHP, MySQL) y un portal cloud (NestJS, PostgreSQL): captura de cambios transaccional y envío por HTTPS en un solo sentido, siguiendo un protocolo de comunicación interno, sin exponer su red.",
+          "Diseñé e implementé la infraestructura del portal con Docker (contenedores, volúmenes, PostgreSQL, copias de seguridad y antivirus ClamAV) y la seguridad de la API de sincronización: verificación de cada petición, validación estricta del contrato y cuarentena de los documentos."
         ]
       },
       "islamontana": {
@@ -316,13 +314,12 @@
       "satellite-image-classifier": {
         "bullets": [
           "Ajusté una ResNet18 en fastai para clasificar imágenes de satélite en 4 clases: 0,9982 de accuracy en test.",
-          "Comparé cinco arquitecturas de CNN en las mismas condiciones: ResNet34 empató con ConvNeXt Tiny en validación (1,0000) y entrenó 2,6 veces más rápido."
+          "Comparé cinco arquitecturas de CNN (ResNet18 y 34, EfficientNet-B0, MobileNetV3 Small y ConvNeXt Tiny) en las mismas condiciones."
         ]
       },
       "prompt-topic-classifier": {
         "bullets": [
-          "Clasifiqué prompts de LLM en 10 temas con un DistilBERT ajustado: 67,35 % de accuracy y F1 ponderado de 0,667 en un test de 1.550 prompts.",
-          "Lo comparé con un ULMFiT de fastai (57,81 %) y con un ensemble de los dos (66,77 %), que no lo mejoró."
+          "Clasifiqué prompts de LLM en 10 temas con un DistilBERT ajustado: 67,35 % de accuracy y F1 ponderado de 0,667 en un test de 1.550 prompts."
         ]
       }
     },

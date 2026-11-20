@@ -96,9 +96,9 @@
         "id": "encore-lab",
         "period": "Sep 2026 – Present",
         "title": "Full-stack developer intern",
-        "org": "Encore Lab",
+        "org": "Encore Lab S.L.",
         "place": "Logroño, Spain",
-        "text": "I am the only developer, under my managers' supervision, of a cloud portal for the clients of a grant consultancy, and it is also my final-year project. I built the synchronisation end to end. In the legacy internal system (PHP and MySQL) I capture changes inside the same transaction as each operation and send them every 5 minutes over HTTPS, one way and with retries, so its network is never opened from outside. On the portal, a NestJS API on PostgreSQL receives them, and documents of up to 512 MiB go through quarantine and an antivirus scan before they become available. The next phases will add users with access to several companies, document requests, tracking of financial returns and LLM features.",
+        "text": "I am the only developer, under my managers' supervision, of a cloud portal for the clients of a grant consultancy, and it is also my final-year project. I built the synchronisation end to end. In the legacy internal system (PHP and MySQL) I capture changes inside the same transaction as each operation and send them every 5 minutes over HTTPS, one way and with retries, so its network is never opened from outside. On the portal, a NestJS API on PostgreSQL receives them, and documents of up to 512 MiB go through quarantine and an antivirus scan before they become available. I also designed and built the portal's infrastructure with Docker (containers, volumes, PostgreSQL, backups and antivirus) and the security of the sync API, which verifies every request and strictly validates its contract. The next phases will add users with access to several companies, document requests, tracking of financial returns and LLM features.",
         "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
@@ -141,10 +141,8 @@
       {
         "name": "Language & LLMs",
         "items": [
-          "Hugging Face Transformers",
-          "Hugging Face Datasets",
-          "DistilBERT",
-          "ULMFiT (fastai)"
+          "Hugging Face Transformers and Datasets",
+          "fine-tuning language models (DistilBERT, ULMFiT)"
         ]
       },
       {
@@ -296,8 +294,8 @@
     "experience": {
       "encore-lab": {
         "bullets": [
-          "Built on my own the synchronisation between a consultancy's legacy system (PHP, MySQL) and a cloud portal (NestJS, PostgreSQL): transactional change capture and one-way delivery over HTTPS with retries, without opening its network.",
-          "Secured the intake of documents of up to 512 MiB with streaming, quarantine and ClamAV antivirus scans with retries, and covered the portal with about 470 unit and integration tests."
+          "Built the synchronisation system between a consultancy's legacy system (PHP, MySQL) and a cloud portal (NestJS, PostgreSQL): transactional change capture and one-way delivery over HTTPS, following an internal communication protocol, without exposing its network.",
+          "Designed and implemented the portal's infrastructure with Docker (containers, volumes, PostgreSQL, backups and ClamAV antivirus) and the security of the sync API: verification of every request, strict contract validation and document quarantine."
         ]
       },
       "islamontana": {
@@ -316,13 +314,12 @@
       "satellite-image-classifier": {
         "bullets": [
           "Fine-tuned a ResNet18 in fastai to classify satellite images into 4 classes: 0.9982 test accuracy.",
-          "Compared five CNN architectures under the same conditions: ResNet34 tied ConvNeXt Tiny on validation (1.0000) and trained 2.6 times faster."
+          "Compared five CNN architectures (ResNet18 and 34, EfficientNet-B0, MobileNetV3 Small and ConvNeXt Tiny) under the same conditions."
         ]
       },
       "prompt-topic-classifier": {
         "bullets": [
-          "Classified LLM prompts into 10 topics with a fine-tuned DistilBERT: 67.35% accuracy and a weighted F1 of 0.667 on a 1,550-prompt test set.",
-          "Compared it with a fastai ULMFiT (57.81%) and an ensemble of both (66.77%), which did not beat it."
+          "Classified LLM prompts into 10 topics with a fine-tuned DistilBERT: 67.35% accuracy and a weighted F1 of 0.667 on a 1,550-prompt test set."
         ]
       }
     },

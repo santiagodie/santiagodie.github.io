@@ -96,9 +96,9 @@
         "id": "encore-lab",
         "period": "Sept. 2026 – Aujourd’hui",
         "title": "Développeur full-stack (stage)",
-        "org": "Encore Lab",
+        "org": "Encore Lab S.L.",
         "place": "Logroño, Espagne",
-        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne hérité (PHP et MySQL), je capture les changements dans la même transaction que chaque opération et je les envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, si bien que son réseau n’est jamais ouvert de l’extérieur. Côté portail, une API NestJS sur PostgreSQL les reçoit, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retours financiers et des fonctionnalités à base de LLM.",
+        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne hérité (PHP et MySQL), je capture les changements dans la même transaction que chaque opération et je les envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, si bien que son réseau n’est jamais ouvert de l’extérieur. Côté portail, une API NestJS sur PostgreSQL les reçoit, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. J’ai aussi conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus) et la sécurité de l’API de synchronisation, qui vérifie chaque requête et valide strictement son contrat. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retours financiers et des fonctionnalités à base de LLM.",
         "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
@@ -141,10 +141,8 @@
       {
         "name": "Langage et LLM",
         "items": [
-          "Hugging Face Transformers",
-          "Hugging Face Datasets",
-          "DistilBERT",
-          "ULMFiT (fastai)"
+          "Hugging Face Transformers et Datasets",
+          "fine-tuning de modèles de langage (DistilBERT, ULMFiT)"
         ]
       },
       {
@@ -296,8 +294,8 @@
     "experience": {
       "encore-lab": {
         "bullets": [
-          "J’ai programmé seul la synchronisation entre le système hérité d’un cabinet de conseil (PHP, MySQL) et un portail cloud (NestJS, PostgreSQL) : capture transactionnelle des changements et envoi en HTTPS dans un seul sens, avec reprises, sans ouvrir son réseau.",
-          "J’ai sécurisé la réception de documents jusqu’à 512 Mio avec un traitement en flux, une quarantaine et un antivirus ClamAV avec reprises, et couvert le portail d’environ 470 tests unitaires et d’intégration."
+          "J’ai développé le système de synchronisation entre le système hérité d’un cabinet de conseil (PHP, MySQL) et un portail cloud (NestJS, PostgreSQL) : capture transactionnelle des changements et envoi en HTTPS dans un seul sens, selon un protocole de communication interne, sans exposer son réseau.",
+          "J’ai conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus ClamAV) et la sécurité de l’API de synchronisation : vérification de chaque requête, validation stricte du contrat et quarantaine des documents."
         ]
       },
       "islamontana": {
@@ -316,13 +314,12 @@
       "satellite-image-classifier": {
         "bullets": [
           "J’ai affiné un ResNet18 avec fastai pour classer des images satellite en 4 classes : 0,9982 d’accuracy en test.",
-          "J’ai comparé cinq architectures de CNN dans les mêmes conditions : ResNet34 a égalé ConvNeXt Tiny en validation (1,0000) et s’est entraîné 2,6 fois plus vite."
+          "J’ai comparé cinq architectures de CNN (ResNet18 et 34, EfficientNet-B0, MobileNetV3 Small et ConvNeXt Tiny) dans les mêmes conditions."
         ]
       },
       "prompt-topic-classifier": {
         "bullets": [
-          "J’ai classé des prompts de LLM en 10 thèmes avec un DistilBERT affiné : 67,35 % d’accuracy et un F1 pondéré de 0,667 sur un test de 1 550 prompts.",
-          "Je l’ai comparé à un ULMFiT de fastai (57,81 %) et à un ensemble des deux (66,77 %), qui ne l’a pas amélioré."
+          "J’ai classé des prompts de LLM en 10 thèmes avec un DistilBERT affiné : 67,35 % d’accuracy et un F1 pondéré de 0,667 sur un test de 1 550 prompts."
         ]
       }
     },
