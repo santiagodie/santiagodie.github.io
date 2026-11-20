@@ -115,8 +115,8 @@
   "education": {
     "items": [
       {
-        "period": "2021 – 2027",
-        "title": "Bachelor's Degree in Computer Engineering (4 years, 240 ECTS)",
+        "period": "Graduating 2027",
+        "title": "Bachelor's Degree in Computer Engineering (240 ECTS)",
         "org": "University of La Rioja",
         "text": "Knowledge Management specialisation: turning complex information into usable knowledge for organisations through knowledge engineering and intelligent systems.",
         "details": "AI, machine learning, computer vision, NLP, MLOps, ontologies, semantic web, data mining",
@@ -253,7 +253,7 @@
           "Qiskit",
           "quantum circuits",
           "quantum algorithms (Grover, Deutsch-Jozsa)",
-          "Introduction to Quantum Computing course (Basic & Advanced Levels)"
+          "Introduction to Quantum Computing course (basic and advanced levels)"
         ]
       }
     ],
