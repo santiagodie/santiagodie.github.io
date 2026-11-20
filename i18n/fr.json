@@ -98,7 +98,7 @@
         "title": "Stagiaire développeur full-stack",
         "org": "Encore Lab S.L.",
         "place": "Logroño, Espagne",
-        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne historique du cabinet (PHP et MySQL), je capture chaque modification dans la même transaction que l’opération et je l’envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, sans jamais exposer son réseau interne. Côté portail, une API NestJS sur PostgreSQL reçoit les données, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. J’ai aussi conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus) et la sécurité de l’API de synchronisation, qui vérifie chaque requête et valide strictement son contrat. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retombées financières et des fonctionnalités à base de LLM.",
+        "text": "Je suis le seul développeur, sous la supervision de mes responsables, d’un portail cloud pour les clients d’un cabinet de conseil en subventions, et c’est aussi mon projet de fin d’études. J’ai programmé la synchronisation de bout en bout. Dans le système interne historique du cabinet (PHP et MySQL), je capture chaque modification dans la même transaction que l’opération et je l’envoie toutes les 5 minutes en HTTPS, dans un seul sens et avec des reprises, sans jamais exposer son réseau interne. Côté portail, une API NestJS sur PostgreSQL reçoit les données, et les documents, jusqu’à 512 Mio, passent par une quarantaine et un antivirus avant d’être disponibles. J’ai aussi conçu et mis en place l’infrastructure du portail avec Docker (conteneurs, volumes, PostgreSQL, sauvegardes et antivirus) et sécurisé l’API de synchronisation : chaque requête est vérifiée et strictement validée selon le contrat. Les prochaines phases ajouteront des utilisateurs ayant accès à plusieurs entreprises, des demandes de documents, le suivi des retombées financières et des fonctionnalités à base de LLM.",
         "stack": "TypeScript · NestJS · Angular · PostgreSQL · TypeORM · zod · PHP · MySQL · Docker · ClamAV · Claude Code"
       },
       {
@@ -115,7 +115,7 @@
   "education": {
     "items": [
       {
-        "period": "2021 – 2027",
+        "period": "Promotion 2027",
         "title": "Grado en ingénierie informatique (diplôme espagnol, Bac+4, 240 ECTS)",
         "org": "Université de La Rioja",
         "text": "Spécialisation Gestion des connaissances : exploitation d’informations complexes comme connaissance au service de l’entreprise, grâce à l’ingénierie des connaissances et aux systèmes intelligents.",

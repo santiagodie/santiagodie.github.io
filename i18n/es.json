@@ -115,7 +115,7 @@
   "education": {
     "items": [
       {
-        "period": "2021 – 2027",
+        "period": "Promoción 2027",
         "title": "Grado en Ingeniería Informática",
         "org": "Universidad de La Rioja",
         "text": "Mención en Gestión del Conocimiento: gestión de información compleja para su explotación como conocimiento en la empresa, mediante ingeniería del conocimiento y sistemas inteligentes.",
@@ -128,7 +128,7 @@
         "title": "Baccalauréat francés y Bachillerato ecuatoriano",
         "org": "Lycée franco-équatorien La Condamine, Quito",
         "text": "",
-        "details": "Bac de Ciencias Económicas y Sociales, especialidad de matemáticas · Bachiller en Ciencias"
+        "details": "Bac de Ciencias Económicas y Sociales, especialidad de matemáticas · Bachillerato ecuatoriano en Ciencias"
       }
     ],
     "certifications": {
@@ -313,13 +313,13 @@
       },
       "satellite-image-classifier": {
         "bullets": [
-          "Ajusté una ResNet18 en fastai para clasificar imágenes de satélite en 4 clases: 99,82 % de accuracy en test.",
+          "Ajusté una ResNet18 en fastai para clasificar imágenes de satélite en 4 clases: 99,82 % de accuracy en test.",
           "Comparé cinco arquitecturas de CNN (ResNet18 y 34, EfficientNet-B0, MobileNetV3 Small y ConvNeXt Tiny) en las mismas condiciones."
         ]
       },
       "prompt-topic-classifier": {
         "bullets": [
-          "Clasifiqué prompts de LLM en 10 temas con un DistilBERT ajustado: 67,35 % de accuracy y F1 ponderado de 0,667 en un test de 1.550 prompts."
+          "Clasifiqué prompts de LLM en 10 temas con un DistilBERT ajustado: 67,35 % de accuracy y F1 ponderado de 0,667 en un test de 1.550 prompts."
         ]
       }
     },
